@@ -408,13 +408,20 @@ function renderInternal(request, ctx, kitResult) {
     product: productName,
     email: request.email,
     name: request.name || request.email,
-    company: request.company || "",
+    company: request.company || request.name || "",
     role: roleLabel(ctx.catalog, request.role) || "",
     time: formatTime(request.submittedAt, settings.timezone),
     kitName: kitName,
     count: "",
-    missing: ""
+    missing: "",
+    replyTo: replyTo(settings)
   };
+  /* Subjects and buttons are short lines: a long company or name is cut there
+     (copy-notes: 20 and 24 characters), and printed in full in the body. */
+  var short = {};
+  Object.keys(vars).forEach(function (k) { short[k] = vars[k]; });
+  short.company = clip(vars.company, 20);
+  short.name = clip(vars.name, 24);
 
   var kits = (kitResult && kitResult.kits) || [];
   if (isKit) {
@@ -426,52 +433,67 @@ function renderInternal(request, ctx, kitResult) {
     }).filter(Boolean).join("; ");
   }
 
-  var subject = line((test ? (copy.testPrefix || "") : "") + fill((copy.subjects || {})[state], vars));
+  var title = line(fill((copy.subjects || {})[state], short));
+  var subject = line((test ? (copy.testPrefix || "") : "") + title);
   var banner = fill((copy.banners || {})[state], vars);
   var cta = (copy.cta || {})[state] || {};
   var replySubject = fill(copy.replySubject || "", vars);
   var mailto = "mailto:" + request.email + (replySubject ? "?subject=" + encodeURIComponent(replySubject) : "");
 
+  /* Copy-notes 8: the form's name heads the notice, the banner states what
+     happened, and "Received {time}" sits under it. */
   var failed = state === "kitFailed";
   var rows = [brandLine()];
   rows.push(row('<p style="margin:0;font-family:' + SANS + ';font-size:13px;line-height:1.4;font-weight:bold;letter-spacing:.06em;text-transform:uppercase;color:' +
     (failed ? DANGER : ACTION) + ';">' + esc(((copy.formNames || {})[request.form]) || request.form) +
     (test ? ' <span style="color:' + MUTED + ';font-weight:normal;">&middot; test mode</span>' : "") + "</p>", "18px 32px 0"));
-  rows.push(heading(fill((copy.subjects || {})[state], vars)));
+  rows.push(heading(title));
   rows.push(row('<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
     '<td style="background:' + (failed ? DANGER_TINT : SELECT) + ';border-left:4px solid ' + (failed ? DANGER : ACTION) + ';padding:14px 16px;font-family:' + SANS +
-    ';font-size:16px;line-height:1.5;font-weight:bold;color:' + INK + ';">' + esc(banner) + "</td></tr></table>", "20px 32px 0"));
-  rows.push(row(para(fillHtml(cta.text || "", vars)) + button(mailto, fill(cta.button || "", vars)), "18px 32px 6px"));
+    ';font-size:16px;line-height:1.5;font-weight:bold;color:' + INK + ';">' + esc(banner) + "</td></tr></table>" +
+    '<p style="margin:8px 0 0;font-family:' + SANS + ';font-size:13px;line-height:1.4;color:' + MUTED + ';">' + fillHtml(labels.received || "", vars) + "</p>",
+    "20px 32px 0"));
+  rows.push(row(para(fillHtml(cta.text || "", vars)) + button(mailto, fill(cta.button || "", short)), "18px 32px 6px"));
 
+  var none = esc(labels.none || "-");
   var pairs = [];
   if (!isKit) {
     pairs.push([labels.name, esc(request.name)]);
     pairs.push([labels.email, link("mailto:" + request.email, request.email)]);
-    pairs.push([labels.company, esc(request.company || labels.none || "-")]);
-    pairs.push([labels.role, esc(vars.role || labels.none || "-")]);
+    pairs.push([labels.company, request.company ? esc(request.company) : none]);
+    pairs.push([labels.role, vars.role ? esc(vars.role) : none]);
     pairs.push([labels.product, product ? link(productUrl(siteUrl, product.slug), product.name) : esc(labels.notSure || ctx.catalog.productNotSure)]);
-    pairs.push([labels.message, request.message ? esc(request.message).replace(/\n/g, "<br>") : esc(labels.none || "-")]);
+    pairs.push([labels.message, request.message ? esc(request.message).replace(/\n/g, "<br>") : none]);
   } else {
     pairs.push([labels.email, link("mailto:" + request.email, request.email)]);
     pairs.push([labels.kit, esc(kitName)]);
-    var received = kits.map(function (k) {
+    var sent = kits.map(function (k) {
       var items = k.included.map(function (i) { return link(i.url, i.name); }).join(", ");
       return kits.length > 1 ? "<strong>" + esc((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug) + ":</strong> " + items : items;
     }).join("<br>");
-    pairs.push([labels.received, received || esc(labels.none || "-")]);
-    pairs.push([labels.missing, vars.missing ? esc(vars.missing) : esc(labels.none || "-")]);
+    pairs.push([labels.sentLinks || "Links sent", sent || none]);
+    pairs.push([labels.missing, vars.missing ? esc(vars.missing) : none]);
   }
   if (request.page) pairs.push([labels.page, link(request.page, request.page.replace(/^https?:\/\//, ""))]);
-  pairs.push([labels.time, esc(vars.time)]);
   if (failed && kitResult && kitResult.error) pairs.push(["Error", esc(line(kitResult.error).slice(0, 300))]);
   rows.push(row(detailRows(pairs), "18px 32px 8px"));
   rows.push(row(small(fillHtml(copy.footer || "", vars)), "16px 32px 28px"));
 
-  var text = [fill((copy.subjects || {})[state], vars), "", banner, fill(cta.text || "", vars), "Reply: " + request.email, ""]
-    .concat(pairs.map(function (p) { return p[0] + ": " + String(p[1]).replace(/<br>/g, "\n  ").replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'"); }))
+  var text = [title, "", banner, fill(labels.received || "", vars), "", fill(cta.text || "", vars), "Reply: " + request.email, ""]
+    .concat(pairs.map(function (p) { return p[0] + ": " + htmlToText(p[1]); }))
     .concat(["", fill(copy.footer || "", vars)]).join("\n");
 
   return { to: inbox, replyTo: request.email, subject: subject, html: shell(subject, banner, rows), text: text, images: [] };
+}
+
+function clip(value, max) {
+  var s = line(value);
+  return s.length > max ? s.slice(0, max - 1).replace(/\s+$/, "") + "…" : s;
+}
+
+function htmlToText(html) {
+  return String(html).replace(/<br>/g, "\n  ").replace(/<[^>]+>/g, "")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
 }
 
 var api = {
