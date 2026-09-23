@@ -1,0 +1,79 @@
+{
+  "$help": [
+    "Every word of the emails the site's forms cause. mail/render.js fills the tokens in braces: {product} {email} {name} {company} {role} {time} {kitName} {count} {missing} {replyTo}.",
+    "The sender reads this file from GitHub on every request, so a saved change applies within a minute. Preview any change first: node tools/mail-preview.js --sample, then open .work/mail-preview/index.html.",
+    "Rules the checker holds: no em dashes; an artifact name at most 24 characters and its use line at most 95; the walkthrough is called \"Interactive demo\"."
+  ],
+  "artifacts": {
+    "productPage":     { "name": "Product page",     "use": "Send the link before the first meeting, so the customer arrives already briefed." },
+    "onePager":        { "name": "One-pager",        "use": "Leave it behind after the meeting: one sheet the sponsor can forward up the chain." },
+    "salesDeck":       { "name": "Sales deck",       "use": "On the call, open it and take the room from their problem to a Jumpstart proof of value." },
+    "featureList":     { "name": "Feature list",     "use": "When IT or procurement wants the scope confirmed line by line, hand this over." },
+    "interactiveDemo": { "name": "Interactive demo", "use": "Click through it on a shared screen the moment someone says ‘show me’." },
+    "video":           { "name": "Demo video",       "use": "For anyone who missed the call, attach it to the follow-up note and they still see it work." }
+  },
+  "order": ["productPage", "onePager", "salesDeck", "featureList", "interactiveDemo", "video"],
+  "kit": {
+    "subject": "Your {product} sales kit from SoftServe",
+    "subjectAll": "Your full sales kit from SoftServe",
+    "preheader": "Your links for {product}, and what happens next.",
+    "preheaderAll": "Your links for the whole portfolio, and what happens next.",
+    "heading": "Your {product} sales kit",
+    "headingAll": "Your full sales kit",
+    "thanks": "Thanks for requesting it. The Oracle AI & Data practice at SoftServe put it together: below are the links you need to position {product} with a customer and open the first conversation.",
+    "thanksAll": "Thanks for requesting it. The Oracle AI & Data practice at SoftServe put it together: below are the links you need to position the whole portfolio with a customer and open the first conversation.",
+    "followUp": "Someone from the team will contact you shortly to hear which account you have in mind and to help you prepare.",
+    "listIntro": "What is inside, and when to use each piece:",
+    "all": {
+      "productsHeading": "The portfolio",
+      "productsIntro": "Each name leads to its page on the site, and beside it are its other pieces.",
+      "rowSeparator": " · ",
+      "legendHeading": "When to use each",
+      "legendIntro": "Every kit is built from the same kinds of pieces, so here they are once:"
+    },
+    "signoff": "The Oracle AI & Data practice at SoftServe",
+    "contact": "Your contact: Karsten Tramborg, Oracle Partnership Director, SoftServe.",
+    "replyNote": "Replies to this email go to {replyTo}.",
+    "footer": "You are receiving this email because {email} requested it on the Oracle AI & Data Solutions site."
+  },
+  "internal": {
+    "testPrefix": "[TEST] ",
+    "formNames": { "demo": "Talk to us request", "contact": "Scoping call request", "kit": "Sales kit request" },
+    "subjects": {
+      "demo": "Talk to us: {company} · {product}",
+      "contact": "Scoping call: {company} · {product}",
+      "kitSent": "Sent automatically: {kitName}",
+      "kitFailed": "Failed: send the {kitName} by hand"
+    },
+    "banners": {
+      "demo": "Someone submitted the Talk to us form on the site and was promised a reply within two working days.",
+      "contact": "Someone asked for a scoping call on the site and was promised a reply within two working days.",
+      "kitSent": "Already sent: {count} links for the {kitName} went to {email} automatically, so there is nothing to send by hand.",
+      "kitFailed": "Not sent: the automatic email with the {kitName} to {email} failed, so it has to go out by hand."
+    },
+    "cta": {
+      "demo":      { "text": "Come back to {name} within two working days with a proposed scoping call.", "button": "Reply to {name}" },
+      "contact":   { "text": "Come back to {name} within two working days with a proposed date.", "button": "Reply to {name}" },
+      "kitSent":   { "text": "They were told someone from the team will contact them shortly: write to {email} and ask which account they have in mind.", "button": "Write to the requester" },
+      "kitFailed": { "text": "Get it to {email} now, before they write in to ask where it is.", "button": "Send it by hand" }
+    },
+    "labels": {
+      "name": "Name",
+      "email": "Work email",
+      "company": "Company",
+      "role": "Role",
+      "product": "Product of interest",
+      "message": "What they are trying to fix",
+      "kit": "Kit",
+      "sentLinks": "Links sent",
+      "page": "From page",
+      "time": "Time",
+      "received": "Received {time}",
+      "missing": "Left out (no link available)",
+      "notSure": "Not sure yet",
+      "none": "None"
+    },
+    "replySubject": "Your request on SoftServe’s Oracle AI & Data Solutions site",
+    "footer": "Automatic notice from the Oracle AI & Data Solutions site. The button above and Reply both reach the person who filled in the form."
+  }
+}

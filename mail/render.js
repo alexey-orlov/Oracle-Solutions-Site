@@ -281,12 +281,29 @@ function card(item, ctx, linked) {
     "0 32px 18px");
 }
 
+function replyTo(settings) {
+  var mode = settings.mode === "live" ? "live" : "test";
+  return (((settings.sender || {}).replyTo) || {})[mode] || ((settings.inbox || {})[mode]) || "";
+}
+
 function kitVars(request, ctx) {
   var all = request.product === "all";
   var product = all ? null : productBySlug(ctx.catalog, request.product);
   var name = product ? product.name : "";
   var kitName = all ? ctx.catalog.kitNameAll : fill(ctx.catalog.kitName, { product: name });
-  return { product: name, email: request.email, kitName: kitName };
+  return { product: name, email: request.email, kitName: kitName, replyTo: replyTo(ctx.settings || {}) };
+}
+
+/* The site's one-liners use em dashes; the emails do not (client-documents.md). */
+function plainDashes(text) {
+  return String(text || "").replace(/\s*—\s*/g, ": ");
+}
+
+function sectionHead(title, intro) {
+  return row(
+    (title ? '<h2 style="margin:0 0 6px;font-family:' + SERIF + ';font-weight:400;font-size:22px;line-height:1.25;color:' + INK + ';">' + esc(title) + "</h2>" : "") +
+    (intro ? para(esc(intro), "font-size:15px;color:" + MUTED + ";") : ""),
+    "18px 32px 4px");
 }
 
 function renderKit(request, ctx) {
@@ -305,29 +322,36 @@ function renderKit(request, ctx) {
     rows.push(row(para(fillHtml(copy.listIntro, vars), "font-weight:bold;color:" + INK + ";"), "10px 32px 4px"));
     kits[0].included.forEach(function (item) { used[item.key] = true; rows.push(card(item, ctx, true)); });
   } else {
+    /* Fable's layout (PROVENANCE §32): the links are the payload, so the
+       product rows come first — the name to its page, its one-liner, then its
+       other pieces — and a row never names what is absent. The six kinds follow
+       once, as a legend, because their pictures are the same for every product. */
     var a = copy.all || {};
-    /* The six kinds once, as a legend: the pictures are the same for every product. */
-    if (a.legendIntro) rows.push(row(para(fillHtml(a.legendIntro, vars), "font-weight:bold;color:" + INK + ";"), "10px 32px 4px"));
+    rows.push(sectionHead(a.productsHeading, a.productsIntro));
+    kits.forEach(function (k) {
+      var p = productBySlug(ctx.catalog, k.slug) || { name: k.slug, oneLiner: "" };
+      var page = k.included.filter(function (i) { return i.key === "productPage"; })[0];
+      var others = k.included.filter(function (i) { return i.key !== "productPage"; });
+      rows.push(row(
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-top:1px solid ' + HAIRLINE + ';padding:14px 0 0;">' +
+          '<a href="' + esc(page.url) + '" style="font-family:' + SANS + ';font-size:17px;line-height:1.3;font-weight:bold;color:' + ACTION + ';text-decoration:none;">' + esc(p.name) + "</a>" +
+          (p.oneLiner ? '<p style="margin:4px 0 0;font-family:' + SANS + ';font-size:14px;line-height:1.5;color:' + BODY + ';">' + esc(plainDashes(p.oneLiner)) + "</p>" : "") +
+          (others.length
+            ? '<p style="margin:8px 0 0;font-family:' + SANS + ';font-size:14px;line-height:1.6;color:' + BODY + ';">' +
+                others.map(function (item) { return link(item.url, item.name, "text-decoration:underline;"); })
+                  .join('<span style="color:' + MUTED + ';">' + esc(a.rowSeparator || " · ") + "</span>") +
+              "</p>"
+            : "") +
+        "</td></tr></table>",
+        "0 32px 14px"));
+    });
+    rows.push(sectionHead(a.legendHeading, a.legendIntro));
     var kinds = {};
     kits.forEach(function (k) { k.included.forEach(function (item) { kinds[item.key] = item; }); });
     (ctx.copy.order || ARTIFACT_KEYS).forEach(function (key) {
       if (!kinds[key]) return;
       used[key] = true;
       rows.push(card(kinds[key], ctx, false));
-    });
-    if (a.productsIntro) rows.push(row(para(fillHtml(a.productsIntro, vars), "font-weight:bold;color:" + INK + ";"), "14px 32px 4px"));
-    kits.forEach(function (k) {
-      var p = productBySlug(ctx.catalog, k.slug) || { name: k.slug, group: "" };
-      var page = k.included.filter(function (i) { return i.key === "productPage"; })[0];
-      rows.push(row(
-        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-top:1px solid ' + HAIRLINE + ';padding:14px 0 0;">' +
-          '<a href="' + esc(page.url) + '" style="font-family:' + SANS + ';font-size:17px;line-height:1.3;font-weight:bold;color:' + INK + ';text-decoration:none;">' + esc(p.name) + "</a>" +
-          (p.group ? '<p style="margin:3px 0 0;font-family:' + SANS + ';font-size:13px;line-height:1.4;color:' + MUTED + ';">' + esc(p.group) + "</p>" : "") +
-          '<p style="margin:8px 0 0;font-family:' + SANS + ';font-size:14px;line-height:1.6;color:' + BODY + ';">' +
-            k.included.map(function (item) { return link(item.url, item.name, "text-decoration:underline;"); }).join(' <span style="color:' + MUTED + ';">&middot;</span> ') +
-          "</p>" +
-        "</td></tr></table>",
-        "0 32px 14px"));
     });
   }
 
