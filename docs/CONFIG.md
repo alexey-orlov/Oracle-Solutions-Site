@@ -143,7 +143,7 @@ allowedDomains: ["softserveinc.com", "oracle.com"],
 
 #### `kitAutoSend`
 
-`true` since round 12: the endpoint is the workflow that emails the kit, and it answers 2xx **only after** the kit email was accepted for delivery (`mail/README.md`). It decides which confirmation a successful POST shows: `true` → *Check your inbox* ("We've emailed the … sales kit to …"); `false` → *Your request is in* (the kit will reach the address within two working days). With no endpoint neither applies: the visitor's mail client opens a request to `contactEmail` and the page says *One step left*. **Set it back to `false` if `formEndpoint` ever points at a human-read mailbox** — the page would claim an email went out.
+`true` since round 12: the endpoint is the workflow that emails the kit, and it answers 2xx **only after** the kit email was accepted for delivery (`mail/README.md`). It decides which confirmation a successful POST shows: `true` → *Check your inbox* ("We've emailed the … sales kit to …"); `false` → *Your request is in* (the kit will reach the address within two working days). With no endpoint neither applies: the form says it cannot send the kit, and names `contactEmail`. **Set it back to `false` if `formEndpoint` ever points at a human-read mailbox** — the page would claim an email went out.
 
 The endpoint receives `{ form: "kit", email, product: "all" | <slug>, consent, page }`, and checks the domain again against `mail/settings.json` `kit.allowedDomains`, which the checker holds equal to `allowedDomains` here.
 
