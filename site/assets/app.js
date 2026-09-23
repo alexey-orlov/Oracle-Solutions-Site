@@ -704,43 +704,62 @@
     document.getElementById("mobile-menu").innerHTML = links + cta;
   }
 
-  var SOCIAL_ICON = { SoftServe: "globe", LinkedIn: "linkedin", Facebook: "facebook", YouTube: "youtube" };
+  /* SoftServe's own footer glyphs, as softserveinc.com serves them
+     (assets.softserveinc.com/icons/*.svg, read 2026-09-24): their paths and
+     viewBoxes, the ink moved to currentColor so site.css sets it. Filled brand
+     marks, not the 1.5 px line set — the one deliberate exception, because the
+     footer copies softserveinc.com's. Instagram is outlined there too. Drawn
+     16 px wide, the height following each viewBox. */
+  var SOCIAL_GLYPHS = {
+    LinkedIn: ["0 0 18 18", '<path fill-rule="evenodd" clip-rule="evenodd" d="M16.3 0H1.7C0.8 0 0 0.8 0 1.7V16.3C0 17.2 0.8 18 1.7 18H16.3C17.2 18 18 17.2 18 16.3V1.7C18 0.8 17.2 0 16.3 0ZM4.6 3.4C5.4 3.4 5.9 4 5.9 4.7C5.9 5.5 5.4 6 4.6 6C3.8 6 3.3 5.5 3.3 4.7C3.3 4 3.8 3.4 4.6 3.4ZM6 14.6H3.4V6.8H6V14.6ZM15.4 14.6H12.9V10.6C12.9 9.6 12.6 8.9 11.7 8.9C11 8.9 10.6 9.4 10.4 9.8C10.3 10 10.3 10.2 10.3 10.4V14.6H7.7C7.7 14.6 7.7 7.5 7.7 6.8H10.3V7.9C10.6 7.4 11.2 6.7 12.6 6.7C14.3 6.7 15.4 8 15.4 10.3V14.6Z"></path>'],
+    YouTube: ["0 0 22 15", '<path fill-rule="evenodd" clip-rule="evenodd" d="M21.0703 1.44622C20.4711 0.394441 19.8474 0.250974 18.5022 0.131454C17.1571 0.0119345 13.8675 0 11.0059 0C8.13217 0 4.81814 -1.75071e-05 3.49743 0.131454C2.17671 0.262926 1.52862 0.394441 0.929403 1.44622C0.33019 2.49799 0 4.31463 0 7.5058C0 10.685 0.317962 12.5138 0.929403 13.5536C1.54084 14.5934 2.15226 14.7488 3.49743 14.8802C4.8426 15.0117 8.13217 14.9997 11.0059 14.9997C13.8675 14.9997 17.1815 14.9997 18.5022 14.8802C19.8229 14.7607 20.4711 14.6053 21.0703 13.5536C21.6695 12.5018 21.9997 10.685 21.9997 7.5058C22.0119 4.31463 21.694 2.46213 21.0703 1.44622ZM8.84146 11.438V3.56167L15.0781 7.5058L8.84146 11.438Z"></path>'],
+    Facebook: ["0 0 20 20", '<path d="M20 10.108C20 4.56182 15.4654 0 9.95227 0C4.43913 0 0 4.56182 0 10.108C0 15.102 3.65156 19.3278 8.40096 20V12.9891H5.84727V10.108H8.40096V7.87516C8.40096 5.30613 9.95227 3.9856 12.148 3.9856C13.2458 3.9856 14.3675 4.20169 14.3675 4.20169V6.65067H13.1504C11.9332 6.65067 11.5036 7.41898 11.5036 8.21129V10.108H14.3675L13.9141 12.9891H11.599V20C16.3484 19.2318 20 15.102 20 10.108Z"></path>'],
+    Instagram: ["0 0 24 24", '<rect x="4" y="3" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect><circle cx="12.5" cy="11.5" r="3.5" fill="none" stroke="currentColor" stroke-width="2"></circle><circle cx="17.5" cy="6.5" r="1" fill="none" stroke="currentColor"></circle>'],
+    TikTok: ["0 0 17 20", '<path d="M12.5322 0.760816L12.0576 0H9.18509V6.85231L9.1753 13.5455C9.1802 13.5952 9.18509 13.6499 9.18509 13.6997C9.18509 15.3754 7.84427 16.7429 6.19027 16.7429C4.53627 16.7429 3.19545 15.3804 3.19545 13.6997C3.19545 12.0239 4.53627 10.6564 6.19027 10.6564C6.53282 10.6564 6.86557 10.721 7.17386 10.8304V7.48881C6.85579 7.43411 6.52792 7.40428 6.19027 7.40428C2.77951 7.40925 0 10.2337 0 13.7046C0 17.1755 2.7795 20 6.19516 20C9.61082 20 12.3903 17.1755 12.3903 13.7046V5.74341C13.6284 7.00149 15.2286 8.22974 17 8.62257V5.20636C15.0769 4.34112 13.1635 1.78518 12.5322 0.760816Z"></path>'],
+    X: ["0 0 19 15", '<path d="M6.0002 1L14.9002 14H13.0002L4.1002 1H6.0002ZM6.5002 0H2.2002L12.5002 15H16.8002L6.5002 0Z"></path><path d="M2.30029 15H3.70029L16.4003 0H15.2003L2.30029 15Z"></path>'],
+    SoundCloud: ["0 0 24 12", '<path d="M14.4 0C12.6713 0 11.04 0.858745 10.08 2.24999V11.9999H20.4C22.3687 11.9999 24 10.3687 24 8.39995C24 6.43121 22.3687 4.79997 20.4 4.79997C20.16 4.79997 19.92 4.84122 19.68 4.88997C19.44 2.15436 17.1844 0 14.4 0ZM8.16 2.39999C7.82437 2.39999 7.48875 2.44124 7.2 2.48999V11.9999H8.16V2.39999ZM8.64 2.39999V11.9999H9.6V2.63999C9.31125 2.54436 8.97563 2.44874 8.64 2.39999ZM6.72 2.63999C6.38437 2.78436 6.04875 2.92873 5.76 3.11998V11.9999H6.72V2.63999ZM5.28 3.50998C4.89563 3.8456 4.56 4.27498 4.32 4.75497V11.9999H5.28V3.50998ZM3.12 5.27997C3.03562 5.2856 2.95125 5.3006 2.88 5.32497V11.9549C3.02437 12.0037 3.21563 11.9999 3.36 11.9999H3.84V5.32497C3.69563 5.27622 3.50437 5.27997 3.36 5.27997C3.28875 5.27997 3.20437 5.27435 3.12 5.27997ZM2.4 5.42997C2.06437 5.52559 1.72875 5.66997 1.44 5.90997V11.3699C1.72875 11.5612 2.06437 11.7543 2.4 11.8499V5.42997ZM0.96 6.28497C0.384375 6.90934 0 7.72871 0 8.63995C0 9.5512 0.384375 10.3706 0.96 10.9949V6.28497Z"></path>'],
+    Bluesky: ["0 0 19 17", '<path d="M3.94745 1.54586C6.01111 3.09165 8.23081 6.22587 9.04577 7.90787C9.86079 6.22599 12.0804 3.09162 14.1441 1.54586C15.6331 0.43048 18.0457 -0.432538 18.0457 2.31363C18.0457 2.86208 17.7306 6.92087 17.5457 7.5798C16.9032 9.8707 14.562 10.455 12.4794 10.1014C16.1197 10.7195 17.0458 12.7672 15.0458 14.8148C11.2475 18.7037 9.58657 13.8391 9.16078 12.5926C9.08276 12.3641 9.04625 12.2572 9.04571 12.3481C9.04517 12.2572 9.00867 12.3641 8.93065 12.5926C8.50504 13.8391 6.84412 18.7038 3.04561 14.8148C1.04564 12.7672 1.97167 10.7194 5.61206 10.1014C3.52941 10.455 1.18812 9.87069 0.545709 7.5798C0.360862 6.92081 0.0457153 2.86202 0.0457153 2.31363C0.0457153 -0.432538 2.45849 0.43048 3.94745 1.54586Z"></path>']
+  };
 
+  function socialGlyph(label) {
+    var glyph = SOCIAL_GLYPHS[label];
+    if (!glyph) return "";
+    var box = glyph[0].split(" ");
+    return '<svg class="social-glyph" viewBox="' + glyph[0] + '" width="16" height="' +
+      Math.round(160 * box[3] / box[2]) / 10 + '" fill="currentColor" aria-hidden="true" focusable="false">' +
+      glyph[1] + "</svg>";
+  }
+
+  /* softserveinc.com's footer, cut down (Alex, 2026-09-24): a link row — text
+     links on the left, the social glyphs on the right, no frame — over a
+     copyright row with the SoftServe spark. No hot links, no office address,
+     no partner marks. The dash separators are the brand's own. */
   function renderFooter() {
     var f = C.site.footer;
-    var social = f.social.map(function (item) {
-      return '<a class="social-link" href="' + esc(item.url) + '" target="_blank" rel="noopener" aria-label="' +
-        esc(item.label) + '">' + icon(SOCIAL_ICON[item.label] || "globe") + "</a>";
+    var links = [];
+    if (f.sellersLink) links.push('<a href="' + esc(f.sellersLink.route) + '">' + esc(f.sellersLink.label) + "</a>");
+    f.legalLinks.concat(f.siteLink ? [f.siteLink] : []).forEach(function (item) {
+      links.push('<a href="' + esc(item.url) + '" target="_blank" rel="noopener">' + esc(item.label) + "</a>");
+    });
+    var linkRow = links.map(function (link, i) {
+      return "<li>" + link + (i < links.length - 1 ? '<span class="footer-sep" aria-hidden="true">&nbsp;-&nbsp;</span>' : "") + "</li>";
     }).join("");
-    var legal = f.legalLinks.map(function (item) {
-      return '<a href="' + esc(item.url) + '" target="_blank" rel="noopener">' + esc(item.label) + "</a>";
+    var social = f.social.map(function (item) {
+      return '<li><a class="social-link" href="' + esc(item.url) + '" target="_blank" rel="noopener" aria-label="' +
+        esc(item.label) + '">' + socialGlyph(item.label) + "</a></li>";
     }).join("");
 
     document.getElementById("site-footer").innerHTML =
       '<div class="wrap">' +
-        '<div class="footer-grid">' +
-          "<div>" +
-            '<h2 class="footer-heading">' + esc(f.heading) + "</h2>" +
-            '<p class="footer-desc">' + esc(f.description) + "</p>" +
-            '<div class="footer-actions">' +
-              button({ label: f.contactCta.label, href: f.contactCta.route, kind: "mail", icon: "mail" }) +
-              '<span class="social-row" aria-label="' + esc(f.socialLabel) + '">' + social + "</span>" +
-            "</div>" +
-          "</div>" +
-          '<div class="footer-right">' +
-            '<div class="built-with">' +
-              '<img src="' + window.brandAsset("oracleMark", "assets/img/oracle-wordmark-white.svg") + '" alt="Oracle" width="139" height="18" loading="lazy" decoding="async">' +
-              '<img src="' + window.brandAsset("nvidiaMark", "assets/img/nvidia-wordmark.svg") + '" alt="NVIDIA" width="92" height="18" loading="lazy" decoding="async">' +
-              '<span class="built-label">' + esc(f.builtWith) + "</span>" +
-            "</div>" +
-          "</div>" +
+        '<div class="footer-bar">' +
+          '<ul class="footer-links">' + linkRow + "</ul>" +
+          '<ul class="social-row" aria-label="' + esc(f.socialLabel) + '">' + social + "</ul>" +
         "</div>" +
-        '<div class="footer-legal">' +
-          (f.sellersLink ? '<a href="' + esc(f.sellersLink.route) + '">' + esc(f.sellersLink.label) + "</a>" : "") +
-          legal +
-          '<p class="legal-line">' + esc(f.legalLine) + "</p>" +
+        '<div class="footer-copy">' +
+          "<p>" + esc(f.copyright.replace("{year}", String(new Date().getFullYear()))) + "</p>" +
+          '<img class="footer-mark" src="' + window.brandAsset("ssSparkWhite", "assets/img/softserve-star-white.svg") +
+            '" alt="" width="24" height="27" loading="lazy" decoding="async">' +
         "</div>" +
-        '<p class="trademark">' + esc(f.trademarkLine) + "</p>" +
       "</div>";
   }
 
