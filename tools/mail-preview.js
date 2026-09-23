@@ -56,10 +56,33 @@ var people = {
 
 fs.mkdirSync(OUT, { recursive: true });
 var index = [];
+var asRead = [];
+
+/* The email as its reader meets it: From, Reply-To, Subject, the inbox preview,
+   then the visible body in reading order, a thumbnail shown as [picture: …].
+   This file, not copy.json, is what a copy review reads (client-documents.md:
+   a message read outside the product stands alone). */
+function visible(html) {
+  return html.replace(/^[^]*?<body[^>]*>/, "").replace(/<div style="display:none[^]*?<\/div>/, "")
+    .replace(/<img [^>]*alt="([^"]*)"[^>]*>/g, "[picture: $1] ")
+    .replace(/<\/(p|h1|h2|tr|table)>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&").replace(/&middot;/g, "·").replace(/&nbsp;/g, " ").replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/[ \t]+/g, " ").split("\n").map(function (l) { return l.trim(); }).filter(Boolean).join("\n");
+}
+function preheaderOf(html) {
+  var m = html.match(/<div style="display:none[^>]*>([^]*?)<\/div>/);
+  return m ? visible(m[1]) : "";
+}
 function write(file, mail, note) {
   fs.writeFileSync(path.join(OUT, file), mail.html);
-  index.push('<li><a href="' + file + '">' + file + "</a> — to <code>" + mail.to + "</code> — <strong>" +
+  index.push('<li><a href="' + file + '">' + file + "</a> · to <code>" + mail.to + "</code> · <strong>" +
     mail.subject.replace(/</g, "&lt;") + "</strong>" + (note ? " <em>(" + note + ")</em>" : "") + "</li>");
+  var sender = ctx.settings.sender || {};
+  asRead.push("==== " + file + (note ? " (" + note + ")" : "") + " ====\n" +
+    "From: " + sender.name + " <" + sender.address + ">\nTo: " + mail.to +
+    "\nReply-To: " + (mail.replyTo || ((sender.replyTo || {})[ctx.settings.mode === "live" ? "live" : "test"]) || "") +
+    "\nSubject: " + mail.subject + "\nInbox preview: " + preheaderOf(mail.html) + "\n\n" + visible(mail.html));
 }
 function must(result) {
   if (!result.ok) throw new Error("sample request refused: " + result.code + " — " + result.reason);
@@ -83,10 +106,11 @@ write("internal-kit-failed.html", render.renderInternal(oneRequest, ctx, { statu
 write("internal-demo.html", render.renderInternal(must(render.validate(people.demo, ctx)), ctx));
 write("internal-contact.html", render.renderInternal(must(render.validate(people.contact, ctx)), ctx));
 
+fs.writeFileSync(path.join(OUT, "as-read.txt"), asRead.join("\n\n") + "\n");
 fs.writeFileSync(path.join(OUT, "index.html"),
   '<!DOCTYPE html><meta charset="utf-8"><title>Mail preview</title>' +
   '<body style="font:15px/1.6 system-ui,sans-serif;margin:32px;max-width:980px">' +
   "<h1>Mail preview" + (sample ? " (sample links)" : "") + "</h1>" +
   "<p>mode <code>" + ctx.settings.mode + "</code> · renderer " + render.VERSION + " · copy <code>" + (arg("--copy") || "mail/copy.json") + "</code></p>" +
-  "<ul>" + index.join("") + "</ul></body>");
-console.log("mail-preview: wrote " + index.length + " emails to .work/mail-preview/" + (sample ? " (sample links)" : ""));
+  "<ul>" + index.join("") + '</ul><p><a href="as-read.txt">as-read.txt</a>: every email as its reader receives it. Review copy there.</p></body>');
+console.log("mail-preview: wrote " + index.length + " emails and as-read.txt to .work/mail-preview/" + (sample ? " (sample links)" : ""));
