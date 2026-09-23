@@ -471,7 +471,7 @@ function renderInternal(request, ctx, kitResult) {
       var items = k.included.map(function (i) { return link(i.url, i.name); }).join(", ");
       return kits.length > 1 ? "<strong>" + esc((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug) + ":</strong> " + items : items;
     }).join("<br>");
-    pairs.push([labels.sentLinks || "Links sent", sent || none]);
+    pairs.push([failed ? (labels.toSend || "Links to send by hand") : (labels.sentLinks || "Links sent"), sent || none]);
     pairs.push([labels.missing, vars.missing ? esc(vars.missing) : none]);
   }
   if (request.page) pairs.push([labels.page, link(request.page, request.page.replace(/^https?:\/\//, ""))]);

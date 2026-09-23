@@ -66,6 +66,7 @@
       "message": "What they are trying to fix",
       "kit": "Kit",
       "sentLinks": "Links sent",
+      "toSend": "Links to send by hand",
       "page": "From page",
       "time": "Time",
       "received": "Received {time}",
