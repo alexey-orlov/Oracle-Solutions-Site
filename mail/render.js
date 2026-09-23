@@ -8,15 +8,23 @@
  *   links     links.json            the kit links, per product, and siteUrl
  *   catalog   mail/catalog.json     product names, role labels, kit names (generated)
  *   copy      mail/copy.json        every word of every email
- *   settings  mail/settings.json    test/live, inboxes, sender, limits
+ *   settings  mail/settings.json    test or live, the practice inbox, limits
+ * and one object the repo never holds, because it belongs to whoever runs the sender:
+ *   deployment { testInbox, fromName, fromAddress }   (mail/README.md, "Deployment")
  *
  * Exports: validate(body, ctx) · renderKit(request, ctx) · renderInternal(request, ctx, kitResult)
- * where ctx = { links, catalog, copy, settings, imageSrc(key) }. imageSrc turns an
+ * · replyTo(settings, deployment) · toGraph(message, attachments),
+ * where ctx = { links, catalog, copy, settings, deployment, imageSrc(key) }. imageSrc turns an
  * artifact key into the <img src>: "cid:…" when sending, a file path in the preview.
+ *
+ * Every render returns a transport-neutral message, the contract any sender maps:
+ *   { to, replyTo, subject, html, text, images: [{ key, cid, file }] }
+ * images are the pictures the HTML references as cid:<cid>, to attach inline from
+ * the repo file named. toGraph() maps a message to Microsoft Graph sendMail.
  */
 "use strict";
 
-var VERSION = "2026-09-23.1";
+var VERSION = "2026-09-23.2";
 
 var ARTIFACT_KEYS = ["productPage", "onePager", "salesDeck", "featureList", "interactiveDemo", "video"];
 var IMAGE_FILES = {
@@ -314,9 +322,15 @@ function card(item, ctx, linked) {
     "0 32px 18px");
 }
 
-function replyTo(settings) {
-  var mode = settings.mode === "live" ? "live" : "test";
-  return (((settings.sender || {}).replyTo) || {})[mode] || ((settings.inbox || {})[mode]) || "";
+/* Where a kit reader's reply lands, and where every practice notice goes: the
+   practice mailbox when live; the deployment's own test inbox in test mode. */
+function replyTo(settings, deployment) {
+  if (settings.mode === "live") return ((settings.kit || {}).replyTo) || ((settings.inbox || {}).live) || "";
+  return ((deployment || {}).testInbox) || "";
+}
+
+function practiceInbox(settings, deployment) {
+  return settings.mode === "live" ? ((settings.inbox || {}).live || "") : (((deployment || {}).testInbox) || "");
 }
 
 function kitVars(request, ctx) {
@@ -326,7 +340,7 @@ function kitVars(request, ctx) {
   var kitName = all ? ctx.catalog.kitNameAll : fill(ctx.catalog.kitName, { product: name });
   var settings = ctx.settings || {};
   return {
-    product: name, email: request.email, kitName: kitName, replyTo: replyTo(settings),
+    product: name, email: request.email, kitName: kitName, replyTo: replyTo(settings, ctx.deployment),
     date: formatDay(localDay(request.submittedAt, settings.timezone), false)
   };
 }
@@ -444,7 +458,7 @@ function renderInternal(request, ctx, kitResult) {
   var labels = copy.labels || {};
   var settings = ctx.settings || {};
   var test = settings.mode !== "live";
-  var inbox = ((settings.inbox || {})[test ? "test" : "live"]) || "";
+  var inbox = practiceInbox(settings, ctx.deployment);
   var product = request.product && request.product !== "all" ? productBySlug(ctx.catalog, request.product) : null;
   var isKit = request.form === "kit";
   var state = isKit ? (kitResult && kitResult.status === "sent" ? "kitSent" : "kitFailed") : request.form;
@@ -469,7 +483,7 @@ function renderInternal(request, ctx, kitResult) {
     missing: "",
     links: "",
     error: kitResult && kitResult.error ? line(kitResult.error).slice(0, 300) : "",
-    replyTo: replyTo(settings)
+    replyTo: replyTo(settings, ctx.deployment)
   };
   if (isKit) {
     vars.count = String(kits.reduce(function (n, k) { return n + k.included.length; }, 0));
@@ -581,8 +595,28 @@ function htmlToText(html) {
     .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
 }
 
+/* A message as a Microsoft Graph sendMail body (POST /me/sendMail, or
+   /users/<mailbox>/sendMail with an app registration): the route a SoftServe
+   integration is most likely to take. attachments: [{ cid, name, base64 }], the
+   message's images read from the repo and base64-encoded by the caller. */
+function toGraph(message, attachments) {
+  var m = {
+    subject: message.subject,
+    body: { contentType: "HTML", content: message.html },
+    toRecipients: [{ emailAddress: { address: message.to } }]
+  };
+  if (message.replyTo) m.replyTo = [{ emailAddress: { address: message.replyTo } }];
+  if (attachments && attachments.length) {
+    m.attachments = attachments.map(function (a) {
+      return { "@odata.type": "#microsoft.graph.fileAttachment", name: a.name, contentType: "image/png",
+        contentBytes: a.base64, isInline: true, contentId: a.cid };
+    });
+  }
+  return { message: m, saveToSentItems: true };
+}
+
 var api = {
-  VERSION: VERSION, ARTIFACT_KEYS: ARTIFACT_KEYS, IMAGE_FILES: IMAGE_FILES,
+  VERSION: VERSION, ARTIFACT_KEYS: ARTIFACT_KEYS, IMAGE_FILES: IMAGE_FILES, replyTo: replyTo, toGraph: toGraph,
   validate: validate, renderKit: renderKit, renderInternal: renderInternal, kitFor: kitFor,
   productUrl: productUrl, demoUrl: demoUrl
 };

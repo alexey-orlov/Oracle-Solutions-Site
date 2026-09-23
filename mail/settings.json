@@ -1,25 +1,17 @@
 {
   "$help": [
-    "How the site's emails are routed. The sender (an n8n workflow, mail/README.md) reads this file from GitHub on every request, so a saved change applies within a minute.",
-    "mode: \"test\" sends every internal notice to inbox.test and marks its subject; \"live\" sends to inbox.live. The kit email always goes to the person who asked for it.",
-    "sender: the From line. address must be the mailbox the n8n credential sends from. replyTo is where the kit reader's reply lands.",
+    "How the site's emails are routed. The sender reads this file from GitHub on every request, so a saved change applies within a minute.",
+    "mode: \"test\" sends every practice notice, and every kit reader's reply, to the test inbox of whoever runs the sender, and marks each notice's subject; \"live\" uses the practice mailbox below. The kit email always goes to the person who asked for it.",
+    "The sender's own identity (the From line) and its test inbox are not here: they belong to the deployment, not the repo (mail/README.md, \"Deployment\").",
     "kit.allowedDomains must match sellerGate.allowedDomains in site/data/config.js (the checker compares them). kit.perAddressPerDay and limits.perHour cap sends, so the form cannot be used to flood anyone."
   ],
   "mode": "test",
   "inbox": {
-    "live": "oracle@softserveinc.com",
-    "test": "olekorlov@softserveinc.com"
-  },
-  "sender": {
-    "name": "Alex Orlov",
-    "address": "alex@alexorlov.co",
-    "replyTo": {
-      "live": "oracle@softserveinc.com",
-      "test": "olekorlov@softserveinc.com"
-    }
+    "live": "oracle@softserveinc.com"
   },
   "kit": {
     "allowedDomains": ["softserveinc.com", "oracle.com"],
+    "replyTo": "oracle@softserveinc.com",
     "perAddressPerDay": 3
   },
   "limits": {
