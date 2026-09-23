@@ -1,0 +1,47 @@
+{
+  "$generated": "tools/sync-links.js from site/data/content.js and config.productOrder. Do not edit.",
+  "products": [
+    {
+      "slug": "large-document-extraction",
+      "name": "Large docs processing and review",
+      "oneLiner": "Turns long, complex documents into validated, structured data — every extracted value carries a confidence score and a citation to its source page.",
+      "group": "Document processing"
+    },
+    {
+      "slug": "account-insights",
+      "name": "Account insights",
+      "oneLiner": "Turns news, filings and market signals into cited, per-account opportunities and risks that sales and account teams can act on.",
+      "group": "Deep research & investigation"
+    },
+    {
+      "slug": "workforce-optimization",
+      "name": "Workforce optimization",
+      "oneLiner": "Optimizes field-service work zones and schedules with NVIDIA cuOpt — a region’s four-week plan built in minutes, approved by dispatchers, exported to Oracle Field Service.",
+      "group": "Forecasting & optimization"
+    },
+    {
+      "slug": "plan-vs-actual-investigation",
+      "name": "Plan vs actual investigation",
+      "oneLiner": "Compares plan against actual across completed projects, orders and engagements, and assembles each variance with its candidate drivers and the source evidence behind them.",
+      "group": "Deep research & investigation"
+    },
+    {
+      "slug": "case-evidence-collection",
+      "name": "Case evidence collection",
+      "oneLiner": "Assembles the evidence trail for a case or complaint out of every system that holds a piece of it — cited, time-stamped, and ready for an investigator to decide on.",
+      "group": "Deep research & investigation"
+    },
+    {
+      "slug": "cross-system-erp-qa",
+      "name": "Cross-system ERP Q&A",
+      "oneLiner": "Answers plain-language questions that span the ERP, the CRM and the systems around them, from one governed layer on Oracle Autonomous AI Lakehouse.",
+      "group": "Enterprise knowledge & analytics"
+    },
+    {
+      "slug": "business-metrics-qa",
+      "name": "Business metrics Q&A",
+      "oneLiner": "Answers plain-language questions about business metrics from one governed gold layer over the catalogs and databases you already run — consistent definitions, no data moved.",
+      "group": "Enterprise knowledge & analytics"
+    }
+  ]
+}
