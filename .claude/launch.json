@@ -5,10 +5,8 @@
       "name": "oracle-site",
       "runtimeExecutable": "python3",
       "runtimeArgs": [
-        "-m",
-        "http.server",
+        "tools/serve.py",
         "8765",
-        "--directory",
         "site"
       ],
       "port": 8765
