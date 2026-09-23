@@ -2,7 +2,7 @@
 
 Read this page first in every new session. It holds what the site is for, the brief and the rules it is built to, how a round of work runs, and what earlier rounds learned the hard way. Detail lives in the docs mapped in §10. Keep this page current: when a requirement, rule or procedure changes, rewrite the line — never append a dated update.
 
-Current as of 2026-09-23 (after round 11 — the home page: two ways in on photographs, case cards with a photo band, and the two "Hours" figures replaced, PROVENANCE §30; round 10 and its same-day review are §29). The same evening the site moved out of AO-Personal-OS into its own repository, PROVENANCE §31.
+Current as of 2026-09-23 (after round 12 — the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json`, PROVENANCE §32; round 11, the home page, is §30). The same day the site moved out of AO-Personal-OS into its own repository, PROVENANCE §31.
 
 ## 1. What it is
 
@@ -23,7 +23,8 @@ Current as of 2026-09-23 (after round 11 — the home page: two ways in on photo
   - Switches: `site/data/config.js`.
   - Page renderers: `site/pages/`, one per page.
   - Shared UI and the router: `site/assets/app.js`.
-  - Forms: `site/assets/forms.js`.
+  - Forms: `site/assets/forms.js`. The emails they send: `mail/` — the words, the layout, the pictures, test or live — run by an n8n workflow; `mail/README.md` is its manual.
+  - Links: `links.json` at the repo root holds every link a product's sales kit uses; it never ships. `tools/sync-links.js` copies the walkthrough and video links into `site/data/links.js`.
 - **Preview:** two artifacts, one per theme, both **shared with anyone who has the link**, so every publish is live at once. Both URLs are also in `site.manifest.json`, which the packaging plugin reads; change them in both places.
   - **The site:** https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri. This is the one to publish to.
   - **The archive** (previous near-black theme, frozen): https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN (the same artifact as https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b). Do not republish it.
@@ -53,6 +54,7 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
   - Sales materials go only to corporate addresses at softserveinc.com or oracle.com.
 
 **Where the site does not match the brief today** (flagged in the panel and left unchanged until Alex decides):
+- **Test mode** (`mail/settings.json`): every request reaches Alex (olekorlov@softserveinc.com), not oracle@softserveinc.com, and the emails go out from alex@alexorlov.co until a SoftServe sender is connected (§9).
 - Two products print an **Integration price** on their Jumpstart tab: *Large docs processing and review* and *Workforce optimization* (€300–500K services plus infrastructure).
 - **No product is marked as planned**, so all seven read as available now.
 - **Partners** are priority 1, but they cannot receive the sales kit, which goes only to @oracle.com and @softserveinc.com. The brief contradicts itself here.
@@ -65,7 +67,7 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
 | `#/products` | Catalog with a facet rail (Oracle platform · what it does · Artifacts) and tiles. **Both radio rails are fixed lists** in canonical order — three platforms and all six groups, always — with a zero-count option disabled and printing no number; the one a deep link arrived on renders selected above its own empty state. *Oracle AI for Fusion Applications* is not offered (`catalog: false`): no product runs on it. No total, no denominator. `?cat=<id>` and `?tech=<id>` are both honored. | §17, §18.9, §28 |
 | `#/products/<slug>[/<tab>]` | Seven product pages. <br>• Tabs: **Overview · Use cases · Technology · Jumpstart · Contacts** (round 10). Overview is Problem → Solution · How it works · More detail, with Outcomes & ROI in the rail; **Use cases** holds the industry tabs and the case study; **Contacts** is one row — the contact card beside a two-tab switch, *Talk to us* (open by default) and *Get the sales kit* (for sellers), so only one form is ever open and neither is below the fold; `…/contacts#kit` opens on the kit tab. <br>• Retired segments redirect in place: `pov` → Jumpstart, `demo` and `sellers` → Contacts. <br>• Three products have an interactive walkthrough under `site/demo/`. | §15–§19, §22, §24, §29 |
 | `#/services` | Three screens, one message each, then contact: <br>• *Frontier AI on Oracle* (the practice, with the four platform cards under their full Oracle names) <br>• *Every step has a number* (Discovery → Jumpstart proof of value → Integration → **Scaling**) <br>• *Not a project. A proof.* (4–8 weeks) | §21, §23, §28 |
-| `#/sellers` | *Get the sales kit*, for all offers or one product (work email at softserveinc.com or oracle.com). Below it, the demo form for a seller who already has an account in mind. | §24 |
+| `#/sellers` | *Get the sales kit*, for all offers or one product (work email at softserveinc.com or oracle.com), **emailed automatically** since round 12. Below it, the demo form for a seller who already has an account in mind. | §24, §32 |
 
 - **Header:** Products · Services, plus *Talk to us*. *For sellers* is not in the header (Alex, 2026-09-17).
 - **Footer:** *For sellers* comes first in the link row. It is the only permanent way to `#/sellers`; the other is *Get the full kit* in the confirmation after a product kit request.
@@ -92,10 +94,12 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
   - Beyond that, the brief in §2 applies (still to be confirmed).
 - **No totals and no gaps.** Never print the size of the catalog ("seven products"). Never name what is missing ("yet", "so far").
 - **A case study states its status once**, in one word: the chip.
-- **Truthful confirmations.** Never say "we've emailed" unless something actually sent the email. With no `formEndpoint`, a form opens the visitor's mail client, and the page says so.
+- **Truthful confirmations.** Never say "we've emailed" unless something actually sent the email. With no `formEndpoint`, a form opens the visitor's mail client, and the page says so. The kit's *Check your inbox* shows only after the sender answered that the email went out.
+- **Every kit link lives in `links.json`**, outside `site/`, because anything under `site/` is readable in view-source and the kit documents carry prices. `config.js` holds no link to a kit artifact, and a committed `formEndpoint` fails the checker: a live trigger URL never enters git.
 - **Nothing internal ships in site copy.** The *Internal* panel is the only exception, and it is temporary (§8).
 
 **Messaging** (from Alex's reviews)
+- **A message read outside the product stands alone** (Alex, 2026-09-23, on the kit email's opener *"Thanks for requesting it."*). An email is read cold, in an inbox, by someone who may not remember the form: its first sentence says who is writing and what it is, and nothing leans on "it", "the site" or "the team" before naming them. Review email copy in `.work/mail-preview/as-read.txt` (the email as received), never field by field (`mail/README.md`).
 - **Persona first.** Every headline speaks to its reader (a rep on a live call, a buyer on Oracle) in that reader's words. Never counts, taxonomy or packaging terms ("packaged", "workflow pattern", "ready-to-run", "pods").
 - **Structure before copy.** Work out the audience, then the positioning, then three or four messages, then one screen per message, and set the length target first. A page is an argument, not an inventory.
 - **Headings are display lines**, so the argument moves into the lead:
