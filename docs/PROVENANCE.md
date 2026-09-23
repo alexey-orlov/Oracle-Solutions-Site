@@ -6046,7 +6046,7 @@ shows 107 files, each at its local byte size.
 2. n8n takes the deployment's own values from its **Deployment settings** step (§32.7), then reads `links.json`, `mail/settings.json`, `mail/catalog.json`, `mail/copy.json`, `mail/render.js` and the six pictures from GitHub `main`, through a read-only fine-grained token. A pushed edit is live on the next request.
 3. It runs `render.js` from those files, so the email logic has one home. A probe run proved a Code node can execute fetched source (`new Function`), keep state between runs and format time zones.
 4. `validate()` re-checks the form, the email and the consent, and for the kit the domain and the product.
-5. The caps apply: `limits.perHour` submissions (30) and `kit.perAddressPerDay` kits to one address (3). Past a cap the page gets a 429, and Alex gets one alert an hour.
+5. The caps apply: `limits.perHour` submissions (30) and `kit.perAddressPerDay` kits to one address in a rolling 24 hours (10 since 2026-09-24, §32.9). Past a cap the page gets a 429 and says the limit was reached, and Alex gets one alert an hour.
 6. For a kit, the workflow sends the kit email (pictures inline by `cid:kit-<key>`), then the practice copy, and answers 200 only after the kit was accepted. A failed kit sends a *send it by hand* notice listing the links, answers 502, and alerts Alex on Telegram.
 7. For the two contact forms it sends the practice copy (Reply-To = the visitor). If that fails, the Telegram alert carries the whole request, so the lead is not lost.
 8. Anything unexpected ends on an alerted path, and a crash outside every path reaches the backstop workflow.

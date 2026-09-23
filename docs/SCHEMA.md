@@ -340,7 +340,7 @@ One field set serves both forms. Fields, in order: **full name · work email · 
 | ~~`engagementSteps`~~ | — | The three-step "what happens next" block that used to sit under the contact panel. **The key is no longer in `content.js` and no renderer reads it** (confirmed 2026-09-23); what a reader gets by writing is said by `forms.demo.sub` instead. Do not re-add it without a surface that renders it. |
 | `confirmations` | `{ posted, contactPosted }` | Each `{ title, body }`, shown in place of the form after a successful POST: `posted` for *Talk to us*, `contactPosted` for the Services form. The body may carry `{mailbox}`. **Never show a success confirmation for an action that did not happen.** `mailto` and `error` are retired and checker-banned (2026-09-24). |
 | `offline` | string with `{mailbox}` | The line under every form on a copy with no endpoint (the claude.ai preview, a local run without `site/data/endpoint.local.json`). It shows before anyone types, and a submit repeats it in red. **No form opens a mail app.** |
-| `errors` | `{ send }` with `{mailbox}` | The red line under the form when a POST fails; the form keeps what was typed. |
+| `errors` | `{ send, limited }`, each with `{mailbox}` | The red line under the form when a POST fails (`send`), or when the sender answers 429 because a send cap was reached (`limited`: no "try again"). The form keeps what was typed. The kit form's `errors` carries its own `limited`. |
 
 ---
 
