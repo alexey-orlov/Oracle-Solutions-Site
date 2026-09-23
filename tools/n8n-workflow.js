@@ -170,7 +170,9 @@ var workflow = {
   name: "Oracle site forms (cloud)",
   nodes: nodes,
   connections: connections,
-  settings: { executionOrder: "v1", timezone: "Europe/Berlin", saveManualExecutions: true, saveDataErrorExecution: "all", saveDataSuccessExecution: "all" }
+  /* errorWorkflow: "Oracle site forms — error alerts" (Error Trigger → Telegram),
+     the backstop for any run that fails outside the handled paths. */
+  settings: { executionOrder: "v1", timezone: "Europe/Berlin", saveManualExecutions: true, saveDataErrorExecution: "all", saveDataSuccessExecution: "all", errorWorkflow: "ih0qkEs5xOgpH2Kd" }
 };
 
 fs.writeFileSync(path.join(WORK, "workflow.live.json"), JSON.stringify(workflow, null, 2) + "\n");

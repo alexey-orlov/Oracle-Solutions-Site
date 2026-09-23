@@ -42,6 +42,9 @@ try {
   return stop('config', 'The repo files did not load: ' + e.message + '. A syntax error in a JSON file is the usual cause; run node tools/check-grammar.js in the site repo.');
 }
 
+// Anything unexpected from here on still ends on the alerted "not working"
+// path, so a visitor never meets a silent failure.
+try {
 const verdict = render.validate(body, ctx);
 if (!verdict.ok) return [{ json: { outcome: 'refused', code: verdict.code, reason: verdict.reason } }];
 const request = verdict.request;
@@ -96,3 +99,6 @@ return [{
   }),
   binary
 }];
+} catch (e) {
+  return stop('config', 'Unexpected error while rendering (mail/render.js ' + (render && render.VERSION) + '): ' + (e && e.message || e));
+}
