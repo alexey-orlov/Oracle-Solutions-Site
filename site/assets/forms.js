@@ -145,16 +145,12 @@
     var uid = form.getAttribute("data-uid");
     var role = form.querySelector('input[name="' + uid + '-role"]:checked');
     var select = form.querySelector('select[name="product"]');
-    var productLabel = select && select.value
-      ? select.options[select.selectedIndex].text
-      : content().forms.productPlaceholder;
     return {
       name: form.querySelector('input[name="name"]').value.trim(),
       email: form.querySelector('input[name="email"]').value.trim(),
       company: form.querySelector('input[name="company"]').value.trim(),
       role: role ? role.value : "",
       product: select ? select.value : "",
-      productLabel: productLabel,
       message: form.querySelector('textarea[name="message"]').value.trim(),
       consent: form.querySelector('input[name="consent"]').checked,
       trap: form.querySelector('input[name="' + HONEYPOT + '"]').value
@@ -184,11 +180,6 @@
       }
     }
     return ok;
-  }
-
-  function roleLabel(value) {
-    var found = content().forms.roles.filter(function (role) { return role.value === value; })[0];
-    return found ? found.label : value;
   }
 
   function payload(kind, data) {

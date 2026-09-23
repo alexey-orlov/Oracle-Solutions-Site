@@ -2839,6 +2839,7 @@ window.SITE_CONTENT = {
       submitDemo: "Talk to us",
       submitRequest: "Send the request",
       submitContact: "Request a scoping call",
+      sending: "Sending…",
       required: "Required",
       invalidEmail: "Enter a valid work email address."
     },
@@ -2857,21 +2858,17 @@ window.SITE_CONTENT = {
     },
     confirmations: {
       posted: {
-        title: "Thanks — your request is in.",
-        body: "Someone from the Oracle practice will come back within two working days with a proposed scoping call. If you already know which workflow you want proved, bring a rough volume and a current cycle time — that’s most of what the first conversation needs."
-      },
-      mailto: {
-        title: "Your mail client opened with the request.",
-        body: "Send the message that was composed and someone from the Oracle practice will come back within two working days. If nothing opened, your browser is blocking mail links — allow them for this page and submit the form again."
+        title: "Thanks, your request is in",
+        body: "Someone from the Oracle practice will reply within two working days."
       },
       contactPosted: {
-        title: "Thanks — we have it.",
-        body: "Someone from the Oracle practice will come back within two working days."
-      },
-      error: {
-        title: "That didn’t send.",
-        body: "Please try again, or reach us through the contact form."
+        title: "Thanks, your request is in",
+        body: "Someone from the Oracle practice will reply within two working days to set up the scoping call."
       }
+    },
+    offline: "This preview can’t send forms. Email {mailbox} and the Oracle practice will reply within two working days.",
+    errors: {
+      send: "That didn’t send. Please try again, or email {mailbox}."
     }
   },
 
