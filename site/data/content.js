@@ -99,6 +99,23 @@ window.SITE_CONTENT = {
       photo: "assets/img/people/karsten-tramborg.jpg",
       blurb: "Your first call for a fit check, a workshop with your team or the scope of a proof of value."
     },
+    people: {
+      "vlad-butenko": {
+        name: "Vlad Butenko",
+        title: "AI Product Manager, SoftServe",
+        photo: "assets/img/people/vlad-butenko.jpg"
+      },
+      "dmytro-dudchenko": {
+        name: "Dmytro Dudchenko",
+        title: "AI Product Manager, SoftServe",
+        photo: "assets/img/people/dmytro-dudchenko.jpg"
+      },
+      "oleksii-orlov": {
+        name: "Oleksii Orlov",
+        title: "Distinguished Product Advisor, SoftServe",
+        photo: "assets/img/people/oleksii-orlov.jpg"
+      }
+    },
     heroAsideTitle: "What you get",
     heroAsideFootLabel: "Proof of value",
     videoCaption: "Watch the demo",
@@ -279,7 +296,7 @@ window.SITE_CONTENT = {
       eyebrow: "Products",
       title: "Start from the job to be done",
       lead: "Every group is a family of agents and human-AI workflows for one kind of job, distilled from engagements already delivered: the rules, review steps and checks the job needs, on Oracle’s AI platforms, proven on your data in a Jumpstart. Open a group to see its products.",
-      cta: { label: "See all products, with filters", route: "#/products" }
+      cta: { label: "See all products", route: "#/products" }
     },
 
     delivery: {

@@ -6083,15 +6083,18 @@ Chrome writes the file at once but does not exit, hence the 40-second alarm. The
   - the console is clean.
 - With the endpoint set and the workflow inactive, a kit request shows *"That didn't send. Try again, or write to oracle@softserveinc.com."*: the truthful failure path.
 - All 13 emails were rendered and read at 700 and 375 px. On a phone there is no sideways scroll, and the pictures step down to 112 px.
-- No email was sent in this round before Alex's go-ahead.
+- **The live test**, after Alex's go-ahead, all to the test inbox:
+  - A request the sender must refuse answered `400`: all eleven repo files were read through the GitHub token, and `render.js` ran from them.
+  - The first kit request failed at the sender's login: Zoho answered `554 5.7.8 Access Restricted` because a free-plan domain must use `smtp.zoho.eu`, not `smtppro`. That run took the failure path in full. The kit failed, the *send it by hand* notice was attempted, the page said *"That didn't send"*, and the alert reached Telegram.
+  - With the host corrected, n8n's connection test passed. Four requests sent six emails through the real pages: the Workforce optimization kit, the all-offers kit, *Talk to us* and a scoping call with company and message left blank. Each page showed its truthful confirmation within 1.5 to 3.5 seconds, and each run ended `sent` or `received`, with no alert.
+- **The self-check**, run once on a one-minute schedule and set back to six hours, answered `selfcheck-ok`: every email rendered, nothing sent, nothing reported.
 
 ### 32.6 Open for Alex
 
-- The pilot deployment's credentials: the temporary sender's app password and the read-only GitHub token. Then activating the workflow, and a test to the test inbox.
 - `mail/settings.json` `mode: "live"` when the emails have been seen.
 - The kit document links: none exists yet.
 - A public host for the forms.
-- Who makes the promised follow-up, and how fast.
+- Who makes the promised follow-up, and how fast. The kit email also promises that a reply saying "I didn't ask for it" stops further mail to that address: someone at the practice has to keep that promise.
 - The manifest's extra rows with no slot.
 - The packaging plugin's cards, in Oracle-Packaging-Skills.
 
