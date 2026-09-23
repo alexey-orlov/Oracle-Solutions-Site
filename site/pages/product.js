@@ -295,6 +295,9 @@
       "</div></section>";
   }
 
+  /* Round 13 (Alex): the block prints no heading. It opens the Use cases tab,
+     which already names it, and a row of industry tabs names its own cut, so
+     "By industry" survives only as the tablist's accessible name. */
   function industryCases(product) {
     var UI = window.UI;
     var cases = product.overview.industryCases;
@@ -328,7 +331,6 @@
     }).join("");
 
     return '<section class="panel reveal" data-industry-tabs="' + UI.esc(product.slug) + '">' +
-      blockHead(heading) +
       '<div class="ind-tablist" role="tablist" aria-label="' + UI.esc(heading) + '">' + tabs + "</div>" +
       '<div class="ind-panels">' + panels + "</div>" +
       (product.overview.industriesNote

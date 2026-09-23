@@ -522,6 +522,7 @@ window.SITE_CONTENT = {
     {
       slug: "account-insights",
       name: "Account insights",
+      contactPerson: "vlad-butenko",
       headline: { accent: "ACCOUNT", rest: "INSIGHTS" },
       category: "deep-research",
       categoryChip: "Deep research & investigation",
@@ -837,6 +838,7 @@ window.SITE_CONTENT = {
     {
       slug: "case-evidence-collection",
       name: "Case evidence collection",
+      contactPerson: "oleksii-orlov",
       headline: { accent: "CASE", rest: "EVIDENCE COLLECTION" },
       category: "deep-research",
       categoryChip: "Deep research & investigation",
@@ -1140,6 +1142,7 @@ window.SITE_CONTENT = {
     {
       slug: "plan-vs-actual-investigation",
       name: "Plan vs actual investigation",
+      contactPerson: "dmytro-dudchenko",
       headline: { accent: "PLAN", rest: "VS ACTUAL INVESTIGATION" },
       category: "deep-research",
       categoryChip: "Deep research & investigation",
@@ -1459,6 +1462,7 @@ window.SITE_CONTENT = {
     {
       slug: "large-document-extraction",
       name: "Large docs processing and review",
+      contactPerson: "vlad-butenko",
       headline: { accent: "LARGE", rest: "DOCS PROCESSING AND REVIEW" },
       category: "documents",
       categoryChip: "Document processing",
@@ -1787,6 +1791,7 @@ window.SITE_CONTENT = {
     {
       slug: "workforce-optimization",
       name: "Workforce optimization",
+      contactPerson: "vlad-butenko",
       headline: { accent: "WORKFORCE", rest: "OPTIMIZATION" },
       category: "forecasting-optimization",
       categoryChip: "Forecasting & optimization",
@@ -2115,6 +2120,7 @@ window.SITE_CONTENT = {
     {
       slug: "cross-system-erp-qa",
       name: "Cross-system ERP Q&A",
+      contactPerson: "oleksii-orlov",
       headline: { accent: "CROSS-SYSTEM", rest: "ERP Q&A" },
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
@@ -2410,6 +2416,7 @@ window.SITE_CONTENT = {
     {
       slug: "business-metrics-qa",
       name: "Business metrics Q&A",
+      contactPerson: "oleksii-orlov",
       headline: { accent: "BUSINESS", rest: "METRICS Q&A" },
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
