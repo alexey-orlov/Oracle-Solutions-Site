@@ -5746,3 +5746,260 @@ steps that are shorter than the tallest one. It is the trade Alex's correction
 implies — the description reads as a description and the picture holds still — but it
 is the one thing a later round could improve, by equalising the step descriptions
 rather than the cells.
+
+## 30. Round 11 — the home page: two ways in on photographs, case cards with a photo band, and the two "Hours" figures, 2026-09-23
+
+**The asks** (Alex, in session; written up as `scratchpad/round11-brief.md` §0):
+
+1. *"Services, from proof to scale -> Expert services, from proof to scale"*
+2. The products panel body: *"rewrite as a product marketer; the draft be like
+   'packaged AI agents and mixed ai <> human workflows that embody industry best
+   practice and expertise and accelerate the adoption. Ensure u utilize the full power
+   of Oracle AI platforms.' + bullets be replaced like '* best practice workflows and AI
+   pipelines; * accelerators that reduce time-to-value; * best of the Oracle AI
+   platforms'"*
+3. The services panel body: *"rewrite that block as a product marketer; the draft be
+   like 'With the large dedicated practice of experts in both AI and Oracle platforms
+   and proven with Fortune 500 customers delivery methodology over decades, we
+   accelerate customers' time-to-value with AI' + bullets be replaced like '* PoV from
+   30 days on your real data; Focus on measurable ROI from day 0; * Decades of
+   expertise of AI and advanced tech adoption by enterprises'"*
+4. *"Consider adding background images for those product (left) and services (right)
+   blocks to match the styles of the reference site softserveinc.com and subpages like
+   https://www.softserveinc.com/en-us/services/artificial-intelligence (i.e. like in a
+   Agents4Everything block here, but not fullwidth but halfscreen). Right now site
+   misses that enterprise feeling because of the lack of those images and grayish
+   palette."*
+5. *"Add backgrounds for case studies (ie like links to whitepapers and case studies
+   here: https://www.softserveinc.com/en-us/services/artificial-intelligence; our
+   difference is that we have more content but image with heading + white background
+   for content could be applied as well."*
+6. *"Case studies: we have 2 blocks that say Hours not quarters, Hours not weeks
+   sitting together - sounds weird. Think how to replace both."*
+
+**Split.** Fable: the decisions and the copy (`round11-brief.md` §1). Opus: the
+reference research on softserveinc.com (`round11-research.md` — **partial**: the
+Agents4Everything band fully measured, §A; the whitepaper and case-study resource
+cards not reached before the time limit, §B), the build, the QA and these docs. The
+main session: the review, two repetition fixes in its own copy after the build, one
+checker assertion added after the build (§30.4), and the publish.
+
+### 30.1 The decisions, and why
+
+- **S2 becomes two photographs, the reference band at half width.** The measured
+  Agents4Everything band (research §A) is a 1248 × 400 dark photograph with **no
+  scrim**, 10 px chamfers, 64 / 40 px padding, a white Replica 28 px / 400 heading
+  with an inline arrow, a 20 px body in white at 80 %, a text column of at most 450 px
+  at the top left, and an arrow that nudges on hover. The two home panels copy that
+  anatomy at half width with **one deliberate difference, a scrim**, because these two
+  photographs are not flat and dark all the way under the copy: a 100° gradient from
+  `rgba(0,0,0,.66)` through `.46` to `.22`, heaviest on the copy side. Each panel is
+  a 12 px-cut container on a black ground — which is what remains if the image guard
+  drops a photograph — with the picture and the scrim at `z-index: -1` behind the copy
+  (`isolation: isolate`). The copy is white: the title in Replica **400 at
+  1.75 rem** (the reference's 28 px — a heading on a photograph, not an H4-class card
+  title), the body at `--fs-body` in 82 % white with `text-wrap: pretty`, the bullets
+  in 90 % white with white ticks, the link white and `--surface-select` on hover. The
+  two panels are **free-standing peers with a gap**, no longer joined by a hairline.
+  Measured at 1440: **612 × 496 px each**. Hover and focus-within scale the photograph
+  1.071 and nudge the arrow 2 px; reduced motion drops both. Below 900 px: one column,
+  `min-height: 22rem`, `1.75rem` padding and a flat `.56` scrim. Print drops the
+  photograph and the scrim and turns the copy ink.
+- **It is a modifier, not a rewrite.** `.ways--photo` / `.way--photo` carry all of it;
+  the Services page renders the same base `.ways` / `.way` for its two proof-of-value
+  panels and is unchanged.
+- **The two photographs are the site's own.** The products panel takes
+  `assets/img/heroes/overview.jpg` — the home hero's photograph until round 5, on disk
+  and unreferenced since — and the practice panel `assets/img/heroes/services.jpg`,
+  the Services hero. Both are SoftServe deck imagery. Each panel carries `image: {
+  file, alt, focal }` in the data, the hero-image shape; the renderer sets `alt=""`,
+  because the copy says what the panel offers, and `image.alt` describes the picture
+  for the docs.
+- **Photographs, not dark bands.** SS26's one-dark-band rule still counts `#about`
+  only; a photographic panel is a photograph (`SS26-THEME.md` §5).
+- **S5: the case card is a photo band over a white body** — Alex's *"image with
+  heading + white background for content"*. The treatment was drawn from the three
+  Solutions cards under the reference band (research §C: photo on top, heading and
+  arrow on a light body, 10 px chamfers, equal heights) and from his words; the
+  resource cards he pointed at were not measured (§B). The band is 16:9 and shows the
+  card's **own industry photograph**, `assets/img/industries/<industry>.jpg`, derived
+  from the card's `industry` — the same file the Use cases tab shows, and **no new data
+  key**. A bottom-up veil (`rgba(0,0,0,.74)` → `.30` → `0`) carries the white
+  descriptor (Replica 400, 1.25 rem / 1.2) and the area (82 % white). The white body
+  holds the status chip, the figure, the line, the footnote and the link, as before.
+  The card itself is white with a 1 px `--border-subtle` border. Hover and
+  focus-within step the body to `--bg-raised`, scale the photograph 1.071 and turn the
+  arrow `--action`; reduced motion drops the scale; print drops the photograph and the
+  veil and sets the descriptor in ink above the body. Measured at 1440: **384.8 ×
+  623.3 px, all four equal**. The image guard now watches `.way-img` and
+  `.case-card-img` as well.
+- **Two figures, two shapes** (ask 6). *Hours, not quarters* and *Hours, not weeks*
+  side by side read as one template filled twice. Account insights now makes a
+  **turnaround** claim — ***Same day***, label unchanged — and Plan vs actual
+  investigation a **coverage** claim — ***Every variance***, *"traced to its schedule,
+  cost or contract source, in hours of expert time rather than weeks"*, which keeps the
+  hours-for-weeks comparison in the label where it qualifies rather than headlines.
+  Both changed on the home card and on the product's `caseStudy.metrics[0]` at once.
+  The main session checked *Every variance* against the product's own one-liner
+  (*"assembles each variance with its candidate drivers and the source evidence behind
+  them"*) before keeping it.
+- **The copy follows Alex's drafts, written as a product marketer would.** The
+  products body opens on ***Ready-made***, the brief's own positioning word (START-HERE
+  §2); *packaged* stays internal vocabulary (Alex's 2026-09-16 rule). The practice body
+  keeps the structure of Alex's own sentence — *with* the practice and the method,
+  *we accelerate* your time to value. **After the build the main session fixed two
+  repetition defects in its own copy**: *best* three times in the products panel (the
+  brief's body said *"carry the best practice and expertise of their industry"*; it
+  ships as *"embody the expertise of their industry"*), and *platforms* three times on
+  the screen (the brief's practice body said *"experts in both AI and Oracle’s
+  platforms"*; it ships as *"experts in both AI and Oracle"*).
+- **"from 30 days" is now on the home page twice** — the hero's proof tile and the
+  practice panel's first bullet — on Alex's instruction. The checker's duration sweep
+  already allowed it there.
+
+### 30.2 Decided differently
+
+1. **The products photograph's focal point is `35% 45%`.** The brief disagreed with
+   itself — `50% 45%` in its file list, `100% 45%` in its treatment — and neither
+   shipped. At `100%` the photograph's bright oval sat under the body copy (3.0:1,
+   fails AA). At `50%` it passed at 1440 (4.58:1) but failed at 1366, 1280, 1200 and
+   1024 (2.67–4.4:1). At `35%` the lowest body contrast is **4.88:1** (at 1200 and
+   1280), and the oval stays an arc at the panel's right edge from 1366 up. The scrim
+   was kept as specified. The practice panel ships at `50% 50%`, as briefed.
+2. **The card band's ground is `#1a1a1a`** (`--surface-dark-raised`), not the brief's
+   `--bg-inset`: if a photograph fails, the white descriptor still reads on what is
+   left. Tested with forced 404s.
+3. **The home card no longer carries the industry medallion.** The brief decided it
+   — the photograph names the industry — and it departs from VISUAL-GRAMMAR's standing
+   rule 5, which put the medallion on "the callout and on the compact card alike". The
+   product page's callout keeps it; the unused `.case-card-head` rules were removed.
+
+### 30.3 Before and after
+
+Labels: **[site]** carried unchanged · **[new]** copy written this round (Fable, then
+the main session's repetition fixes) · **[alex]** Alex's own wording or instruction.
+
+**S2 — the two ways in** (`overview.twoWays.panels`)
+
+| Key | Before | After | |
+|---|---|---|---|
+| `[0].title` | *Enterprise AI agents and workflows* | unchanged | [site] |
+| `[0].body` | *"An AI agent, or a workflow where people and agents share the work, carrying what its industry expects: the rules, the review steps, the checks. Built on Oracle’s own AI platforms, so all they can do is in the product, and started in weeks rather than from a blank page."* | *"Ready-made AI agents and human-AI workflows that embody the expertise of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms."* | [new] |
+| `[0].bullets` | *Best practice built in, from engagements already delivered* · *Runs in your own tenancy* · *Scope, timeline and price on every product page* | *Best-practice workflows and AI pipelines* · *Accelerators that shorten time to value* · *The best of Oracle’s AI platforms, built in* | [alex] |
+| `[0].image` | — | `assets/img/heroes/overview.jpg`, focal `35% 45%` | [new] |
+| `[1].title` | *Services, from proof to scale* | *Expert services, from proof to scale* | [alex] |
+| `[1].body` | *"Fixed-scope services, run the same way every time: a Jumpstart proves the value on your own data in weeks, then the people who ran it integrate it into your systems and scale it across the business — architects who know Oracle’s platforms, engineers from our AI research group, and capacity that grows with the rollout."* | *"With a large, dedicated practice of experts in both AI and Oracle, and a delivery method proven with Fortune 500 customers over decades, we accelerate your time to value with AI."* | [new] |
+| `[1].bullets` | *Delivered with Oracle’s AI & Data organization, in joint teams* · *Experts in both AI and Oracle’s platforms* · *Thirty years of enterprise integration behind every rollout* | *A proof of value from 30 days, on your own data* · *Measurable ROI in focus from day one* · *Decades of enterprise adoption of AI and advanced technology* | [alex] |
+| `[1].image` | — | `assets/img/heroes/services.jpg`, focal `50% 50%` | [new] |
+
+| Part | Before | After |
+|---|---|---|
+| Container | an inset two-panel block sharing one hairline | two free-standing photographic panels with a gap, 12 px cut, 612 × 496 at 1440 |
+| Ground | the panel surface | the photograph under a 100° scrim, on black |
+| Copy | dark on light, H4-class title | white; title Replica 400 at 1.75 rem |
+| Hover | a surface change | the photograph scales 1.071, the arrow nudges 2 px |
+
+**S5 — the case cards** (`overview.caseStudies`, rendered by `UI.caseCard`)
+
+| Part | Before | After |
+|---|---|---|
+| Head | industry medallion · descriptor · area, on the raised card | a 16:9 band — the industry photograph under a bottom-up veil — with the descriptor and area on it in white; no medallion |
+| Body | chip · figure · line · footnote · link | the same, on white |
+| Card | `--bg-raised`, no border | white, 1 px `--border-subtle`; the band's ground `#1a1a1a`; 384.8 × 623.3 at 1440 |
+| Hover | the arrow turns `--action` | the body steps to `--bg-raised`, the photograph scales 1.071, the arrow turns `--action` |
+
+**The two figures** — on the home card and on the product's `overview.caseStudy.metrics[0]`
+
+| Product | Key | Before | After | |
+|---|---|---|---|---|
+| Account insights | `value` | *Hours, not quarters* | *Same day* | [new] |
+| | `label` | *from a market signal to a qualified opportunity a seller can act on* | unchanged | [site] |
+| Plan vs actual investigation | `value` | *Hours, not weeks* | *Every variance* | [new] |
+| | `label` | *of expert time to produce an equivalent plan-versus-actual analysis* | *traced to its schedule, cost or contract source, in hours of expert time rather than weeks* | [new] |
+
+### 30.4 The checker
+
+- **Each S2 panel needs `image`** with a non-empty `file`, `alt` and `focal`; the file
+  must be a photograph under `assets/img/<folder>/` (`jpg`, `jpeg`, `png` or `webp`,
+  never under `logos/`) and is checked on disk; `focal` must be two percentages, e.g.
+  `"50% 45%"`.
+- **An `image` key on a home case card fails** — it joins `customer`, `logo`,
+  `logoStacked`, `band` and `label` in the superseded list, because the photograph is
+  derived from `industry`, not stored — and each card's industry photograph is checked
+  on disk.
+- **Each card's `metric.value` must equal its product's
+  `overview.caseStudy.metrics[0].value`**: the card and the product page state one
+  figure, so neither can be re-worded alone.
+- **No two home case cards' `metric.value` may open on the same word** (added by the
+  main session after the build). Peer cards side by side each make their own claim, and
+  Alex's *"Hours not quarters, Hours not weeks … sounds weird"* is the case it encodes:
+  it catches that pair and passes today's four — *+4.5%* · *5–15 min* · *Same day* ·
+  *Every variance*. The same rule, stated generally, is in
+  `.claude/references/client-documents.md`: peers never open on the same words or share
+  a sentence pattern.
+
+`node --check` is clean on the changed files, and the checker prints **OK** with the
+three known warnings.
+
+### 30.5 QA and publish
+
+Console clean across 44 routes with **0 broken images**. The deny-list grep is clean:
+over the whole of `site/`, its only raw-byte hits are inside the base64 data of three
+existing brand SVGs — false positives. Looked at: 1440, 1024, 768 and 375 by the build
+agent, and by the main session at 1440 for S2 and S5 and at 375 for S2 after the copy
+fix; **geometry only** at 1366, 1280, 1200 and 960; **not verified** at 320, under
+reduced motion, in print, or outside Chromium.
+
+Published from the main session to **https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri**
+as **version 8** — `content.js`, `overview.js`, `app.js`, `site.css`; `list_files`
+shows 107 files, each at its local byte size.
+
+### 30.6 Open for Alex
+
+1. **Account insights says one thing two ways.** Its Overview rail tile still reads
+   *"Hours, rather than the next quarterly review"* (time to a qualified opportunity),
+   while its case study now says *Same day* for the same interval.
+2. **The Plan vs actual story still calls *Every variance* "the figure above"** — a
+   coverage claim now, not a figure.
+3. **S5 was not measured against softserveinc.com's resource cards** — research §B was
+   not reached; the treatment comes from the Solutions cards (§C) and Alex's own words.
+4. **320 px was not looked at**, nor reduced motion, print or a non-Chromium browser.
+5. **Two facts left the home page with S2's old bullets**: joint delivery with Oracle's
+   AI & Data organization (now stated only in the Services hero's second paragraph) and
+   *"Scope, timeline and price on every product page"* (the commercial shape is still
+   in the Products page intro, which the checker asserts). *Runs in your own tenancy*
+   survives in the hero lead.
+6. **The archive theme was not updated, and will render these two screens unstyled
+   when run locally** (inferred, not looked at): the renderers are shared, and
+   `site-legacy.css` has no rules for `.way-img`, `.case-card-band` or
+   `.case-card-img`. The published archive artifact is frozen and not republished, so
+   its link is unaffected.
+
+## 31. The site moves to its own repository, 2026-09-23
+
+**The ask.** Alex wants three separate repositories: the personal OS, the packaging plugin and this mini-site. The packaging plugin should know everything it needs to change the site.
+
+**What moved.** The whole folder `AO-Personal-OS/outputs/oracle-solutions-site/`, as of AO-Personal-OS `182091bd` with round 11 included, went into the private repository `alexey-orlov/Oracle-Solutions-Site`. History was not carried over: 964 of the folder's 972 commits were autosync commits, and this file is the record. The old folder in AO-Personal-OS is retired, and a `MOVED.md` there points here.
+
+**What is new here.**
+
+| File | What it does |
+|---|---|
+| `CLAUDE.md` | Points to START-HERE and restates the AO-Personal-OS rules the site relies on, because a session here does not load that repository's CLAUDE.md |
+| `site.manifest.json` | The site's machine-readable description of itself: paths, checker, preview entry, publish target and never-publish list, wrapper lines, never-ship paths, contract round. The `oracle-packs-web` plugin reads it before it touches the site |
+| `.claude/launch.json` | The `oracle-site` preview, now `--directory site` |
+| `.claude/settings.json` | The checker, `node --check`, grep and the browser tools allow-listed. The AO-Personal-OS wiki and references, the packaging repository and the SoftServe OneDrive are extra folders |
+| `.gitignore` | `.work/` and the generated `tools/deny-list.json`, which holds customer names |
+
+**What changed in the procedure.**
+- Paths are relative to this repository (HANDOFF §1, §2, §4, §8; START-HERE §5, §6, §10).
+- The wiki and the client-document rules stay in AO-Personal-OS.
+- git-autosync runs a second agent for this repository on Alex's Mac.
+- A session opened in another folder can publish from a copy staged in its scratchpad. A throwaway artifact proved it on 2026-09-23, so HANDOFF's older line that a scratchpad path is refused was removed.
+- A round that moves the contract now bumps `contract.round` in the manifest.
+
+**The plugin side.** From release 0.1.34, `oracle-packs-web` reads the manifest at a new first step of the listing skill and runs this site's own checker (its ported copy is retired). It takes every publish value from the manifest, and defers to this site's rules when `contract.round` is newer than the round its cards were written against.
+
+**Checks.** After the final copy the two trees were identical (`diff -rq`, excluding the new files). `node tools/check-grammar.js` prints OK with the three known warnings. The live artifact was not republished: round 11's version 8 stands.
+
+**Open for Alex.** On the MacBook Air: clone this repository, install its autosync agent with AO-Personal-OS's `automations/git-autosync/setup.sh <this repository>`, and update the plugin.

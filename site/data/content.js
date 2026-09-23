@@ -249,7 +249,7 @@ window.SITE_CONTENT = {
           id: "products",
           icon: "cube",
           title: "Enterprise AI agents and workflows",
-          body: "Ready-made AI agents and human-AI workflows that carry the best practice and expertise of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms.",
+          body: "Ready-made AI agents and human-AI workflows that embody the expertise of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms.",
           bullets: [
             "Best-practice workflows and AI pipelines",
             "Accelerators that shorten time to value",
@@ -266,7 +266,7 @@ window.SITE_CONTENT = {
           id: "practice",
           icon: "users",
           title: "Expert services, from proof to scale",
-          body: "A large, dedicated practice of experts in both AI and Oracle’s platforms, and a delivery method proven with Fortune 500 customers over decades: that is what shortens your time to value with AI.",
+          body: "With a large, dedicated practice of experts in both AI and Oracle, and a delivery method proven with Fortune 500 customers over decades, we accelerate your time to value with AI.",
           bullets: [
             "A proof of value from 30 days, on your own data",
             "Measurable ROI in focus from day one",

@@ -1,6 +1,6 @@
 # HANDOFF — Cross-system ERP Q&A walkthrough (third demo)
 
-_Build spec written 2026-09-16 by the design session (Fable) after three Opus research legs (`.work/erp-qa/brief-A-pack.md` — the pack as pitched; `brief-B-ui.md` — what Autonomous AI Lakehouse and AI Data Platform actually are, UI inventory, measured style tokens; `brief-C-workflows.md` — where cross-system questions arise, the seven mappings, candidate workflows) and Alex's confirmation of the scenario. Opus builds from this file; Fable red-teams the first cut and reviews the final. Read `.claude/references/interactive-demo-playbook.md` first — the standing requirements and the pitfalls apply unchanged._
+_Build spec written 2026-09-16 by the design session (Fable) after three Opus research legs (`.work/erp-qa/brief-A-pack.md` — the pack as pitched; `brief-B-ui.md` — what Autonomous AI Lakehouse and AI Data Platform actually are, UI inventory, measured style tokens; `brief-C-workflows.md` — where cross-system questions arise, the seven mappings, candidate workflows) and Alex's confirmation of the scenario. Opus builds from this file; Fable red-teams the first cut and reviews the final. Read AO-Personal-OS `.claude/references/interactive-demo-playbook.md` first — the standing requirements and the pitfalls apply unchanged._
 
 ## 0. Decisions taken with Alex (2026-09-16)
 

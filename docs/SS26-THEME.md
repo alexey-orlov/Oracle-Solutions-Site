@@ -171,6 +171,11 @@ dark band**, and the footer's black block does not count.
 | `#/products`, product pages, `#/sellers` | none — the photo heroes carry the weight |
 
 Everything else is `#ffffff`, with `#edf0f2` for cards and the pre-footer band.
+**A photograph is not a dark band.** The home page's two photographic panels (S2, round
+11) and its case cards' photo bands (S5) sit on black and `#1a1a1a` grounds, but those
+grounds only show if a photograph fails to load; what the reader sees is a photograph
+under a scrim or a veil, inside a panel or a card with its own cut — not a full-width
+inverted screen. They do not count, and `#about` stays the home page's one dark band.
 `.light-band` / `-media` / `-copy` now paint the dark band, which makes the class
 name a lie; it is kept rather than renamed so the renderers stay shared between
 the two themes, with a comment on the rule.
@@ -187,8 +192,11 @@ recoloured — this system has no glow.
 `--t-fast .15s` for colour and border, `--t-base .2s` for buttons, chips, tabs
 and links, `--t-slow .3s` for the arrow nudge and card surfaces, all on
 `cubic-bezier(.4,0,.2,1)`. Hover is a **2 px arrow nudge** or a **surface step**,
-never a lift: cards move `#edf0f2 → #e1e7eb` instead of translating, and the tile
-image scales to 1.071 inside `@media (hover: hover)`. Every
+never a lift: cards move `#edf0f2 → #e1e7eb` instead of translating, and a
+photograph scales to 1.071 inside `@media (hover: hover)` — the tile image, and since
+round 11 the home page's S2 panel photographs (with a 2 px arrow nudge) and its case
+cards' band photographs (whose white body steps to `#edf0f2`), on focus-within as well
+as hover; `prefers-reduced-motion` drops the scale. Every
 `:active { transform: scale(.97) }` is gone — pressed is a colour. `--glow-card`,
 `--glow-frame`, `.hero-glow` and the `.stat-row::before` scrim are all retired.
 

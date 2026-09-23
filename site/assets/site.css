@@ -3320,8 +3320,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    across the whole panel, the copy on it in white at the top left, the CTA
    pinned to the foot. The reference sets its copy on a flat dark field and
    needs no scrim; these two photographs are not dark all the way under the
-   copy, so a scrim, heaviest on the copy side, carries the legibility. The
-   panels are free-standing peers with a gap, no longer joined by a hairline.
+   copy, so a scrim, heaviest on the copy side, carries the legibility — with
+   the focal point in the data: the products picture sits at 35% 45%, which
+   keeps its bright oval at the panel's right edge and out from under the copy
+   at every two-column width (at 50% it ran under the body text from 1024 to
+   1366). The panels are free-standing peers with a gap, no longer joined by a
+   hairline.
    Each is a static container, so it carries its 12px cut directly
    (SS26-THEME §4), and `isolation` keeps the z-index:-1 photograph and scrim
    above the panel's own black ground, which is what remains if the image

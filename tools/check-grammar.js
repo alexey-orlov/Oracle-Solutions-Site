@@ -1050,6 +1050,19 @@ if (!arr(C.products) || C.products.length !== 7) {
       }
     }
   });
+  /* Round 11 (Alex, 2026-09-23, on two cards reading "Hours, not quarters" and
+     "Hours, not weeks" side by side: "sounds weird"): peer cards each make their
+     own claim, so no two headline figures may open on the same word — a shared
+     pattern reads as a template even when no word repeats three times. */
+  var openers = {};
+  cards.forEach(function (c, i) {
+    var first = String((c.metric || {}).value || "").trim().split(/[\s,]+/)[0].toLowerCase();
+    if (!first) return;
+    if (Object.prototype.hasOwnProperty.call(openers, first)) {
+      fail("overview.caseStudies[" + i + "].metric.value", 'opens on "' + first + '", as card ' + openers[first] +
+        " does — peer cards side by side each make their own claim");
+    } else openers[first] = i;
+  });
   /* Services no longer restates the engagements, one line each: since round 6
      the case-study footnotes here carry each engagement's evidence, and
      `services.proof` is checked with the rest of the Services page below. */

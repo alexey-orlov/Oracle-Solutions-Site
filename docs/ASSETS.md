@@ -1,8 +1,9 @@
 # ASSETS.md — step frames, industry images, group tiles, headshot, customer logos
 
-What the E2 stepper, the E2 industry tabs, the home page's product-group tiles,
-the E5 contact card and the named success stories render, where each file came
-from, what was done to it, and what the licensing position is.
+What the E2 stepper, the E2 industry tabs and the home page's case cards, the home
+page's product-group tiles and its two photographic panels, the E5 contact card and
+the named success stories render, where each file came from, what was done to it, and
+what the licensing position is.
 
 This file is **not served** — the site root is `site/`. It is the operator record
 that `site/assets/img/manifest-edits.json` deliberately does not carry, under the
@@ -321,7 +322,11 @@ the account-map frame — it sits on a soft `#10161A` plate rather than shrinkin
 ## 2. Industry images — `assets/img/industries/`
 
 One file per key in the fixed set of sixteen (VISUAL-GRAMMAR §5), 1200 × 750
-JPEG, q86, ≤ 180 KB.
+JPEG, q86, ≤ 180 KB. Each renders on the product pages' Use cases tab and, since
+round 11, as the 16:9 photo band of the home page's case cards: the card derives the
+file from its `industry` — `manufacturing`, `travel-transport`, `logistics` and
+`construction` today — under a bottom-up veil that carries the descriptor and area in
+white, and the checker checks each of those four files on disk.
 
 | Key | Source | Register |
 |---|---|---|
@@ -358,6 +363,21 @@ from the same decks, graded identically, so the strip reads as one system.
 **People.** No face is identifiable in any shipped industry image: every person
 is a silhouette, seen from behind, blurred, or cropped below the head. No logo,
 no shopfront name and no legible screen text survives in any crop.
+
+### Two hero photographs behind the home page's two ways in (round 11)
+
+No new file: S2's two panels reuse two graded hero photographs from
+`assets/img/heroes/` (SoftServe deck imagery; grade and sources in PROVENANCE §11.1),
+each under its own focal point in `overview.twoWays.panels[].image` — the hero entry
+in `heroes.json` keeps its own.
+
+| Panel | File | Focal on the panel | Focal in `heroes.json` |
+|---|---|---|---|
+| Products | `heroes/overview.jpg` — the home hero's photograph until round 5, unreferenced from then until this round | **`35% 45%`** — keeps the bright oval at the panel's right edge, out from under the body copy at every two-column width (lowest body contrast 4.88:1) | `50% 45%` |
+| Practice | `heroes/services.jpg` — the Services hero, still in use there | `50% 50%` | `50% 50%` |
+
+Both render decoratively (`alt=""`); `image.alt` carries the `heroes.json` wording
+for the record.
 
 ---
 
