@@ -1,6 +1,6 @@
 # CONFIG.md — how to change the site without touching page code
 
-Everything that changes after launch — links, the contact address, the form destination, who can open the seller panel — lives in **one file**:
+The switches that change after launch — the contact address, the form destination, the kit's domains, the product order and each product's flags — live in **one file**:
 
 ```
 site/data/config.js      →  window.SITE_CONFIG
@@ -8,7 +8,9 @@ site/data/config.js      →  window.SITE_CONFIG
 
 It is plain JavaScript, loaded before the app. Edit it with any text editor, save, reload the page. There is no build step, no npm install, nothing to compile. The file must stay valid JavaScript: every value in quotes, every line ending in a comma except the last one in its block.
 
-Copy (headlines, product descriptions, prices, disclaimers) lives in `site/data/content.js` instead — see `SCHEMA.md`.
+**Every link a product's sales kit uses lives in `links.json` at the repo root, not here** (round 12, §3a below): the one-pager, the sales deck, the feature list, the interactive demo and the demo video. The kit email reads that file, and `tools/sync-links.js` copies the three links the site's own buttons need into `site/data/links.js`.
+
+Copy (headlines, product descriptions, prices, disclaimers) lives in `site/data/content.js` instead — see `SCHEMA.md`. The words of the emails live in `mail/copy.json` (`mail/README.md`).
 
 ---
 
@@ -20,7 +22,7 @@ window.SITE_CONFIG = {
   formEndpoint: "",
   sellerGate: {
     allowedDomains: ["softserveinc.com", "oracle.com"],
-    kitAutoSend: false,
+    kitAutoSend: true,
     kitEmailKey: "oracle-ai-solutions:kit-email",
     legacyStorageKey: "oracle-ai-solutions:seller-unlocked"
   },
@@ -30,18 +32,16 @@ window.SITE_CONFIG = {
       marketplace: false,
       marketplaceUrl: "",
       video: false,
-      videoUrl: "",
       videoPoster: "",
-      successStoryUrl: "",
-      materials: { "sales-deck": "", "one-pager": "", ... }
+      successStoryUrl: ""
     }
   }
 };
 ```
 
-**The rule that governs every URL field: an empty string means the control is not rendered at all.** No placeholder, no greyed-out button, no "coming soon" line in its place. The page simply does not show it. Paste a URL and the control appears on the next reload.
+**The rule that governs every URL field, here and in `links.json`: an empty string means the control is not rendered at all.** No placeholder, no greyed-out button, no "coming soon" line in its place. The page simply does not show it. Paste a URL and the control appears on the next reload (for a `links.json` link, after `node tools/sync-links.js`).
 
-`video` is the one field that is not a URL, and the one deliberate exception to that rule — §3 says what it does and why it exists.
+`video` is the one product field that is not a URL, and the one deliberate exception to that rule — §3 says what it does and why it exists.
 
 ---
 
