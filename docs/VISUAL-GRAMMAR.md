@@ -151,7 +151,7 @@ rail no longer shows.
 
 ## 2. Overview tab — two columns, a fixed order in each
 
-**Target: the MAIN column reads in ~1.5 desktop screens at 1440×900 without feeling cramped.** If a product exceeds that, prose moves into §2.7 — it does not stay on the page. (The site footer sits below the tab body and adds about half a screen of its own; the target is about the tab, not about the scroll height of the document. The Previous/Next pager was removed in round 3 — the tab bar and the Products grid are the navigation.)
+**Target: the MAIN column reads in ~1.5 desktop screens at 1440×900 without feeling cramped.** If a product exceeds that, prose moves into §2.7 — it does not stay on the page. (The site footer sits below the tab body and adds about a third of a screen of its own — 315 px at 1440 since round 14; the target is about the tab, not about the scroll height of the document. The Previous/Next pager was removed in round 3 — the tab bar and the Products grid are the navigation.)
 
 The tab is a **two-column layout on desktop**: a MAIN column at roughly two thirds, and a SIDE rail at roughly one third, on the right. The rail cell stretches to the height of MAIN and holds **one card, §2.4 Outcomes & ROI**, which scrolls with the page. **Nothing pins any more** — the card that used to be sticky was §2.5 At a glance, and it went with round 3, H. Below 1100 px the layout collapses to one column and the rail follows the main column.
 
@@ -471,6 +471,8 @@ Each key used by any `industryCases[]` entry needs one treated photograph at `as
 
 All 24×24, stroke-only, matching the existing `ICONS` entries (the `.icon` class supplies stroke, width and colour). Paste these into the `ICONS` object.
 
+The footer's eight social glyphs are the one exception and are not in this registry: they are SoftServe's own filled marks, copied from softserveinc.com's footer into `SOCIAL_GLYPHS` beside `renderFooter`, each with its own viewBox (round 14). The line-drawn `globe`, `facebook` and `youtube` left `ICONS` with the old footer; `linkedin` stays for the contact card.
+
 ### Semantic icons
 
 ```js
@@ -748,7 +750,7 @@ Services is built from the home page's components rather than its own; the reaso
 
 **Heading budgets** (measured, uppercase display type): H1 ≤ ~24 characters a line, two lines; H2 ≤ ~30 characters and five words, one line at 1440 and two at most on a phone; the light-band title ≤ ~28 characters. The sentence goes in the lead. Running text on the page takes `text-wrap: pretty`, so no paragraph ends on one word.
 
-Anchors other pages land on — `#how-we-engage` (every product's Jumpstart tab, and the home case-studies rail's *How we measure it*) and `#contact` (header button, footer, Products page) — plus the page's own `#proof-of-value` are asserted by `tools/check-grammar.js`.
+Anchors other pages land on — `#how-we-engage` (every product's Jumpstart tab, and the home case-studies rail's *How we measure it*) and `#contact` (header button, Products page; the footer's link left with its contact block in round 14) — plus the page's own `#proof-of-value` are asserted by `tools/check-grammar.js`.
 
 ## 11. For sellers — the sales-kit request (round 8)
 
