@@ -1742,8 +1742,14 @@ if (/request a demo/i.test(raw)) {
       fail("mail/settings.json kit.allowedDomains", "[" + sender + "] differs from config sellerGate.allowedDomains [" + gate + "]");
     }
     if (["test", "live"].indexOf(settings.mode) === -1) fail("mail/settings.json mode", 'must be "test" or "live", got "' + settings.mode + '"');
-    ["live", "test"].forEach(function (k) {
-      if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(((settings.inbox || {})[k]) || "")) fail("mail/settings.json inbox." + k, "must be an email address");
+    [["inbox.live", (settings.inbox || {}).live], ["kit.replyTo", (settings.kit || {}).replyTo]].forEach(function (pair) {
+      if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(pair[1] || "")) fail("mail/settings.json " + pair[0], "must be an email address");
+    });
+    /* The repo is shared: the sender's identity and its test inbox belong to
+       whoever runs it (the n8n node "Deployment settings"), never to this file. */
+    if (settings.sender !== undefined) fail("mail/settings.json sender", "belongs to the deployment, not the repo (mail/README.md, \"Deployment\")");
+    Object.keys(settings.inbox || {}).forEach(function (k) {
+      if (k !== "live") fail("mail/settings.json inbox." + k, "belongs to the deployment, not the repo (mail/README.md, \"Deployment\")");
     });
     if (settings.mode === "live" && ((settings.inbox || {}).live || "") !== CFG.contactEmail) {
       fail("mail/settings.json inbox.live", "must be the practice mailbox the site's forms name (" + CFG.contactEmail + ")");
@@ -1787,6 +1793,7 @@ if (/request a demo/i.test(raw)) {
   [links, filled].forEach(function (L, pass) {
     var ctx = {
       links: L, copy: copy, settings: settings || {},
+      deployment: { testInbox: "test-inbox@example.invalid", fromName: "Checker", fromAddress: "checker@example.invalid" },
       catalog: JSON.parse(fs.readFileSync(path.join(root, "mail/catalog.json"), "utf8")),
       imageSrc: function (key) { return "cid:kit-" + key; }
     };
@@ -1810,6 +1817,18 @@ if (/request a demo/i.test(raw)) {
       if (m[1].subject.length > 90) fail("mail/render.js " + m[0], "subject is " + m[1].subject.length + " characters");
     });
   });
+  /* A shared repo carries no live trigger URL and no one's sender infrastructure:
+     no webhook path, no n8n instance address (AO-Personal-OS hard rule). */
+  (function scan(dir) {
+    fs.readdirSync(path.join(root, dir), { withFileTypes: true }).forEach(function (entry) {
+      var rel = path.join(dir, entry.name);
+      if (entry.isDirectory()) { if (!/^(\.git|\.work|node_modules|asset-candidates)$/.test(entry.name)) scan(rel); return; }
+      if (!/\.(js|json|md|html|css|txt|ya?ml|mjs)$/.test(entry.name)) return;
+      var text = fs.readFileSync(path.join(root, rel), "utf8");
+      var hit = text.match(/https?:\/\/[a-z0-9.-]+\/webhook(-test)?\/[A-Za-z0-9_-]+|[a-z0-9-]+\.app\.n8n\.cloud/);
+      if (hit) fail(rel, "carries \"" + hit[0] + "\": a live trigger URL or an n8n instance address never enters git; it belongs to the deployment");
+    });
+  })(".");
   var refusals = [
     [{ form: "kit", email: "someone@gmail.com", product: "all", consent: true }, "domain"],
     [{ form: "kit", email: "a@oracle.com", product: "no-such-product", consent: true }, "product"],

@@ -42,6 +42,8 @@ var ctx = {
   catalog: readJson("mail/catalog.json"),
   copy: readJson(arg("--copy") || "mail/copy.json"),
   settings: readJson("mail/settings.json"),
+  /* A stand-in for the deployment, which the repo never holds (mail/README.md). */
+  deployment: { testInbox: "test-inbox@example.invalid", fromName: "The sender", fromAddress: "sender@example.invalid" },
   imageSrc: function (key) { return "../../mail/img/" + render.IMAGE_FILES[key]; }
 };
 
@@ -78,10 +80,10 @@ function write(file, mail, note) {
   fs.writeFileSync(path.join(OUT, file), mail.html);
   index.push('<li><a href="' + file + '">' + file + "</a> · to <code>" + mail.to + "</code> · <strong>" +
     mail.subject.replace(/</g, "&lt;") + "</strong>" + (note ? " <em>(" + note + ")</em>" : "") + "</li>");
-  var sender = ctx.settings.sender || {};
+  var dep = ctx.deployment;
   asRead.push("==== " + file + (note ? " (" + note + ")" : "") + " ====\n" +
-    "From: " + sender.name + " <" + sender.address + ">\nTo: " + mail.to +
-    "\nReply-To: " + (mail.replyTo || ((sender.replyTo || {})[ctx.settings.mode === "live" ? "live" : "test"]) || "") +
+    "From: " + dep.fromName + " <" + dep.fromAddress + ">\nTo: " + mail.to +
+    "\nReply-To: " + (mail.replyTo || render.replyTo(ctx.settings, dep)) +
     "\nSubject: " + mail.subject + "\nInbox preview: " + preheaderOf(mail.html) + "\n\n" + visible(mail.html));
 }
 function must(result) {
