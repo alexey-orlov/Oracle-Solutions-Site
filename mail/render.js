@@ -448,10 +448,13 @@ function renderInternal(request, ctx, kitResult) {
   var product = request.product && request.product !== "all" ? productBySlug(ctx.catalog, request.product) : null;
   var isKit = request.form === "kit";
   var state = isKit ? (kitResult && kitResult.status === "sent" ? "kitSent" : "kitFailed") : request.form;
+  var failed = state === "kitFailed";
   var siteUrl = (ctx.links || {}).siteUrl;
+  var day = localDay(request.submittedAt, settings.timezone);
 
   var kitName = isKit ? kitVars(request, ctx).kitName : "";
   var productName = product ? product.name : (request.product === "all" ? ctx.catalog.kitNameAll : (labels.notSure || ctx.catalog.productNotSure));
+  var kits = (kitResult && kitResult.kits) || [];
   var vars = {
     product: productName,
     email: request.email,
@@ -459,20 +462,15 @@ function renderInternal(request, ctx, kitResult) {
     company: request.company || "",
     role: roleLabel(ctx.catalog, request.role) || "",
     time: formatTime(request.submittedAt, settings.timezone),
+    date: formatDay(day, false),
+    due: formatDay(addWorkingDays(day, 2), true),
     kitName: kitName,
     count: "",
     missing: "",
+    links: "",
+    error: kitResult && kitResult.error ? line(kitResult.error).slice(0, 300) : "",
     replyTo: replyTo(settings)
   };
-  /* Subjects and buttons are short lines: a long company or name is cut there
-     (copy-notes v2: 16 and 24 characters), and printed in full in the body. A
-     subject with no company names the person instead. */
-  var short = {};
-  Object.keys(vars).forEach(function (k) { short[k] = vars[k]; });
-  short.company = clip(request.company || vars.name, 16);
-  short.name = clip(vars.name, 24);
-
-  var kits = (kitResult && kitResult.kits) || [];
   if (isKit) {
     vars.count = String(kits.reduce(function (n, k) { return n + k.included.length; }, 0));
     vars.missing = kits.map(function (k) {
@@ -480,40 +478,67 @@ function renderInternal(request, ctx, kitResult) {
       var names = k.missing.map(function (m) { return m.name; }).join(", ");
       return kits.length > 1 ? ((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug) + ": " + names : names;
     }).filter(Boolean).join("; ");
+    /* The links as a person would paste them: name, then the URL, visible. */
+    vars.links = kits.map(function (k) {
+      var items = k.included.map(function (i) { return (kits.length > 1 ? "  " : "") + i.name + ": " + i.url; });
+      return (kits.length > 1 ? ((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug) + "\n" : "") + items.join("\n");
+    }).join("\n\n");
   }
-
-  var title = line(fill((copy.subjects || {})[state], short));
-  var subject = line((test ? (copy.testPrefix || "") : "") + title);
+  /* Subjects and buttons are short lines: a long company or name is cut there
+     (copy-notes v2: 16 and 24 characters), and printed in full in the body. A
+     subject with no company names the person instead. */
+  var short = {};
+  Object.keys(vars).forEach(function (k) { short[k] = vars[k]; });
+  short.company = clip(request.company || vars.name, 16);
+  short.name = clip(vars.name, 24);
   /* "{name} ({company})" with no company would print empty brackets. */
-  var banner = fill((copy.banners || {})[state], vars).replace(/\s*\(\s*\)/g, "");
+  function tidy(text) { return String(text || "").replace(/\s*\(\s*\)/g, "").replace(/\s+([,.;:])/g, "$1"); }
+
+  var title = line(tidy(fill((copy.subjects || {})[state], short)));
+  var subject = line((test ? (copy.testPrefix || "") : "") + title);
+  var banner = tidy(fill((copy.banners || {})[state], vars));
+  var warning = copy.replyWarning ? tidy(fill(copy.replyWarning, vars)) : "";
   var cta = (copy.cta || {})[state] || {};
   var replySubject = fill(copy.replySubject || "", vars);
-  var mailto = "mailto:" + request.email + (replySubject ? "?subject=" + encodeURIComponent(replySubject) : "");
+  /* A failed kit: the button opens a message that already holds the links. */
+  var message = failed && copy.failedMessage ? fill(copy.failedMessage, vars) : "";
+  var mailto = "mailto:" + request.email + "?" + [
+    replySubject ? "subject=" + encodeURIComponent(replySubject) : "",
+    message ? "body=" + encodeURIComponent(message) : ""
+  ].filter(Boolean).join("&");
 
-  /* Copy-notes 8: the form's name heads the notice, the banner states what
-     happened, and "Received {time}" sits under it. */
-  var failed = state === "kitFailed";
   var rows = [brandLine()];
   rows.push(row('<p style="margin:0;font-family:' + SANS + ';font-size:13px;line-height:1.4;font-weight:bold;letter-spacing:.06em;text-transform:uppercase;color:' +
     (failed ? DANGER : ACTION) + ';">' + esc(((copy.formNames || {})[request.form]) || request.form) +
     (test ? ' <span style="color:' + MUTED + ';font-weight:normal;">&middot; test mode</span>' : "") + "</p>", "18px 32px 0"));
   rows.push(heading(title));
+  /* Cold read (PROVENANCE §32.3): the first thing under the heading says where
+     Reply goes, so an internal question never reaches the customer. */
+  if (warning) {
+    rows.push(row('<p style="margin:0;font-family:' + SANS + ';font-size:14px;line-height:1.45;font-weight:bold;color:' + DANGER + ';">' + esc(warning) + "</p>", "14px 32px 0"));
+  }
   rows.push(row('<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
     '<td style="background:' + (failed ? DANGER_TINT : SELECT) + ';border-left:4px solid ' + (failed ? DANGER : ACTION) + ';padding:14px 16px;font-family:' + SANS +
     ';font-size:16px;line-height:1.5;font-weight:bold;color:' + INK + ';">' + esc(banner) + "</td></tr></table>" +
     '<p style="margin:8px 0 0;font-family:' + SANS + ';font-size:13px;line-height:1.4;color:' + MUTED + ';">' + fillHtml(labels.received || "", vars) + "</p>",
-    "20px 32px 0"));
-  rows.push(row(para(fillHtml(cta.text || "", vars)) + button(mailto, fill(cta.button || "", short)), "18px 32px 6px"));
+    "16px 32px 0"));
+  var ctaHtml = para(fillHtml(cta.text || "", vars));
+  if (message) {
+    ctaHtml += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 14px;"><tr>' +
+      '<td style="border:1px solid ' + HAIRLINE + ';background:#fafbfc;padding:14px 16px;font-family:' + SANS + ';font-size:14px;line-height:1.55;color:' + BODY + ';">' +
+      esc(message).replace(/\n/g, "<br>") + "</td></tr></table>";
+  }
+  rows.push(row(ctaHtml + button(mailto, fill(cta.button || "", short)), "18px 32px 6px"));
 
-  var none = esc(labels.none || "-");
+  var blank = esc(labels.blank || labels.none || "-");
   var pairs = [];
   if (!isKit) {
     pairs.push([labels.name, esc(request.name)]);
     pairs.push([labels.email, link("mailto:" + request.email, request.email)]);
-    pairs.push([labels.company, request.company ? esc(request.company) : none]);
-    pairs.push([labels.role, vars.role ? esc(vars.role) : none]);
+    pairs.push([labels.company, request.company ? esc(request.company) : blank]);
+    pairs.push([labels.role, vars.role ? esc(vars.role) : blank]);
     pairs.push([labels.product, product ? link(productUrl(siteUrl, product.slug), product.name) : esc(labels.notSure || ctx.catalog.productNotSure)]);
-    pairs.push([labels.message, request.message ? esc(request.message).replace(/\n/g, "<br>") : none]);
+    pairs.push([labels.message, request.message ? esc(request.message).replace(/\n/g, "<br>") : blank]);
   } else {
     pairs.push([labels.email, link("mailto:" + request.email, request.email)]);
     pairs.push([labels.kit, esc(kitName)]);
@@ -521,17 +546,25 @@ function renderInternal(request, ctx, kitResult) {
       var items = k.included.map(function (i) { return link(i.url, i.name); }).join(", ");
       return kits.length > 1 ? "<strong>" + esc((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug) + ":</strong> " + items : items;
     }).join("<br>");
-    pairs.push([failed ? (labels.toSend || "Links to send by hand") : (labels.sentLinks || "Links sent"), sent || none]);
-    pairs.push([labels.missing, vars.missing ? esc(vars.missing) : none]);
+    if (!message) pairs.push([failed ? (labels.toSend || "Links to send by hand") : (labels.sentLinks || "Links sent"), sent || blank]);
+    if (vars.missing) pairs.push([labels.missing, esc(vars.missing)]);
   }
   if (request.page) pairs.push([labels.page, link(request.page, request.page.replace(/^https?:\/\//, ""))]);
-  if (failed && kitResult && kitResult.error) pairs.push(["Error", esc(line(kitResult.error).slice(0, 300))]);
+  if (failed && vars.error) {
+    pairs.push([labels.error || "Why it failed", esc(copy.errorNote ? fill(copy.errorNote, vars) : vars.error)]);
+  }
   rows.push(row(detailRows(pairs), "18px 32px 8px"));
-  rows.push(row(small(fillHtml(copy.footer || "", vars)), "16px 32px 28px"));
+  var siteLine = copy.siteLine ? fill(copy.siteLine, vars) : "";
+  rows.push(row((siteLine ? small(esc(siteLine)) + '<div style="height:8px;line-height:8px;font-size:0;">&nbsp;</div>' : "") +
+    small(fillHtml(copy.footer || "", vars)), "16px 32px 28px"));
 
-  var text = [title, "", banner, fill(labels.received || "", vars), "", fill(cta.text || "", vars), "Reply: " + request.email, ""]
+  var text = [title, ""]
+    .concat(warning ? [warning, ""] : [])
+    .concat([banner, fill(labels.received || "", vars), "", fill(cta.text || "", vars)])
+    .concat(message ? ["", message] : [])
+    .concat(["", "Reply: " + request.email, ""])
     .concat(pairs.map(function (p) { return p[0] + ": " + htmlToText(p[1]); }))
-    .concat(["", fill(copy.footer || "", vars)]).join("\n");
+    .concat(["", siteLine, fill(copy.footer || "", vars)].filter(function (l, i) { return i === 0 || l; })).join("\n");
 
   return { to: inbox, replyTo: request.email, subject: subject, html: shell(subject, banner, rows), text: text, images: [] };
 }
