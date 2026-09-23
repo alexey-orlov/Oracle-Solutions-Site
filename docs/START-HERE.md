@@ -159,7 +159,7 @@ Two more, from Alex's review of round 10 (2026-09-23), and they hold everywhere:
    - Opus does the rest: research, build, checker, QA, publish, docs.
    - The report says which steps used Fable. Token efficiency matters: one compact Fable pass, not a fan-out.
 4. **Build.**
-   - Run `node --check` on changed JS, then `node tools/check-grammar.js`, which must print OK.
+   - Run `node --check` on changed JS, then `node tools/check-grammar.js`, which must print OK. After a `links.json` change run `node tools/sync-links.js` first; after an email change, `node tools/mail-preview.js --sample` and a cold read of `.work/mail-preview/as-read.txt`.
    - Turn every new owner rule into a checker assertion, so it survives the next rewrite.
 5. **Look, then publish** (§6).
 6. **Record.**
@@ -190,7 +190,7 @@ Exact commands are in HANDOFF §4.
 - **Publish** — each theme to its own artifact (§1); never cross them.
   - Strip the nine skeleton lines (listed in `site.manifest.json`, `publish.wrapper`) from `site/index.html` into `.work/publish/index.html` (exact-line `grep -v -x -F`, HANDOFF §4). A session opened in another folder publishes from a copy staged in its scratchpad.
   - The publish must carry `assets/fonts/*` with an explicit `contentType`, and only what the page references — nine legacy files and `assets/site-legacy.css` are deliberately absent from the artifact.
-  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9. Files left out of the map are kept, so a new image folder that is not in it never reaches the artifact.
+  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9, and `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact). Files left out of the map are kept, so a new file that is not in it never reaches the artifact.
   - Then run `action: list_files` to confirm that the new files are live and that nothing is published that should not be.
 - **Refused publish** ("not built on the newer version") means another session published in between:
   1. `read_file` the live copies of the files you changed.
@@ -247,10 +247,8 @@ Exact commands are in HANDOFF §4.
   - delivery sign-off on *Plan vs actual investigation* in 4–8 weeks;
   - clearance for the stronger *Frontier AI* proof points.
 - **Round 8 (§24.4):**
-  - what sits behind `formEndpoint` for kit requests;
   - whether the mailbox is watched, and whether two working days is the right promise;
-  - whether the kit is ready (most manifest links are still pending);
-  - whether *all offers* is one bundle;
+  - whether *all offers* is one bundle (round 12 sends it as one email with every product's pieces);
   - whether subdomains qualify;
   - where partner demo requests go.
 - **Round 9 (§28.6):**
@@ -286,7 +284,15 @@ Exact commands are in HANDOFF §4.
   - 320 px, reduced motion, print and non-Chromium browsers were not looked at;
   - joint delivery with Oracle's AI & Data organization and *"Scope, timeline and
     price on every product page"* left the home page with S2's old bullets.
-- **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit links, form endpoint, hosting subdomain, customer-name approvals, image rights.
+- **Round 12 (§32.6):**
+  - **the sender:** n8n signs in to Outlook as olekorlov@softserveinc.com if SoftServe allows it without admin approval, otherwise it sends from alex@alexorlov.co (Zoho) for now; later oracle@softserveinc.com with Send As;
+  - **test to live:** `mail/settings.json` `mode`, once Alex has seen the emails in his inbox;
+  - **the kit documents:** no one-pager, sales deck or feature list link exists yet, so a kit today carries the product page and, for three products, the interactive demo, and the practice copy names what was left out;
+  - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they open the mail client, and an emailed product link opens the home page there (the artifact drops the route);
+  - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
+  - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit;
+  - **the packaging plugin** still writes `demoUrl`, `demoPreviewUrl` and `materials` in its own cards; it defers to this site at contract round 12, and its cards need the change in Oracle-Packaging-Skills.
+- **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
   - the Internal panel removed;
@@ -297,6 +303,7 @@ Exact commands are in HANDOFF §4.
 | Doc | Read it when |
 |---|---|
 | `README.md` | You need the folder layout, the routes, the config keys at a glance, the three walkthroughs or deployment |
+| `mail/README.md` | You touch the emails the forms send, a kit link in `links.json`, test or live, the sender or the n8n workflow |
 | `docs/HANDOFF.md` | You need the exact run, verify and publish commands (§4), the standing rules in full (§3), the inputs list (§7) or the Node note (§9) |
 | `docs/SCHEMA.md` | You add, rename or retire a `content.js` key |
 | `docs/CONFIG.md` | You touch a switch in `config.js` |

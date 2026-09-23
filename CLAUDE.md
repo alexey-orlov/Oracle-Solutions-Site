@@ -7,6 +7,7 @@ This repository is private and stays private: `docs/` holds customer names and l
 ## Layout
 
 - `site/` is the publish root: a static, hash-routed site with no build step.
+- `links.json` holds every link a product's sales kit uses and `mail/` the emails the forms send (manual: `mail/README.md`). Neither is ever published. A live trigger URL (the n8n webhook) never enters git: it lives in `.work/n8n/` on the Mac that built the workflow.
 - `tools/check-grammar.js` is the site's checker and its gate. Every owner rule that can be checked becomes an assertion there.
 - `docs/` holds the site's own records.
 - `site.manifest.json` is the site's machine-readable description of itself: the publish target and the artifacts never to publish, the wrapper's strip lines, the paths that never ship, the checker command, the preview entry and the contract round. The `oracle-packs-web` plugin reads it before it touches the site. Change it in the same commit as the thing it describes, and bump `contract.round` in any round that changes a `content.js` key, a config switch, a product tab, a checker rule or a publish rule.

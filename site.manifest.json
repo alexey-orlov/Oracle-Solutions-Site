@@ -2,7 +2,7 @@
   "$comment": "The mini-site's machine-readable description of itself. The oracle-packs-web plugin reads it before it edits, checks, previews or publishes this site. Change it in the same commit as the thing it describes. Prose rules live in docs/START-HERE.md; enforcement lives in tools/check-grammar.js.",
   "name": "Oracle AI & Data Solutions",
   "contract": {
-    "round": 11,
+    "round": 12,
     "asOf": "2026-09-23",
     "$comment": "Bump in any round that changes a content.js key, a config switch, a product tab, a checker rule or a publish rule. The plugin compares this with the round its own listing references were written against and defers to the site when the site is newer."
   },
@@ -14,7 +14,8 @@
     "theme": "docs/SS26-THEME.md",
     "assets": "docs/ASSETS.md",
     "provenance": "docs/PROVENANCE.md",
-    "runbook": "docs/HANDOFF.md"
+    "runbook": "docs/HANDOFF.md",
+    "mail": "mail/README.md"
   },
   "paths": {
     "publishRoot": "site",
@@ -22,7 +23,11 @@
     "config": "site/data/config.js",
     "diagrams": "site/data/diagrams.js",
     "demos": "site/demo",
-    "denyList": "tools/deny-list.json"
+    "denyList": "tools/deny-list.json",
+    "links": "links.json",
+    "siteLinks": "site/data/links.js",
+    "syncLinks": "node tools/sync-links.js",
+    "mail": "mail"
   },
   "checker": {
     "run": "node tools/check-grammar.js",
@@ -33,7 +38,13 @@
   "preview": {
     "launchConfig": "oracle-site",
     "origin": "http://127.0.0.1:8765",
-    "widths": [1440, 1280, 1024, 768, 375],
+    "widths": [
+      1440,
+      1280,
+      1024,
+      768,
+      375
+    ],
     "h1Width": 320
   },
   "publish": {
@@ -67,17 +78,23 @@
       "index-legacy.html",
       "assets/site-legacy.css"
     ],
-    "fullTree": "Every path the target's list_files already shows, plus the new files. Never the whole folder: the archived theme's files stay off this artifact.",
-    "demoTargets": "site/data/config.js: products[<slug>].demoPreviewUrl"
+    "fullTree": "Every path the target's list_files already shows, plus the new files: since round 12 that includes data/links.js, without which every Interactive demo button disappears. Never the whole folder: the archived theme's files stay off this artifact.",
+    "demoTargets": "links.json: products[<slug>].interactiveDemoArtifact, then node tools/sync-links.js (round 12; config.js carries no link to a kit artifact)"
   },
   "neverShip": {
     "paths": [
       "docs/asset-candidates/",
-      "site/assets/img/logos/"
+      "site/assets/img/logos/",
+      "links.json",
+      "mail/"
     ],
     "sweep": {
       "root": "site",
-      "include": ["*.js", "*.css", "*.html"],
+      "include": [
+        "*.js",
+        "*.css",
+        "*.html"
+      ],
       "patterns": "every name on the practice deny-list, plus logos/"
     }
   }
