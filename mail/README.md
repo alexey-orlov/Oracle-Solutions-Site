@@ -87,7 +87,7 @@ It also supplies three credentials: read access to the repository, the mail tran
 
 ## Testing
 
-- **On the claude.ai preview nothing can send**: the artifact blocks every request to another host, so every form opens the visitor's mail client, and the page says so.
-- **On a local run** (`preview_start {name: "oracle-site"}`, port 8765), the forms read the endpoint from the browser, so it never enters git: `localStorage.setItem("oracle-ai-solutions:form-endpoint", "<the deployment's webhook URL>")`.
+- **On the claude.ai preview nothing can send**: the artifact blocks every request to another host. So each form says under itself that the preview cannot send, and names the practice mailbox. No form ever opens a mail app.
+- **On a local run** (`python3 tools/serve.py`, or `preview_start {name: "oracle-site"}`: port 8765, this Mac only, never cached), the forms read the endpoint from `site/data/endpoint.local.json`. That file is git-ignored and never published (the checker asserts both), so the URL never enters git. It works in every browser on the machine: `{ "formEndpoint": "<the deployment's webhook URL>" }`. The sender must also list the local origin among the trigger's allowed origins (today ports 8765 and 8767).
 - **On a deployed copy**, set `formEndpoint` in that copy's `data/config.js`. The checker fails it in the repository.
 - In every case the endpoint accepts browser requests only from the origins its trigger lists.

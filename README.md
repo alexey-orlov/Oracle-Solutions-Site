@@ -37,8 +37,8 @@ Read `docs/SS26-THEME.md` before changing either. Both run from the same server:
 | Cross-system ERP Q&A | https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb |
 
   A standalone URL belongs in that product's `interactiveDemoArtifact` in `links.json` as soon as it exists (`docs/CONFIG.md` §3a) — that is the link the site's own artifact preview uses, and the one the kit email sends while the site is a claude.ai link.
-- **Forms on the preview:** the claude.ai artifact blocks every request to another host, so there every form opens the visitor's mail client, and the page says so. The emails the forms send (`mail/README.md`) work from a local run or a real host.
-- **Locally:** any static server pointed at `site/` — `python3 -m http.server 8765 --directory site`, or the `oracle-site` entry in `.claude/launch.json`. See [Run it locally](#run-it-locally).
+- **Forms on the preview:** the claude.ai artifact blocks every request to another host, so there each form says under itself that the preview cannot send, and names the practice mailbox. No form opens a mail app. The emails the forms send (`mail/README.md`) work from a local run or a real host.
+- **Locally:** `python3 tools/serve.py` (port 8765, this Mac only, never cached), or the `oracle-site` entry in `.claude/launch.json`. See [Run it locally](#run-it-locally).
 
 ---
 
@@ -79,7 +79,7 @@ oracle-solutions-site/
     │   ├── app.js            UI helpers (window.UI), header, footer, router, modal
     │   ├── forms.js          the demo, contact and sales-kit forms (window.FORMS)
     │   ├── review.js         TEMPORARY: the Internal checklist panel, prototype only (START-HERE §8)
-    │   └── img/              wordmarks, heroes, step frames, industries, posters, headshot
+    │   └── img/              wordmarks, heroes, step frames, industries, posters, headshots (people/)
     │       ├── heroes/       per-page hero background images + heroes.json
     │       └── groups/       the six product-group tile images for the home page (docs/ASSETS.md §2b)
     ├── data/
@@ -109,7 +109,7 @@ Script order in `index.html` matters: `data/*` → `assets/forms.js` → `pages/
 | `#/` | Home — hero with the three-layer stack (Oracle platforms → SoftServe product groups → SoftServe services), a three-figure proof strip led by **from 30 days**, two ways in, **six product-group tiles**, how we deliver, case studies, about SoftServe, contact |
 | `#/products` | Product marketplace — facet rail (Oracle platform · what it does · Artifacts), search, tiles. **Both radio rails are fixed lists** in canonical order: every platform a product can run on and all six groups, always, with a zero-count option disabled and printing no number. *Oracle AI for Fusion Applications* carries `catalog: false` and is not offered — no product runs on it. The *All* options carry no count, and the results line reports what a filter returned with no denominator — nothing at all when nothing is filtered. `?tech=<id>` and `?cat=<id>` both resolve for every id, rendering that facet's or that group's `emptyState` (`docs/PROVENANCE.md` §18.9, §28) |
 | `#/products/<slug>` | One product — hero plus tabs |
-| `#/products/<slug>/<tab>` | `overview` · `use-cases` · `technology` · `jumpstart` · `contacts` (round 10). **Use cases** carries the industry tabs and the case study, which used to sit at the foot of the Overview. **Contacts** is one row: the contact card beside a two-tab switch — *Talk to us* (open by default) and *Get the sales kit*, the product's **sales-kit request** for sellers (work email → the kit), which had its own *For sellers* tab in rounds 8–9. Only one form is open at a time, and neither is below the fold; `…/contacts#kit` opens on the kit tab, any other entry on the ask. The retired segments `pov` → `jumpstart` and `demo` / `sellers` → `contacts` redirect in place, so Back still returns to where the reader came from and an old link still lands on the right tab. |
+| `#/products/<slug>/<tab>` | `overview` · `use-cases` · `technology` · `jumpstart` · `contacts` (round 10). **Use cases** carries the industry tabs and the case study, which used to sit at the foot of the Overview. **Contacts** is one row: the contact card (Karsten Tramborg, then the product's own lead, over the one practice address; round 13) beside a two-tab switch — *Talk to us* (open by default) and *Get the sales kit*, the product's **sales-kit request** for sellers (work email → the kit), which had its own *For sellers* tab in rounds 8–9. Only one form is open at a time, and neither is below the fold; `…/contacts#kit` opens on the kit tab, any other entry on the ask. The retired segments `pov` → `jumpstart` and `demo` / `sellers` → `contacts` redirect in place, so Back still returns to where the reader came from and an old link still lands on the right tab. |
 | `#/sellers` | **For sellers** (round 8, `docs/PROVENANCE.md` §24): the sales-kit request for all offers or one product — a SoftServe or Oracle work email gets the kit; customers and partners are routed to the scoping call — plus *See the fit in an account?*, which opens the demo form. Reached from the footer's link row, and from *Get the full kit* in the confirmation after a product kit request; not in the header (removed 2026-09-17). |
 | `#/services` | Services, in three screens and the contact block, one message each (round 7, `docs/PROVENANCE.md` §23): AI depth with Oracle expertise — hero on the practice, stat band, platform chips · it's all about ROI (`#how-we-engage`: Discovery → Jumpstart proof of value → Integration → Scaling, each ending in a measured result) · a fast proof of value, no hassle (`#proof-of-value`: the light band with **4–8 weeks**, then what you bring and what you leave with) · contact form (`#contact`) |
 | anything else | A designed not-found page |
@@ -136,7 +136,7 @@ Open `site/index.html` in a browser. That is the whole procedure — the site is
 If a browser blocks local file access, serve the folder over HTTP instead:
 
 ```bash
-python3 -m http.server 8765 --directory site
+python3 tools/serve.py 8765 site
 # then open http://localhost:8765/
 ```
 
@@ -155,9 +155,9 @@ Full field-by-field reference: `docs/CONFIG.md`. In short:
 | Key | What it does |
 |---|---|
 | `contactEmail` | Mailbox the forms fall back to when no endpoint is set. Never printed on a page. |
-| `formEndpoint` | Empty in the repo, always (the checker fails a committed URL): forms compose a `mailto:`. A deployed copy sets its own URL, and a local run reads it from `localStorage` (`mail/README.md`); forms then `POST` JSON to it and confirm only on a 2xx response. |
+| `formEndpoint` | Empty in the repo, always (the checker fails a committed URL). A deployed copy sets its own URL, and a local run reads it from the git-ignored `site/data/endpoint.local.json` (`mail/README.md`). Forms `POST` JSON to it in the background and confirm only on a 2xx response. With no endpoint, each form says under itself that this copy cannot send. |
 | `sellerGate.allowedDomains` | Email domains that may receive the sales kit (subdomains included). Today: `softserveinc.com`, `oracle.com`. Routing, not access control — the endpoint must check again. |
-| `sellerGate.kitAutoSend` | `true` since round 12: the endpoint is the workflow that emails the kit, and it answers 2xx only after the kit went out, so the page may say *"We have emailed the kit"*. With no endpoint the visitor's mail client carries the request. |
+| `sellerGate.kitAutoSend` | `true` since round 12: the endpoint is the workflow that emails the kit, and it answers 2xx only after the kit went out, so the page may say *"We have emailed the kit"*. With no endpoint the kit form says it cannot send, and names the practice mailbox. |
 | `sellerGate.kitEmailKey` / `legacyStorageKey` | `localStorage` keys: the last kit email (prefill), and the retired gate's unlock flag (removed on load). |
 | `products.<slug>.marketplace` / `.marketplaceUrl` | The boolean is the switch: `true` → the **Oracle Marketplace** badge on the hero chip row and the product tile, and the count beside the **Oracle Marketplace** checkbox in the rail's *Artifacts* group. The URL only decides whether that badge is a link; set while the boolean is `false`, it fails the build. `true` today on `large-document-extraction` and `workforce-optimization`, both with an empty URL, so both badges are inert. |
 | `products.<slug>.video` | `true` → the product hero carries the 16:9 demo frame, and nothing else (the demo badge and the *Interactive demo* filter read the walkthrough link). With no `video` link in `links.json` yet, clicking the frame opens a short panel saying the recording is being prepared, with a button to that product's Contacts tab. `true` today on `workforce-optimization`, `large-document-extraction` and `account-insights`. |

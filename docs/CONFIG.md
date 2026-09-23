@@ -49,13 +49,13 @@ window.SITE_CONFIG = {
 
 ### `contactEmail`
 
-The mailbox every form falls back to when `formEndpoint` is empty. Today: `oracle@softserveinc.com` — **the same address the contact card prints**, and that is the rule: the card and the form directly beneath it must reach one destination. They did not, once: the card printed the practice mailbox while the form composed to an unverified `RnDrequest@` alias, so a seller demoing the Contacts tab saw the mismatch the moment the mail client opened. If a different routing address is ever wanted here, it has to be verified first and the reason recorded in this file.
+The practice mailbox the forms name whenever the visitor needs a way round them. Today: `oracle@softserveinc.com`, **the same address the contact card prints**, and that is the rule: the card and the form directly beneath it point to one destination. They did not, once: the card printed the practice mailbox while the form's fallback went to an unverified `RnDrequest@` alias. If a different address is ever wanted here, it has to be verified first and the reason recorded in this file.
 
 ```js
 contactEmail: "oracle@softserveinc.com",
 ```
 
-This address is **never printed on a page**. It is used only as the destination of the `mailto:` the form composes. If the alias is replaced, change it here and nothing else.
+Forms print it as an ordinary link in three places: the line a copy with no endpoint shows under each form, the red line after a failed send, and the kit confirmations. **No form opens a mail app with it** (START-HERE §4). If the alias is replaced, change it here and nothing else.
 
 ### `formEndpoint`
 
@@ -63,10 +63,10 @@ Where all three forms send their data: *Talk to us*, *Request a scoping call* an
 
 | Value | What happens on submit |
 |---|---|
-| `""` (the repo, always) | The browser opens the visitor's mail client with a pre-composed message to `contactEmail`, the form fields in the body, and the page says so. This is what the claude.ai preview does, because the artifact blocks every request to another host. |
-| A URL (a deployed copy, or a local run) | The form `POST`s JSON to that URL with `fetch`, and shows the "Thanks — your request is in." confirmation (the kit: *Check your inbox*) on a 2xx response, or the error message on anything else. |
+| `""` and no local file (the claude.ai preview, a fresh clone) | Nothing can be sent, and each form says so under itself before anyone types: *"This preview can't send forms. Email oracle@softserveinc.com…"*. A submit repeats it in red. No mail app opens. |
+| A URL (a deployed copy, or a local run) | The form `POST`s JSON to that URL with `fetch` in the background, shows *Sending…*, then *Thanks, your request is in* (the kit: *Check your inbox*) on a 2xx response. On anything else it shows a red *That didn't send* line and keeps what was typed. |
 
-**The URL is never committed.** A live trigger URL in git is the AO-Personal-OS hard rule this repo inherits, and `tools/check-grammar.js` fails a non-empty `formEndpoint` here. A deployed copy sets it in its own `config.js`. On `127.0.0.1` or `localhost` the forms read it from `localStorage["oracle-ai-solutions:form-endpoint"]` instead, set by hand for a test (`mail/README.md`, "Testing locally").
+**The URL is never committed.** A live trigger URL in git is the AO-Personal-OS hard rule this repo inherits, and `tools/check-grammar.js` fails a non-empty `formEndpoint` here. A deployed copy sets it in its own `config.js`. On `127.0.0.1` or `localhost` the forms read it from `site/data/endpoint.local.json` instead. That file is git-ignored, never published and works in every browser on the machine (`mail/README.md`, "Testing").
 
 **Payload shape posted to the endpoint** (JSON, `Content-Type: application/json`):
 
