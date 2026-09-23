@@ -300,17 +300,9 @@ Renders the **Jumpstart** tab (`#/products/<slug>/jumpstart`; `…/pov` redirect
 
 After the Jumpstart block, the tab still renders `shared.credibilityBlock` and `shared.engageLink`; `shared.preFlightGate` is carried for reference — its content is node 1 of every product's `timeline`.
 
-### `sellers`
+### `sellers` — retired in round 12
 
-| Key | Type | Notes |
-|---|---|---|
-**Not rendered since round 8.** The product's sales-kit request (`salesKit`, below) is what replaced it — on its own *For sellers* tab in rounds 8–9, and since round 10 on the Contacts tab, where round 10b made it the second tab of a switch. This block is the **kit manifest** — what whoever sends the kit puts in it.
-
-| Key | Type | Notes |
-|---|---|---|
-| `materials` | `[{ key, title, description, state }]` | One row per asset. `key` is the lookup into `SITE_CONFIG.products[slug].materials` (the link); `state` (from `shared.materialStates`) says whether the asset exists yet. |
-| `emptyPanelCopy?` | string | Carried from the retired panel; not rendered. |
-No `notes` key, and no seller notes anywhere in the site: the notes fetch (`sellerGate.notesUrl`) retired with the gate. Anything in `content.js` is one view-source away from a customer.
+The unrendered kit manifest (`sellers.materials`, with `shared.materialStates` for its states) is gone: the kit is now the same six pieces for every product, their links live in `links.json` at the repo root, and the kit email is sent automatically from them (`CONFIG.md` §3a, `mail/README.md`). `tools/check-grammar.js` fails a `sellers` key that comes back. No seller notes anywhere in the site either: anything in `content.js` is one view-source away from a customer.
 
 ---
 
