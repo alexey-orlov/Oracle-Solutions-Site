@@ -612,6 +612,42 @@ if (!arr(C.products) || C.products.length !== 7) {
   if (k.linkedin !== undefined && !/^https:\/\/([a-z]{2,3}\.)?linkedin\.com\//.test(k.linkedin)) {
     fail("shared.contact", "linkedin, when present, must be a public linkedin.com URL — omit the key otherwise");
   }
+
+  /* Round 13 (Alex): every product's Contacts card names a second person, the
+     product's own lead, over the one practice address. Each person is stored
+     once in shared.people and a product points at one by id, so a name or a
+     title cannot drift across the products that share a lead. A person carries
+     no address and no line of their own: the mailbox and the blurb are the
+     card's, printed once under everyone. */
+  var people = C.shared.people || {};
+  Object.keys(people).forEach(function (id) {
+    var pw = "shared.people." + id;
+    var person = people[id] || {};
+    ["name", "title"].forEach(function (f) {
+      if (!str(person[f])) fail(pw, f + " missing");
+    });
+    ["email", "blurb"].forEach(function (f) {
+      if (person[f] !== undefined) fail(pw, "carries " + f + " — the card prints shared.contact." + f + " once, under everyone");
+    });
+    if (typeof person.photo !== "string") fail(pw, "photo must be a string (empty when no confirmed headshot ships)");
+    else if (!person.photo.trim()) warn(pw, "photo is empty — the card renders the initials avatar");
+    else if (!new RegExp("^assets/img/people/" + id + "\\.(jpg|jpeg|png|webp)$").test(person.photo)) {
+      fail(pw, 'photo "' + person.photo + '" is not assets/img/people/' + id + ".<ext>");
+    } else checkAsset(pw, "contact photo", person.photo);
+    if (person.linkedin !== undefined && !/^https:\/\/([a-z]{2,3}\.)?linkedin\.com\//.test(person.linkedin)) {
+      fail(pw, "linkedin, when present, must be a public linkedin.com URL — omit the key otherwise");
+    }
+  });
+  var led = {};
+  (C.products || []).forEach(function (p) {
+    var pw = "products[" + p.slug + "].contactPerson";
+    if (!str(p.contactPerson)) return fail(pw, "missing — the Contacts card names the product's lead beside " + k.name);
+    if (!people[p.contactPerson]) return fail(pw, '"' + p.contactPerson + '" is not an id in shared.people');
+    led[p.contactPerson] = true;
+  });
+  Object.keys(people).forEach(function (id) {
+    if (!led[id]) fail("shared.people." + id, "no product points at this person, so nothing renders them");
+  });
   /* Round 10: five tabs, in this order. Use cases took the industry block and
      the case study off the Overview; For sellers went the other way — its kit
      request is the Contacts tab's second row, because a page that repeats one
@@ -1485,6 +1521,14 @@ var raw = fs.readFileSync(path.join(root, "site/data/content.js"), "utf8");
   ["prioritis", "British spelling — the corpus is US English (prioritize)"]
 ].forEach(function (pair) {
   if (raw.indexOf(pair[0]) !== -1) fail("content.js", 'contains banned string "' + pair[0] + '" (' + pair[1] + ")");
+});
+
+/* Round 13: four people are named on the site now, and none of their own
+   mailboxes may ship. Any SoftServe address but the practice one fails. */
+(raw.match(/[A-Za-z0-9._%+-]+@softserveinc\.com/g) || []).forEach(function (address) {
+  if (address !== "oracle@softserveinc.com") {
+    fail("content.js", 'prints "' + address + '" — the site prints the practice mailbox oracle@softserveinc.com only');
+  }
 });
 
 /* Round 10: "Request a demo" is retired as a label — the site has one contact
