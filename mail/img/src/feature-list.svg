@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300">
+<polygon points="16,0 464,0 480,16 480,284 464,300 16,300 0,284 0,16" fill="#edf0f2"/>
+<polygon points="166,37 314,37 320,43 320,257 314,263 166,263 160,257 160,43" fill="#ffffff"/>
+<rect x="174" y="53" width="88" height="16" fill="#bdcbd7"/>
+<rect x="174" y="73" width="24" height="4" fill="#f46a4a"/>
+<rect x="174" y="119" width="132" height="2" fill="#e1e7eb"/>
+<rect x="174" y="145" width="132" height="2" fill="#e1e7eb"/>
+<rect x="174" y="171" width="132" height="2" fill="#e1e7eb"/>
+<rect x="174" y="197" width="132" height="2" fill="#e1e7eb"/>
+<rect x="174" y="223" width="132" height="2" fill="#e1e7eb"/>
+<rect x="174" y="102" width="56" height="8" fill="#d1dae2"/>
+<rect x="174" y="128" width="44" height="8" fill="#d1dae2"/>
+<rect x="174" y="154" width="52" height="8" fill="#d1dae2"/>
+<rect x="174" y="180" width="36" height="8" fill="#d1dae2"/>
+<rect x="174" y="206" width="48" height="8" fill="#d1dae2"/>
+<rect x="174" y="232" width="40" height="8" fill="#d1dae2"/>
+<circle cx="250" cy="106" r="7" fill="#1485c4"/>
+<circle cx="250" cy="132" r="7" fill="#1485c4"/>
+<circle cx="250" cy="158" r="7" fill="#1485c4"/>
+<circle cx="250" cy="184" r="7" fill="#1485c4"/>
+<circle cx="250" cy="210" r="7" fill="#1485c4"/>
+<circle cx="250" cy="236" r="7" fill="#1485c4"/>
+<path d="M274,99.5 A6.5,6.5 0 0 0 274,112.5 Z" fill="#bdcbd7"/>
+<path d="M274,125.5 A6.5,6.5 0 0 0 274,138.5 Z" fill="#bdcbd7"/>
+<path d="M274,151.5 A6.5,6.5 0 0 0 274,164.5 Z" fill="#bdcbd7"/>
+<path d="M274,177.5 A6.5,6.5 0 0 0 274,190.5 Z" fill="#bdcbd7"/>
+<path d="M274,203.5 A6.5,6.5 0 0 0 274,216.5 Z" fill="#bdcbd7"/>
+<path d="M274,229.5 A6.5,6.5 0 0 0 274,242.5 Z" fill="#bdcbd7"/>
+<circle cx="274" cy="106" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="274" cy="132" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="274" cy="158" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="274" cy="184" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="274" cy="210" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="274" cy="236" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="298" cy="106" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="298" cy="132" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="298" cy="158" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="298" cy="184" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="298" cy="210" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+<circle cx="298" cy="236" r="5.5" fill="none" stroke="#bdcbd7" stroke-width="3"/>
+</svg>
