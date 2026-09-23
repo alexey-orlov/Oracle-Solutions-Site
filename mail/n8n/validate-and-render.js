@@ -2,15 +2,20 @@
 // a copy of this file; mail/README.md says how to update it. It reads the repo
 // files fetched by "Read from GitHub", runs mail/render.js from them, validates the
 // POST, applies the send caps and renders every email the request causes.
-const body = $('Form POST').first().json.body || {};
+// Started by the schedule instead of a form, it is the self-check: it renders every
+// email the forms can cause, sends nothing, and reports only a problem.
+const selfCheck = !$('Form POST').isExecuted;
+const body = selfCheck ? {} : ($('Form POST').first().json.body || {});
+const dep = $('Deployment settings').first().json;
+const deployment = { testInbox: dep.testInbox, fromName: dep.fromName, fromAddress: dep.fromAddress };
 const paths = $('Files to read').all().map(i => i.json.path);
 const got = $input.all();
 
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function stop(outcome, reason, extra) {
-  const alertHtml = '⚠️ <b>Oracle site forms: ' + esc(outcome === 'config' ? 'not working' : outcome) + '</b>\n' + esc(reason) +
-    '\n\nThe visitor saw an error and was pointed to oracle@softserveinc.com.';
-  return [{ json: Object.assign({ outcome, reason, alertHtml }, extra || {}) }];
+  const alertHtml = '⚠️ <b>Oracle site forms: ' + (selfCheck ? 'self-check failed' : esc(outcome === 'config' ? 'not working' : outcome)) + '</b>\n' + esc(reason) +
+    (selfCheck ? '\n\nNo visitor has hit this yet: the next form submission would.' : '\n\nThe visitor saw an error and was pointed to the practice mailbox.');
+  return [{ json: Object.assign({ outcome: selfCheck ? 'selfcheck' : outcome, reason, alertHtml }, extra || {}) }];
 }
 
 const files = {};
@@ -20,7 +25,7 @@ for (let i = 0; i < paths.length; i++) {
   if (!item || !item.binary || !item.binary.data) {
     const e = item && item.json && item.json.error;
     return stop('config', 'Could not read ' + paths[i] + ' from GitHub (' + String(e ? (e.message || JSON.stringify(e)) : 'no response').slice(0, 300) +
-      '). Check the "GitHub read (Oracle-Solutions-Site)" credential.');
+      '). Check the GitHub read credential and the repo in Deployment settings.');
   }
   if (/\.png$/.test(paths[i])) images[paths[i]] = item.binary.data;
   else files[paths[i]] = (await this.helpers.getBinaryDataBuffer(i, 'data')).toString('utf8');
@@ -36,6 +41,7 @@ try {
     links: JSON.parse(files['links.json']),
     catalog: JSON.parse(files['mail/catalog.json']),
     copy: JSON.parse(files['mail/copy.json']),
+    deployment,
     imageSrc: key => 'cid:kit-' + key
   };
 } catch (e) {
@@ -45,6 +51,28 @@ try {
 // Anything unexpected from here on still ends on the alerted "not working"
 // path, so a visitor never meets a silent failure.
 try {
+if (selfCheck) {
+  const problems = [];
+  const samples = [{ form: 'kit', email: 'self-check@oracle.com', product: 'all', consent: true }]
+    .concat(ctx.catalog.products.map(p => ({ form: 'kit', email: 'self-check@oracle.com', product: p.slug, consent: true })))
+    .concat([{ form: 'demo', name: 'Self check', email: 'self-check@example.com', consent: true },
+             { form: 'contact', name: 'Self check', email: 'self-check@example.com', consent: true }]);
+  for (const b of samples) {
+    const v = render.validate(b, ctx);
+    if (!v.ok) { problems.push(b.form + ' ' + (b.product || '') + ' refused: ' + v.code); continue; }
+    let mails;
+    if (b.form === 'kit') { const k = render.renderKit(v.request, ctx); mails = [k, render.renderInternal(v.request, ctx, { status: 'sent', kits: k.kits })]; }
+    else mails = [render.renderInternal(v.request, ctx)];
+    for (const m of mails) {
+      const left = (m.subject + m.html).match(/\{[a-zA-Z]+\}/);
+      if (left) problems.push(b.form + ' ' + (b.product || '') + ': the token ' + left[0] + ' is not filled (mail/copy.json)');
+      if (!m.to) problems.push(b.form + ': no recipient (the test inbox in Deployment settings, or inbox.live in mail/settings.json)');
+      for (const im of (m.images || [])) if (!images[im.file]) problems.push('missing picture ' + im.file);
+    }
+  }
+  if (!deployment.fromAddress) problems.push('no fromAddress in Deployment settings');
+  return problems.length ? stop('selfcheck', Array.from(new Set(problems)).slice(0, 12).join('\n')) : [{ json: { outcome: 'selfcheck-ok' } }];
+}
 const verdict = render.validate(body, ctx);
 if (!verdict.ok) return [{ json: { outcome: 'refused', code: verdict.code, reason: verdict.reason } }];
 const request = verdict.request;
@@ -75,8 +103,7 @@ store.hits.push(now);
 if (request.form === 'kit') (store.kit[request.email] = store.kit[request.email] || []).push(now);
 
 const mode = settings.mode === 'live' ? 'live' : 'test';
-const sender = settings.sender || {};
-const from = sender.name ? sender.name.replace(/[<>"\r\n]/g, '') + ' <' + sender.address + '>' : sender.address;
+const from = dep.fromName ? String(dep.fromName).replace(/[<>"\r\n]/g, '') + ' <' + dep.fromAddress + '>' : dep.fromAddress;
 const base = { request, from, mode, files, renderVersion: render.VERSION };
 
 if (request.form !== 'kit') {
@@ -93,7 +120,7 @@ return [{
   json: Object.assign(base, {
     outcome: 'kit',
     kit: { to: kit.to, subject: kit.subject, html: kit.html, text: kit.text, inline: kit.images.map(im => im.cid).join(',') },
-    kitReplyTo: ((sender.replyTo || {})[mode]) || '',
+    kitReplyTo: render.replyTo(settings, deployment),
     kits: kit.kits,
     practiceSent: render.renderInternal(request, ctx, { status: 'sent', kits: kit.kits })
   }),

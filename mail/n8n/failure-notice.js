@@ -10,6 +10,7 @@ const ctx = {
   links: JSON.parse(f['links.json']),
   catalog: JSON.parse(f['mail/catalog.json']),
   copy: JSON.parse(f['mail/copy.json']),
+  deployment: (dep => ({ testInbox: dep.testInbox, fromName: dep.fromName, fromAddress: dep.fromAddress }))($('Deployment settings').first().json),
   imageSrc: key => 'cid:kit-' + key
 };
 const e = $json.error || {};
