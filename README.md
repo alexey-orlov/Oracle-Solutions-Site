@@ -63,7 +63,10 @@ oracle-solutions-site/
 │   ├── PROVENANCE.md         where each fact and number on the site came from
 │   └── asset-candidates/     images considered but not shipped; logos/ holds the customer marks, kept outside site/ so nothing can ship them
 ├── tools/
-│   ├── check-grammar.js      asserts every product fills every grammar slot
+│   ├── check-grammar.js      asserts every product fills every grammar slot, and the links and emails hold
+│   ├── sync-links.js         validates links.json; writes site/data/links.js and mail/catalog.json
+│   ├── mail-preview.js       renders every email to .work/mail-preview/, plus as-read.txt for a copy review
+│   ├── n8n-workflow.js       builds the n8n workflow from mail/n8n/
 │   ├── erp-qa-check.js       reconciles the ERP Q&A walkthrough's numbers (329 assertions)
 │   ├── capture-demo-frames.mjs   drives a walkthrough in headless Chrome (tour QA, step frames, poster)
 │   └── capture-*.json        the scripted scenarios the capture tool replays
@@ -80,7 +83,8 @@ oracle-solutions-site/
     │       ├── heroes/       per-page hero background images + heroes.json
     │       └── groups/       the six product-group tile images for the home page (docs/ASSETS.md §2b)
     ├── data/
-    │   ├── config.js         window.SITE_CONFIG — links, gate, form destination
+    │   ├── config.js         window.SITE_CONFIG — switches, the kit's domains, form destination
+    │   ├── links.js          window.SITE_LINKS — the walkthrough and video links (generated from links.json)
     │   ├── content.js        window.SITE_CONTENT — every word on the site
     │   ├── review.js         TEMPORARY: window.SITE_REVIEW — the list the Internal panel shows
     │   └── diagrams.js       window.SITE_DIAGRAMS — the per-product architecture diagrams, drawn as inline SVG
@@ -151,17 +155,14 @@ Full field-by-field reference: `docs/CONFIG.md`. In short:
 | Key | What it does |
 |---|---|
 | `contactEmail` | Mailbox the forms fall back to when no endpoint is set. Never printed on a page. |
-| `formEndpoint` | Empty → forms compose a `mailto:`. A URL → forms `POST` JSON to it and show the confirmation only on a 2xx response. |
+| `formEndpoint` | Empty in the repo, always (the checker fails a committed URL): forms compose a `mailto:`. A deployed copy sets its own URL, and a local run reads it from `localStorage` (`mail/README.md`); forms then `POST` JSON to it and confirm only on a 2xx response. |
 | `sellerGate.allowedDomains` | Email domains that may receive the sales kit (subdomains included). Today: `softserveinc.com`, `oracle.com`. Routing, not access control — the endpoint must check again. |
-| `sellerGate.kitAutoSend` | `false` until something behind `formEndpoint` emails the kit; only `true` lets the page say *"We've emailed the kit"*. With no endpoint the visitor's mail client carries the request. |
+| `sellerGate.kitAutoSend` | `true` since round 12: the endpoint is the workflow that emails the kit, and it answers 2xx only after the kit went out, so the page may say *"We have emailed the kit"*. With no endpoint the visitor's mail client carries the request. |
 | `sellerGate.kitEmailKey` / `legacyStorageKey` | `localStorage` keys: the last kit email (prefill), and the retired gate's unlock flag (removed on load). |
 | `products.<slug>.marketplace` / `.marketplaceUrl` | The boolean is the switch: `true` → the **Oracle Marketplace** badge on the hero chip row and the product tile, and the count beside the **Oracle Marketplace** checkbox in the rail's *Artifacts* group. The URL only decides whether that badge is a link; set while the boolean is `false`, it fails the build. `true` today on `large-document-extraction` and `workforce-optimization`, both with an empty URL, so both badges are inert. |
-| `products.<slug>.video` | `true` → the product hero carries the 16:9 demo frame, and nothing else (round 9: the demo badge and the *Interactive demo* filter read `demoUrl`). With no `videoUrl` yet, clicking the frame opens a short panel saying the recording is being prepared, with a button to that product's Contacts tab. `true` today on `workforce-optimization`, `large-document-extraction` and `account-insights`. |
-| `products.<slug>.videoUrl` | Non-empty → the same frame plays the video in a modal instead (YouTube, Vimeo, SharePoint and Stream URLs embed as an iframe; anything else plays natively), and turns the frame on by itself even where `video` is `false`. |
+| `products.<slug>.video` | `true` → the product hero carries the 16:9 demo frame, and nothing else (the demo badge and the *Interactive demo* filter read the walkthrough link). With no `video` link in `links.json` yet, clicking the frame opens a short panel saying the recording is being prepared, with a button to that product's Contacts tab. `true` today on `workforce-optimization`, `large-document-extraction` and `account-insights`. |
 | `products.<slug>.successStoryUrl` | Non-empty → a "Download the success story" button appears. |
-| `products.<slug>.demoUrl` | The single source for "this product has an interactive demo". Non-empty → the secondary **Interactive demo** button in the product hero (the badge's own words and its `cursor-click` glyph, round 10), the same button in the pending-video panel, the **Interactive demo** badge on the hero chip row and the product tile, and the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group. Relative to `site/` so the walkthrough deploys with the site. Set today on `large-document-extraction`, `workforce-optimization` and `cross-system-erp-qa`. |
-| `products.<slug>.demoPreviewUrl` | The walkthrough published as its own claude.ai artifact. Used instead of `demoUrl` only while the site itself runs as a claude.ai artifact, which refuses to open a supporting file as a page of its own. Ignored on the real host. |
-| `products.<slug>.materials.<key>` | Non-empty → that row in the seller panel gets a download button instead of a disabled "Link pending" control. |
+| `links.json` (repo root) | **Every link a product's sales kit uses** (round 12, `docs/CONFIG.md` §3a): `onePager`, `salesDeck`, `featureList`, `interactiveDemo` (the single source for "this product has an interactive demo": the hero button, the badge and the *Artifacts* filter), `interactiveDemoArtifact` (its claude.ai copy, used while the site itself is an artifact) and `video` (plays in the hero frame, and turns the frame on by itself). Never deployed. After changing a walkthrough or video link, run `node tools/sync-links.js`, which writes the site's copy, `data/links.js`. |
 
 **The rule behind every URL field: an empty string means the control is not rendered at all** — no placeholder, no greyed-out button, no "coming soon" line. Paste a URL and it appears on the next reload. Every URL is empty today, so none of those controls ship yet. `video` is the one boolean and the one exception: it puts the demo frame up ahead of the recording, and the panel behind the click is what keeps that honest.
 
@@ -197,7 +198,7 @@ While the site is a prototype, an **Internal · N to confirm** button sits at th
 
 Three products carry a self-contained guided demo. `site/demo/large-document-extraction/` is a guided demo of the Large docs processing and review pack: plain HTML, CSS and JavaScript, no dependency beyond Google Fonts (Inter), no build step, and nothing leaves the page — the upload and the download are mocked. It mirrors the product's layout and information model — upload → documents → split-view review (source page beside the extracted rows, a citation on every value, confidence, business-rule validators) → rate-card export — on two synthetic documents of different types — a supplier agreement (rate schedule, commercial terms, insurance requirements) and an insurance policy schedule (locations, deductibles, sub-limits, endorsements, premium), each with its own schema, its own columns per group and its own validators — and walks the viewer through six steps on the agreement with anchored hints that let only the designated control through. After the last step, or on "Exit guide", the workspace is free to explore; the policy is where the other validator kinds live (a value outside its expected band, a required field not found, a cross-field check, a low-confidence value routed to review), and `?doc=pol` opens it directly.
 
-- Linked from the product hero through `products["large-document-extraction"].demoUrl` in `config.js` (`docs/CONFIG.md` §3); the button opens a new tab, and the same button sits in the pending-video panel. While the site is previewed as a claude.ai artifact the buttons go to `demoPreviewUrl` — the walkthrough published as its own artifact — because the artifact host will not open a supporting file as a page of its own.
+- Linked from the product hero through its `interactiveDemo` link in `links.json` (`docs/CONFIG.md` §3a); the button opens a new tab, and the same button sits in the pending-video panel. While the site is previewed as a claude.ai artifact the buttons go to `interactiveDemoArtifact` — the walkthrough published as its own artifact — because the artifact host will not open a supporting file as a page of its own.
 - Brand-agnostic by design: no SoftServe, Oracle or NVIDIA mark inside it, and no customer — it can be shown to any prospect in any industry.
 - URL switches: `?tour=off` skips the welcome card and the guide (free mode); `?ui=clean` also hides the guide toggle — the mode the step frames were captured in.
 - The four step frames on the product page and the video-frame poster are captures of it, made with `tools/capture-demo-frames.mjs` (`docs/ASSETS.md` §1).
@@ -228,6 +229,7 @@ scp -r site/* user@host:/var/www/oracle-ai-solutions/
 Notes that matter in production:
 
 - **Serve over HTTPS.** The forms post from the browser; mixed content will be blocked.
+- **The form endpoint belongs to the deployed copy.** Set `formEndpoint` in the deployed `data/config.js` (never in git), add the host to `ORIGINS` in `tools/n8n-workflow.js` so the workflow accepts its requests, and set `siteUrl` in `links.json` to the host so the kit email links product pages that open (`mail/README.md`, "Moving to a public host").
 - **Do not deploy `docs/`.** It is internal.
 - **Nothing to unblock.** No webfont service is contacted: `assets/fonts/` holds the five licensed faces, and the CSS falls back to metric-matched system faces if one fails to load.
 - **Caching:** `index.html` should be served with a short cache lifetime, `assets/` and `data/` can be cached longer — but remember that `config.js` and `content.js` are how the site is edited, so do not put them behind a year-long cache.
