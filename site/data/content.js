@@ -18,24 +18,24 @@ window.SITE_CONTENT = {
     navCta: { label: "Talk to us", route: "#/services#contact" },
     primaryCta: { label: "Talk to us", route: "#/#request-a-demo" },
     footer: {
-      heading: "CONTACT US",
-      description: "Tell us which account or workflow you have in mind.",
-      contactCta: { label: "Request a scoping call", route: "#/services#contact" },
       sellersLink: { label: "For sellers", route: "#/sellers" },
-      socialLabel: "Follow SoftServe",
-      social: [
-        { label: "SoftServe", url: "https://www.softserveinc.com/en-us" },
-        { label: "LinkedIn", url: "https://www.linkedin.com/company/softserve" },
-        { label: "Facebook", url: "https://www.facebook.com/SoftServeCompany" },
-        { label: "YouTube", url: "https://www.youtube.com/@SoftServeInc" }
-      ],
       legalLinks: [
-        { label: "Privacy policy", url: "https://www.softserveinc.com/en-us/privacy-policy" },
-        { label: "Terms and conditions", url: "https://www.softserveinc.com/en-us/terms-and-conditions" }
+        { label: "Privacy Notice", url: "https://www.softserveinc.com/en-us/privacy" },
+        { label: "Terms and Conditions", url: "https://www.softserveinc.com/en-us/terms-and-conditions" }
       ],
-      legalLine: "SoftServe · All rights reserved",
-      builtWith: "Built with Oracle and NVIDIA",
-      trademarkLine: "Built with Oracle and NVIDIA. Oracle, Oracle Cloud Infrastructure and Oracle Autonomous AI Lakehouse are trademarks of Oracle Corporation. NVIDIA, AI-Q and cuOpt are trademarks of NVIDIA Corporation."
+      siteLink: { label: "SoftServe website", url: "https://www.softserveinc.com/en-us" },
+      socialLabel: "SoftServe on social media",
+      social: [
+        { label: "LinkedIn", url: "https://www.linkedin.com/company/softserve/" },
+        { label: "YouTube", url: "https://www.youtube.com/user/SoftServeInc" },
+        { label: "Facebook", url: "https://www.facebook.com/SoftServeCompany" },
+        { label: "Instagram", url: "https://www.instagram.com/softserve_people/" },
+        { label: "TikTok", url: "https://www.tiktok.com/@softserve_people" },
+        { label: "X", url: "https://x.com/SoftServeInc" },
+        { label: "SoundCloud", url: "https://soundcloud.com/softserve-podcasts" },
+        { label: "Bluesky", url: "https://bsky.app/profile/softserveinc.com" }
+      ],
+      copyright: "© Copyright {year} SoftServe Inc."
     }
   },
 

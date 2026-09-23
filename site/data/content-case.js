@@ -32,9 +32,6 @@
   "use strict";
 
   var RECASE = [
-    /* Footer */
-    ["site.footer.heading", "CONTACT US", "Contact us"],
-
     /* Products index */
     ["productsPage.title", "PRODUCTS", "Products"],
     ["productsPage.bottomBlock.heading", "HAVE A WORKFLOW IN MIND?", "Have a workflow in mind?"],
