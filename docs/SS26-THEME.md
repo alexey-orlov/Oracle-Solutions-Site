@@ -36,7 +36,7 @@ on survive.
 | Elevation | glows and shadows | **surface steps** (`#fff → #edf0f2 → #e1e7eb → #d1dae2`); no shadow anywhere |
 | Heading weight | 700–900 | **400**; only H4-class titles are 700 |
 | Header | 76 px translucent dark bar + strip | **50 px solid white**, no blur, no strip |
-| Footer | dark, 900-uppercase heading | `#edf0f2` spacer band over a **pure-black** block, heading in the display serif at 32 px |
+| Footer | dark, 900-uppercase heading | `#edf0f2` spacer band over a **pure-black** block; since round 14 the brand's footer cut down to its link row (no frame) and its copyright row with the spark — no heading |
 | Body leading | 1.6 | **1.2**, with **+0.5 px** tracking |
 | Measure | 107 rem capped at 1600 px | **1400 px** content, gutters 96 / 40 / 16 |
 | Band rhythm | symmetric | **asymmetric 96 / 128** (bottom = 1.333 × top) |
@@ -93,7 +93,7 @@ because the real faces render:
 | Tag, button-sm, eyebrow | 12 px | 12 px | Replica 400 / 1.2 / **+.06em, UPPERCASE** |
 | Button | 16 px | 16 px | Replica 400 / 1.2 / **+.06em, UPPERCASE** |
 | Arrow link | 18 px | 18 px | Replica 400 / 1.2 / 0, sentence case |
-| Footer heading | 32 px | 32 px | Azurio 400 / 1.1 / 0 |
+| Footer links and copyright | 14 px | 14 px | Replica 400 / 1.2 / 0; the dash separators in Light 300 |
 
 **Uppercase is now a micro-type device only** — 12–16 px at +.06em on tags,
 buttons and kickers. It never appears in display type.
@@ -118,7 +118,7 @@ lines         #bdcbd7 control · #e1e7eb hairline · #d1dae2 panel rule
 action        #1485c4 · hover #459fdd · pressed #0e5e8b · tint #c1dff4
 accent        #f46a4a · tint #ffcec0
 secondary btn #d1dae2 · hover #e1e7eb · pressed #bdcbd7
-footer ink    #e8e8e8 · footer footnote #97a2ac
+footer ink    #fafaf8 · footer glyphs #e0e0e0 (#ffffff on hover)
 ```
 
 **The rule, in three lines.**
@@ -157,7 +157,8 @@ a tooltip, puts the shape and fill on `::before` and the focus ring on `::after`
 
 Every pill is gone: buttons and chips are cut rectangles, the icon circle is a
 48 px cut square well, social links are bare 16 px glyphs, the menu toggle is a
-bare 50 × 50 button.
+bare 50 × 50 button. The social glyphs are SoftServe's own filled marks, copied
+from its footer, not the 1.5 px line set (round 14).
 
 ## 5. Ground plan — one dark band per page
 
@@ -233,7 +234,7 @@ as hover; `prefers-reduced-motion` drops the scale. Every
   overlay loaded after `content.js`, `data-theme="light"`, a white `theme-color`,
   no webfont service, and every re-casing still matching `content.js`.
 - **Copy:** `content.js` is shared and must not change. Strings stored in
-  capitals are re-cased by `data/content-case.js`, which patches 45 paths and warns
+  capitals are re-cased by `data/content-case.js`, which patches 41 paths and warns
   (rather than silently overwriting) if a value has moved. The problem/solution
   titles land in `.eyebrow`, which uppercases them by design — their stored
   values are sentence case and that is correct.

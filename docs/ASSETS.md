@@ -634,9 +634,17 @@ were derived, not drawn.
 | `header-divider-ink.svg` | the white divider's path with the stroke set to the brand separator `#BDCBD7` |
 | `favicon.svg` | the wordmark's first glyph (the S, path index 0) in white, centred on a Lviv-blue `#1485C4` octagon with 26-unit corner cuts. Inlined as a data URI in `index.html`. The old teal spark is retired with the teal |
 
-On the one black ground in this theme — the footer and the `#about` band — the ink
-marks invert back with `filter: invert(1)` rather than carrying a second file
-(`.built-with img`, `.about-partner-mark`).
+On the `#about` band, the one black ground that shows them, the Oracle and NVIDIA
+ink marks invert back with `filter: invert(1)` rather than carrying a second file
+(`.about-partner-mark`). The footer carries no partner marks since round 14.
+
+**The footer's spark (round 14).** `assets/img/softserve-star-white.svg` (135×154,
+from SoftServe's brand kit, `BRAND/logos/`, PROVENANCE §2) is drawn 24 px wide at
+the right of the copyright row, where softserveinc.com's own footer puts the same
+mark: its `hero-icon.svg` (`viewBox 0 0 104 119`) is the same path at 0.77×,
+compared point by point on 2026-09-24. It is a white file on the black block, and
+print inverts it. The eight social glyphs are not files: their paths are inlined in
+`assets/app.js` (`SOCIAL_GLYPHS`), read from `assets.softserveinc.com/icons/*.svg`.
 
 `site/assets/fonts/` holds the five licensed faces, taken from SoftServe's own
 `/_next/static/media/` and renamed: `Azurio-Regular.woff`,
