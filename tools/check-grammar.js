@@ -1755,6 +1755,72 @@ if (/request a demo/i.test(raw)) {
   if (CFG.formEndpoint) {
     fail("config.formEndpoint", "is set in the repo — set it on the deployed copy only (mail/README.md), never in git");
   }
+
+  /* The emails' words (mail/copy.json) hold the site's rules, and every email the
+     forms can cause renders with no token left unfilled — checked with the real
+     links and with every kit link filled, so a layout path cannot hide. */
+  var copy = null;
+  try { copy = JSON.parse(fs.readFileSync(path.join(root, "mail/copy.json"), "utf8")); }
+  catch (error) { return fail("mail/copy.json", "missing or not valid JSON — " + error.message); }
+  var copyText = JSON.stringify(copy);
+  if (/—/.test(copyText)) fail("mail/copy.json", "carries an em dash — the emails use a colon, a comma or a full stop");
+  ["accelerator pack", "packaged", "ready-to-run", "workflow pattern", "solution pack", "pods"].forEach(function (word) {
+    if (copyText.toLowerCase().indexOf(word) !== -1) fail("mail/copy.json", 'uses retired vocabulary "' + word + '"');
+  });
+  var render = require(path.join(root, "mail/render.js"));
+  render.ARTIFACT_KEYS.forEach(function (key) {
+    var a = (copy.artifacts || {})[key] || {};
+    if (!str(a.name) || a.name.length > 24) fail("mail/copy.json artifacts." + key + ".name", "must be 1-24 characters");
+    if (!str(a.use) || a.use.length > 95) fail("mail/copy.json artifacts." + key + ".use", "must be one line of at most 95 characters");
+    if (!fs.existsSync(path.join(root, "mail/img", render.IMAGE_FILES[key]))) fail("mail/img/" + render.IMAGE_FILES[key], "missing — the kit email's picture for " + key);
+  });
+  if (((copy.artifacts || {}).interactiveDemo || {}).name !== (((C.shared || {}).tagFamilies || {}).availability || {}).demo.label) {
+    fail("mail/copy.json artifacts.interactiveDemo.name", "must be the site's own name for the walkthrough, \"Interactive demo\"");
+  }
+  var links = JSON.parse(fs.readFileSync(path.join(root, "links.json"), "utf8"));
+  var filled = JSON.parse(JSON.stringify(links));
+  Object.keys(filled.products).forEach(function (slug) {
+    ["onePager", "salesDeck", "featureList", "video"].forEach(function (k) {
+      if (!filled.products[slug][k]) filled.products[slug][k] = "https://example.invalid/" + slug + "/" + k;
+    });
+  });
+  [links, filled].forEach(function (L, pass) {
+    var ctx = {
+      links: L, copy: copy, settings: settings || {},
+      catalog: JSON.parse(fs.readFileSync(path.join(root, "mail/catalog.json"), "utf8")),
+      imageSrc: function (key) { return "cid:kit-" + key; }
+    };
+    var mails = [];
+    ["all"].concat((C.products || []).map(function (p) { return p.slug; })).forEach(function (slug) {
+      var v = render.validate({ form: "kit", email: "check@oracle.com", product: slug, consent: true }, ctx);
+      if (!v.ok) return fail("mail/render.js", "refuses a valid kit request for " + slug + " (" + v.code + ")");
+      var kit = render.renderKit(v.request, ctx);
+      mails.push(["kit " + slug, kit]);
+      mails.push(["kit notice " + slug, render.renderInternal(v.request, ctx, { status: "sent", kits: kit.kits })]);
+      mails.push(["kit failure " + slug, render.renderInternal(v.request, ctx, { status: "failed", kits: kit.kits, error: "x" })]);
+    });
+    ["demo", "contact"].forEach(function (form) {
+      var v = render.validate({ form: form, name: "Check", email: "check@example.com", consent: true, role: "customer" }, ctx);
+      if (!v.ok) return fail("mail/render.js", "refuses a valid " + form + " request (" + v.code + ")");
+      mails.push([form + " notice", render.renderInternal(v.request, ctx)]);
+    });
+    mails.forEach(function (m) {
+      var left = (m[1].subject + m[1].html + m[1].text).match(/\{[a-zA-Z]+\}/);
+      if (left) fail("mail/render.js " + m[0] + (pass ? " (all links filled)" : ""), "leaves the token " + left[0] + " unfilled");
+      if (m[1].subject.length > 90) fail("mail/render.js " + m[0], "subject is " + m[1].subject.length + " characters");
+    });
+  });
+  var refusals = [
+    [{ form: "kit", email: "someone@gmail.com", product: "all", consent: true }, "domain"],
+    [{ form: "kit", email: "a@oracle.com", product: "no-such-product", consent: true }, "product"],
+    [{ form: "demo", name: "x", email: "not-an-email", consent: true }, "email"],
+    [{ form: "demo", name: "x", email: "a@b.com", consent: false }, "consent"],
+    [{ form: "other", email: "a@b.com", consent: true }, "form"]
+  ];
+  refusals.forEach(function (r) {
+    var v = render.validate(r[0], { settings: settings || {}, catalog: JSON.parse(fs.readFileSync(path.join(root, "mail/catalog.json"), "utf8")) });
+    if (v.ok || v.code !== r[1]) fail("mail/render.js validate", "should refuse " + JSON.stringify(r[0]) + " with " + r[1] + ", got " + (v.ok ? "ok" : v.code));
+  });
 })();
 
 /* Round 4 (Alex, 2026-09-16): NO customer may be named anywhere in the shipped
