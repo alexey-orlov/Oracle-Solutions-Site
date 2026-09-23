@@ -54,7 +54,7 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
   - Sales materials go only to corporate addresses at softserveinc.com or oracle.com.
 
 **Where the site does not match the brief today** (flagged in the panel and left unchanged until Alex decides):
-- **Test mode** (`mail/settings.json`): every request reaches Alex (olekorlov@softserveinc.com), not oracle@softserveinc.com, and the emails go out from alex@alexorlov.co until a SoftServe sender is connected (§9).
+- **Test mode** (`mail/settings.json`): every request reaches the test inbox of whoever runs the sender, not oracle@softserveinc.com, and the emails go out from a temporary sender outside SoftServe's domain until a SoftServe integration replaces it (§9).
 - Two products print an **Integration price** on their Jumpstart tab: *Large docs processing and review* and *Workforce optimization* (€300–500K services plus infrastructure).
 - **No product is marked as planned**, so all seven read as available now.
 - **Partners** are priority 1, but they cannot receive the sales kit, which goes only to @oracle.com and @softserveinc.com. The brief contradicts itself here.
@@ -285,7 +285,7 @@ Exact commands are in HANDOFF §4.
   - joint delivery with Oracle's AI & Data organization and *"Scope, timeline and
     price on every product page"* left the home page with S2's old bullets.
 - **Round 12 (§32.6):**
-  - **the sender:** n8n signs in to Outlook as olekorlov@softserveinc.com if SoftServe allows it without admin approval, otherwise it sends from alex@alexorlov.co (Zoho) for now; later oracle@softserveinc.com with Send As;
+  - **the sender:** SoftServe's Azure AD requires admin approval for n8n, so the pilot sends from a temporary address outside SoftServe's domain. The real integration is a SoftServe app registration for Microsoft Graph, which needs an IT request (`mail/README.md`, "Replacing the sender");
   - **test to live:** `mail/settings.json` `mode`, once Alex has seen the emails in his inbox;
   - **the kit documents:** no one-pager, sales deck or feature list link exists yet, so a kit today carries the product page and, for three products, the interactive demo, and the practice copy names what was left out;
   - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they open the mail client, and an emailed product link opens the home page there (the artifact drops the route);

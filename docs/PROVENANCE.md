@@ -6007,11 +6007,12 @@ shows 107 files, each at its local byte size.
 ## 32. Round 12 — the forms send email, and every kit link lives in one file, 2026-09-23
 
 **The asks** (Alex, in session):
-1. Every form submission emails oracle@softserveinc.com (in test mode olekorlov@softserveinc.com), with context and a call to action for the reader.
+1. Every form submission emails oracle@softserveinc.com (in test mode Alex's own inbox), with context and a call to action for the reader.
 2. A kit request does the same, clearly separated, and says the kit already went out automatically, so nobody sends it again by hand.
 3. The requester gets a structured kit email: a thank-you, a note that someone will contact them shortly, and per pack the product page, one-pager, deck, feature list, interactive demo and video (if any), each as a generic preview picture, a linked name and one line on its intended use.
 4. All those links live in one simple, human-editable config file in this repository, with the demo and video links refactored into it.
 5. Later, on the first copy: *"Make sure that email text reads well outside this session and website context. 'Thanks for requesting it.' doesn't sound as a best opener here."*
+6. And on the sender: *"make sure that sender functionality is as autonomous as possible - I will share this repo with other people, and they don't need to see my creds + it should be easily replaceable with real integration as we progress"*.
 
 **What shaped the decisions** (found in session, before anything was built):
 - **The claude.ai artifact blocks every request to another host.** No form on the preview link can send anything, whatever sits behind it. Sending works from a local run or a real host.
@@ -6019,7 +6020,7 @@ shows 107 files, each at its local byte size.
 - **Anything under `site/` is public.** `config.js` is readable in view-source, and the kit documents carry the package prices the site keeps off its pages.
 
 **Alex's decisions** (2026-09-23, asked as three questions after a comparison table each):
-- **The sender:** an n8n workflow, signing in to Outlook as olekorlov@softserveinc.com if SoftServe does not require admin approval, and otherwise sending from alex@alexorlov.co "for now, then we will replace". Which one applies is known only when Alex signs in, so the build uses the second (Zoho SMTP) until he does.
+- **The sender:** an n8n workflow, signing in to Alex's SoftServe Outlook if SoftServe does not require admin approval, and otherwise sending from a temporary address of his own "for now, then we will replace". SoftServe's Azure AD required admin approval (Microsoft's screen, 2026-09-23), so the pilot sends from that temporary address.
 - **The links file lives beside the site**, not in it: private, with one sync command for the links the site's buttons read.
 - **Test locally for now**, with the public host chosen later.
 
@@ -6033,14 +6034,14 @@ shows 107 files, each at its local byte size.
 | `content.js` | `products[].sellers` (the unrendered manifest), `shared.materialStates` | removed; the kit is the same six pieces for every product |
 | Forms | `formEndpoint: ""`, so every form opened the mail client; `kitAutoSend: false` | the same in git, where a committed URL fails the checker. A local run reads the endpoint from `localStorage`, and a deployed copy sets its own; `kitAutoSend: true` |
 | Emails | none | `mail/`: `settings.json` (test/live, inboxes, sender, caps), `copy.json` (every word), `render.js` (validation and layout), `catalog.json` (generated), `img/` (six pictures), `n8n/` (Code nodes and the redacted export) |
-| Sender | none | n8n **Oracle site forms (cloud)** (`co9bpWm6xVIPMfcB`), with the backstop **Oracle site forms — error alerts** (`ih0qkEs5xOgpH2Kd`) |
+| Sender | none | an n8n workflow that implements the contract in `mail/README.md`, plus a backstop error workflow. Both ship as templates (`mail/n8n/*.template.json`); one deployment's values live in n8n and outside this repository |
 | Checker | the demo rule read `config.js` `demoUrl` | reads `links.json`. New assertions: the links file is valid and complete; its two copies are current; no retired field comes back; the kit domains are identical in `config.js` and `mail/settings.json`; no endpoint is committed; the copy has no em dash or retired word; every email renders with no token left, both with today's links and with every link filled; five invalid requests are refused with the right code |
 | Manifest | contract round 11 | round 12, with `links`, `siteLinks`, `syncLinks` and `mail`; demo targets now in `links.json`; `data/links.js` named in the publish rule; `links.json` and `mail/` never ship |
 
 ### 32.2 How a submission is handled
 
 1. The page `POST`s to the workflow.
-2. n8n reads `links.json`, `mail/settings.json`, `mail/catalog.json`, `mail/copy.json`, `mail/render.js` and the six pictures from GitHub `main`, through a read-only fine-grained token. A pushed edit is live on the next request.
+2. n8n takes the deployment's own values from its **Deployment settings** step (§32.7), then reads `links.json`, `mail/settings.json`, `mail/catalog.json`, `mail/copy.json`, `mail/render.js` and the six pictures from GitHub `main`, through a read-only fine-grained token. A pushed edit is live on the next request.
 3. It runs `render.js` from those files, so the email logic has one home. A probe run proved a Code node can execute fetched source (`new Function`), keep state between runs and format time zones.
 4. `validate()` re-checks the form, the email and the consent, and for the kit the domain and the product.
 5. The caps apply: `limits.perHour` submissions (30) and `kit.perAddressPerDay` kits to one address (3). Past a cap the page gets a 429, and Alex gets one alert an hour.
@@ -6048,7 +6049,7 @@ shows 107 files, each at its local byte size.
 7. For the two contact forms it sends the practice copy (Reply-To = the visitor). If that fails, the Telegram alert carries the whole request, so the lead is not lost.
 8. Anything unexpected ends on an alerted path, and a crash outside every path reaches the backstop workflow.
 
-The browser may call the webhook only from `http://127.0.0.1:8765` and `http://localhost:8765`, listed in `tools/n8n-workflow.js`. The webhook path lives only in `.work/n8n/webhook-path.txt` on this Mac, and `mail/n8n/workflow.json` carries it redacted.
+The browser may call the webhook only from the origins the trigger lists (today the local preview). The webhook path is a live trigger URL: it exists only in n8n and in the git-ignored `.work/n8n/` of the machine that built the workflow.
 
 ### 32.3 The copy (Fable), and the note that reshaped it
 
@@ -6086,7 +6087,7 @@ Chrome writes the file at once but does not exit, hence the 40-second alarm. The
 
 ### 32.6 Open for Alex
 
-- The sender credential in n8n (Outlook, or Zoho SMTP as alex@alexorlov.co) and the read-only GitHub token; then activating the workflow and a test to olekorlov@softserveinc.com.
+- The pilot deployment's credentials: the temporary sender's app password and the read-only GitHub token. Then activating the workflow, and a test to the test inbox.
 - `mail/settings.json` `mode: "live"` when the emails have been seen.
 - The kit document links: none exists yet.
 - A public host for the forms.
@@ -6095,3 +6096,18 @@ Chrome writes the file at once but does not exit, hence the 40-second alarm. The
 - The packaging plugin's cards, in Oracle-Packaging-Skills.
 
 The list is repeated in START-HERE §9.
+
+### 32.7 A shareable repository, and a sender that can be replaced
+
+Alex's sixth ask: the repository will be shared, others need not see his credentials, and the sender should stay autonomous and easy to swap for a real integration. What that changed:
+
+- **What the repository holds, and what it does not.** The repository holds what is sent and the rules for it. The deployment holds how and from where. `mail/settings.json` lost its `sender` block and its test inbox, and keeps only business routing: mode, the practice mailbox, the kit's domains and Reply-To, the caps, the time zone. The sender's From identity, its test inbox, the repository it reads and its alert channel moved into the workflow's **Deployment settings** step. The repository ships that step with placeholders (`mail/n8n/deployment-settings.js`).
+- **The workflow ships as a template** (`mail/n8n/workflow.template.json`, `mail/n8n/error-alerts.template.json`), with placeholder credentials and a placeholder webhook path. The first export, which carried one deployment's Telegram chat and credential ids, was removed. `tools/n8n-workflow.js` also writes `.work/n8n/code-nodes.json`, to update a running deployment's code without touching its settings or credentials. With a `.work/n8n/deployment.local.json` (git-ignored) it writes the full live workflow too.
+- **The contract** (`mail/README.md`) states what the site posts, which repository files the sender renders from, what `render.js` returns, and how the sender must answer and report. Any implementation that honours it can replace n8n without a change to the site. `render.toGraph()` turns a message into a Microsoft Graph `sendMail` body, for the most likely real integration: a SoftServe app registration, once IT grants one.
+- **Autonomy:**
+  - The workflow checks itself every six hours: the schedule runs the same steps a form does, renders every email, sends nothing, and reports only a problem.
+  - The logic, words and links stay live from GitHub, so a saved edit needs no deploy.
+  - Every failure alerts, and a backstop catches the rest.
+- **The checker enforces the split.** It fails a `sender` block or any inbox but `live` in `mail/settings.json`. It also fails any committed file that carries a webhook URL or an n8n instance address; the first run caught this manual doing exactly that.
+- **One deployment's details** (the pilot's instance, credentials, addresses and alert chat) are written up in Alex's private operating notes, not here.
+- **History.** Earlier commits of this round still show those non-secret identifiers. No password, token or webhook path was ever committed. Removing the identifiers from history too would mean rewriting it, which is Alex's call.
