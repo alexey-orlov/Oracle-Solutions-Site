@@ -1,0 +1,69 @@
+{
+  "$help": [
+    "Every link a product's sales kit uses, in one place. Edit a value, save, and git-autosync pushes it within a minute.",
+    "onePager, salesDeck, featureList: the kit documents. Paste a link anyone at Oracle or SoftServe can open. The kit email picks it up at once; nothing else to run.",
+    "interactiveDemo, interactiveDemoArtifact, video: these also drive the site's buttons. After changing one, run  node tools/sync-links.js  and publish the site.",
+    "interactiveDemo is the walkthrough's path inside site/ (or a full https:// URL). interactiveDemoArtifact is the same walkthrough published as its own claude.ai artifact, used while the site itself runs as one. video is the recorded demo: a YouTube, Vimeo, SharePoint or Stream link.",
+    "Leave a value as \"\" while the artifact does not exist: the kit email leaves it out, and the practice's copy of the request names it as missing.",
+    "siteUrl is the address the kit email links product pages to. This file is never published: it sits outside site/."
+  ],
+  "siteUrl": "https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri",
+  "products": {
+    "large-document-extraction": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "demo/large-document-extraction/index.html",
+      "interactiveDemoArtifact": "https://claude.ai/artifact/NdxY4f1D6hxC7pjyMRs6zP",
+      "video": ""
+    },
+    "account-insights": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "",
+      "interactiveDemoArtifact": "",
+      "video": ""
+    },
+    "workforce-optimization": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "demo/workforce-optimization/index.html",
+      "interactiveDemoArtifact": "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
+      "video": ""
+    },
+    "plan-vs-actual-investigation": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "",
+      "interactiveDemoArtifact": "",
+      "video": ""
+    },
+    "case-evidence-collection": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "",
+      "interactiveDemoArtifact": "",
+      "video": ""
+    },
+    "cross-system-erp-qa": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "demo/cross-system-erp-qa/index.html",
+      "interactiveDemoArtifact": "https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb",
+      "video": ""
+    },
+    "business-metrics-qa": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "",
+      "interactiveDemoArtifact": "",
+      "video": ""
+    }
+  }
+}
