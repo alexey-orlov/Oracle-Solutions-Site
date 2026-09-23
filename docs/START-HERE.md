@@ -2,7 +2,7 @@
 
 Read this page first in every new session. It holds what the site is for, the brief and the rules it is built to, how a round of work runs, and what earlier rounds learned the hard way. Detail lives in the docs mapped in §10. Keep this page current: when a requirement, rule or procedure changes, rewrite the line — never append a dated update.
 
-Current as of 2026-09-24, after round 13: every product's Contacts card names the product's own lead beside Karsten, and two labels were cut (PROVENANCE §33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Neither round 12 nor round 13 is on the shared link yet** (§9).
+Current as of 2026-09-24, after round 14: the footer is softserveinc.com's, cut down, with no Oracle or NVIDIA marks (PROVENANCE §34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 14 are not on the shared link yet** (§9).
 
 ## 1. What it is
 
@@ -22,7 +22,7 @@ Current as of 2026-09-24, after round 13: every product's Contacts card names th
     logo paths go through `assets/brand.js`. **`content.js` is the live site's own
     copy** — new strings are stored in sentence case directly, and
     `data/content-case.js` only re-cases what is left from before the rebrand
-    (43 rows, shrinking every round; never add one).
+    (41 rows, shrinking every round; never add one).
   - Copy: `site/data/content.js`.
   - Switches: `site/data/config.js`.
   - Page renderers: `site/pages/`, one per page.
@@ -74,7 +74,7 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
 | `#/sellers` | *Get the sales kit*, for all offers or one product (work email at softserveinc.com or oracle.com), **emailed automatically** since round 12. Below it, the demo form for a seller who already has an account in mind. | §24, §32 |
 
 - **Header:** Products · Services, plus *Talk to us*. *For sellers* is not in the header (Alex, 2026-09-17).
-- **Footer:** *For sellers* comes first in the link row. It is the only permanent way to `#/sellers`; the other is *Get the full kit* in the confirmation after a product kit request.
+- **Footer:** softserveinc.com's footer, cut down (Alex, 2026-09-24). A link row — *For sellers*, then the brand's *Privacy Notice* and *Terms and Conditions*, then *SoftServe website* — with SoftServe's eight social glyphs on the right, over a copyright row: *© Copyright {year} SoftServe Inc.* and the SoftServe spark. No Oracle or NVIDIA marks, no hot links, no office address, no contact block, no frame around the links; the checker holds all of it. *For sellers* stays first because it is the only permanent way to `#/sellers`; the other is *Get the full kit* in the confirmation after a product kit request.
 
 ## 4. Standing rules
 
@@ -195,7 +195,7 @@ Exact commands are in HANDOFF §4.
 - **Publish** — each theme to its own artifact (§1); never cross them.
   - Strip the nine skeleton lines (listed in `site.manifest.json`, `publish.wrapper`) from `site/index.html` into `.work/publish/index.html` (exact-line `grep -v -x -F`, HANDOFF §4). A session opened in another folder publishes from a copy staged in its scratchpad.
   - The publish must carry `assets/fonts/*` with an explicit `contentType`, and only what the page references — nine legacy files and `assets/site-legacy.css` are deliberately absent from the artifact.
-  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9, and `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact). Files left out of the map are kept, so a new file that is not in it never reaches the artifact.
+  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9, `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact), and `assets/img/softserve-star-white.svg` since round 14 (the footer's spark). Files left out of the map are kept, so a new file that is not in it never reaches the artifact.
   - Then run `action: list_files` to confirm that the new files are live and that nothing is published that should not be.
 - **Refused publish** ("not built on the newer version") means another session published in between:
   1. `read_file` the live copies of the files you changed.
@@ -268,7 +268,8 @@ Exact commands are in HANDOFF §4.
 - **Round 10 (§29.6):**
   - the same ask still has three other phrasings **outside the product pages** — Home
     S7 *Send a request* / *Send the request*, Services *Let's talk* / *Request a
-    scoping call*, the footer and delivery screen *Request a scoping call*.
+    scoping call*, the delivery screen *Request a scoping call* (the footer's went with
+    its contact block in round 14).
     Recommended: unify on *Talk to us* next round;
   - the product *For sellers* tab is gone, its kit now the second tab of the Contacts
     switch, and `…/sellers` redirects — reversible, since the tab is data;
@@ -301,6 +302,10 @@ Exact commands are in HANDOFF §4.
   - **Vlad or Vladyslav:** the directory's name is *Vladyslav Butenko*, and the site prints *Vlad*, Alex's word;
   - **the packaging plugin** has to write `contactPerson` for a new product, which the checker now requires (contract round 13); that change belongs in Oracle-Packaging-Skills;
   - **Home S7 and Services** still name Karsten alone.
+- **Round 14 (§34.4):**
+  - **publishing:** the footer goes out with rounds 12 and 13, and that publish has to add `assets/img/softserve-star-white.svg`, which the artifact does not carry yet;
+  - **trademark attribution:** the Oracle and NVIDIA trademark sentence left the footer with the marks; if the launch trademark check wants one, it comes back as one fine-print line above the copyright row;
+  - **For sellers** stayed first in the link row although Alex's list named only SoftServe's items, because it is the only permanent way to `#/sellers`.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
