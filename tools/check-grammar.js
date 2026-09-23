@@ -1762,6 +1762,59 @@ if (/request a demo/i.test(raw)) {
   if (!footerLink || footerLink.route !== "#/sellers" || !str(footerLink.label)) {
     fail("site.footer.sellersLink", 'needs { label, route: "#/sellers" }');
   }
+  /* Round 14 (Alex, 2026-09-24): softserveinc.com's footer, cut down. A link
+     row — For sellers, the brand's two legal pages, the SoftServe website —
+     with the brand's eight social glyphs, then the copyright row with the
+     spark. No partner marks, no hot links, no office, no contact block. */
+  (function () {
+    var f = ((C.site || {}).footer) || {};
+    ["heading", "description", "contactCta", "builtWith", "trademarkLine", "legalLine"].forEach(function (k) {
+      if (f[k] !== undefined) fail("site.footer." + k, "retired in round 14 — the footer is softserveinc.com's, cut down: no contact block, no partner line");
+    });
+    var LEGAL = [
+      { label: "Privacy Notice", url: "https://www.softserveinc.com/en-us/privacy" },
+      { label: "Terms and Conditions", url: "https://www.softserveinc.com/en-us/terms-and-conditions" }
+    ];
+    if (!arr(f.legalLinks) || f.legalLinks.length !== LEGAL.length) {
+      fail("site.footer.legalLinks", "must hold exactly the brand's two: Privacy Notice · Terms and Conditions");
+    } else LEGAL.forEach(function (want, i) {
+      var got = f.legalLinks[i] || {};
+      if (got.label !== want.label || got.url !== want.url) {
+        fail("site.footer.legalLinks[" + i + "]", 'expected "' + want.label + '" → ' + want.url);
+      }
+    });
+    if (!f.siteLink || !str(f.siteLink.label) || !/^https:\/\/www\.softserveinc\.com\//.test(f.siteLink.url || "")) {
+      fail("site.footer.siteLink", "needs { label, url } on https://www.softserveinc.com/");
+    }
+    var SOCIAL = ["LinkedIn", "YouTube", "Facebook", "Instagram", "TikTok", "X", "SoundCloud", "Bluesky"];
+    var social = arr(f.social) ? f.social : [];
+    var labels = social.map(function (s) { return (s || {}).label; });
+    if (labels.join("|") !== SOCIAL.join("|")) {
+      fail("site.footer.social", "must be softserveinc.com's eight, in its order: " + SOCIAL.join(" · ") +
+        " (got " + (labels.join(" · ") || "none") + ")");
+    }
+    social.forEach(function (s, i) {
+      if (!/^https:\/\//.test((s || {}).url || "")) fail("site.footer.social[" + i + "]", "url must be https");
+    });
+    if (f.copyright !== "© Copyright {year} SoftServe Inc.") {
+      fail("site.footer.copyright", 'must read "© Copyright {year} SoftServe Inc." — the brand\'s line, the year filled at render');
+    }
+    var src = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+    var glyphs = src.match(/var SOCIAL_GLYPHS = \{([\s\S]*?)\n  \};/);
+    if (!glyphs) {
+      fail("assets/app.js", "SOCIAL_GLYPHS not found — the footer's social links would render empty");
+    } else SOCIAL.forEach(function (label) {
+      if (glyphs[1].indexOf("\n    " + label + ": [") === -1) {
+        fail("assets/app.js", 'SOCIAL_GLYPHS has no "' + label + '" glyph — its footer link would render empty');
+      }
+    });
+    var footerFn = src.match(/function renderFooter\(\) \{[\s\S]*?\n  \}/);
+    if (!footerFn) {
+      warn("assets/app.js", "renderFooter not found — the no-partner-marks check is reading nothing");
+    } else if (/oracleMark|nvidiaMark|oracle-wordmark|nvidia-wordmark/.test(footerFn[0])) {
+      fail("assets/app.js renderFooter", "renders an Oracle or NVIDIA mark — the footer carries SoftServe's marks only (Alex, 2026-09-24)");
+    }
+  })();
   /* Round 10b: the kit is the second tab of the Contacts switch, so a customer
      or partner is routed out of it by the site's one contact ask — the other
      tab of the same switch — and its confirmation offers that same ask by that
