@@ -1920,9 +1920,13 @@ if (/request a demo/i.test(raw)) {
       var rel = path.join(dir, entry.name);
       if (entry.isDirectory()) { if (!/^(\.git|\.work|node_modules|asset-candidates)$/.test(entry.name)) scan(rel); return; }
       if (!/\.(js|json|md|html|css|txt|ya?ml|mjs)$/.test(entry.name)) return;
+      /* The one sanctioned home of this machine's endpoint: git-ignored and never
+         published, both asserted above. */
+      if (rel.split(path.sep).join("/") === "site/data/endpoint.local.json") return;
       var text = fs.readFileSync(path.join(root, rel), "utf8");
       var hit = text.match(/https?:\/\/[a-z0-9.-]+\/webhook(-test)?\/[A-Za-z0-9_-]+|[a-z0-9-]+\.app\.n8n\.cloud/);
-      if (hit) fail(rel, "carries \"" + hit[0] + "\": a live trigger URL or an n8n instance address never enters git; it belongs to the deployment");
+      /* Masked, so a failing run never prints the secret it caught. */
+      if (hit) fail(rel, "carries \"" + hit[0].slice(0, 12) + "…\": a live trigger URL or an n8n instance address never enters git; it belongs to the deployment");
       /* The sender's own files ship placeholders only: an address there is an
          example, the practice mailbox the site already prints, or the self-check's
          fixed sample (rendered, never sent). */

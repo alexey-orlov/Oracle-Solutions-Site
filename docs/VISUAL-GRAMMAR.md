@@ -299,15 +299,18 @@ Two blocks, in this order and nothing else:
 - **Where `caseStudy` is `null` the tab is the industries block alone** — no empty
   state, no placeholder, no line saying a case study is coming. The same rule as
   everywhere else on the site (rule 1, and `SCHEMA.md` rule 2).
-- **The block title inside is `sectionLabels.industryCases` = *By industry***, not
-  *Industry use cases*: the tab already says *Use cases*, and the block names the cut.
-  The checker fails that label if it contains *use case*.
+- **The tab opens on the row of industry tabs, with no block title over it** (round 13,
+  Alex, 2026-09-23). The tab bar above already says *Use cases*, and a row of industry
+  tabs names its own cut, so round 10's *By industry* heading was a third label for one
+  block. `sectionLabels.industryCases` (*By industry*) survives only as the tablist's
+  accessible name. The checker fails that label if it contains *use case*, and fails
+  `industryCases()` if it prints a heading again.
 - Both blocks moved off the Overview because they answer a different question from it
   and were pushing How it works out of the first screen (§2).
 
 ### 2a.1 The industry tabs
 
-`overview.industryCases[]` — **3–6 cases**, `{ industry, label, image, problem, solution }`. Heading from `sectionLabels.industryCases`.
+`overview.industryCases[]` — **3–6 cases**, `{ industry, label, image, problem, solution }`. No heading (round 13); `sectionLabels.industryCases` is the tablist's `aria-label`.
 
 A row of tabs, each an industry icon (§5) plus its label. The selected tab shows: a treated industry photograph (`assets/img/industries/<key>.jpg`), the industry name, then **The problem** and **The solution** — 2–3 sentences each, headed from `sectionLabels.caseProblem` / `caseSolution`.
 
@@ -610,13 +613,15 @@ A **missing image file is a warning, not a failure.** Copy and imagery ship on s
 
 ## 8. Contacts tab and the contact card
 
-`shared.contact` → `{ name, title, email, photo, blurb, linkedin? }`.
+`shared.contact` → `{ name, title, email, photo, blurb, linkedin? }`, and on a product page
+also `shared.people[product.contactPerson]` → `{ name, title, photo, linkedin? }` (round 13).
 
 The tab formerly labelled **Request a demo** is now **Contacts**, at `#/products/<slug>/contacts`, and it is the **last** tab. Two retired segments redirect to it in place — `…/demo`, and since round 10 `…/sellers` (`legacyIds: ["demo", "sellers"]`) — and every contact control on a product page points at this tab rather than at a form anchor. The header button and the home-page CTAs are unchanged: they still open the standalone request form at `#/#request-a-demo`.
 
 **The tab is one row of two columns** (`UI.contactSplit`), collapsing to a single column below 1100 px — the card, then the switch and its open pane. The two columns **start level and each end where its own content ends**:
 
 1. **LEFT — the contact panel**, a bounded surface (not a bare row of text): circular `photo` at the top, then `name`, `title`, the `email` as a **mailto link** — an underlined anchor at body size with the mail glyph, never a filled button (§9, the address rule) — and the one-line `blurb`. `title` renders only when non-empty; an empty one leaves name + email, never a placeholder. `linkedin` renders only when the key exists. **On this tab the card takes no heading**: `cardHeading` is omitted, because the tab is already called Contacts and the switch opposite is the row's heading — which is also what levels the two columns (card top and switch top both at 818.2 px at 1440). The option stays on the component, so Home S7 and Services keep theirs. **The card is not stretched to the form's height** (`align-items: start` on `.contact-split`, `flex: 0 0 auto` on `.contact-card--panel`): stretching left a person's name floating above a field of empty inset, and a card is not a container to fill.
+   **Round 13 (Alex, 2026-09-23): on a product page the card names two people**: the partnership contact (`shared.contact`), then the product's own lead (`shared.people`, picked by `contactPerson`). The card switches to its team form, `.contact-card--team`: a `ul.contact-people` with one `li.contact-person` per person, each a **row** with a 72 px circular photo (`4.5rem`) beside the name and title, 1 rem apart. Under the list come the one `email` link and the one `blurb`, printed once for both people, because the people are several and the mailbox is one. Rows rather than two stacked portrait blocks, so the pair reads as one team and the address under them is plainly shared rather than the second person's. A person's `linkedin`, when one exists, renders inside their own row. At 1440 the card and the switch still start level (both at 87 px); at 375 the rows keep photo beside text, and the title wraps under the name. Home S7 and Services pass no `people`, so they keep the one-person card.
 2. **RIGHT — a two-tab switch, and never two open forms** (round 10b, Alex: *"Get the sales kit block should be visible without scroll down + having two active input forms on one screen is a bad practice. Maybe user can switch between talk to us and Get the sales kit (for sellers)."*). The column is `.contact-tabs`, carrying `id="talk"` and a `scroll-margin-top` of `--nav-h + 5rem`:
    - **The switch** is the theme's own segmented control (`.segmented` / `.segment`) as a `role="tablist"`, capped at `max-width: 30rem` so two uppercase labels stay a switch rather than a band across the column. Two tabs: **Talk to us**, open by default, reading `site.primaryCta.label`, and **Get the sales kit**, reading `salesKit.tab.title`. Each segment is a `role="tab"` with `aria-selected` and `aria-controls`; each pane a `role="tabpanel"` whose inactive state is the `hidden` attribute; ←/→, Home and End come from `roving(…, "horizontal")`. `.segment[aria-selected="true"]` paints exactly like `[aria-pressed="true"]` — one appearance for a control that is a toggle in one place and a tablist in another.
    - **The Talk pane** is `forms.demo.sub` then the demo form, its submit reading `site.primaryCta.label`, so the hero, the header and this form are one ask (§1). **The kit pane** (`id="kit"`, §11) is the *For sellers* eyebrow, `salesKit.tab.body` with the product name, and the kit form. **Neither pane carries a heading** — the selected segment is it.
@@ -628,9 +633,9 @@ The tab formerly labelled **Request a demo** is now **Contacts**, at `#/products
 
 **The left column is the card, and nothing else.** `forms.engagementSteps` — the three-step "what happens next" block this file used to place under the panel — is **gone from `content.js` and read by no renderer**; the copy that answered *"what happens if I write?"* now lives in `forms.demo.sub` beside the form.
 
-No stray empty panel anywhere: the one row is the whole section. The **same card and split component** render the Services page contact section and Home S7, from the same object. One person, one address, one place to edit.
+No stray empty panel anywhere: the one row is the whole section. The **same card and split component** render the Services page contact section and Home S7, from the same object, with Karsten alone. Each person is stored once, and there is one address and one place to edit it.
 
-**The address is the practice mailbox, never a personal one.** `oracle@softserveinc.com` is what ships; the checker bans the string `ktram@` site-wide. A personal mailbox on a public page is a scraping target and an availability risk, and the person named here is a partnerships role rather than an inbox.
+**The address is the practice mailbox, never a personal one.** `oracle@softserveinc.com` is what ships. The checker bans the string `ktram@` and, since round 13, any `@softserveinc.com` address other than the practice one. A personal mailbox on a public page is a scraping target and an availability risk, and the person named here is a partnerships role rather than an inbox.
 
 ---
 
@@ -642,7 +647,7 @@ This file is about the product pages; the home page differs from them **by compo
 |---|---|---|
 | S1 | **Hero** — `overview.hero` | Full-bleed, two **even** columns (`minmax(0, 6fr)` twice since round 9, up from 7/5, because at 5 columns' width the stack's tiles could not hold a group name): eyebrow, the **three-sentence H1**, a ≤ 45-word lead and two buttons on the left; the **three-layer stack** on the right (anatomy below). Single column below 1100 px, the stack under the copy and left-aligned. The **three-tile** `stat-band` sits directly under it (see *The proof strip* below). |
 | S2 | **Two ways in** — `overview.twoWays` | **Two photographic panels** (round 11, Alex: the half-width form of softserveinc.com's *Agents4Everything* band): each a free-standing, 12 px-cut photograph with its copy on it in white — a mark, the title, the body, three ticked bullets and one down-arrow link pinned to the bottom, so the two CTAs land on one baseline — under a scrim that carries the legibility. The left panel repeats the H1's *Enterprise AI agents and workflows*; the right one is *Expert services, from proof to scale*. Anatomy below. |
-| S3 | **Products** — `overview.catalog` + `facets.categories` | The `home-head` (eyebrow · H2 · lead · the right-aligned *See all products, with filters*), then **six group tiles** in a 3 × 2 grid — `.gtiles` / `.gtile`, anatomy below. No product names on this screen at all (Alex, round 9). |
+| S3 | **Products** — `overview.catalog` + `facets.categories` | The `home-head` (eyebrow · H2 · lead · the right-aligned *See all products*; *"…, with filters"* until round 13), then **six group tiles** in a 3 × 2 grid — `.gtiles` / `.gtile`, anatomy below. No product names on this screen at all (Alex, round 9). |
 | S4 | **How we deliver** — `overview.delivery` | A 60/40 split: a horizontal three-step ladder on a hairline track at left, each step carrying one labelled fact and the block carrying the figures' footnote; three inset pillar cards at right; **one button** under the ladder (the row takes 1–2 CTAs; the quiet second one was removed in §18.8). |
 | S5 | **Case studies** — `overview.caseStudiesIntro` + `overview.caseStudies` | A sticky left rail — **head (eyebrow · H2 · one-sentence lead) → NDA line → one link out**, and nothing else — beside a **2×2 grid** of the four case cards, all four the same height, each **a photo band over a white body** (round 11, Alex: *"image with heading + white background for content"*; anatomy below). Round 9 rewrote all four strings as reader copy: the title states the result (*Results on customers' own data*), the lead says what a card is, the NDA line carries the constraint and the offer together, and the link asks for a reference call rather than pointing at the method. The measurement method is **not** in the rail: it lives on the Services page (`services.proof`), reached from the hero's second CTA and from S4. |
 | S6 | **About SoftServe** — `overview.about` | The page's one dark band: copy and the external link at left; a 2×2 grid of stat tiles at right, with the partner wordmarks in a strip beneath them inside the same column, inverted to white on the band. |
