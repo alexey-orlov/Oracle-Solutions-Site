@@ -717,10 +717,18 @@ if (!arr(C.products) || C.products.length !== 7) {
       demoBadge.label + '" — the button names what the badge names');
   }
 
-  /* The tab is called Use cases, so the block inside it says how they are cut. */
+  /* The tab is called Use cases, so the industry tablist's accessible name says
+     how they are cut. Round 13 (Alex): the label is no longer printed — the tab
+     already names the block — so the renderer may not put a heading back. */
   var industryLabel = (((C.shared || {}).sectionLabels) || {}).industryCases;
   if (str(industryLabel) && /use case/i.test(industryLabel)) {
     fail("shared.sectionLabels.industryCases", 'says "' + industryLabel + '" — the tab already says Use cases; the block names the cut');
+  }
+  var productSrc = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  var industryFn = (productSrc.split("function industryCases(")[1] || "").split("\n  function ")[0];
+  if (!industryFn) warn("pages/product.js", "industryCases() not found — the no-heading check is reading nothing");
+  else if (/blockHead\(|class="h[1-6]|<h[1-6] class="block-title/.test(industryFn)) {
+    fail("pages/product.js", "industryCases() prints a heading — the Use cases tab opens on the industry tabs, with no title over them (round 13)");
   }
 })();
 
@@ -1284,6 +1292,11 @@ if (!arr(C.products) || C.products.length !== 7) {
   else {
     reqStr("overview.catalog", cat, ["eyebrow", "title", "lead"]);
     reqCta("overview.catalog.cta", cat.cta);
+    /* Round 13 (Alex): the link names where it goes, not the controls on the
+       page it opens — "See all products", not "…, with filters". */
+    if (cat.cta && /filter/i.test(cat.cta.label || "")) {
+      fail("overview.catalog.cta.label", 'says "' + cat.cta.label + '" — name the destination, not its filters');
+    }
     /* Round 9: the screen is one tile per product group, and every tile is
        derived from `facets.categories` — name, line and image all live there.
        The second list this key used to hold is retired: two lists of the same
