@@ -1695,6 +1695,68 @@ if (/request a demo/i.test(raw)) {
   }
 })();
 
+/* ---- round 12 · one links file, and the kit emailed automatically (Alex, 2026-09-23) ----
+   Every link a product's kit uses lives in links.json at the repo root, outside
+   site/, so the kit documents are never readable in the published files.
+   tools/sync-links.js derives the site's copy (data/links.js: the walkthrough,
+   its artifact copy and the video, nothing else) and the email's product
+   catalog (mail/catalog.json). A stale copy fails here, so no publish ships one,
+   and the retired per-product link fields may not come back in either data file. */
+(function () {
+  var sync = require("./sync-links.js");
+  var built = sync.build(root);
+  built.errors.forEach(function (e) { fail("links.json", e); });
+  if (!built.errors.length) {
+    var staleFiles = sync.stale(root, built.files);
+    if (staleFiles.length) fail(staleFiles.join(", "), "stale against links.json or content.js — run node tools/sync-links.js");
+  }
+  Object.keys(LINKS).forEach(function (slug) {
+    Object.keys(LINKS[slug] || {}).forEach(function (key) {
+      if (sync.PUBLIC_KEYS.indexOf(key) === -1) {
+        fail("site/data/links.js", slug + "." + key + " is not one of the site's keys — the kit documents never enter site/");
+      }
+    });
+  });
+  ["demoUrl", "demoPreviewUrl", "videoUrl", "materials"].forEach(function (key) {
+    Object.keys(CFG.products || {}).forEach(function (slug) {
+      if (CFG.products[slug][key] !== undefined) {
+        fail("config.products[" + slug + "]." + key, "retired in round 12 — every kit link lives in links.json (docs/CONFIG.md)");
+      }
+    });
+  });
+  (C.products || []).forEach(function (p) {
+    if (p.sellers !== undefined) {
+      fail("products[" + p.slug + "].sellers", "retired in round 12 — the kit is the standard set in links.json, emailed automatically");
+    }
+  });
+
+  /* The sender re-checks the kit's domains against its own list: the page and
+     the sender must accept exactly the same addresses. */
+  var settings = null;
+  try { settings = JSON.parse(fs.readFileSync(path.join(root, "mail/settings.json"), "utf8")); }
+  catch (error) { fail("mail/settings.json", "missing or not valid JSON — " + error.message); }
+  if (settings) {
+    var gate = ((CFG.sellerGate || {}).allowedDomains || []).slice().sort().join(", ");
+    var sender = ((settings.kit || {}).allowedDomains || []).slice().sort().join(", ");
+    if (gate !== sender) {
+      fail("mail/settings.json kit.allowedDomains", "[" + sender + "] differs from config sellerGate.allowedDomains [" + gate + "]");
+    }
+    if (["test", "live"].indexOf(settings.mode) === -1) fail("mail/settings.json mode", 'must be "test" or "live", got "' + settings.mode + '"');
+    ["live", "test"].forEach(function (k) {
+      if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(((settings.inbox || {})[k]) || "")) fail("mail/settings.json inbox." + k, "must be an email address");
+    });
+    if (settings.mode === "live" && ((settings.inbox || {}).live || "") !== CFG.contactEmail) {
+      fail("mail/settings.json inbox.live", "must be the practice mailbox the site's forms name (" + CFG.contactEmail + ")");
+    }
+  }
+
+  /* A live trigger URL is never committed (AO-Personal-OS hard rule): the repo's
+     config ships an empty endpoint, and a deployed copy sets its own. */
+  if (CFG.formEndpoint) {
+    fail("config.formEndpoint", "is set in the repo — set it on the deployed copy only (mail/README.md), never in git");
+  }
+})();
+
 /* Round 4 (Alex, 2026-09-16): NO customer may be named anywhere in the shipped
    data — not in copy, not in alt text, not in a caption — and no customer logo
    may be referenced. The logo files stay in the repo, unreferenced, pending
