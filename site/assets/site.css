@@ -452,8 +452,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* On the dark band the grey secondary would sink into the ground. */
 .light-band :is(.btn--secondary, .btn--quiet, .btn--mail) { --fill: rgba(255, 255, 255, .14); color: var(--text-on-dark); }
 .light-band :is(.btn--secondary, .btn--quiet, .btn--mail):hover { --fill: rgba(255, 255, 255, .24); }
-.site-footer :is(.btn--secondary, .btn--quiet, .btn--mail) { --fill: #ffffff; color: var(--surface-dark-raised); }
-.site-footer :is(.btn--secondary, .btn--quiet, .btn--mail):hover { --fill: var(--secondary-hover); }
 
 .btn--sm {
   font-size: var(--fs-xs);
@@ -3049,8 +3047,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .badge::before, .chip::before, .case-status::before, .btn::before { background: #f2f2f2 !important; }
   .site-footer, .light-band, .light-band-media { background: #fff !important; color: #111 !important; }
   .site-footer::before { display: none !important; }
-  .site-footer a, .site-footer p, .footer-heading, .light-band * { color: #111 !important; }
-  .built-with img { filter: none !important; }
+  .site-footer a, .site-footer p, .footer-sep, .light-band * { color: #111 !important; }
+  .site-footer .social-row { display: none !important; }
+  .footer-mark { filter: invert(1) !important; }
   .section { padding-block: 1.5rem; }
   .js-reveal .reveal { opacity: 1 !important; transform: none !important; }
 
