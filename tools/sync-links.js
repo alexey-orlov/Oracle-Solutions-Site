@@ -123,11 +123,20 @@ function build(root) {
     "   site's own buttons read are copied; the kit documents never enter site/. */\n" +
     "window.SITE_LINKS = " + JSON.stringify(publicLinks, null, 2) + ";\n";
 
+  /* The site's own words for what the email repeats: product names, the role
+     labels, the kit names and "Not sure yet", so a page and its email never
+     name one thing two ways. */
+  var forms = site.content.forms || {};
+  var kitForm = ((site.content.salesKit || {}).form) || {};
   var catalog = {
     $generated: "tools/sync-links.js from site/data/content.js and config.productOrder. Do not edit.",
     products: list.map(function (p) {
       return { slug: p.slug, name: p.name, oneLiner: p.oneLiner, group: p.categoryChip };
-    })
+    }),
+    roles: (forms.roles || []).map(function (r) { return { value: r.value, label: r.label }; }),
+    productNotSure: forms.productPlaceholder || "",
+    kitName: kitForm.kitName || "",
+    kitNameAll: kitForm.kitNameAll || ""
   };
   var catalogJson = JSON.stringify(catalog, null, 2) + "\n";
 

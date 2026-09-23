@@ -43,5 +43,30 @@
       "oneLiner": "Answers plain-language questions about business metrics from one governed gold layer over the catalogs and databases you already run — consistent definitions, no data moved.",
       "group": "Enterprise knowledge & analytics"
     }
-  ]
+  ],
+  "roles": [
+    {
+      "value": "customer",
+      "label": "An Oracle customer"
+    },
+    {
+      "value": "oracle-seller",
+      "label": "An Oracle seller"
+    },
+    {
+      "value": "oracle-partner",
+      "label": "An Oracle partner"
+    },
+    {
+      "value": "softserve",
+      "label": "SoftServe"
+    },
+    {
+      "value": "other",
+      "label": "Other"
+    }
+  ],
+  "productNotSure": "Not sure yet",
+  "kitName": "{product} sales kit",
+  "kitNameAll": "full sales kit"
 }
