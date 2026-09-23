@@ -1,0 +1,13 @@
+[
+ {"sleep":600},
+ {"eval":"window.DEMO.openRun(); true"},{"sleep":300},
+ {"click":"#run-file"},{"sleep":220},
+ {"click":"#picker-list li.is-main"},{"sleep":160},
+ {"click":"#picker-open"},{"sleep":500},{"shot":"frame-1"},
+ {"click":"#run-go"},{"sleep":2300},{"shot":"frame-3"},
+ {"sleep":3600},
+ {"eval":"document.querySelector('#toast').hidden = true; document.querySelector('#warn-toast').hidden = true; window.DEMO.openDrawer('settings'); true"},{"sleep":600},{"shot":"frame-2"},
+ {"click":"#drawer-close"},{"sleep":400},
+ {"eval":"document.querySelector('#toast').hidden = true; document.querySelector('#warn-toast').hidden = true; document.querySelector('#screen').scrollTop = 0; true"},{"sleep":300},
+ {"shot":"frame-4"},{"shot":"poster"}
+]

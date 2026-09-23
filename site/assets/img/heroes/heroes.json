@@ -1,0 +1,67 @@
+{
+  "overview": {
+    "file": "heroes/overview.jpg",
+    "alt": "A tall oval of light standing open in a dark wall, its reflection running out across still water",
+    "focal": "50% 45%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe",
+    "unreferenced": true,
+    "note": "Kept on disk. The home page renders no hero photograph."
+  },
+  "account-insights": {
+    "file": "heroes/account-insights.jpg",
+    "alt": "A web of linked signal nodes glowing above an out-of-focus night city, seen past a silhouetted figure",
+    "focal": "50% 48%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "case-evidence-collection": {
+    "file": "heroes/case-evidence-collection.jpg",
+    "alt": "A long row of upright panels standing edge to edge and curving away into the dark, each lit along its leading edge",
+    "focal": "50% 42%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "plan-vs-actual-investigation": {
+    "file": "heroes/plan-vs-actual-investigation.jpg",
+    "alt": "Robotic arms working an assembly line that recedes down a long, dimly lit factory hall",
+    "focal": "50% 48%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "large-document-extraction": {
+    "file": "heroes/large-document-extraction.jpg",
+    "alt": "A deep stack of thin plates seen end-on, receding into darkness with light caught between the layers",
+    "focal": "50% 50%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "workforce-optimization": {
+    "file": "heroes/workforce-optimization.jpg",
+    "alt": "An overhead field of interlocking hexagonal plates, with loose ones still settling into the pattern from above",
+    "focal": "50% 55%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "cross-system-erp-qa": {
+    "file": "heroes/cross-system-erp-qa.jpg",
+    "alt": "Many parallel metal ribs sweeping together into one continuous curved surface",
+    "focal": "50% 50%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "business-metrics-qa": {
+    "file": "heroes/business-metrics-qa.jpg",
+    "alt": "Rolling waves of fine blue data points, brighter points picked out along the ridges",
+    "focal": "50% 52%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
+  "services": {
+    "file": "heroes/services.jpg",
+    "alt": "An engineer seen from behind at a wall of code on dark monitors in a low-lit workspace",
+    "focal": "50% 50%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  }
+}

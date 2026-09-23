@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Large docs processing and review — interactive walkthrough</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="side">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h7"/></svg></span>
+      <div class="brand-text"><strong>Large docs</strong><span>processing and review</span></div>
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <button class="nav-item" data-nav="upload" type="button"><svg viewBox="0 0 24 24"><path d="M12 16V5M7 10l5-5 5 5"/><path d="M4 19h16"/></svg>Upload</button>
+      <button class="nav-item" data-nav="documents" type="button"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Documents<span class="nav-count" id="nav-doc-count">4</span></button>
+      <button class="nav-item" data-nav="history" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg>History</button>
+    </nav>
+    <div class="side-foot">
+      <div class="user"><span class="avatar">JM</span><div><strong>Jordan Mercer</strong><span>Reviewer · Operations</span></div></div>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <header class="topbar">
+      <div class="crumbs" id="crumbs">Upload</div>
+      <div class="topbar-right">
+        <span class="saved" id="saved" hidden><svg viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg>All changes saved</span>
+        <span class="chip chip--demo" id="tour-pill" hidden>Guided walkthrough</span>
+        <button class="btn btn--ghost btn--sm" id="tour-toggle" type="button">Exit guide</button>
+      </div>
+    </header>
+
+    <!-- ===== UPLOAD ===== -->
+    <section class="screen" data-screen="upload">
+      <div class="page-head"><h1>Upload a document</h1><p>Drop a PDF or DOCX. It is classified by document type, routed page by page and extracted against that type's schema and rules.</p></div>
+      <div class="upload-wrap">
+        <button class="dropzone" id="dropzone" type="button">
+          <span class="drop-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V6M7.5 10.5 12 6l4.5 4.5"/><path d="M5 19h14"/></svg></span>
+          <strong>Drop your PDF or DOCX here</strong>
+          <span>or click to browse</span>
+          <em>Native or scanned · up to 500 pages · any document type with a schema</em>
+        </button>
+        <div class="processing" id="processing" hidden>
+          <div class="proc-head">
+            <span class="file-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/></svg></span>
+            <div><strong id="proc-file">—</strong><span id="proc-sub">48 pages · 3.1 MB</span></div>
+            <span class="chip chip--live" id="proc-chip">Processing</span>
+          </div>
+          <div class="bar"><span id="proc-bar"></span></div>
+          <ol class="stages" id="stages">
+            <li data-stage="0"><i></i><span>Classify the document</span><em></em></li>
+            <li data-stage="1"><i></i><span>Route pages to extractors</span><em></em></li>
+            <li data-stage="2"><i></i><span>Extract fields against the schema and rules</span><em></em></li>
+            <li data-stage="3"><i></i><span>Score confidence and cite source pages</span><em></em></li>
+            <li data-stage="4"><i></i><span>Run business-rule validators</span><em></em></li>
+          </ol>
+        </div>
+        <div class="sources"><span>Sources</span><span class="chip chip--muted">Manual upload</span><span class="chip chip--ok">Contract repository · connected</span><span class="sources-note">Documents that land in the repository are picked up on their own — the policy schedule below arrived this morning.</span></div>
+      </div>
+      <div class="recent">
+        <h2>Recent documents</h2>
+        <ul id="recent-list"></ul>
+      </div>
+    </section>
+
+    <!-- ===== DOCUMENTS ===== -->
+    <section class="screen" data-screen="documents" hidden>
+      <div class="page-head row"><div><h1>Documents</h1><p id="doc-count-line">4 documents</p></div><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input type="search" placeholder="Search documents" aria-label="Search documents"></label></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="chips" id="type-chips" role="group" aria-label="Filter by document type"></div>
+      <div class="card table-card">
+        <table class="table" id="doc-table">
+          <thead><tr><th>Document</th><th>Type · schema</th><th>Counterparty</th><th>Pages</th><th>Arrived</th><th>Status</th><th class="num">Values</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== REVIEW ===== -->
+    <section class="screen screen--review" data-screen="review" hidden>
+      <div class="review">
+        <div class="viewer card">
+          <div class="viewer-bar">
+            <div class="pager"><button class="btn btn--ghost btn--sm" id="pg-prev" type="button">Prev</button><span>Page <input id="pg-input" type="number" min="1" value="1" aria-label="Page number"> of <b id="pg-total">48</b></span><button class="btn btn--ghost btn--sm" id="pg-next" type="button">Next</button></div>
+            <div class="viewer-tools"><span class="chip chip--muted" id="viewer-file">—</span></div>
+          </div>
+          <div class="pages" id="pages"><div class="paper" id="paper"></div></div>
+        </div>
+        <div class="panel">
+          <div class="tabs" role="tablist" id="tabs">
+            <button class="tab is-active" role="tab" data-tab="review" type="button">Review</button>
+            <button class="tab" role="tab" data-tab="ratecard" type="button">Export</button>
+            <button class="tab" role="tab" data-tab="json" type="button">JSON</button>
+            <button class="tab" role="tab" data-tab="history" type="button">History</button>
+          </div>
+          <div class="tabpanes">
+            <div class="tabpane is-active" data-pane="review">
+              <div class="card meta">
+                <div class="meta-head"><div><span class="eyebrow">Document metadata</span><h2 id="meta-title">—</h2></div><div class="meta-actions"><span class="chip" id="meta-status">Extracted</span><button class="btn btn--primary btn--sm" id="approve-all" type="button">Approve all</button></div></div>
+                <dl class="meta-grid" id="meta-grid"></dl>
+              </div>
+              <div class="groups" id="groups"></div>
+            </div>
+            <div class="tabpane" data-pane="ratecard">
+              <div class="card">
+                <div class="pane-head"><div><span class="eyebrow">Export</span><h2>Approved values</h2><p id="export-sub">Flat table against the reference template — the same columns as the file you download.</p></div>
+                  <div class="export-controls"><span class="seg" id="format-seg"><button type="button" data-format="xlsx" class="is-active">XLSX</button><button type="button" data-format="csv">CSV</button></span><button class="btn btn--primary btn--sm" id="download-xlsx" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v10M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>Download .xlsx</button><button class="btn btn--ghost btn--sm" id="push-target" type="button"><svg viewBox="0 0 24 24"><path d="M4 12h13M13 6l6 6-6 6"/></svg>Send to target system</button></div></div>
+                <div class="export-meta"><span class="chip chip--muted" id="template-chip">Template: —</span><span class="chip chip--muted">Target: cost / ERP system · connector configured</span></div>
+                <div class="table-scroll"><table class="table table--dense" id="ratecard-table"><thead><tr><th>Document</th><th>Type</th><th>Group</th><th>Field</th><th>Scope</th><th>Basis</th><th class="num">Value</th><th>Currency</th><th>Section</th><th>Source page</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+              </div>
+            </div>
+            <div class="tabpane" data-pane="json"><div class="card"><div class="pane-head"><div><span class="eyebrow">Export</span><h2>JSON</h2><p>Every approved value with its citation, ready for the target system.</p></div></div><pre class="json" id="json-out"></pre></div></div>
+            <div class="tabpane" data-pane="history"><div class="card"><div class="pane-head"><div><span class="eyebrow">Audit trail</span><h2>History</h2></div></div><ol class="timeline" id="history-list"></ol></div></div>
+          </div>
+          <div class="details" id="details" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HISTORY (global) ===== -->
+    <section class="screen" data-screen="history" hidden>
+      <div class="page-head"><h1>History</h1><p>Everything that happened to every document, with who did it and when.</p></div>
+      <div class="card"><ol class="timeline" id="history-global"></ol></div>
+    </section>
+  </main>
+</div>
+
+<!-- file picker (mock) -->
+<div class="modal" id="picker" hidden>
+  <div class="modal-card picker" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+    <div class="picker-head"><strong id="picker-title">Choose a file</strong><span class="chip chip--muted">Sample documents</span></div>
+    <ul class="picker-list" id="picker-list"></ul>
+    <div class="picker-foot"><button class="btn btn--ghost btn--sm" id="picker-cancel" type="button">Cancel</button><button class="btn btn--primary btn--sm" id="picker-open" type="button" disabled>Open</button></div>
+  </div>
+</div>
+
+<!-- welcome / finish -->
+<div class="modal" id="gate" hidden>
+  <div class="modal-card gate" role="dialog" aria-modal="true">
+    <span class="eyebrow">Interactive walkthrough</span>
+    <h2 id="gate-title">Large docs processing and review</h2>
+    <p id="gate-body">You will upload a 48-page supplier agreement, watch it get classified and extracted against that document type's schema, follow a value back to the page it came from, resolve one flagged exception, and export the approved values. Six steps, about two minutes. Only the highlighted control is active at each step.</p>
+    <div class="gate-actions"><button class="btn btn--primary" id="gate-start" type="button">Start the walkthrough</button><button class="btn btn--ghost" id="gate-free" type="button">Explore freely</button><button class="btn btn--ghost" id="gate-alt" type="button" hidden>Open the insurance policy</button></div>
+    <p class="gate-note">Demo data only — no document is uploaded and nothing leaves this page.</p>
+  </div>
+</div>
+
+<!-- tour callout -->
+<div class="tour" id="tour" hidden>
+  <div class="tour-card">
+    <div class="tour-top"><span class="tour-step" id="tour-step">Step 1 of 6</span><button class="tour-close" id="tour-skip" type="button" aria-label="Skip this step">Skip</button></div>
+    <strong id="tour-title"></strong>
+    <p id="tour-body"></p>
+    <div class="tour-progress" id="tour-progress"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="data.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

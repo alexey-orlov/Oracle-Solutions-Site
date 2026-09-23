@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-system ERP Q&amp;A — interactive walkthrough</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+<!-- ============ workspace switcher (ours, not a product) ============ -->
+<div class="ws" id="ws">
+  <div class="ws-id">
+    <span class="ws-cube" aria-hidden="true"></span>
+    <span class="ws-name"><b>Norwell Group</b> workspace</span>
+    <span class="ws-ctx" id="ws-ctx">Week 41 FY2026 · Tue 6 Oct 2026 09:40</span>
+  </div>
+  <nav class="ws-tabs" id="ws-tabs" aria-label="Applications in this workspace">
+    <button class="ws-tab is-active" type="button" data-go="lakehouse" aria-current="page">
+      <span class="ws-glyph ws-glyph--ds" aria-hidden="true"></span>
+      <span class="ws-lab"><b>Autonomous AI Lakehouse</b><em>Data Studio</em></span>
+    </button>
+    <button class="ws-tab" type="button" data-go="aidp">
+      <span class="ws-glyph ws-glyph--wb" aria-hidden="true"></span>
+      <span class="ws-lab"><b>AI Data Platform</b><em>Agent Hub</em></span>
+    </button>
+    <button class="ws-tab" type="button" data-go="review">
+      <span class="ws-glyph ws-glyph--rw" aria-hidden="true"></span>
+      <span class="ws-lab"><b>Decisions</b><em>review &amp; act</em></span>
+    </button>
+  </nav>
+  <div class="ws-right">
+    <span class="ws-pill" id="tour-pill" hidden>Guided walkthrough</span>
+    <button class="ws-exit" id="tour-toggle" type="button">Exit guide</button>
+  </div>
+</div>
+
+<main class="stage" id="stage">
+
+  <!-- ==================== 1. Data Studio (lakehouse) ==================== -->
+  <section class="app app--ds" data-app="lakehouse" id="app-lakehouse" aria-label="Autonomous AI Lakehouse, Data Studio">
+    <header class="ds-bar">
+      <span class="ds-burger" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="ds-mark">ORACLE<sup>&reg;</sup></span>
+      <span class="ds-title">Database Actions <i>|</i> <b id="ds-crumb">Catalog</b></span>
+      <label class="ds-search"><input type="search" placeholder="Search Database (Ctrl+K)" aria-label="Search database"><span class="ds-mag" aria-hidden="true"></span></label>
+      <span class="ds-help" aria-hidden="true">?</span>
+      <span class="ds-who"><span class="ds-who-i" aria-hidden="true"></span>DWHITFIELD<i class="ds-caret" aria-hidden="true"></i></span>
+    </header>
+    <div class="ds-body">
+      <nav class="ds-nav" id="ds-nav" aria-label="Data Studio"></nav>
+      <div class="ds-page" id="ds-page"></div>
+    </div>
+  </section>
+
+  <!-- ==================== 2. AI Data Platform (Agent Hub) ==================== -->
+  <section class="app app--wb" data-app="aidp" id="app-aidp" aria-label="Oracle AI Data Platform, Agent Hub" hidden>
+    <header class="wb-bar" id="wb-bar">
+      <span class="wb-mark" aria-hidden="true"></span>
+      <span class="wb-title">AI Data Platform Workbench- norwell</span>
+      <label class="wb-search"><span class="wb-mag" aria-hidden="true"></span><input type="search" placeholder="Search" aria-label="Search the workbench"></label>
+      <span class="wb-bell" aria-hidden="true"><i></i><b>0</b></span>
+      <button class="wb-avatar" id="wb-user" type="button" aria-haspopup="menu" aria-expanded="false">DW</button>
+      <div class="wb-menu" id="wb-menu" role="menu" aria-label="Account" hidden></div>
+    </header>
+    <!-- the conversation surface replaces the Workbench bar with Agent Hub's plum one -->
+    <header class="wb-plum" id="wb-plum" hidden>
+      <button class="plum-back" id="plum-back" type="button" aria-label="Back to the Agent Hub">&larr;</button>
+      <span class="plum-ag" id="plum-agent"></span>
+      <span class="plum-right" id="plum-right"></span>
+    </header>
+    <div class="wb-body">
+      <nav class="wb-nav" id="wb-nav" aria-label="Workbench"></nav>
+      <div class="wb-page" id="wb-page"></div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. Mapping review (Redwood app) ==================== -->
+  <section class="app app--rw" data-app="review" id="app-review" aria-label="Decisions, review and act" hidden>
+    <header class="rw-bar">
+      <span class="rw-mark" aria-hidden="true"></span>
+      <span class="rw-app">Decisions</span>
+      <div class="rw-bar-right">
+        <span class="rw-state" id="rw-state"></span>
+        <span class="rw-avatar" title="Dana Whitfield · VP Commercial Operations">DW</span>
+      </div>
+    </header>
+    <div class="rw-page">
+      <nav class="rw-crumb" aria-label="Breadcrumb"><a>Decisions</a> <i>&rsaquo;</i> <b id="rw-crumb-leaf">Recommendations</b></nav>
+      <div class="rw-title">
+        <div><h2 id="rw-h2">Recommendations</h2><p class="rw-sub" id="rw-sub">What the AI proposes, what people decide.</p></div>
+        <button class="btn btn--dark" id="rw-rerun" type="button">Re-analyse</button>
+      </div>
+      <section class="band" id="rw-band" aria-label="Per system, then across systems"></section>
+      <div class="rw-tabs" id="rw-tabs" role="tablist" aria-label="Decisions"></div>
+      <div class="rw-panel" id="rw-panel"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- tour callout -->
+<div class="tour" id="tour" hidden>
+  <div class="tour-card" role="dialog" aria-label="Walkthrough step">
+    <div class="tour-top"><span class="tour-step" id="tour-step">Step 1 of 6 &middot; 1 of 1</span><button class="tour-close" id="tour-skip" type="button" aria-label="Skip this step">Skip</button></div>
+    <strong id="tour-title"></strong>
+    <p id="tour-body"></p>
+    <div class="tour-progress" id="tour-progress" aria-hidden="true"></div>
+    <button class="btn btn--dark btn--sm" id="tour-next" type="button" hidden>Next</button>
+  </div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- welcome / end card -->
+<div class="modal" id="gate" hidden>
+  <div class="modal-card gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <span class="eyebrow">Interactive walkthrough</span>
+    <h2 id="gate-title">What is at risk this week</h2>
+    <p id="gate-body">You are Dana Whitfield, VP Commercial Operations. Three companies sell out of three ERPs, and it is Tuesday morning. Ask the AI what will go wrong this week, check one finding, overrule one, and hand your team a dashboard.</p>
+    <p class="gate-steps" id="gate-steps">Six steps &middot; about three minutes &middot; only the highlighted control is active</p>
+    <div class="gate-try" id="gate-try" hidden></div>
+    <div class="gate-actions"><button class="btn btn--dark" id="gate-start" type="button">Start the walkthrough</button><button class="btn btn--ghost" id="gate-free" type="button">Explore freely</button></div>
+    <p class="gate-note">Demo data only. Nothing leaves this page.</p>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

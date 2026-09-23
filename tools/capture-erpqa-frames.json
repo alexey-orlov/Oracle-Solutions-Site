@@ -1,0 +1,92 @@
+[
+ {
+  "sleep": 1300
+ },
+ {
+  "eval": "window.__b=function(sel){var e=document.querySelector(sel); if(!e) return sel+'=ABSENT'; var r=e.getBoundingClientRect(); return sel+'['+Math.round(r.left)+','+Math.round(r.top)+' '+Math.round(r.width)+'x'+Math.round(r.height)+']';}; true"
+ },
+ {
+  "eval": "window.DEMO.prime('analysed'); window.DEMO.setApp('lakehouse'); window.DEMO.setDsScreen('feeds'); true"
+ },
+ {
+  "sleep": 700
+ },
+ {
+  "eval": "document.querySelector('#toast').hidden = true; true"
+ },
+ {
+  "shot": "frame-1"
+ },
+ {
+  "eval": "console.log('G1 W='+innerWidth, __b('.ds-head h1'), __b('.srcs-head h2'), __b('#src-cards'), __b('.job-head'), __b('.job-sub')); true"
+ },
+ {
+  "eval": "window.DEMO.prime('analysed'); window.DEMO.setApp('review'); window.DEMO.setRwTab('recommendations'); true"
+ },
+ {
+  "sleep": 700
+ },
+ {
+  "eval": "document.querySelector('#toast').hidden = true; true"
+ },
+ {
+  "shot": "frame-2"
+ },
+ {
+  "eval": "console.log('G2 W='+innerWidth, __b('#rw-h2'), __b('#rw-sub'), __b('.band-head'), __b('#rw-band-tiles'), __b('.rw-tabs')); true"
+ },
+ {
+  "eval": "window.DEMO.prime('final'); window.DEMO.setRole('ANALYST_NA'); window.DEMO.setApp('aidp'); window.DEMO.setWbPanel('insights'); true"
+ },
+ {
+  "sleep": 900
+ },
+ {
+  "eval": "document.querySelector('#toast').hidden = true; true"
+ },
+ {
+  "shot": "frame-3"
+ },
+ {
+  "eval": "console.log('G3 W='+innerWidth, __b('.wb-pg h1'), __b('.wb-pg .sub'), __b('#gen-dash'), __b('.gd-tiles'), __b('.gd-charts')); true"
+ },
+ {
+  "eval": "window.DEMO.setRole('COMMERCIAL_OPS'); window.DEMO.prime('final'); window.DEMO.setApp('aidp'); window.DEMO.ask('q1'); true"
+ },
+ {
+  "sleep": 900
+ },
+ {
+  "eval": "document.querySelector('#toast').hidden = true; true"
+ },
+ {
+  "shot": "poster"
+ },
+ {
+  "eval": "console.log('GP W='+innerWidth, __b('.conv--an'), __b('.an-band'), __b('#band-tiles'), __b('.an-cols'), __b('.an-box--wide')); true"
+ },
+ {
+  "eval": "window.DEMO.prime('start'); window.DEMO.setApp('aidp'); window.DEMO.setWbPanel('home'); true"
+ },
+ {
+  "sleep": 600
+ },
+ {
+  "eval": "document.querySelector('#toast').hidden = true; true"
+ },
+ {
+  "click": "[data-ask=\"q1\"]"
+ },
+ {
+  "sleep": 900
+ },
+ {
+  "eval": "document.querySelector('#toast').hidden = true; true"
+ },
+ {
+  "shot": "frame-4"
+ },
+ {
+  "eval": "console.log('G4 W='+innerWidth, __b('.hub-greet'), __b('.hub-ask'), __b('#runcard'), __b('.rc-q'), window.__ag=[].slice.call(document.querySelectorAll('.rc-agent')).map(function(e){var r=e.getBoundingClientRect(); return Math.round(r.top)+'..'+Math.round(r.bottom);}).join(' ')); true"
+ }
+]

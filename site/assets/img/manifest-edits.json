@@ -1,0 +1,252 @@
+{
+  "steps": {
+    "account-insights": [
+      {
+        "file": "steps/account-insights-1.svg",
+        "kind": "illustration",
+        "caption": "Watched sources land in one signal queue",
+        "alt": "Three source panels feeding one intake ring"
+      },
+      {
+        "file": "steps/account-insights-2.svg",
+        "kind": "illustration",
+        "caption": "Each signal is reasoned across the account map",
+        "alt": "A node graph with one account and its edges picked out"
+      },
+      {
+        "file": "steps/account-insights-3.svg",
+        "kind": "illustration",
+        "caption": "A seller keeps or drops every opportunity",
+        "alt": "Three opportunity rows, two decided and one still open"
+      },
+      {
+        "file": "steps/account-insights-4.svg",
+        "kind": "illustration",
+        "caption": "Kept opportunities leave with their evidence",
+        "alt": "One reviewed set branching out to three destinations"
+      }
+    ],
+    "case-evidence-collection": [
+      {
+        "file": "steps/case-evidence-collection-1.svg",
+        "kind": "illustration",
+        "caption": "A case opens and its sources are named",
+        "alt": "Three system panels feeding one opened case"
+      },
+      {
+        "file": "steps/case-evidence-collection-2.svg",
+        "kind": "illustration",
+        "caption": "Evidence is collected and cited back to its page",
+        "alt": "A case file with three pinned items linked to their source pages"
+      },
+      {
+        "file": "steps/case-evidence-collection-3.svg",
+        "kind": "illustration",
+        "caption": "A reviewer confirms or removes each item",
+        "alt": "Three evidence rows, two confirmed and one still open"
+      },
+      {
+        "file": "steps/case-evidence-collection-4.svg",
+        "kind": "illustration",
+        "caption": "The pack leaves as one traceable file",
+        "alt": "One evidence pack branching out to three destinations"
+      }
+    ],
+    "plan-vs-actual-investigation": [
+      {
+        "file": "steps/plan-vs-actual-investigation-1.svg",
+        "kind": "illustration",
+        "caption": "Plan and actuals load onto one timeline",
+        "alt": "Plan, actuals and reference data converging on one timeline"
+      },
+      {
+        "file": "steps/plan-vs-actual-investigation-2.svg",
+        "kind": "illustration",
+        "caption": "Gaps against the plan surface on their own",
+        "alt": "Dashed plan bars beside solid actual bars, two gaps marked"
+      },
+      {
+        "file": "steps/plan-vs-actual-investigation-3.svg",
+        "kind": "illustration",
+        "caption": "Each gap is traced back to what caused it",
+        "alt": "One variance branching down to three candidate causes"
+      },
+      {
+        "file": "steps/plan-vs-actual-investigation-4.svg",
+        "kind": "illustration",
+        "caption": "Findings go out with the working behind them",
+        "alt": "A findings card with a small bar chart and three source chips"
+      }
+    ],
+    "large-document-extraction": [
+      {
+        "file": "steps/large-document-extraction-1.svg",
+        "kind": "illustration",
+        "caption": "Documents arrive and are routed by type",
+        "alt": "Three document panels feeding one classification ring"
+      },
+      {
+        "file": "steps/large-document-extraction-2.jpg",
+        "kind": "screenshot",
+        "caption": "Rates extracted against the rules for that document type",
+        "alt": "The extracted rate rows, column by column, against the rules for the type"
+      },
+      {
+        "file": "steps/large-document-extraction-3.jpg",
+        "kind": "screenshot",
+        "caption": "A reviewer approves rule by rule, with traceability",
+        "alt": "The reviewer console, each extracted rule with its confidence and source page"
+      },
+      {
+        "file": "steps/large-document-extraction-4.svg",
+        "kind": "illustration",
+        "caption": "Validated values leave for the cost systems",
+        "alt": "One validated set branching out to three destinations"
+      }
+    ],
+    "workforce-optimization": [
+      {
+        "file": "steps/workforce-optimization-1.svg",
+        "kind": "illustration",
+        "caption": "The period loads from the field-service system",
+        "alt": "Three source panels — demand, roster, zones — feeding one intake ring"
+      },
+      {
+        "file": "steps/workforce-optimization-2.svg",
+        "kind": "illustration",
+        "caption": "Zone, commitment and forecast rules are weighted",
+        "alt": "Four rule rows, each tagged hard or soft"
+      },
+      {
+        "file": "steps/workforce-optimization-3.svg",
+        "kind": "illustration",
+        "caption": "Every constraint is solved in one pass",
+        "alt": "One constraint set opening onto three solved plan rows"
+      },
+      {
+        "file": "steps/workforce-optimization-4.svg",
+        "kind": "illustration",
+        "caption": "A dispatcher approves, rejects or re-runs",
+        "alt": "Three zone-week rows, two decided and one still open"
+      }
+    ],
+    "cross-system-erp-qa": [
+      {
+        "file": "steps/cross-system-erp-qa-1.jpg",
+        "kind": "screenshot",
+        "caption": "Five systems feeding one model, minutes behind",
+        "alt": "Five source cards under Sources feeding the lakehouse — Fusion, JD Edwards, NetSuite, an in-house delivery-tracking database and a CRM — each naming the system behind it, the feed that carries it and how far behind it is, over the dark-teal bar of the cross-system model they are rebuilt into"
+      },
+      {
+        "file": "steps/cross-system-erp-qa-2.jpg",
+        "kind": "screenshot",
+        "caption": "What each system knew, and what the join makes of it",
+        "alt": "Six tiles reading per system, then across systems: late lines known 61 + 49 + 28 to 138, lines with an account tier 0 to 138, lines with a cause attributed 0 to 138, lines fixable from stock elsewhere 0 to 44, revenue at risk valued at USD 4.18 M and tier-A exposure of 9 accounts"
+      },
+      {
+        "file": "steps/cross-system-erp-qa-3.jpg",
+        "kind": "screenshot",
+        "caption": "The same dashboard, row-limited and masked by role",
+        "alt": "A dashboard stamped Built by the AI, seen by a regional analyst: North America rows only across four tiles, and the contract-penalty tile masked to dots with a note that the terms are hidden for this role"
+      },
+      {
+        "file": "steps/cross-system-erp-qa-4.jpg",
+        "kind": "screenshot",
+        "caption": "One question in plain English, four agents on it",
+        "alt": "An agent hub answering a typed question about orders at risk: the Ask Oracle box above a run card whose order agent is in progress on the three order books it is opening, with the identity, cause and impact agents waiting below"
+      }
+    ],
+    "business-metrics-qa": [
+      {
+        "file": "steps/business-metrics-qa-1.svg",
+        "kind": "illustration",
+        "caption": "A business question arrives in plain language",
+        "alt": "A question bar fanning down to three data stores"
+      },
+      {
+        "file": "steps/business-metrics-qa-2.svg",
+        "kind": "illustration",
+        "caption": "The agreed definition is picked, not guessed",
+        "alt": "A question resolving through a metric layer onto its sources"
+      },
+      {
+        "file": "steps/business-metrics-qa-3.svg",
+        "kind": "illustration",
+        "caption": "The series is computed on governed data",
+        "alt": "A rising series with one point ringed and called out"
+      },
+      {
+        "file": "steps/business-metrics-qa-4.svg",
+        "kind": "illustration",
+        "caption": "The answer opens onto the drivers underneath",
+        "alt": "An answer card with a small trend line and three drill chips"
+      }
+    ]
+  },
+  "industries": {
+    "manufacturing": {
+      "file": "industries/manufacturing.jpg",
+      "alt": "Robotic arms working an assembly line in a dimly lit plant hall"
+    },
+    "logistics": {
+      "file": "industries/logistics.jpg",
+      "alt": "Gantry cranes standing over stacked containers at a port at dusk"
+    },
+    "utilities": {
+      "file": "industries/utilities.jpg",
+      "alt": "An operator at a wall of control-room screens showing maps and charts"
+    },
+    "healthcare": {
+      "file": "industries/healthcare.jpg",
+      "alt": "A clinician in scrubs working at a laptop in a low-lit ward"
+    },
+    "life-sciences": {
+      "file": "industries/life-sciences.jpg",
+      "alt": "Laboratory bottles and sample vials lit by a single shaft of light"
+    },
+    "retail": {
+      "file": "industries/retail.jpg",
+      "alt": "A store concourse at night, blurred shoppers passing lit display racks"
+    },
+    "construction": {
+      "file": "industries/construction.jpg",
+      "alt": "A row of tall structural fins rising edge-on out of the dark"
+    },
+    "travel-transport": {
+      "file": "industries/travel-transport.jpg",
+      "alt": "A street junction at night seen through a sensor overlay of tracked vehicles"
+    },
+    "public-sector": {
+      "file": "industries/public-sector.jpg",
+      "alt": "A monitoring camera mounted on a wall above a city skyline at dusk"
+    },
+    "professional-services": {
+      "file": "industries/professional-services.jpg",
+      "alt": "A figure at a glass wall mapping a process diagram in marker"
+    },
+    "financial-services": {
+      "file": "industries/financial-services.jpg",
+      "alt": "A receding run of upright metal plates, each lit along its leading edge"
+    },
+    "insurance": {
+      "file": "industries/insurance.jpg",
+      "alt": "A single ribbed sheet folding over itself on a black ground"
+    },
+    "telecom": {
+      "file": "industries/telecom.jpg",
+      "alt": "A perspective field of small hexagonal cells fading into the distance"
+    },
+    "energy": {
+      "file": "industries/energy.jpg",
+      "alt": "A finely ribbed wave curling around a dark sphere"
+    },
+    "automotive": {
+      "file": "industries/automotive.jpg",
+      "alt": "A banked ribbon sweeping through a turn on a black ground"
+    },
+    "cross-industry": {
+      "file": "industries/cross-industry.jpg",
+      "alt": "A broad mesh of interlocking facets curving away in every direction"
+    }
+  }
+}

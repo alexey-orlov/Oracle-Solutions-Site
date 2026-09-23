@@ -1,0 +1,23 @@
+[
+ {"sleep":600},{"shot":"00-gate"},
+ {"click":"#gate-start"},{"sleep":600},{"shot":"01-tour-run"},
+ {"click":"#btn-run"},{"sleep":500},{"shot":"02-run-modal"},
+ {"click":"#run-file"},{"sleep":400},{"shot":"03-picker"},
+ {"click":"#picker-list li.is-main"},{"sleep":300},{"click":"#picker-open"},{"sleep":400},{"shot":"04-file-set"},
+ {"click":"#run-go"},{"sleep":2600},{"shot":"05-processing"},
+ {"sleep":4200},{"shot":"06-plan-v1"},
+ {"shot":"06b-kpis"},{"click":"#tour-next"},{"sleep":500},{"shot":"06c-review-step"},
+ {"click":"#btn-review-changes"},{"sleep":800},{"shot":"07-review"},
+ {"click":"#changes [data-change=\"vacation\"] .chg-main"},{"sleep":700},{"shot":"08-drill-vacation"},
+ {"click":"#plan-seg [data-plan=\"compare\"]"},{"sleep":700},{"shot":"09-compare"},
+ {"click":"#view-seg [data-view=\"tech\"]"},{"sleep":600},{"shot":"10-tech-view"},
+ {"click":"#grid tr[data-tech=\"T-1048\"]"},{"sleep":600},{"shot":"11-tech-row"},
+ {"click":"#changes [data-change=\"marsh-move\"] [data-undo]"},{"sleep":800},{"shot":"12-undone"},
+ {"click":"#changes [data-change=\"marsh-move\"] [data-note]"},{"sleep":500},{"shot":"13-note"},
+ {"click":"#comment-save"},{"sleep":500},{"shot":"14-saved"},
+ {"click":"#btn-reopt"},{"sleep":1800},{"shot":"15-reopt"},
+ {"sleep":2400},{"shot":"16-plan-v2"},
+ {"click":"#btn-accept-remaining"},{"sleep":600},{"shot":"17-accepted"},
+ {"click":"#btn-download"},{"sleep":600},{"shot":"18-export"},
+ {"click":"#export-download"},{"sleep":700},{"shot":"19-end"}
+]

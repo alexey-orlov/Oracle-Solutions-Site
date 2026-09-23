@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="Abstract app window with a play mark">
+  <!-- SS26 placeholder · ground -->
+  <rect x="0" y="0" width="960" height="600" fill="#edf0f2"/>
+
+  <!-- window, octagonal 4px cuts -->
+  <polygon points="76,56 884,56 888,60 888,540 884,544 76,544 72,540 72,60" fill="#ffffff" stroke="#bdcbd7" stroke-width="1.5"/>
+
+  <!-- title bar -->
+  <polygon points="76,56 884,56 888,60 888,112 72,112 72,60" fill="#e1e7eb"/>
+  <path d="M72 112 H888" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
+  <rect x="100" y="78" width="12" height="12" fill="#bdcbd7"/>
+  <rect x="122" y="78" width="12" height="12" fill="#bdcbd7"/>
+  <rect x="144" y="78" width="12" height="12" fill="#bdcbd7"/>
+
+  <!-- left rail -->
+  <polygon points="72,112 208,112 208,544 76,544 72,540" fill="#e1e7eb"/>
+  <path d="M208 112 V544" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
+  <rect x="88" y="148" width="104" height="14" fill="#c1dff4"/>
+  <rect x="88" y="184" width="104" height="14" fill="#d1dae2"/>
+  <rect x="88" y="220" width="104" height="14" fill="#d1dae2"/>
+  <rect x="88" y="256" width="104" height="14" fill="#d1dae2"/>
+  <rect x="88" y="292" width="104" height="14" fill="#d1dae2"/>
+
+  <!-- content: a media block, a scrubber, three thumbnails -->
+  <rect x="240" y="138" width="180" height="14" fill="#d1dae2"/>
+  <rect x="824" y="134" width="32" height="22" fill="#d1dae2"/>
+  <rect x="240" y="176" width="616" height="276" fill="#e1e7eb"/>
+  <rect x="240" y="470" width="616" height="10" fill="#d1dae2"/>
+  <rect x="240" y="496" width="96" height="36" fill="#e1e7eb"/>
+  <rect x="348" y="496" width="96" height="36" fill="#e1e7eb"/>
+  <rect x="456" y="496" width="96" height="36" fill="#e1e7eb"/>
+
+  <!-- group icon: a frame with a play mark, 24-grid at 1.5px, scaled 11x -->
+  <g opacity="0.25" transform="translate(488,180) scale(11)" fill="none" stroke="#4c5156" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 5 H21 V19 H3 Z"/>
+    <path d="M10.2 8.6 L15.8 12 L10.2 15.4 Z"/>
+  </g>
+</svg>

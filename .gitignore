@@ -1,0 +1,6 @@
+.DS_Store
+# per-machine working files: the publish wrapper, QA shots, specimens
+.work/
+node_modules/
+# generated from the practice deny-list (oracle-packs shared/tools/denylist.txt); holds customer names
+tools/deny-list.json

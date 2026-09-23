@@ -1,0 +1,14 @@
+[
+ {"sleep":500},
+ {"eval":"window.DEMO.go('documents'); true"},{"sleep":500},{"shot":"p1-documents"},
+ {"click":"tr[data-key=\"pol\"]"},{"sleep":700},{"shot":"p2-policy-review"},
+ {"click":".group[data-group=\"sublimits\"] .group-head"},{"sleep":400},
+ {"click":".group[data-group=\"sublimits\"] tr.flag-range"},{"sleep":900},{"shot":"p3-range-flag"},
+ {"click":".group[data-group=\"sublimits\"] tr.flag-missing"},{"sleep":700},{"shot":"p4-missing-flag"},
+ {"type":{"sel":"[data-enter-input]","text":"5,000,000"}},{"click":"[data-save]"},{"sleep":600},{"shot":"p5-entered"},
+ {"click":".group[data-group=\"sublimits\"] tr.flag-lowconf"},{"sleep":700},{"shot":"p6-lowconf"},
+ {"click":".group[data-group=\"premium\"] .group-head"},{"sleep":300},{"click":".group[data-group=\"premium\"] tr.flag-consistency"},{"sleep":700},{"shot":"p7-consistency"},
+ {"click":"#details .act-approve"},{"sleep":300},{"click":"#approve-all"},{"sleep":400},
+ {"click":".tab[data-tab=\"ratecard\"]"},{"sleep":400},{"click":"#push-target"},{"sleep":600},{"shot":"p8-export"},
+ {"click":".tab[data-tab=\"history\"]"},{"sleep":400},{"shot":"p9-history"}
+]
