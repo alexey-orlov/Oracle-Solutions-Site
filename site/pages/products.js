@@ -32,8 +32,9 @@
 
   /* Both artifact facets read exactly what the badges read, so a filter and a
      badge can never disagree about whether the thing exists. Round 9: the
-     interactive demo is a walkthrough at `demoUrl`, not the `video` flag — that
-     one only decides whether the product page carries a video frame. */
+     interactive demo is a walkthrough (links.json `interactiveDemo` since round
+     12), not the `video` flag — that one only decides whether the product page
+     carries a video frame. */
   function hasFlag(product, option) {
     if (option === "demo") return window.UI.hasDemo(product.slug);
     var entry = window.SITE_CONFIG.products[product.slug] || {};

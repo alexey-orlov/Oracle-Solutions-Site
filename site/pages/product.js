@@ -785,11 +785,11 @@
   /* The product's sales-kit request (round 8), which round 10 moved off its own
      tab and onto the Contacts tab, and round 10b made the second tab of the
      switch: a page that repeats one form under two names is a structure bug,
-     and two open forms on one screen are a second one. The materials list it
-     replaced stays as data in `product.sellers.materials` and the config links
-     — the manifest for whoever sends the kit — and is no longer rendered. A
-     customer or partner who lands in the kit is routed back to the ask beside
-     it, which is also what the confirmation offers. */
+     and two open forms on one screen are a second one. Since round 12 the kit
+     is emailed automatically from links.json, the repo's one links file, and
+     nothing about its contents is rendered here. A customer or partner who
+     lands in the kit is routed back to the ask beside it, which is also what
+     the confirmation offers. */
   function kitOptions(product) {
     var tab = C().salesKit.tab;
     return {
@@ -929,12 +929,12 @@
   function bindPendingVideo(root, item) {
     var UI = window.UI;
     var pending = C().shared.videoPending;
-    var conf = cfg(item.slug);
+    var link = lnk(item.slug);
     Array.prototype.forEach.call(root.querySelectorAll("[data-video-pending]"), function (button) {
       button.addEventListener("click", function () {
-        var demo = conf.demoUrl
+        var demo = link.interactiveDemo
           ? UI.button({
-              label: C().shared.demoCta, href: demoHref(conf),
+              label: C().shared.demoCta, href: demoHref(link),
               kind: "secondary", icon: "cursor-click",
               attrs: { target: "_blank", rel: "noopener" }
             })
