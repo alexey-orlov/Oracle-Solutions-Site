@@ -6115,3 +6115,62 @@ Alex's sixth ask: the repository will be shared, others need not see his credent
 - **The checker enforces the split.** It fails a `sender` block or any inbox but `live` in `mail/settings.json`. It also fails any committed file that carries a webhook URL or an n8n instance address; the first run caught this manual doing exactly that.
 - **One deployment's details** (the pilot's instance, credentials, addresses and alert chat) are written up in Alex's private operating notes, not here.
 - **History.** Earlier commits of this round still show those non-secret identifiers. No password, token or webhook path was ever committed. Removing the identifiers from history too would mean rewriting it, which is Alex's call.
+
+## 33. Round 13 — a second contact on every product page, and two labels cut, 2026-09-24
+
+**The asks** (Alex, in session, 2026-09-23):
+1. Product page, Use cases: remove the *By industry* header.
+2. Home page, Products: *See all products, with filters* → remove *with filters*.
+3. Product page, Contacts: add a second contact person; the email stays the single one, oracle@softserveinc.com. Large docs processing, Workforce optimization and Account insights: *Vlad Butenko, AI Product Manager, SoftServe*. Plan vs actual investigation: *Dmytro Dudchenko, AI Product Manager, SoftServe*. Cross-system ERP Q&A, Business Q&A and Case evidence collection: *Oleksii Orlov, Distinguished Product Advisor, SoftServe*.
+4. The photos: *"You can find photos for all of us in my Outlook locally."*
+
+**Split.** Opus (this session) did all of it: the photo search, the build, the checker, the QA and the docs. There was no Fable pass: the copy was Alex's, and the one design call (how one card holds two people over one address) follows the card's existing grammar.
+
+### 33.1 What changed
+
+| Where | Before | After |
+|---|---|---|
+| Home S3 link, `overview.catalog.cta.label` | *See all products, with filters* | *See all products* |
+| Use cases tab | a *By industry* heading over the industry tabs | no heading; *By industry* is the tablist's accessible name |
+| Product Contacts card | Karsten alone: photo, name, title, address, blurb | Karsten, then the product's lead, one row each (a 72 px photo beside name and title), over the one address and the one blurb |
+| Data | `shared.contact`, the only person | plus `shared.people` (three people, keyed by id) and `products[].contactPerson` on all seven |
+| Component | `UI.contactCard()`, one person | `contactCard({ people })` and `contactSplit({ people })` render `.contact-card--team` when people are passed; Home S7 and Services pass none |
+| Images | `people/karsten-tramborg.jpg` | plus `vlad-butenko.jpg`, `dmytro-dudchenko.jpg`, `oleksii-orlov.jpg`, 240 px (`ASSETS.md` §3.2) |
+| Checker | — | `shared.people`: name, title, photo path equal to the id, no `email` or `blurb`, every person some product's lead · every product's `contactPerson` resolves · any `@softserveinc.com` address but the practice one fails · the S3 link may not mention filters · `industryCases()` may not print a heading |
+| Manifest | contract round 12 | round 13 |
+
+**Leads by product.** Vlad Butenko: Account insights, Large docs processing and review, Workforce optimization. Dmytro Dudchenko: Plan vs actual investigation. Oleksii Orlov: Cross-system ERP Q&A, Business metrics Q&A, Case evidence collection.
+
+### 33.2 Decisions
+
+- **Each person is stored once.** A person lives in `shared.people` and a product points at them by id: Vlad and Oleksii each lead three products, and a title typed three times drifts. `shared.contact` is untouched, so Home S7, Services and anything else reading it see no change.
+- **Rows, not two stacked cards.** Two portrait blocks (photo over name) would double the card's height and read as two separate contacts, with the address under the second as if it were theirs. One row per person with the address beneath reads as one team sharing one mailbox, which is what Alex asked for.
+- **Karsten first.** The brief names him the contact for communications (START-HERE §2). The lead is the second person Alex asked to add.
+- **The blurb stays.** *"Your first call for a fit check, a workshop with your team or the scope of a proof of value."* reads true for the pair, and no copy change was asked for.
+- **Names and titles are Alex's words.** The company directory lists *Vladyslav Butenko*; the site prints *Vlad Butenko* as Alex wrote it.
+- **The heading's label stays in the data.** `sectionLabels.industryCases` still names the tablist for screen readers, so the tabs keep an accessible name without printing one.
+- **The rule behind both cuts.** A label earns its words: no heading over controls that already name what they hold, and no link that describes the page it opens (*with filters*) instead of naming it. It is in START-HERE §4 and enforced by the two new checker rules.
+- **Photos** came from Outlook's local cache, with identity from Teams' name-keyed cache (`ASSETS.md` §3.2).
+
+### 33.3 Checks
+
+- `node --check` passes on the four changed scripts. The checker prints OK with the three known warnings.
+- **Negative test.** A scratch copy with six injected faults fails each one, with seven failures because the personal mailbox trips two rules: a product with no lead, an unknown lead id, a person carrying `vbute@softserveinc.com`, a person no product points at, *with filters* back on the S3 link, and a heading back on the industry block.
+- In the browser, on a local server on port 8767 (8765 was held by another session):
+  - all seven Contacts tabs name the right lead, and every photo loads;
+  - the card and the switch start level at 1440 (87 px), 1280 (84 px) and 1024 (79 px), the card is full width at 768, and nothing overflows at 375 or 320;
+  - the Use cases tab opens on the industry tabs; the space under the tab bar (51 px to the first tab label) is within the other tabs' range (36–44 px to their first line), the rest being the tab buttons' own padding;
+  - Home prints *See all products* → `#/products`, and *with filters* appears nowhere on the page;
+  - Services and Home S7 keep the one-person card;
+  - the console is clean, and the deny-list grep returns nothing.
+- **Not published.** The shared link still shows the site before round 12: Alex chose local testing for round 12's forms, and any publish now would ship round 12 with this round. Both go out together from HEAD when Alex says so, with `data/links.js` and never `data/endpoint.local.json`.
+
+### 33.4 Open for Alex
+
+- **Publishing** rounds 12 and 13 to the shared link.
+- **The three faces.** They are matched by the directory's own name key, not by eye. If one is wrong, blank that `photo` and the card shows initials.
+- **Vlad or Vladyslav** on a customer-facing page.
+- **The packaging plugin** writes new products without `contactPerson`, and since contract round 13 the checker fails such a product. Oracle-Packaging-Skills needs the key in its listing flow.
+- **Home S7 and Services** still name Karsten alone, which is correct for a practice-level ask. Say if either should carry a second person too.
+
+The list is repeated in START-HERE §9.

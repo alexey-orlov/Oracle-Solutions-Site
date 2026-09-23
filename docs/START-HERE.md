@@ -2,13 +2,17 @@
 
 Read this page first in every new session. It holds what the site is for, the brief and the rules it is built to, how a round of work runs, and what earlier rounds learned the hard way. Detail lives in the docs mapped in §10. Keep this page current: when a requirement, rule or procedure changes, rewrite the line — never append a dated update.
 
-Current as of 2026-09-23 (after round 12 — the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json`, PROVENANCE §32; round 11, the home page, is §30). The same day the site moved out of AO-Personal-OS into its own repository, PROVENANCE §31.
+Current as of 2026-09-24, after round 13: every product's Contacts card names the product's own lead beside Karsten, and two labels were cut (PROVENANCE §33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Neither round 12 nor round 13 is on the shared link yet** (§9).
 
 ## 1. What it is
 
 - **The site:** one small site for SoftServe's Oracle AI & Data practice, named **Oracle AI & Data Solutions**. It offers *products* — AI agents and human-AI workflows on Oracle platforms, grouped into **six product groups**, one per kind of job (§4) — and *services* (the practice that delivers them, from a proof of value **from 30 days** through integration to scaling).
 - **How it is used:** Oracle and SoftServe sellers open it live on a call, and customers receive it as a link.
-- **People:** Alex owns the site and every decision on it. The person on the contact card is Karsten Tramborg, **Oracle Partnership Director, SoftServe** (Alex, 2026-09-23; the pack one-pagers print *Alliances & Partnerships Director* and are unchanged — `ASSETS.md` §3). The practice mailbox is oracle@softserveinc.com.
+- **People:** Alex owns the site and every decision on it. The first person on every contact card is Karsten Tramborg, **Oracle Partnership Director, SoftServe** (Alex, 2026-09-23; the pack one-pagers print *Alliances & Partnerships Director* and are unchanged — `ASSETS.md` §3.1). Since round 13 a product's Contacts card also names that product's lead (Alex, 2026-09-23):
+  - **Vlad Butenko, AI Product Manager, SoftServe:** Account insights, Large docs processing and review, Workforce optimization.
+  - **Dmytro Dudchenko, AI Product Manager, SoftServe:** Plan vs actual investigation.
+  - **Oleksii Orlov, Distinguished Product Advisor, SoftServe** (Alex himself): Cross-system ERP Q&A, Business metrics Q&A, Case evidence collection.
+  - Home and Services name Karsten alone. The practice mailbox, oracle@softserveinc.com, is the one address printed for everyone.
 - **Code:** a static, hash-routed SPA in `site/` with no build step and no framework.
   - **The site is on SoftServe's current brand** (`site/index.html` + `assets/site.css`):
     white ground, Azurio serif over Replica LL, Lviv blue with Austin orange, octagonal
