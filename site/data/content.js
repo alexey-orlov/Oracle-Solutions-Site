@@ -1125,6 +1125,31 @@ window.SITE_CONTENT = {
           { tier: "Scaling", text: "More case categories and source systems, with regional rule and retention sets.", duration: "3–12 months", price: "Scoped per engagement" }
         ],
         cta: { label: "Start a Jumpstart conversation", route: "#/products/case-evidence-collection/contacts" }
+      }
+    },
+    {
+      slug: "plan-vs-actual-investigation",
+      name: "Plan vs actual investigation",
+      headline: { accent: "PLAN", rest: "VS ACTUAL INVESTIGATION" },
+      category: "deep-research",
+      categoryChip: "Deep research & investigation",
+      facet: "oci-nvidia",
+      oneLiner: "Compares plan against actual across completed projects, orders and engagements, and assembles each variance with its candidate drivers and the source evidence behind them.",
+      statusNote: "In preparation — scoping conversations are open.",
+      tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
+      hero: {
+        image: {
+          file: "assets/img/heroes/plan-vs-actual-investigation.jpg",
+          alt: "Robotic arms working an assembly line that recedes down a long, dimly lit factory hall",
+          focal: "50% 48%"
+        }
+      },
+      tile: {
+        outcomes: [
+          "Plan-versus-actual at the level of a project, work package, order, engagement or campaign",
+          "Variances and candidate drivers presented as evidence-backed candidates, never as conclusions",
+          "Unresolved records are reported as coverage gaps, each with the reason it could not be resolved"
+        ]
       },
       overview: {
         problemSolution: {
@@ -1419,6 +1444,31 @@ window.SITE_CONTENT = {
           { tier: "Scaling", text: "More portfolios and unit types, regional variance rules, multi-entity evidence retention.", duration: "3–12 months", price: "Scoped per engagement" }
         ],
         cta: { label: "Start a Jumpstart conversation", route: "#/products/plan-vs-actual-investigation/contacts" }
+      }
+    },
+    {
+      slug: "large-document-extraction",
+      name: "Large docs processing and review",
+      headline: { accent: "LARGE", rest: "DOCS PROCESSING AND REVIEW" },
+      category: "documents",
+      categoryChip: "Document processing",
+      facet: "oci-nvidia",
+      oneLiner: "Turns long, complex documents into validated, structured data — every extracted value carries a confidence score and a citation to its source page.",
+      heroCaption: "100-page contract in minutes.",
+      tags: ["Document processing", "OCI + NVIDIA NeMo"],
+      hero: {
+        image: {
+          file: "assets/img/heroes/large-document-extraction.jpg",
+          alt: "A deep stack of thin plates seen end-on, receding into darkness with light caught between the layers",
+          focal: "50% 50%"
+        }
+      },
+      tile: {
+        outcomes: [
+          "A 60–100-page contract extracted end to end in 5–15 minutes, down from 3–5 days",
+          "Every extracted value carries a confidence score and a citation to its source page",
+          "Reviewers validate in a split-view UI and export — they review the data, they don’t type it"
+        ]
       },
       overview: {
         problemSolution: {
