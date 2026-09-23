@@ -59,16 +59,14 @@ This address is **never printed on a page**. It is used only as the destination 
 
 ### `formEndpoint`
 
-Where the demo form and the Services contact form send their data.
+Where all three forms send their data: *Talk to us*, *Request a scoping call* and the sales kit. Since round 12 the destination is the n8n workflow that sends the emails (`mail/README.md`).
 
 | Value | What happens on submit |
 |---|---|
-| `""` (empty — today) | The browser opens the visitor's mail client with a pre-composed message to `contactEmail`, the form fields in the body. The page shows the "Your mail client opened with the request" confirmation. |
-| A URL | The form `POST`s JSON to that URL with `fetch`, and shows the "Thanks — your request is in." confirmation on a 2xx response, or the error message on anything else. |
+| `""` (the repo, always) | The browser opens the visitor's mail client with a pre-composed message to `contactEmail`, the form fields in the body, and the page says so. This is what the claude.ai preview does, because the artifact blocks every request to another host. |
+| A URL (a deployed copy, or a local run) | The form `POST`s JSON to that URL with `fetch`, and shows the "Thanks — your request is in." confirmation (the kit: *Check your inbox*) on a 2xx response, or the error message on anything else. |
 
-```js
-formEndpoint: "https://example.invalid/hook/leads",
-```
+**The URL is never committed.** A live trigger URL in git is the AO-Personal-OS hard rule this repo inherits, and `tools/check-grammar.js` fails a non-empty `formEndpoint` here. A deployed copy sets it in its own `config.js`. On `127.0.0.1` or `localhost` the forms read it from `localStorage["oracle-ai-solutions:form-endpoint"]` instead, set by hand for a test (`mail/README.md`, "Testing locally").
 
 **Payload shape posted to the endpoint** (JSON, `Content-Type: application/json`):
 
@@ -82,16 +80,13 @@ formEndpoint: "https://example.invalid/hook/leads",
   "product": "workforce-optimization",
   "message": "…",
   "consent": true,
-  "page": "#/products/workforce-optimization",
-  "submittedAt": "2026-09-13T18:00:00.000Z"
+  "page": "http://…/#/products/workforce-optimization/contacts"
 }
 ```
 
-`form` is `"demo"` or `"contact"`. `role` is one of `customer`, `oracle-seller`, `softserve`, `other`. `product` is a product slug or `""` when the visitor chose "Not sure yet".
+`form` is `"demo"` or `"contact"`. `role` is one of `customer`, `oracle-seller`, `oracle-partner`, `softserve`, `other`. `product` is a product slug or `""` when the visitor chose "Not sure yet". The sender stamps the time itself. The kit posts `{ form: "kit", email, product: "all" | <slug>, consent, page }`.
 
-The endpoint must answer with a 2xx status and must allow cross-origin POSTs from the site's origin (`Access-Control-Allow-Origin`). If it does not, submissions will silently fail CORS and the visitor sees the error message — test one submission from the deployed URL, not from `file://`.
-
-**Security note.** Do not commit a live trigger URL for a paid or side-effectful automation (an n8n webhook, a Zapier hook). Bots scrape new URLs out of public repositories within the hour. If the endpoint has to be a webhook, require header auth on it and keep the URL out of version control — set it on the deployed copy only.
+The endpoint must answer with a 2xx status and must allow cross-origin POSTs from the site's origin. The workflow allows only the origins in `tools/n8n-workflow.js`, so a new host is added there before its first test (`mail/README.md`, "Moving to a public host").
 
 ### `productOrder`
 
@@ -148,9 +143,9 @@ allowedDomains: ["softserveinc.com", "oracle.com"],
 
 #### `kitAutoSend`
 
-`false` until something behind `formEndpoint` actually emails the kit. It decides which confirmation a successful POST shows: `true` → *Check your inbox* ("We've emailed the … sales kit to …"); `false` → *Your request is in* (the kit will reach the address within two working days). With `formEndpoint` empty neither applies: the visitor's mail client opens a request to `contactEmail` and the page says *One step left*. **Never set it to `true` for a human-read mailbox** — the page would claim an email went out.
+`true` since round 12: the endpoint is the workflow that emails the kit, and it answers 2xx **only after** the kit email was accepted for delivery (`mail/README.md`). It decides which confirmation a successful POST shows: `true` → *Check your inbox* ("We've emailed the … sales kit to …"); `false` → *Your request is in* (the kit will reach the address within two working days). With no endpoint neither applies: the visitor's mail client opens a request to `contactEmail` and the page says *One step left*. **Set it back to `false` if `formEndpoint` ever points at a human-read mailbox** — the page would claim an email went out.
 
-The endpoint receives `{ form: "kit", email, product: "all" | <slug>, consent, page }`.
+The endpoint receives `{ form: "kit", email, product: "all" | <slug>, consent, page }`, and checks the domain again against `mail/settings.json` `kit.allowedDomains`, which the checker holds equal to `allowedDomains` here.
 
 #### `kitEmailKey`
 
