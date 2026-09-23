@@ -12,7 +12,7 @@
   "kit": {
     "allowedDomains": ["softserveinc.com", "oracle.com"],
     "replyTo": "oracle@softserveinc.com",
-    "perAddressPerDay": 3
+    "perAddressPerDay": 10
   },
   "limits": {
     "perHour": 30

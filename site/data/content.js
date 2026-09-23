@@ -2868,7 +2868,8 @@ window.SITE_CONTENT = {
     },
     offline: "This preview can’t send forms. Email {mailbox} and the Oracle practice will reply within two working days.",
     errors: {
-      send: "That didn’t send. Please try again, or email {mailbox}."
+      send: "That didn’t send. Please try again, or email {mailbox}.",
+      limited: "Not sent: the site has had too many requests in the last hour. Please try again later, or email {mailbox}."
     }
   },
 
@@ -2906,7 +2907,8 @@ window.SITE_CONTENT = {
       errors: {
         email: "Enter your work email.",
         domain: "The kit only goes to @softserveinc.com and @oracle.com addresses. Customer or partner? {routeLink} instead.",
-        send: "That didn’t send. Please try again, or email {mailbox}."
+        send: "That didn’t send. Please try again, or email {mailbox}.",
+        limited: "Not sent: too many kit requests from this address today. The kits already sent are in your inbox or its spam folder. For anything else, email {mailbox}."
       },
       offline: "This preview can’t send the kit. Email {mailbox} to ask for it.",
       confirmations: {
