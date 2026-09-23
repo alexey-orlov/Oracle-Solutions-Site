@@ -20,12 +20,14 @@ var sandbox = { window: {} };
 vm.createContext(sandbox);
 /* brand.js first: it defines brandAsset(), which content.js calls to resolve
    every logo path through the active theme (site/assets/brand.js). */
-["site/assets/brand.js", "site/data/content.js", "site/data/config.js"].forEach(function (rel) {
+["site/assets/brand.js", "site/data/content.js", "site/data/config.js", "site/data/links.js"].forEach(function (rel) {
   vm.runInContext(fs.readFileSync(path.join(root, rel), "utf8"), sandbox, { filename: rel });
 });
 
 var C = sandbox.window.SITE_CONTENT;
 var CFG = sandbox.window.SITE_CONFIG;
+/* Round 12: the site's copy of links.json (tools/sync-links.js). */
+var LINKS = sandbox.window.SITE_LINKS || {};
 
 var INDUSTRIES = [
   "manufacturing", "logistics", "utilities", "telecom", "healthcare",
@@ -89,7 +91,8 @@ var FACET_FULL = {
    and the Services cards, and is not offered as a catalog filter. */
 var NON_CATALOG_FACETS = ["oracle-ai-fusion"];
 /* The three products with an interactive walkthrough under site/demo/. The
-   Demo badge and the Artifacts filter read `demoUrl`, not the video flag. */
+   Demo badge and the Artifacts filter read the walkthrough link (links.json
+   `interactiveDemo` since round 12), not the video flag. */
 var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-system-erp-qa"];
 /* Round 4, T1: only these two carry the muted "in preparation" status line;
    every other product's state is told by its availability badges. */
@@ -826,16 +829,17 @@ if (!arr(C.products) || C.products.length !== 7) {
   }
   if (mp.icon !== "storefront") fail("shared.tagFamilies.availability.marketplace", 'icon is "' + mp.icon + '", expected "storefront"');
 
-  /* The badge claims a walkthrough exists, so the config has to hold one for
+  /* The badge claims a walkthrough exists, so links.json has to hold one for
      exactly the products whose walkthrough ships under site/demo/. */
   (C.products || []).forEach(function (p) {
-    var conf = (CFG.products || {})[p.slug] || {};
-    var has = typeof conf.demoUrl === "string" && conf.demoUrl.trim().length > 0;
+    var link = LINKS[p.slug] || {};
+    var demo = link.interactiveDemo;
+    var has = typeof demo === "string" && demo.trim().length > 0;
     var should = DEMO_SLUGS.indexOf(p.slug) !== -1;
-    if (has && !should) fail("config.products[" + p.slug + "]", "demoUrl is set but no walkthrough ships for this product");
-    if (!has && should) fail("config.products[" + p.slug + "]", "demoUrl is empty, so the interactive demo badge and filter would both miss a walkthrough that exists");
-    if (has && !fs.existsSync(path.join(root, "site", conf.demoUrl.replace(/\/index\.html$/, "")))) {
-      warn("config.products[" + p.slug + "]", "demoUrl points at site/" + conf.demoUrl + ", which is not on disk");
+    if (has && !should) fail('links.json products["' + p.slug + '"]', "interactiveDemo is set but no walkthrough ships for this product");
+    if (!has && should) fail('links.json products["' + p.slug + '"]', "interactiveDemo is empty, so the interactive demo badge and filter would both miss a walkthrough that exists");
+    if (has && !/^https:/.test(demo) && !fs.existsSync(path.join(root, "site", demo.replace(/\/index\.html$/, "")))) {
+      warn('links.json products["' + p.slug + '"]', "interactiveDemo points at site/" + demo + ", which is not on disk");
     }
   });
 })();
