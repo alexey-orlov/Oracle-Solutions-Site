@@ -812,12 +812,15 @@
      selected segment is the column's heading, so neither panel repeats it, and
      the card needs no "Contacts" H3 either — the tab already says it. Both
      forms are mounted whether their panel is open or not, so a switch never
-     lands on an unbound field. */
+     lands on an unbound field. Round 13 (Alex): the card names two people,
+     the partnership contact and the product's own lead from `shared.people`,
+     over the one practice address. */
   function contactsTab(product) {
     var UI = window.UI;
     var demo = C().forms.demo;
     var ask = C().site.primaryCta.label;
     var kit = C().salesKit;
+    var lead = product.contactPerson && (C().shared.people || {})[product.contactPerson];
     var base = "contact-" + product.slug;
     var talkTab = base + "-tab-talk";
     var kitTab = base + "-tab-kit";
@@ -858,6 +861,7 @@
     return '<section class="panel reveal">' +
         UI.contactSplit({
           formId: TALK_ANCHOR,
+          people: lead ? [lead] : [],
           form: '<div class="contact-tabs" data-contact-tabs="' + UI.esc(product.slug) + '">' +
             pick + talkPanel + kitPanel + "</div>"
         }) +

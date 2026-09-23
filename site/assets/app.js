@@ -337,32 +337,57 @@
      file leaves initials rather than a broken frame: the image guard drops the
      <img>. Round 10 retired the "Bring to the call" list: it repeated the form's
      own placeholder and the Jumpstart tab's "What we need from you", and the
-     card is now a person, not a briefing. */
+     card is now a person, not a briefing. Round 13: `people` adds names after
+     `shared.contact` (a product's own lead). The card then lists each person
+     as a row, photo beside name and title, over the one address and blurb:
+     the people are several, the mailbox is one. */
+  function contactPhoto(person) {
+    return '<span class="contact-photo" aria-hidden="true">' +
+      '<span class="contact-initials">' + esc(initials(person.name)) + "</span>" +
+      (person.photo
+        ? '<img class="contact-photo-img" src="' + esc(person.photo) +
+          '" alt="" loading="lazy" decoding="async">'
+        : "") +
+      "</span>";
+  }
+
+  function contactWho(person) {
+    return '<p class="contact-name">' + esc(person.name) + "</p>" +
+      (person.title ? '<p class="contact-title">' + esc(person.title) + "</p>" : "");
+  }
+
+  function contactSocial(person) {
+    return person.linkedin
+      ? '<a class="contact-social" href="' + esc(person.linkedin) +
+        '" target="_blank" rel="noopener">' + icon("linkedin") + "<span>LinkedIn</span></a>"
+      : "";
+  }
+
   function contactCard(options) {
     var opts = options || {};
     var person = (C.shared && C.shared.contact) || null;
     if (!person || !person.name) return "";
+    var extra = (opts.people || []).filter(function (p) { return p && p.name; });
+    var mail = person.email
+      ? '<a class="contact-mail" href="mailto:' + esc(person.email) + '">' +
+        icon("mail") + "<span>" + esc(person.email) + "</span></a>"
+      : "";
+    var blurb = person.blurb ? '<p class="contact-blurb">' + esc(person.blurb) + "</p>" : "";
+    var cls = "contact-card" + (opts.className ? " " + esc(opts.className) : "");
 
-    return '<div class="contact-card' + (opts.className ? " " + esc(opts.className) : "") + '">' +
-      '<span class="contact-photo" aria-hidden="true">' +
-        '<span class="contact-initials">' + esc(initials(person.name)) + "</span>" +
-        (person.photo
-          ? '<img class="contact-photo-img" src="' + esc(person.photo) +
-            '" alt="" loading="lazy" decoding="async">'
-          : "") +
-      "</span>" +
+    if (extra.length) {
+      var rows = [person].concat(extra).map(function (p) {
+        return '<li class="contact-person">' + contactPhoto(p) +
+          '<div class="contact-person-copy">' + contactWho(p) + contactSocial(p) + "</div></li>";
+      }).join("");
+      return '<div class="' + cls + ' contact-card--team">' +
+        '<ul class="contact-people">' + rows + "</ul>" +
+        '<div class="contact-card-copy">' + mail + blurb + "</div></div>";
+    }
+
+    return '<div class="' + cls + '">' + contactPhoto(person) +
       '<div class="contact-card-copy">' +
-        '<p class="contact-name">' + esc(person.name) + "</p>" +
-        (person.title ? '<p class="contact-title">' + esc(person.title) + "</p>" : "") +
-        (person.email
-          ? '<a class="contact-mail" href="mailto:' + esc(person.email) + '">' +
-            icon("mail") + "<span>" + esc(person.email) + "</span></a>"
-          : "") +
-        (person.blurb ? '<p class="contact-blurb">' + esc(person.blurb) + "</p>" : "") +
-        (person.linkedin
-          ? '<a class="contact-social" href="' + esc(person.linkedin) +
-            '" target="_blank" rel="noopener">' + icon("linkedin") + "<span>LinkedIn</span></a>"
-          : "") +
+        contactWho(person) + mail + blurb + contactSocial(person) +
       "</div></div>";
   }
 
@@ -375,7 +400,7 @@
      itself rather than re-entering the route and wiping what was typed. */
   function contactSplit(options) {
     var opts = options || {};
-    var card = contactCard({ className: "contact-card--panel" });
+    var card = contactCard({ className: "contact-card--panel", people: opts.people });
     var right = '<div class="contact-split-form"' +
       (opts.formId ? ' id="' + esc(opts.formId) + '"' : "") + ">" +
       (opts.heading ? '<h3 class="h3 block-title">' + esc(opts.heading) + "</h3>" : "") +
