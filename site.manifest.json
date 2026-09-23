@@ -76,7 +76,8 @@
     },
     "neverInArtifact": [
       "index-legacy.html",
-      "assets/site-legacy.css"
+      "assets/site-legacy.css",
+      "data/endpoint.local.json"
     ],
     "fullTree": "Every path the target's list_files already shows, plus the new files: since round 12 that includes data/links.js, without which every Interactive demo button disappears. Never the whole folder: the archived theme's files stay off this artifact.",
     "demoTargets": "links.json: products[<slug>].interactiveDemoArtifact, then node tools/sync-links.js (round 12; config.js carries no link to a kit artifact)"
@@ -86,7 +87,8 @@
       "docs/asset-candidates/",
       "site/assets/img/logos/",
       "links.json",
-      "mail/"
+      "mail/",
+      "site/data/endpoint.local.json"
     ],
     "sweep": {
       "root": "site",

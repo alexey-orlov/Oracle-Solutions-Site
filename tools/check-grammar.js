@@ -1708,14 +1708,15 @@ if (/request a demo/i.test(raw)) {
   token("salesKit.tab.nextDemo", tab.nextDemo, "link");
   token("salesKit.tab.nextAll", tab.nextAll, "link");
   need("salesKit.form", form, ["emailLabel", "emailPlaceholder", "productLabel", "productAll", "submit", "submitting",
-    "eligibility", "otherRoute", "kitName", "kitNameAll", "mailSubject", "mailSubjectAll", "mailBody"]);
+    "eligibility", "otherRoute", "kitName", "kitNameAll", "offline"]);
   token("salesKit.form.otherRoute", form.otherRoute, "routeLink");
   token("salesKit.form.kitName", form.kitName, "product");
-  token("salesKit.form.mailSubject", form.mailSubject, "product");
+  token("salesKit.form.offline", form.offline, "mailbox");
   need("salesKit.form.errors", form.errors || {}, ["email", "domain", "send"]);
   token("salesKit.form.errors.domain", (form.errors || {}).domain, "routeLink");
+  token("salesKit.form.errors.send", (form.errors || {}).send, "mailbox");
   var conf = form.confirmations || {};
-  ["sent", "queued", "mailto"].forEach(function (k) {
+  ["sent", "queued"].forEach(function (k) {
     var c = conf[k] || {};
     if (!str(c.title) || !str(c.body)) return fail("salesKit.form.confirmations." + k, "needs { title, body }");
     token("salesKit.form.confirmations." + k, c.body, "kitName");
@@ -1723,6 +1724,30 @@ if (/request a demo/i.test(raw)) {
       fail("salesKit.form.confirmations." + k, "claims the kit was emailed — only `sent` may, and only when an auto-sender is configured");
     }
   });
+
+  /* No form ever opens the visitor's mail app (Alex, 2026-09-24: "it just had to
+     send message in the background"). A form posts and confirms the outcome, or
+     says under itself, before anyone types, that this copy cannot send. */
+  var formsCopy = C.forms || {};
+  need("forms", formsCopy, ["offline"]);
+  token("forms.offline", formsCopy.offline, "mailbox");
+  need("forms.errors", formsCopy.errors || {}, ["send"]);
+  token("forms.errors.send", (formsCopy.errors || {}).send, "mailbox");
+  need("forms.labels", formsCopy.labels || {}, ["sending"]);
+  ["mailto", "error"].forEach(function (k) {
+    if ((formsCopy.confirmations || {})[k] !== undefined) fail("forms.confirmations." + k, "is retired: a failure is a line under the form, and no form opens a mail app");
+  });
+  if (conf.mailto !== undefined) fail("salesKit.form.confirmations.mailto", "is retired: no form opens a mail app");
+  ["mailSubject", "mailSubjectAll", "mailBody"].forEach(function (k) {
+    if (form[k] !== undefined) fail("salesKit.form." + k, "is retired: no form composes an email in the visitor's mail app");
+  });
+  if (/mail (client|app)/i.test(JSON.stringify([formsCopy, C.salesKit || {}]))) {
+    fail("forms / salesKit", "mention a mail client or mail app: a form sends in the background or says it cannot");
+  }
+  var formsSrc = fs.readFileSync(path.join(root, "site/assets/forms.js"), "utf8");
+  if (/location\.(href|assign|replace)[^;\n]*mailto|window\.open\([^)]*mailto/.test(formsSrc)) {
+    fail("site/assets/forms.js", "opens a mailto: link on submit: a form sends in the background or says it cannot");
+  }
 
   /* Sellers and partners are different readers: the kit goes to seller domains only. */
   var roles = (C.forms || {}).roles || [];
@@ -1817,6 +1842,20 @@ if (/request a demo/i.test(raw)) {
      config ships an empty endpoint, and a deployed copy sets its own. */
   if (CFG.formEndpoint) {
     fail("config.formEndpoint", "is set in the repo — set it on the deployed copy only (mail/README.md), never in git");
+  }
+  /* A local run reads its endpoint from site/data/endpoint.local.json, so that
+     file must stay out of git and out of every publish. */
+  var gitignore = "";
+  try { gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8"); } catch (error) { /* checked below */ }
+  if (gitignore.split(/\r?\n/).map(function (line) { return line.trim(); }).indexOf("site/data/endpoint.local.json") === -1) {
+    fail(".gitignore", "must ignore site/data/endpoint.local.json: it holds this machine's live trigger URL");
+  }
+  var siteManifest = JSON.parse(fs.readFileSync(path.join(root, "site.manifest.json"), "utf8"));
+  if (((siteManifest.publish || {}).neverInArtifact || []).indexOf("data/endpoint.local.json") === -1) {
+    fail("site.manifest.json publish.neverInArtifact", "must list data/endpoint.local.json, so no publish carries the live trigger URL");
+  }
+  if (((siteManifest.neverShip || {}).paths || []).indexOf("site/data/endpoint.local.json") === -1) {
+    fail("site.manifest.json neverShip.paths", "must list site/data/endpoint.local.json");
   }
 
   /* The emails' words (mail/copy.json) hold the site's rules, and every email the
