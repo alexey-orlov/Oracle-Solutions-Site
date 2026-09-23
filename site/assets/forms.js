@@ -256,11 +256,16 @@
       if (data.trap) return;
       if (!validate(form, data)) return;
 
+      var C = content();
       var status = form.querySelector(".form-status");
-      var target = endpoint();
-
-      if (target) {
-        status.textContent = "…";
+      endpointReady.then(function () {
+        var target = endpoint();
+        if (!target) {
+          setStatus(status, fill(C.forms.offline, { mailbox: mailboxLink() }), "error");
+          return;
+        }
+        setStatus(status, window.UI.esc(C.forms.labels.sending));
+        busy(form, true);
         window.fetch(target, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -269,14 +274,13 @@
           if (!response.ok) throw new Error("rejected");
           confirmation(block, kind === "contact" ? "contactPosted" : "posted");
         }).catch(function () {
-          confirmation(block, "error");
+          busy(form, false);
+          setStatus(status, fill(C.forms.errors.send, { mailbox: mailboxLink() }), "error");
         });
-        return;
-      }
-
-      window.location.href = mailtoHref(kind, data);
-      confirmation(block, "mailto");
+      });
     });
+
+    noteIfOffline(form, content().forms.offline);
 
     if (opts.focus) {
       var firstInput = form.querySelector("input, textarea, select");
@@ -291,8 +295,8 @@
      here to route the reader, and is checked again by the sender behind the
      endpoint. The page says the kit was emailed only when the POST succeeded and
      `sellerGate.kitAutoSend` is on — the sender answers 2xx only after the kit
-     email went out (mail/README.md); with no endpoint the visitor's own mail
-     client carries the request, and the confirmation says so. */
+     email went out (mail/README.md); a copy with no endpoint says under the form
+     that it cannot send the kit, and never opens a mail app. */
 
   function kitCopy() { return content().salesKit.form; }
   function gateConfig() { return config().sellerGate || {}; }
@@ -470,17 +474,20 @@
       var all = slug === "all";
       var name = all ? "" : productName(slug);
       var kitName = all ? copy.kitNameAll : copy.kitName.replace("{product}", name);
-      var subject = all ? copy.mailSubjectAll : copy.mailSubject.replace("{product}", name);
-      var vars = { kitName: UI.esc(kitName), email: UI.esc(email), mailbox: mailboxLink(), subject: UI.esc(subject) };
+      var vars = { kitName: UI.esc(kitName), email: UI.esc(email), mailbox: mailboxLink() };
       var remember = function () {
         try { if (gateConfig().kitEmailKey) window.localStorage.setItem(gateConfig().kitEmailKey, email); }
         catch (error) { /* not remembered */ }
       };
       var status = form.querySelector(".form-status");
-      var target = endpoint();
-
-      if (target) {
-        status.textContent = copy.submitting;
+      endpointReady.then(function () {
+        var target = endpoint();
+        if (!target) {
+          setStatus(status, fill(copy.offline, vars), "error");
+          return;
+        }
+        setStatus(status, UI.esc(copy.submitting));
+        busy(form, true);
         window.fetch(target, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -490,17 +497,13 @@
           remember();
           kitConfirmation(block, gateConfig().kitAutoSend ? "sent" : "queued", vars, opts);
         }).catch(function () {
-          status.innerHTML = fill(copy.errors.send, { mailbox: mailboxLink() });
+          busy(form, false);
+          setStatus(status, fill(copy.errors.send, { mailbox: mailboxLink() }), "error");
         });
-        return;
-      }
-
-      var body = copy.mailBody.replace("{kitName}", kitName).replace("{email}", email).replace("{page}", window.location.href);
-      remember();
-      window.location.href = "mailto:" + config().contactEmail +
-        "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-      kitConfirmation(block, "mailto", vars, opts);
+      });
     });
+
+    noteIfOffline(form, kitCopy().offline);
   }
 
   window.FORMS = { render: render, mount: mount, renderKit: renderKit, mountKit: mountKit };
