@@ -190,75 +190,29 @@ With `marketplaceUrl` set, the badge opens the listing in a new tab; without one
 
 **Why a boolean and a URL rather than the URL alone (round 4).** The badge and the facet checkbox are two surfaces of one fact, and inferring that fact from a URL meant the filter and the badge could disagree the moment one of them was read differently. `check-grammar.js` fails a `marketplaceUrl` set while `marketplace` is `false`, so a listing cannot appear half-wired. Turning either on is a claim about a third party: confirm the listing exists first.
 
-### `demoUrl`
-
-The interactive walkthrough — a self-contained guided demo of the product on prepared data, described in `README.md` ("The interactive walkthroughs"). Set today on `large-document-extraction`, `workforce-optimization` and `cross-system-erp-qa`, each pointed at a folder **inside** `site/`, so it deploys with the site and the link stays relative:
-
-```js
-demoUrl: "demo/large-document-extraction/index.html",
-demoUrl: "demo/workforce-optimization/index.html",
-demoUrl: "demo/cross-system-erp-qa/index.html",
-```
-
-**Round 9: `demoUrl` is the single source for everything that claims an interactive demo exists.** Non-empty → four things appear together:
-
-- the secondary **Interactive demo** button in the product hero (its label is `shared.demoCta` in `content.js`, which round 10 set to the badge's own words and glyph), and the same button inside the panel the pending video frame opens;
-- the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
-- the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same field.
-
-Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of the four exists. An absolute URL on another host works the same way.
-
-Until round 9 the badge and the filter read `video` instead, which is why *Account insights* carried a badge with no walkthrough behind it while *Cross-system ERP Q&A* had a walkthrough and no badge (Alex: *"ERP Q&A has an interactive demo but no Demo tag"*). The resolution of where the badge and the hero button point now lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that `demoUrl` is set for exactly the three products whose walkthrough ships under `site/demo/`, and warns if the path is not on disk.
-
-### `demoPreviewUrl`
-
-Only matters while the site itself is previewed as a **claude.ai artifact**. There, a relative `demoUrl` opens the artifact's supporting file as a top-level page, which the artifact host refuses (`ERR_BLOCKED_BY_RESPONSE`, seen 2026-09-16). So on that host — and only there (`pages/product.js` checks the hostname) — the two buttons go to this URL instead: the walkthrough published as its **own** artifact.
-
-```js
-demoPreviewUrl: "https://claude.ai/artifact/NdxY4f1D6hxC7pjyMRs6zP",
-demoPreviewUrl: "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
-demoPreviewUrl: "https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb",   // cross-system-erp-qa
-```
-
-On the site's real host it is ignored and the relative `demoUrl` is used, so nothing has to change at deployment. Keep it in step with `demoUrl`: republish the standalone demo artifact whenever the walkthrough changes, or the preview shows an older demo than the site ships.
-
-Empty while the walkthrough exists is a **known intermediate state**, not a bug: the demo ships in `site/` and works everywhere except inside the site's own artifact preview, where the button falls back to the relative path and the host refuses it. All three walkthroughs now carry their own artifact, so no product is in that state today — but a rebuilt walkthrough needs its artifact republished at the same URL, not a new one, or the site's preview links to the old build (the ERP Q&A demo was rebuilt on 2026-09-17, `docs/PROVENANCE.md` §22.20).
-
 ### `video`
 
-A boolean — the only non-URL field in a product block. **It decides whether the hero carries a demo frame at all, and nothing else** (round 9), which is also the switch between the hero's two layouts. It no longer drives the demo badge or the *Interactive demo* filter: those read `demoUrl`, the walkthrough they open.
+A boolean — the only non-URL field in a product block. **It decides whether the hero carries a demo frame at all, and nothing else** (round 9), which is also the switch between the hero's two layouts. It does not drive the demo badge or the *Interactive demo* filter: those read the walkthrough link, `interactiveDemo` in `links.json` (§3a).
 
 ```js
 video: true,
 ```
 
-| `video` | `videoUrl` | Product hero |
+| `video` | `video` link in `links.json` | Product hero |
 |---|---|---|
 | `false` | `""` | Single column: text over the hero background image. No video frame, no poster, no greyed play button, no "coming soon" line. |
-| `true` | `""` — today on the three | Two columns: text left, a 16:9 media frame right — poster, teal play button, caption "Watch the demo". Clicking it opens a small panel: the product name, the line *"The demo recording is being prepared."*, and a **"Request a live demo"** button that goes to that product's Contacts tab and closes the panel. Escape and the close button work as on any modal. |
+| `true` | `""` — today on the three | Two columns: text left, a 16:9 media frame right — poster, play button, caption "Watch the demo". Clicking it opens a small panel: the product name, the line *"The demo recording is being prepared."*, and a **"Request a live demo"** button that goes to that product's Contacts tab and closes the panel. Escape and the close button work as on any modal. |
 | `true` or `false` | a URL | Same two-column frame; clicking it plays the video in a modal. A URL turns the frame on by itself, so a product whose video arrives before anyone edits this flag still gets its frame. |
 
-In every case where the frame renders, the frame *is* the watch affordance, so the separate secondary "Watch the demo" button drops out of the CTA row and **"Request a demo"** stays the only primary CTA.
+In every case where the frame renders, the frame *is* the watch affordance, so the separate secondary "Watch the demo" button drops out of the CTA row and *Talk to us* stays the only primary CTA.
 
 `true` today on `large-document-extraction`, `workforce-optimization` and `account-insights` — the interactive walkthrough on the first, and demo recordings in preparation for the other two. `false` on the other four.
 
-**Why the flag rather than the URL.** The flag is **the owner's statement that a recording exists or is coming**, and the URL is the wiring that arrives after it — which is why `video: true` with an empty `videoUrl` is a supported state, not a half-finished one: the hero frame renders its *recording in preparation* panel, which is the site's own designed answer for an asset that has not landed. Set the flag when the owner says the recording is real; paste the URL when the file exists. **What the flag may not do is speak for a demo it is not** — round 4 had it driving the badge and the facet as well, and by round 9 the two had drifted apart in both directions. A claim now reads the thing it claims: the badge and the filter read `demoUrl`, the frame reads `video`.
-
-### `videoUrl`
-
-The demo video itself. Paste the link when the recording lands, **and set `video: true` in the same edit** — the URL turns the frame on by itself, but the badge and the facet read the flag.
-
-```js
-videoUrl: "https://www.youtube.com/watch?v=…",
-```
-
-A normal share link is fine. YouTube `watch?v=`, `youtu.be/`, `youtube.com/shorts/` and `vimeo.com/<id>` links are converted to their embed form before the player is framed; links already in embed/player form are passed through unchanged.
-
-Expected to be filled first for `workforce-optimization`, `large-document-extraction` and `account-insights`. Empty on all seven today.
+**Why the flag rather than the link.** The flag is **the owner's statement that a recording exists or is coming**, and the link is the wiring that arrives after it — which is why `video: true` with an empty link is a supported state, not a half-finished one: the hero frame renders its *recording in preparation* panel, which is the site's own designed answer for an asset that has not landed. Set the flag when the owner says the recording is real; paste the link when the file exists. **What the flag may not do is speak for a demo it is not** — round 4 had it driving the badge and the facet as well, and by round 9 the two had drifted apart in both directions. A claim reads the thing it claims: the badge and the filter read the walkthrough link, the frame reads `video`.
 
 ### `videoPoster`
 
-The still image shown inside that media frame. **Only ever used where the frame renders** — that is, where `video` is `true` or `videoUrl` is set; on a product with neither it is dead weight, which is why it is safe to leave empty everywhere.
+The still image shown inside that media frame. **Only ever used where the frame renders** — that is, where `video` is `true` or a `video` link is set in `links.json`; on a product with neither it is dead weight, which is why it is safe to leave empty everywhere.
 
 ```js
 videoPoster: "assets/img/posters/workforce-optimization.jpg",
@@ -272,17 +226,15 @@ A path relative to `site/index.html`, or an absolute `https://` URL. Landscape, 
 The renderer resolves the poster in this order, first non-empty wins:
 
 1. **`videoPoster`** — what you set here.
-2. **The YouTube thumbnail** — `https://img.youtube.com/vi/<id>/maxresdefault.jpg`, derived automatically when `videoUrl` is a YouTube link.
+2. **The YouTube thumbnail** — `https://img.youtube.com/vi/<id>/maxresdefault.jpg`, derived automatically when the `video` link is a YouTube link.
 
 There is no third step, and the product's hero image is explicitly **not** one. It used to be, and the result was the hero photograph rendered inside a frame sitting on top of the same photograph — a brighter cut-out of the wallpaper with a play button on it, in the first screen of the page (`PROVENANCE.md` §14.6).
 
-So a YouTube demo needs nothing here at all, and a frame waiting for its recording (`video: true`, no URL) renders with no `<img>`: the `video-card--plate` ground, the teal play button and the caption. That is the pending state, and it is the site's own rule for a missing asset. The backdrop behind the hero is held a stop darker on this layout so the frame still reads as a card and not as a hole cut in the background.
+So a YouTube demo needs nothing here at all, and a frame waiting for its recording (`video: true`, no link) renders with no `<img>`: the `video-card--plate` ground, the play button and the caption. That is the pending state, and it is the site's own rule for a missing asset. The backdrop behind the hero is held a stop darker on this layout so the frame still reads as a card and not as a hole cut in the background.
 
 Set `videoPoster` when the auto-derived thumbnail is a bad frame, when the video is on Vimeo or Stream (no public thumbnail), when you want a designed still rather than a screenshot, or when you want a pending frame to carry a picture — a product screenshot, a step frame, a desaturated crop at another focal point. Never point it at the hero file. Set today on `large-document-extraction` and `workforce-optimization`: each carries a 1600 × 900 still of its own walkthrough (`ASSETS.md` §1), so the pending frame shows the product rather than the plate.
 
-**If the poster cannot be loaded, it is dropped rather than shown broken.** The media frame keeps its veil, teal play button and caption over the inset panel, which already reads as a deliberate frame. One case needs naming: YouTube has `maxresdefault.jpg` only for videos uploaded above 720p, and for the rest it answers `200` with a 120×90 grey stand-in instead of a `404`. The renderer therefore treats a 120-pixel-wide YouTube thumbnail as a miss, retries `hqdefault.jpg` (which exists for every real video), and drops the poster only if that fails too. Nothing about this reaches the console.
-
-Empty on all seven today.
+**If the poster cannot be loaded, it is dropped rather than shown broken.** The media frame keeps its veil, play button and caption over the inset panel, which already reads as a deliberate frame. One case needs naming: YouTube has `maxresdefault.jpg` only for videos uploaded above 720p, and for the rest it answers `200` with a 120×90 grey stand-in instead of a `404`. The renderer therefore treats a 120-pixel-wide YouTube thumbnail as a miss, retries `hqdefault.jpg` (which exists for every real video), and drops the poster only if that fails too. Nothing about this reaches the console.
 
 ### `successStoryUrl`
 
@@ -294,37 +246,65 @@ The key keeps its round-3 name although the block was renamed: it is a config ke
 
 Expected first for `workforce-optimization` and `large-document-extraction`. Empty on all seven today.
 
-### `materials` — the sales-kit manifest links
+---
 
-A map of **material key → URL**. The key must match a `key` in that product's `sellers.materials` array in `content.js`; the title, description and state come from there, and only the URL comes from here. **Not rendered since round 8**: together with `sellers.materials` it is the manifest whoever sends the kit works from — keep the links current here so they have one home.
+## 3a. `links.json` — every kit link, in one file (round 12)
 
-```js
-materials: {
-  "sales-deck": "https://softserveinc.sharepoint.com/:p:/s/…",
-  "one-pager": "",
-  "feature-list": "",
-  "demo-video": ""
+`links.json` at the **repo root** holds every link a product's sales kit uses (Alex, 2026-09-23: "links to all those sources stored in the repo in a simple, easily configurable and human-editable config file"). It sits outside `site/` on purpose: nothing under `site/` is private — anyone can read `config.js` in view-source — and the kit documents carry the package prices the site keeps off its pages. The kit email reads the file from GitHub on every request; the site reads a copy of the three links its own buttons need.
+
+```json
+{
+  "siteUrl": "https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri",
+  "products": {
+    "workforce-optimization": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "demo/workforce-optimization/index.html",
+      "interactiveDemoArtifact": "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
+      "video": ""
+    }
+  }
 }
 ```
 
-- URL present → an enabled **Open** button, which opens the material in a new tab.
-- Empty string → a disabled **Link pending** control, with the row's title and description still shown.
+Every product in `content.js` needs an entry with all six keys; an empty string means the artifact does not exist yet. The kit email leaves it out, and the practice's copy of the request names it as missing, so the practice can follow up.
 
-Keys in use, per product:
+| Key | What it is | Who reads it |
+|---|---|---|
+| `onePager`, `salesDeck`, `featureList` | The kit documents, as full `https://` links anyone at Oracle or SoftServe can open. A SharePoint or OneDrive link generated "for people in SoftServe" will not open for an Oracle seller. | the kit email only |
+| `interactiveDemo` | The walkthrough: a path inside `site/` (`demo/<slug>/index.html`), or a full `https://` link | the site and the kit email |
+| `interactiveDemoArtifact` | The same walkthrough published as its own claude.ai artifact | the site on claude.ai, and the kit email while `siteUrl` is a claude.ai link |
+| `video` | The recorded demo: YouTube, Vimeo, SharePoint or Stream | the site and the kit email |
+| `siteUrl` (top level) | The address the kit email links product pages to | the kit email |
 
-| Product | Material keys |
-|---|---|
-| account-insights | `accelerator-pack-onepager`, `sales-deck`, `one-pager`, `feature-list`, `demo-video` |
-| case-evidence-collection | `sales-deck`, `one-pager`, `feature-list`, `demo-video` |
-| plan-vs-actual-investigation | `sales-deck`, `one-pager`, `feature-list`, `demo-video` |
-| large-document-extraction | `sales-deck`, `one-pager`, `feature-list`, `demo-video`, `marketplace-package` |
-| workforce-optimization | `sales-deck`, `one-pager`, `feature-list`, `demo-video`, `marketplace-package` |
-| cross-system-erp-qa | `lakehouse-jumpstart-deck`, `lakehouse-quickstart-deck`, `one-pager`, `feature-list`, `demo-video` |
-| business-metrics-qa | `lakehouse-jumpstart-deck`, `lakehouse-quickstart-deck`, `one-pager`, `feature-list`, `demo-video` |
+**After changing `interactiveDemo`, `interactiveDemoArtifact` or `video`, run `node tools/sync-links.js`** and publish: it validates the file and writes `site/data/links.js` (those three keys only) and `mail/catalog.json` (product names for the email). `tools/check-grammar.js` fails a stale copy, so no publish ships one. The kit documents need no command: the email picks them up on the next request.
 
-A row whose `state` in `content.js` is `superseded` stays disabled even if a URL is pasted here — that state exists to stop a file circulating, and the URL alone must not override it. Change the state in `content.js` once the file is confirmed current.
+### `interactiveDemo`
 
-**Share-link scope.** A SharePoint or OneDrive link generated "for people in SoftServe" will not open for an Oracle seller. Generate links at the scope you actually want before pasting them, and remember that anyone who unlocks the panel can pass the link on.
+The interactive walkthrough — a self-contained guided demo of the product on prepared data, described in `README.md` ("The interactive walkthroughs"). Set today on `large-document-extraction`, `workforce-optimization` and `cross-system-erp-qa`, each pointed at a folder **inside** `site/`, so it deploys with the site and the link stays relative.
+
+**It is the single source for everything that claims an interactive demo exists** (round 9). Non-empty → three things appear together:
+
+- the secondary **Interactive demo** button in the product hero (its label is `shared.demoCta` in `content.js`, the badge's own words and glyph since round 10), and the same button inside the panel the pending video frame opens;
+- the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
+- the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same link.
+
+Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the three products whose walkthrough ships under `site/demo/`, and `tools/sync-links.js` fails a path that is not on disk.
+
+### `interactiveDemoArtifact`
+
+Only matters while the site itself runs as a **claude.ai artifact**. There, a relative walkthrough link opens the artifact's supporting file as a top-level page, which the artifact host refuses (`ERR_BLOCKED_BY_RESPONSE`, seen 2026-09-16). So on that host — and only there (`assets/app.js` checks the hostname) — the two buttons go to this URL instead: the walkthrough published as its **own** artifact. The kit email uses it on the same condition: while `siteUrl` is a claude.ai link, the email's *Interactive demo* opens this artifact.
+
+On a real host it is ignored and the relative path is used, so nothing has to change at deployment. Keep it in step with the walkthrough: republish the standalone artifact **at the same URL** whenever the walkthrough changes, or the preview shows an older demo than the site ships (the ERP Q&A demo was rebuilt on 2026-09-17, `docs/PROVENANCE.md` §22.20). `sync-links.js` fails this key set while `interactiveDemo` is empty.
+
+### `video`
+
+The demo video itself. Paste the link when the recording lands, **and set `video: true` in `config.js` in the same edit** — the link turns the frame on by itself, but the flag is the owner's statement that the recording is real (§3). A normal share link is fine: YouTube `watch?v=`, `youtu.be/`, `youtube.com/shorts/` and `vimeo.com/<id>` links are converted to their embed form before the player is framed, and links already in embed or player form pass through unchanged. Expected first for `workforce-optimization`, `large-document-extraction` and `account-insights`. Empty on all seven today.
+
+### Retired in round 12
+
+`config.js` `products[].demoUrl`, `demoPreviewUrl`, `videoUrl` and `materials`, and `content.js` `products[].sellers.materials` (the unrendered kit manifest), moved into the six keys above; the checker fails any of them if it comes back. Their values carried over one to one: `demoUrl` → `interactiveDemo`, `demoPreviewUrl` → `interactiveDemoArtifact`, `videoUrl` → `video`. Every `materials` link was empty. The manifest's non-standard rows have no slot in the standard kit: the *Accelerator pack one-pager* (Account insights), the two *AI Lakehouse* decks (Cross-system ERP Q&A and Business metrics Q&A) and the *Marketplace package* (the two Marketplace products). If one of those files *is* the product's one-pager or sales deck, paste its link into that key.
 
 ---
 
@@ -396,7 +376,8 @@ All three are named in `content.js` (`overview.steps[].image`, `overview.industr
 ## 4. Adding an eighth product
 
 1. Add the product object to `products[]` in `content.js` (see `SCHEMA.md` for every field).
-2. Add a matching `products["<new-slug>"]` block to `config.js` with all seven keys (`marketplace`, `marketplaceUrl`, `video`, `videoUrl`, `videoPoster`, `successStoryUrl`, `materials`). `video` and `marketplace` must both be real booleans — `check-grammar.js` rejects a missing one and a quoted `"false"`, which would be truthy and turn the frame or the badge on.
+2. Add a matching `products["<new-slug>"]` block to `config.js` with all five keys (`marketplace`, `marketplaceUrl`, `video`, `videoPoster`, `successStoryUrl`). `video` and `marketplace` must both be real booleans — `check-grammar.js` rejects a missing one and a quoted `"false"`, which would be truthy and turn the frame or the badge on.
+   Then add its entry to `links.json` with all six keys, `""` for whatever does not exist yet (§3a), and run `node tools/sync-links.js`: the checker fails a product with no entry, and the kit email names the product from `mail/catalog.json`, which that command writes.
 3. Add the slug to `productOrder` where you want it to appear. Skipping this step is not an error — the product lands at the end of every list instead — but the position is a judgement about what a seller should meet first, so make it deliberately rather than by omission.
 4. Set its `facet` to one of the **four canonical technology ids**, and nothing else: `oci-nvidia` (*OCI + NVIDIA*), `oracle-ai-data-platform` (*Oracle AI Data Platform*), `oracle-ai-lakehouse` (*Oracle Autonomous AI Lakehouse*), `oracle-ai-fusion` (*Oracle AI for Fusion Applications*). There is no fifth platform and no `other` catch-all; a new Oracle platform is a new facet, added to `facets.technology`, to `shared.tagFamilies.tech.icons`, to both platform-card lists and to `check-grammar.js` in one edit. If it lands on a facet that currently has no products, nothing else is needed — the facet is already declared and will stop rendering its empty state once a product carries it.
 5. Give it a two-entry `tags` array: its `categoryChip`, then its facet's `label` **verbatim**. The engine it runs on — AI-Q, cuOpt, Select AI, a source system — goes in `technology`, never appended to the platform chip; `check-grammar.js` fails a third tag.
@@ -407,14 +388,15 @@ If the config block is missing, the product page still renders; every optional c
 
 ## 5. Checking a change
 
-After editing either data file:
+After editing either data file, or `links.json`:
 
 ```
 node --check site/data/config.js
 node --check site/data/content.js
+node tools/sync-links.js
 node tools/check-grammar.js
 ```
 
-The first two must print nothing. A syntax error there blanks the whole site, because the page cannot read its own content — a trailing comma in the wrong place is the usual cause.
+The first two must print nothing. A syntax error there blanks the whole site, because the page cannot read its own content — a trailing comma in the wrong place is the usual cause. `sync-links.js` names every problem in `links.json` (a missing comma, an unknown key, a path not on disk) and rewrites the two files that copy it.
 
 `check-grammar.js` must print `OK`. It asserts that every product still fills every slot of the component grammar (see `VISUAL-GRAMMAR.md`): hero image, problem/solution pair, 1–4 metric tiles with their note, ROI band, 6–8 short feature lines each landing in exactly one workflow step, 3–5 steps, 3–6 industry cases with keys from the fixed set, the at-a-glance side facts, in/out of scope, the four-step flow, the 4–5 layer solution stack with a Required item in every layer and both an inbound and an outbound integration, and the POV fact strip. Site-wide it also asserts the contact card, the `contacts` tab and the absence of the retired `demo` tab. It also fails on any banned string — internal vocabulary or an uncleared customer name — reaching the data layer. It exits non-zero and names each failure.
