@@ -264,8 +264,10 @@ function button(url, label) {
 /* ————— the kit email, to the person who asked for it ————— */
 
 function card(item, ctx, linked) {
+  /* No background on the image: its transparent corners are the brand's
+     octagonal cut, which a fill would square off. */
   var img = '<img src="' + esc(ctx.imageSrc(item.key)) + '" width="160" height="100" alt="' + esc(item.name) +
-    '" style="display:block;width:160px;height:auto;border:0;background:' + CARD + ';">';
+    '" style="display:block;width:160px;height:auto;border:0;">';
   var name = linked
     ? '<a href="' + esc(item.url) + '" style="font-family:' + SANS + ';font-size:17px;line-height:1.3;font-weight:bold;color:' + ACTION + ';text-decoration:none;">' + esc(item.name) + "</a>"
     : '<span style="font-family:' + SANS + ';font-size:17px;line-height:1.3;font-weight:bold;color:' + INK + ';">' + esc(item.name) + "</span>";
