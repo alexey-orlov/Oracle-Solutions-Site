@@ -410,7 +410,7 @@ function renderInternal(request, ctx, kitResult) {
     product: productName,
     email: request.email,
     name: request.name || request.email,
-    company: request.company || request.name || "",
+    company: request.company || "",
     role: roleLabel(ctx.catalog, request.role) || "",
     time: formatTime(request.submittedAt, settings.timezone),
     kitName: kitName,
@@ -419,10 +419,11 @@ function renderInternal(request, ctx, kitResult) {
     replyTo: replyTo(settings)
   };
   /* Subjects and buttons are short lines: a long company or name is cut there
-     (copy-notes: 20 and 24 characters), and printed in full in the body. */
+     (copy-notes v2: 16 and 24 characters), and printed in full in the body. A
+     subject with no company names the person instead. */
   var short = {};
   Object.keys(vars).forEach(function (k) { short[k] = vars[k]; });
-  short.company = clip(vars.company, 20);
+  short.company = clip(request.company || vars.name, 16);
   short.name = clip(vars.name, 24);
 
   var kits = (kitResult && kitResult.kits) || [];
@@ -437,7 +438,8 @@ function renderInternal(request, ctx, kitResult) {
 
   var title = line(fill((copy.subjects || {})[state], short));
   var subject = line((test ? (copy.testPrefix || "") : "") + title);
-  var banner = fill((copy.banners || {})[state], vars);
+  /* "{name} ({company})" with no company would print empty brackets. */
+  var banner = fill((copy.banners || {})[state], vars).replace(/\s*\(\s*\)/g, "");
   var cta = (copy.cta || {})[state] || {};
   var replySubject = fill(copy.replySubject || "", vars);
   var mailto = "mailto:" + request.email + (replySubject ? "?subject=" + encodeURIComponent(replySubject) : "");
