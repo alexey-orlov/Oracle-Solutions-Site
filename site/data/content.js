@@ -2906,16 +2906,13 @@ window.SITE_CONTENT = {
       errors: {
         email: "Enter your work email.",
         domain: "The kit only goes to @softserveinc.com and @oracle.com addresses. Customer or partner? {routeLink} instead.",
-        send: "That didn’t send. Try again, or write to {mailbox}."
+        send: "That didn’t send. Please try again, or email {mailbox}."
       },
+      offline: "This preview can’t send the kit. Email {mailbox} to ask for it.",
       confirmations: {
         sent: { title: "Check your inbox", body: "We’ve emailed the {kitName} to {email}. Not there in a few minutes? Check spam, or write to {mailbox}." },
-        queued: { title: "Your request is in", body: "The {kitName} will reach {email} within two working days. Nothing by then? Write to {mailbox}." },
-        mailto: { title: "One step left", body: "Your mail client opened a request to {mailbox} — send it as is and the Oracle practice will email you the {kitName} within two working days. Nothing opened? Write to {mailbox} with “{subject}” as the subject." }
-      },
-      mailSubject: "Sales kit request — {product}",
-      mailSubjectAll: "Sales kit request — all offers",
-      mailBody: "Hi,\n\nPlease send me the {kitName}.\n\nWork email: {email}\nRequested from: {page}"
+        queued: { title: "Your request is in", body: "The {kitName} will reach {email} within two working days. Nothing by then? Write to {mailbox}." }
+      }
     }
   }
 };

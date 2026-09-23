@@ -2507,6 +2507,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .radioline input { accent-color: var(--action); width: 1rem; height: 1rem; flex: none; }
 .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
 .form-status { font-size: var(--fs-sm); color: var(--text-dim); }
+.form-status.is-error { color: var(--danger); }
+.form-status.is-error .inline-link { color: inherit; border-bottom-color: currentColor; }
 .form-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 .form-confirm { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; padding: clamp(1.75rem, 3vw, 2.5rem); border: 0; --cut: var(--cut-8); background: var(--surface-select); max-width: 40rem; }
