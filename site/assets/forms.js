@@ -2,19 +2,27 @@
   "use strict";
 
   var HONEYPOT = "site-reference";
-  /* Where a local run finds the form endpoint (round 12). A live trigger URL is
-     never committed, so config.js ships `formEndpoint: ""`; a deployed copy sets
-     it in its own config.js, and on 127.0.0.1 or localhost a tester sets
-     localStorage["oracle-ai-solutions:form-endpoint"] by hand (mail/README.md). */
-  var LOCAL_ENDPOINT_KEY = "oracle-ai-solutions:form-endpoint";
+  /* Where the forms send (round 12). Every form posts in the background and
+     confirms what happened; none ever opens the visitor's mail app. A live
+     trigger URL is never committed, so config.js ships `formEndpoint: ""`: a
+     deployed copy sets its own, and a run on 127.0.0.1 or localhost reads it
+     from data/endpoint.local.json, a git-ignored file that is never published
+     (mail/README.md). A copy with neither says under each form that it cannot
+     send, before anyone types. */
+  var LOCAL_ENDPOINT_FILE = "data/endpoint.local.json";
+  var localEndpoint = "";
+  var endpointReady = /^(127\.0\.0\.1|localhost)$/.test(window.location.hostname)
+    ? window.fetch(LOCAL_ENDPOINT_FILE, { cache: "no-store" })
+        .then(function (response) { return response.ok ? response.json() : {}; })
+        .then(function (json) { localEndpoint = (json && json.formEndpoint) || ""; })
+        .catch(function () { /* no local endpoint: the forms say they cannot send */ })
+    : Promise.resolve();
 
   function content() { return window.SITE_CONTENT; }
   function config() { return window.SITE_CONFIG; }
 
   function endpoint() {
-    if (config().formEndpoint) return config().formEndpoint;
-    if (!/^(127\.0\.0\.1|localhost)$/.test(window.location.hostname)) return "";
-    try { return window.localStorage.getItem(LOCAL_ENDPOINT_KEY) || ""; } catch (error) { return ""; }
+    return config().formEndpoint || localEndpoint;
   }
 
   function instance(kind) {
@@ -197,24 +205,25 @@
     };
   }
 
-  function mailtoHref(kind, data) {
-    var C = content();
-    var labels = C.forms.labels;
-    var subject = (kind === "contact" ? C.forms.contact.heading : C.forms.demo.heading) +
-      " — " + data.productLabel;
-    var lines = [
-      labels.name + ": " + data.name,
-      labels.email + ": " + data.email,
-      labels.company + ": " + (data.company || "-"),
-      labels.role + " " + roleLabel(data.role),
-      labels.product + ": " + data.productLabel,
-      "",
-      labels.message,
-      data.message || "-"
-    ];
-    return "mailto:" + config().contactEmail +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(lines.join("\n"));
+  /* The line under a form's button: the cannot-send notice on a copy with no
+     endpoint, "Sending…" while a request runs, the error when one fails. */
+  function setStatus(node, html, tone) {
+    if (!node) return;
+    node.innerHTML = html || "";
+    node.classList.toggle("is-error", tone === "error");
+  }
+
+  /* On a copy with no endpoint, say so under the form before anyone types. */
+  function noteIfOffline(form, template) {
+    endpointReady.then(function () {
+      if (!endpoint()) setStatus(form.querySelector(".form-status"), fill(template, { mailbox: mailboxLink() }));
+    });
+  }
+
+  /* Disables the button while a request runs, so one click sends one request. */
+  function busy(form, on) {
+    var button = form.querySelector('button[type="submit"]');
+    if (button) button.disabled = on;
   }
 
   function confirmation(block, outcome) {
@@ -223,7 +232,7 @@
     block.innerHTML = '<div class="form-confirm">' +
       '<span class="form-confirm-mark">' + UI.icon("check") + "</span>" +
       '<h3 class="h3">' + UI.esc(copy.title) + "</h3>" +
-      '<p class="body-text">' + UI.esc(copy.body) + "</p>" +
+      '<p class="body-text">' + fill(copy.body, { mailbox: mailboxLink() }) + "</p>" +
       "</div>";
     var heading = block.querySelector(".h3");
     if (heading) {
