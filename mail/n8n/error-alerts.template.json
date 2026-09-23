@@ -1,0 +1,81 @@
+{
+  "name": "Oracle site forms — error alerts",
+  "nodes": [
+    {
+      "id": "osf-err-trigger",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "osf-err-build",
+      "name": "Build alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// n8n Code node \"Build alert\" in the workflow \"Oracle site forms — error alerts\"\n// (Error Trigger → this → Telegram). The backstop for \"Oracle site forms (cloud)\":\n// any run that ends in an error none of its own paths handled reaches the\n// deployment's alert chat, so a form submission never fails in silence.\nfunction esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }\nconst j = items[0].json || {};\nconst ex = j.execution || {};\nconst err = ex.error || j.error || {};\nconst node = (err.node && err.node.name) || ex.lastNodeExecuted || '';\nlet html = '⚠️ <b>Oracle site forms: a run failed</b>\\n';\nif (node) html += '<b>Node:</b> ' + esc(node) + '\\n';\nhtml += '<b>Error:</b> ' + esc(String(err.message || err.description || 'unknown').slice(0, 600)) + '\\n';\nhtml += '\\nThe visitor saw an error. A request may be lost: check the execution for its data.';\nif (ex.url) html += '\\n<a href=\"' + esc(ex.url) + '\">Open the execution</a>';\nreturn [{ json: { telegramHtml: html } }];\n"
+      }
+    },
+    {
+      "id": "osf-err-tg",
+      "name": "Send Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        0
+      ],
+      "webhookId": "30a66373-0ae9-215e-31ee-8ebe632194ed",
+      "parameters": {
+        "chatId": "TELEGRAM_CHAT_ID",
+        "text": "={{ $json.telegramHtml }}",
+        "additionalFields": {
+          "disable_web_page_preview": true,
+          "parse_mode": "HTML"
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram alerts"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Build alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build alert": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

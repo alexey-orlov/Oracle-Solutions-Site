@@ -1,0 +1,1048 @@
+{
+  "name": "Oracle site forms (cloud)",
+  "nodes": [
+    {
+      "id": "form-post",
+      "name": "Form POST",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "00000000-0000-0000-0000-000000000000",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "SET-A-LONG-RANDOM-PATH",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "http://127.0.0.1:8765,http://localhost:8765"
+        }
+      }
+    },
+    {
+      "id": "self-check",
+      "name": "Every 6 hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        520
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deployment",
+      "name": "Deployment settings",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// n8n Code node \"Deployment settings\". Everything specific to one installation of\n// the sender lives here and nowhere in the shared repo (mail/README.md,\n// \"Deployment\"): the repository it reads, its From identity, its test inbox and\n// where failures are reported. The repo ships this file with placeholders; the\n// running workflow holds the real values, and a code update never overwrites it.\nreturn [{\n  json: {\n    repo: \"OWNER/REPOSITORY\",          // the site repository on GitHub, read through the GitHub read credential\n    ref: \"main\",                       // the branch the sender reads\n    fromName: \"Sender name\",           // the From line's display name\n    fromAddress: \"sender@example.com\", // must be the mailbox the send credential signs in as\n    testInbox: \"tester@example.com\",   // test mode: every practice notice and every kit reply goes here\n    alertChatId: \"TELEGRAM_CHAT_ID\"    // where failures are reported; the Telegram credential's bot must be in that chat\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "files-to-read",
+      "name": "Files to read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// The repo files the sender reads on every request (mail/README.md).\nreturn [\"mail/settings.json\",\"links.json\",\"mail/catalog.json\",\"mail/copy.json\",\"mail/render.js\",\"mail/img/product-page.png\",\"mail/img/one-pager.png\",\"mail/img/sales-deck.png\",\"mail/img/feature-list.png\",\"mail/img/interactive-demo.png\",\"mail/img/video.png\"].map(path => ({ json: { path } }));"
+      }
+    },
+    {
+      "id": "read-github",
+      "name": "Read from GitHub",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        400
+      ],
+      "parameters": {
+        "url": "=https://api.github.com/repos/{{ $('Deployment settings').first().json.repo }}/contents/{{ $json.path }}?ref={{ $('Deployment settings').first().json.ref }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "GitHub read (site repo)"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "id": "validate-render",
+      "name": "Validate and render",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// n8n Code node \"Validate and render\" (Run Once for All Items). The workflow keeps\n// a copy of this file; mail/README.md says how to update it. It reads the repo\n// files fetched by \"Read from GitHub\", runs mail/render.js from them, validates the\n// POST, applies the send caps and renders every email the request causes.\n// Started by the schedule instead of a form, it is the self-check: it renders every\n// email the forms can cause, sends nothing, and reports only a problem.\nconst selfCheck = !$('Form POST').isExecuted;\nconst body = selfCheck ? {} : ($('Form POST').first().json.body || {});\nconst dep = $('Deployment settings').first().json;\nconst deployment = { testInbox: dep.testInbox, fromName: dep.fromName, fromAddress: dep.fromAddress };\nconst paths = $('Files to read').all().map(i => i.json.path);\nconst got = $input.all();\n\nfunction esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }\nfunction stop(outcome, reason, extra) {\n  const alertHtml = '⚠️ <b>Oracle site forms: ' + (selfCheck ? 'self-check failed' : esc(outcome === 'config' ? 'not working' : outcome)) + '</b>\\n' + esc(reason) +\n    (selfCheck ? '\\n\\nNo visitor has hit this yet: the next form submission would.' : '\\n\\nThe visitor saw an error and was pointed to the practice mailbox.');\n  return [{ json: Object.assign({ outcome: selfCheck ? 'selfcheck' : outcome, reason, alertHtml }, extra || {}) }];\n}\n\nconst files = {};\nconst images = {};\nfor (let i = 0; i < paths.length; i++) {\n  const item = got[i];\n  if (!item || !item.binary || !item.binary.data) {\n    const e = item && item.json && item.json.error;\n    return stop('config', 'Could not read ' + paths[i] + ' from GitHub (' + String(e ? (e.message || JSON.stringify(e)) : 'no response').slice(0, 300) +\n      '). Check the GitHub read credential and the repo in Deployment settings.');\n  }\n  if (/\\.png$/.test(paths[i])) images[paths[i]] = item.binary.data;\n  else files[paths[i]] = (await this.helpers.getBinaryDataBuffer(i, 'data')).toString('utf8');\n}\n\nlet render, ctx;\ntry {\n  const m = { exports: {} };\n  new Function('module', 'exports', files['mail/render.js'])(m, m.exports);\n  render = m.exports;\n  ctx = {\n    settings: JSON.parse(files['mail/settings.json']),\n    links: JSON.parse(files['links.json']),\n    catalog: JSON.parse(files['mail/catalog.json']),\n    copy: JSON.parse(files['mail/copy.json']),\n    deployment,\n    imageSrc: key => 'cid:kit-' + key\n  };\n} catch (e) {\n  return stop('config', 'The repo files did not load: ' + e.message + '. A syntax error in a JSON file is the usual cause; run node tools/check-grammar.js in the site repo.');\n}\n\n// Anything unexpected from here on still ends on the alerted \"not working\"\n// path, so a visitor never meets a silent failure.\ntry {\nif (selfCheck) {\n  const problems = [];\n  const samples = [{ form: 'kit', email: 'self-check@oracle.com', product: 'all', consent: true }]\n    .concat(ctx.catalog.products.map(p => ({ form: 'kit', email: 'self-check@oracle.com', product: p.slug, consent: true })))\n    .concat([{ form: 'demo', name: 'Self check', email: 'self-check@example.com', consent: true },\n             { form: 'contact', name: 'Self check', email: 'self-check@example.com', consent: true }]);\n  for (const b of samples) {\n    const v = render.validate(b, ctx);\n    if (!v.ok) { problems.push(b.form + ' ' + (b.product || '') + ' refused: ' + v.code); continue; }\n    let mails;\n    if (b.form === 'kit') { const k = render.renderKit(v.request, ctx); mails = [k, render.renderInternal(v.request, ctx, { status: 'sent', kits: k.kits })]; }\n    else mails = [render.renderInternal(v.request, ctx)];\n    for (const m of mails) {\n      const left = (m.subject + m.html).match(/\\{[a-zA-Z]+\\}/);\n      if (left) problems.push(b.form + ' ' + (b.product || '') + ': the token ' + left[0] + ' is not filled (mail/copy.json)');\n      if (!m.to) problems.push(b.form + ': no recipient (the test inbox in Deployment settings, or inbox.live in mail/settings.json)');\n      for (const im of (m.images || [])) if (!images[im.file]) problems.push('missing picture ' + im.file);\n    }\n  }\n  if (!deployment.fromAddress) problems.push('no fromAddress in Deployment settings');\n  return problems.length ? stop('selfcheck', Array.from(new Set(problems)).slice(0, 12).join('\\n')) : [{ json: { outcome: 'selfcheck-ok' } }];\n}\nconst verdict = render.validate(body, ctx);\nif (!verdict.ok) return [{ json: { outcome: 'refused', code: verdict.code, reason: verdict.reason } }];\nconst request = verdict.request;\nconst settings = ctx.settings;\n\n// Caps: submissions per hour, and kit emails per address per day. Kept in the\n// workflow's static data, which persists between production runs.\nconst store = $getWorkflowStaticData('global');\nconst now = Date.now();\nstore.hits = (store.hits || []).filter(t => now - t < 3600e3);\nstore.kit = store.kit || {};\nfor (const addr of Object.keys(store.kit)) {\n  const recent = store.kit[addr].filter(t => now - t < 86400e3);\n  if (recent.length) store.kit[addr] = recent; else delete store.kit[addr];\n}\nconst perHour = (settings.limits || {}).perHour || 30;\nconst perDay = (settings.kit || {}).perAddressPerDay || 3;\nlet limit = '';\nif (store.hits.length >= perHour) limit = perHour + ' submissions in the last hour';\nelse if (request.form === 'kit' && (store.kit[request.email] || []).length >= perDay) limit = perDay + ' kits to ' + request.email + ' in the last day';\nif (limit) {\n  const alert = !store.lastLimitAlert || now - store.lastLimitAlert > 3600e3;\n  if (alert) store.lastLimitAlert = now;\n  return [{ json: { outcome: 'limited', alert, alertHtml: '⚠️ <b>Oracle site forms: send cap reached</b>\\n' + esc(limit) +\n    '. Further requests are refused until the window passes (mail/settings.json).' } }];\n}\nstore.hits.push(now);\nif (request.form === 'kit') (store.kit[request.email] = store.kit[request.email] || []).push(now);\n\nconst mode = settings.mode === 'live' ? 'live' : 'test';\nconst from = dep.fromName ? String(dep.fromName).replace(/[<>\"\\r\\n]/g, '') + ' <' + dep.fromAddress + '>' : dep.fromAddress;\nconst base = { request, from, mode, files, renderVersion: render.VERSION };\n\nif (request.form !== 'kit') {\n  return [{ json: Object.assign(base, { outcome: 'practice', practice: render.renderInternal(request, ctx) }) }];\n}\n\nconst kit = render.renderKit(request, ctx);\nconst binary = {};\nfor (const im of kit.images) {\n  if (!images[im.file]) return stop('config', 'The kit image ' + im.file + ' was not read from GitHub.');\n  binary[im.cid] = images[im.file];\n}\nreturn [{\n  json: Object.assign(base, {\n    outcome: 'kit',\n    kit: { to: kit.to, subject: kit.subject, html: kit.html, text: kit.text, inline: kit.images.map(im => im.cid).join(',') },\n    kitReplyTo: render.replyTo(settings, deployment),\n    kits: kit.kits,\n    practiceSent: render.renderInternal(request, ctx, { status: 'sent', kits: kit.kits })\n  }),\n  binary\n}];\n} catch (e) {\n  return stop('config', 'Unexpected error while rendering (mail/render.js ' + (render && render.VERSION) + '): ' + (e && e.message || e));\n}\n"
+      }
+    },
+    {
+      "id": "route",
+      "name": "Route",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1100,
+        400
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "kit",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "outcome-0",
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "kit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "practice",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "outcome-1",
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "practice",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "refused",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "outcome-2",
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "refused",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "limited",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "outcome-3",
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "limited",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "config",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "outcome-4",
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "config",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "selfcheck",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "outcome-5",
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "selfcheck",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "send-kit",
+      "name": "Send kit",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1320,
+        120
+      ],
+      "parameters": {
+        "fromEmail": "={{ $json.from }}",
+        "toEmail": "={{ $json.kit.to }}",
+        "subject": "={{ $json.kit.subject }}",
+        "emailFormat": "both",
+        "text": "={{ $json.kit.text }}",
+        "html": "={{ $json.kit.html }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $json.kitReplyTo }}",
+          "attachments": "={{ $json.kit.inline }}"
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP sender"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "prep-kit-sent",
+      "name": "Practice copy: kit sent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        40
+      ],
+      "parameters": {
+        "jsCode": "const b = $('Validate and render').first().json;\nreturn [{ json: { mail: b.practiceSent, from: b.from } }];"
+      }
+    },
+    {
+      "id": "failure-notice",
+      "name": "Failure notice",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        220
+      ],
+      "parameters": {
+        "jsCode": "// n8n Code node \"Failure notice\" (Run Once for All Items): the kit email failed.\n// Re-renders the practice's copy as the \"send it by hand\" notice, with the error,\n// and builds the Telegram alert. Runs the same mail/render.js the request loaded.\nconst base = $('Validate and render').first().json;\nconst f = base.files;\nconst m = { exports: {} };\nnew Function('module', 'exports', f['mail/render.js'])(m, m.exports);\nconst ctx = {\n  settings: JSON.parse(f['mail/settings.json']),\n  links: JSON.parse(f['links.json']),\n  catalog: JSON.parse(f['mail/catalog.json']),\n  copy: JSON.parse(f['mail/copy.json']),\n  deployment: (dep => ({ testInbox: dep.testInbox, fromName: dep.fromName, fromAddress: dep.fromAddress }))($('Deployment settings').first().json),\n  imageSrc: key => 'cid:kit-' + key\n};\nconst e = $json.error || {};\nconst error = String(e.message || e.description || (typeof e === 'string' ? e : JSON.stringify(e)) || 'unknown error').slice(0, 300);\nconst mail = m.exports.renderInternal(base.request, ctx, { status: 'failed', kits: base.kits, error });\nfunction esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }\nconst alertHtml = '⚠️ <b>Oracle site: sales kit NOT sent</b>\\nTo: ' + esc(base.request.email) +\n  '\\nKit: ' + esc(base.request.product) + '\\nError: ' + esc(error) +\n  '\\n\\nThe practice copy (' + esc(mail.to) + ') says to send it by hand; the visitor saw an error.';\nreturn [{ json: { mail, from: base.from, alertHtml } }];\n"
+      }
+    },
+    {
+      "id": "prep-form",
+      "name": "Practice copy: form",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        400
+      ],
+      "parameters": {
+        "jsCode": "const b = $('Validate and render').first().json;\nreturn [{ json: { mail: b.practice, from: b.from } }];"
+      }
+    },
+    {
+      "id": "send-practice",
+      "name": "Send practice copy",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        220
+      ],
+      "parameters": {
+        "fromEmail": "={{ $json.from }}",
+        "toEmail": "={{ $json.mail.to }}",
+        "subject": "={{ $json.mail.subject }}",
+        "emailFormat": "both",
+        "text": "={{ $json.mail.text }}",
+        "html": "={{ $json.mail.html }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $json.mail.replyTo }}"
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP sender"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "outcome",
+      "name": "Outcome",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        220
+      ],
+      "parameters": {
+        "jsCode": "// n8n Code node \"Outcome\" (Run Once for All Items). Runs after the practice copy\n// was sent or failed. Decides what the page is told and whether Alex gets a\n// Telegram alert. No request ends in silence: every failure alerts, and an alert\n// for an undelivered practice copy carries the whole request, so the lead is\n// never lost.\nconst base = $('Validate and render').first().json;\nconst r = base.request || {};\nconst kitFailed = $('Failure notice').isExecuted;\nconst e = $json.error;\nconst practiceError = e ? String(e.message || e.description || (typeof e === 'string' ? e : JSON.stringify(e))).slice(0, 300) : '';\n\nfunction esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }\nfunction lead(title, tail) {\n  const lines = ['⚠️ <b>Oracle site: ' + title + '</b>', 'Form: ' + esc(r.form) + (r.product ? ' · ' + esc(r.product) : ''), 'Email: ' + esc(r.email)];\n  if (r.name) lines.push('Name: ' + esc(r.name));\n  if (r.company) lines.push('Company: ' + esc(r.company));\n  if (r.role) lines.push('Role: ' + esc(r.role));\n  if (r.message) lines.push('Message: ' + esc(String(r.message).slice(0, 1500)));\n  lines.push('Error: ' + esc(practiceError), '', tail);\n  return lines.join('\\n');\n}\n\nlet respond;\nlet alertHtml = '';\nif (base.outcome === 'kit') {\n  respond = kitFailed ? 'notSent' : 'sent';\n  if (kitFailed) {\n    alertHtml = $('Failure notice').first().json.alertHtml + (practiceError ? '\\n\\nThe practice copy failed too: ' + esc(practiceError) : '');\n  } else if (practiceError) {\n    alertHtml = lead('kit sent, but the practice copy failed', 'The kit reached them; only the notice to the practice inbox is missing.');\n  }\n} else {\n  respond = practiceError ? 'notSent' : 'received';\n  if (practiceError) alertHtml = lead('request NOT delivered to the practice inbox', 'The visitor saw an error. Reply to them from here.');\n}\nreturn [{ json: { respond, alertHtml } }];\n"
+      }
+    },
+    {
+      "id": "alert-needed",
+      "name": "Alert needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2200,
+        100
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "alert-needed-0",
+              "leftValue": "={{ $json.alertHtml }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "tg-alert",
+      "name": "Telegram: alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2420,
+        100
+      ],
+      "parameters": {
+        "chatId": "={{ $('Deployment settings').first().json.alertChatId }}",
+        "text": "={{ $json.alertHtml }}",
+        "additionalFields": {
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram alerts"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "webhookId": "5b73674e-19bc-63f8-bbb7-6e53d1bd77d4"
+    },
+    {
+      "id": "respond-with",
+      "name": "Respond with",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2200,
+        320
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "sent",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "respond-0",
+                    "leftValue": "={{ $json.respond }}",
+                    "rightValue": "sent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "received",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "respond-1",
+                    "leftValue": "={{ $json.respond }}",
+                    "rightValue": "received",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "notSent",
+              "renameOutput": true,
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "respond-2",
+                    "leftValue": "={{ $json.respond }}",
+                    "rightValue": "notSent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "respond-sent",
+      "name": "Respond: sent",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2420,
+        260
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":true,\"sent\":true}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "respond-received",
+      "name": "Respond: received",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2420,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":true}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "respond-not-sent",
+      "name": "Respond: not sent",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2420,
+        540
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":false,\"code\":\"send\"}",
+        "options": {
+          "responseCode": 502
+        }
+      }
+    },
+    {
+      "id": "respond-refused",
+      "name": "Respond: refused",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1320,
+        600
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, code: $json.code }) }}",
+        "options": {
+          "responseCode": 400
+        }
+      }
+    },
+    {
+      "id": "cap-alert",
+      "name": "Cap alert?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1320,
+        780
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "cap-alert-0",
+              "leftValue": "={{ $json.alert }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "tg-cap",
+      "name": "Telegram: cap reached",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1540,
+        740
+      ],
+      "parameters": {
+        "chatId": "={{ $('Deployment settings').first().json.alertChatId }}",
+        "text": "={{ $json.alertHtml }}",
+        "additionalFields": {
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram alerts"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "webhookId": "7f5e7b5a-ccfa-2e57-c784-0c3bd8ec833d"
+    },
+    {
+      "id": "respond-limited",
+      "name": "Respond: too many",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1760,
+        800
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":false,\"code\":\"rate\"}",
+        "options": {
+          "responseCode": 429
+        }
+      }
+    },
+    {
+      "id": "tg-config",
+      "name": "Telegram: not working",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        960
+      ],
+      "parameters": {
+        "chatId": "={{ $('Deployment settings').first().json.alertChatId }}",
+        "text": "={{ $json.alertHtml }}",
+        "additionalFields": {
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram alerts"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "webhookId": "a3f4d080-c0ad-ff1e-ffce-ccd1463522ae"
+    },
+    {
+      "id": "respond-config",
+      "name": "Respond: unavailable",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1540,
+        960
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":false,\"code\":\"config\"}",
+        "options": {
+          "responseCode": 503
+        }
+      }
+    },
+    {
+      "id": "tg-selfcheck",
+      "name": "Telegram: self-check failed",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        1120
+      ],
+      "parameters": {
+        "chatId": "={{ $('Deployment settings').first().json.alertChatId }}",
+        "text": "={{ $json.alertHtml }}",
+        "additionalFields": {
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram alerts"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "webhookId": "0fd19b19-2282-8fab-eb07-9ef043fc4e53"
+    }
+  ],
+  "connections": {
+    "Form POST": {
+      "main": [
+        [
+          {
+            "node": "Deployment settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 6 hours": {
+      "main": [
+        [
+          {
+            "node": "Deployment settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deployment settings": {
+      "main": [
+        [
+          {
+            "node": "Files to read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Files to read": {
+      "main": [
+        [
+          {
+            "node": "Read from GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Validate and render",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate and render": {
+      "main": [
+        [
+          {
+            "node": "Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route": {
+      "main": [
+        [
+          {
+            "node": "Send kit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Practice copy: form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond: refused",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cap alert?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram: not working",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram: self-check failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send kit": {
+      "main": [
+        [
+          {
+            "node": "Practice copy: kit sent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failure notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Practice copy: kit sent": {
+      "main": [
+        [
+          {
+            "node": "Send practice copy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failure notice": {
+      "main": [
+        [
+          {
+            "node": "Send practice copy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Practice copy: form": {
+      "main": [
+        [
+          {
+            "node": "Send practice copy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send practice copy": {
+      "main": [
+        [
+          {
+            "node": "Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Outcome": {
+      "main": [
+        [
+          {
+            "node": "Alert needed?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond with",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert needed?": {
+      "main": [
+        [
+          {
+            "node": "Telegram: alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Respond with": {
+      "main": [
+        [
+          {
+            "node": "Respond: sent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond: received",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond: not sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cap alert?": {
+      "main": [
+        [
+          {
+            "node": "Telegram: cap reached",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond: too many",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram: cap reached": {
+      "main": [
+        [
+          {
+            "node": "Respond: too many",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram: not working": {
+      "main": [
+        [
+          {
+            "node": "Respond: unavailable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  }
+}
