@@ -356,10 +356,10 @@ function renderKit(request, ctx) {
      what the product is and why this email came, then the rest. */
   var product = all ? null : productBySlug(ctx.catalog, request.product);
   var opening = "";
-  if (product && product.oneLiner) {
-    opening += para(esc(plainDashes(product.oneLiner)), "font-size:17px;line-height:1.5;color:" + MUTED + ";");
-  }
   if (copy.reason) opening += para(fillHtml(copy.reason, vars), "font-size:15px;color:" + MUTED + ";");
+  if (product && product.oneLiner) {
+    opening += para(esc(plainDashes(product.oneLiner)), "font-size:17px;line-height:1.5;color:" + INK + ";");
+  }
   rows.push(row(opening + para(fillHtml(all ? copy.thanksAll : copy.thanks, vars)) + para(fillHtml(copy.followUp, vars)), "18px 32px 4px"));
 
   var used = {};
@@ -405,8 +405,8 @@ function renderKit(request, ctx) {
   rows.push(row(small(fillHtml(copy.footer, vars)), "12px 32px 28px"));
 
   var textLines = [fill(all ? copy.headingAll : copy.heading, vars), ""]
-    .concat(product && product.oneLiner ? [plainDashes(product.oneLiner), ""] : [])
     .concat(copy.reason ? [fill(copy.reason, vars), ""] : [])
+    .concat(product && product.oneLiner ? [plainDashes(product.oneLiner), ""] : [])
     .concat([fill(all ? copy.thanksAll : copy.thanks, vars), fill(copy.followUp, vars), ""]);
   kits.forEach(function (k) {
     if (all) textLines.push((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug);
@@ -484,17 +484,19 @@ function renderInternal(request, ctx, kitResult) {
       return (kits.length > 1 ? ((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug) + "\n" : "") + items.join("\n");
     }).join("\n\n");
   }
-  /* Subjects and buttons are short lines: a long company or name is cut there
-     (copy-notes v2: 16 and 24 characters), and printed in full in the body. A
-     subject with no company names the person instead. */
+  /* Subjects and buttons are short lines: a long name or company is cut there
+     (copy-notes v3: name and company together at most 32 characters, so the
+     subject holds 70), and printed in full in the body. With no company the
+     brackets drop out (tidy, below). */
   var short = {};
   Object.keys(vars).forEach(function (k) { short[k] = vars[k]; });
-  short.company = clip(request.company || vars.name, 16);
-  short.name = clip(vars.name, 24);
+  short.name = clip(vars.name, 18);
+  short.company = clip(request.company || "", 14);
   /* "{name} ({company})" with no company would print empty brackets. */
   function tidy(text) { return String(text || "").replace(/\s*\(\s*\)/g, "").replace(/\s+([,.;:])/g, "$1"); }
 
-  var title = line(tidy(fill((copy.subjects || {})[state], short)));
+  var subjectKey = state === "kitFailed" && request.product === "all" && (copy.subjects || {}).kitFailedAll ? "kitFailedAll" : state;
+  var title = line(tidy(fill((copy.subjects || {})[subjectKey], short)));
   var subject = line((test ? (copy.testPrefix || "") : "") + title);
   var banner = tidy(fill((copy.banners || {})[state], vars));
   var warning = copy.replyWarning ? tidy(fill(copy.replyWarning, vars)) : "";
