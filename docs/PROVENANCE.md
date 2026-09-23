@@ -6116,6 +6116,32 @@ Alex's sixth ask: the repository will be shared, others need not see his credent
 - **One deployment's details** (the pilot's instance, credentials, addresses and alert chat) are written up in Alex's private operating notes, not here.
 - **History.** Earlier commits of this round still show those non-secret identifiers. No password, token or webhook path was ever committed. Removing the identifiers from history too would mean rewriting it, which is Alex's call.
 
+### 32.8 The forms never open a mail app, 2026-09-24
+
+**What Alex met.** He tried both forms on a local run in his own browser. The connection to the sender was stored in one browser tab only (a `localStorage` key set in the session's own pane), so his copy had no endpoint. It fell back to the pre-round-12 behaviour: it opened a pre-filled email in his mail app and replaced the form with a success-styled box (*"One step left"*, *"Your mail client opened with the request."*). Nothing reached his inbox. His words: *"WTF is client? it just had to send message in the background, and communicate it as 10000 websites do."*
+
+**Root cause.** Three faults, one class: a fallback that hands the visitor a mechanism instead of an outcome.
+- A success mark was shown for something that had not happened.
+- The page promised *"we'll email you the kit"* on a copy that could not.
+- The only connected copy was a tab the visitor would never use.
+
+**What changed.**
+- `forms.js`: every form posts in the background, shows *Sending…* with the button disabled, then confirms (*Thanks, your request is in* / *Check your inbox*). A failed send is a red line under the form, which keeps what was typed; the old error box with a tick is gone.
+- A copy with no endpoint says so under each form before anyone types (*"This preview can't send forms. Email oracle@softserveinc.com…"*), and a submit repeats it in red. The `mailto:` fallback, the `mailto` and `error` confirmations and the kit's `mailSubject` / `mailSubjectAll` / `mailBody` are gone.
+- The copy: `forms.offline`, `forms.errors.send`, `forms.labels.sending` and `salesKit.form.offline` are new. The two contact confirmations were cut to one sentence each, as sites usually word them.
+- **A local run is connected in every browser on the machine:** the endpoint moved from `localStorage` to `site/data/endpoint.local.json`. The file is git-ignored (asserted before it was written), listed in `publish.neverInArtifact` and `neverShip.paths`, and skipped by the webhook scan, which now masks what it catches.
+- **`tools/serve.py`** replaces `python3 -m http.server` for local runs. It answers 127.0.0.1 only, because the served folder now holds the endpoint file, and the old server listened on every interface. Every response is `Cache-Control: no-store`, because a browser holding a cached `forms.js` ran the old script against the new copy during this fix's own QA.
+- The sender's allowed origins gained port 8767, the second local preview (Alex's deployment; the n8n trigger and his `deployment.local.json`).
+- The checker fails any mail-app fallback: a `mailto:` navigation in `forms.js`, the retired keys, or copy that mentions a mail client or app. It also requires the `offline` and `errors.send` lines with `{mailbox}`, and the ignore and never-publish entries.
+
+**Checks.** In the pane, on a fresh origin, with every network POST caught so no email went out:
+- *Talk to us*: *Sending…* with the button disabled, then *Thanks, your request is in*.
+- The kit: *Check your inbox*, naming the Large docs kit and the address.
+- With the endpoint file moved aside: the note under both forms before typing, red after a submit, no navigation.
+- A failed POST: the red line, the typed name kept, the button enabled again.
+
+The webhook path appears in no commit (`git log -S`, 0).
+
 ## 33. Round 13 — a second contact on every product page, and two labels cut, 2026-09-24
 
 **The asks** (Alex, in session, 2026-09-23):
