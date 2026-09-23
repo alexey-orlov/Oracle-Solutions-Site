@@ -6033,10 +6033,12 @@ shows 107 files, each at its local byte size.
 | Kit links | `config.js` per product: `demoUrl`, `demoPreviewUrl`, `videoUrl`, and a `materials` map with different keys per product; the manifest rows in `content.js` `sellers.materials` | `links.json` at the repo root, one entry per product with the same six keys (`onePager`, `salesDeck`, `featureList`, `interactiveDemo`, `interactiveDemoArtifact`, `video`) plus `siteUrl`. Never published. The site reads `site/data/links.js` (three keys), written by `tools/sync-links.js` |
 | `content.js` | `products[].sellers` (the unrendered manifest), `shared.materialStates` | removed; the kit is the same six pieces for every product |
 | Forms | `formEndpoint: ""`, so every form opened the mail client; `kitAutoSend: false` | the same in git, where a committed URL fails the checker. A local run reads the endpoint from `localStorage`, and a deployed copy sets its own; `kitAutoSend: true` |
-| Emails | none | `mail/`: `settings.json` (test/live, inboxes, sender, caps), `copy.json` (every word), `render.js` (validation and layout), `catalog.json` (generated), `img/` (six pictures), `n8n/` (Code nodes and the redacted export) |
+| Emails | none | `mail/`: `settings.json` (test or live, the practice mailbox, the kit's domains, the caps), `copy.json` (every word), `render.js` (validation and layout), `catalog.json` (generated), `img/` (six pictures), `n8n/` (the Code steps and two importable workflow templates) |
 | Sender | none | an n8n workflow that implements the contract in `mail/README.md`, plus a backstop error workflow. Both ship as templates (`mail/n8n/*.template.json`); one deployment's values live in n8n and outside this repository |
 | Checker | the demo rule read `config.js` `demoUrl` | reads `links.json`. New assertions: the links file is valid and complete; its two copies are current; no retired field comes back; the kit domains are identical in `config.js` and `mail/settings.json`; no endpoint is committed; the copy has no em dash or retired word; every email renders with no token left, both with today's links and with every link filled; five invalid requests are refused with the right code |
 | Manifest | contract round 11 | round 12, with `links`, `siteLinks`, `syncLinks` and `mail`; demo targets now in `links.json`; `data/links.js` named in the publish rule; `links.json` and `mail/` never ship |
+
+**The plugin side.** Oracle-Packaging-Skills followed the same evening, at 0.1.35 (`4a4ee6d`). The listing writes a product's six-key `links.json` entry with `insert-product.mjs --links`, and its exemplar is regenerated from this site's `exemplarProduct`, with a check its test suite runs against the live site.
 
 ### 32.2 How a submission is handled
 
@@ -6096,7 +6098,6 @@ Chrome writes the file at once but does not exit, hence the 40-second alarm. The
 - A public host for the forms.
 - Who makes the promised follow-up, and how fast. The kit email also promises that a reply saying "I didn't ask for it" stops further mail to that address: someone at the practice has to keep that promise.
 - The manifest's extra rows with no slot.
-- The packaging plugin's cards, in Oracle-Packaging-Skills.
 
 The list is repeated in START-HERE §9.
 

@@ -290,8 +290,7 @@ Exact commands are in HANDOFF §4.
   - **the kit documents:** no one-pager, sales deck or feature list link exists yet, so a kit today carries the product page and, for three products, the interactive demo, and the practice copy names what was left out;
   - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they open the mail client, and an emailed product link opens the home page there (the artifact drops the route);
   - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
-  - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit;
-  - **the packaging plugin** still writes `demoUrl`, `demoPreviewUrl` and `materials` in its own cards; it defers to this site at contract round 12, and its cards need the change in Oracle-Packaging-Skills.
+  - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
