@@ -440,7 +440,12 @@ render black. So use an origin with at least one non-zero component, then
 
 ---
 
-## 3. Headshot — `assets/img/people/karsten-tramborg.jpg`
+## 3. Headshots — `assets/img/people/`
+
+Four ship: Karsten's since 2026-09-14 (§3.1), and since round 13 the three product
+leads named on the product Contacts cards (§3.2).
+
+### 3.1 `karsten-tramborg.jpg`
 
 Ships. 480 × 480 JPEG, progressive, q85, 33 KB. `shared.contact.photo` points at
 `assets/img/people/karsten-tramborg.jpg` and the contact card renders the
@@ -478,6 +483,39 @@ come from the team slide.
 
 The email on the site is the shared alias `oracle@softserveinc.com` as
 instructed. The one-pagers print his personal address; it must not ship.
+
+### 3.2 `vlad-butenko.jpg`, `dmytro-dudchenko.jpg`, `oleksii-orlov.jpg` (round 13)
+
+Ship. 240 × 240 JPEG, progressive, q85, 9–12 KB each: the card draws them in a
+72 px circle, so 240 covers 3× density, and the sources are only 300 px.
+
+**Source.** Alex, 2026-09-23: *"You can find photos for all of us in my Outlook
+locally."* Outlook for Mac keeps the company-directory photos it has shown in
+`~/Library/Group Containers/UBF8T346G9.Office/Outlook/Outlook 15 Profiles/Main
+Profile/Files/S0/3/Photos/`, about 400 PNGs, mostly 300 × 300. The files are named
+by an internal object id, and nothing on disk maps an id to a person. **Identity
+came from Teams' web cache**, which stores the same directory photos under URLs
+carrying the person's display name
+(`…/profilepicturev2/8:orgid:<id>?displayname=Vladyslav%20Butenko&size=HR196x196`).
+Each Teams copy (196 px) was then matched to its larger Outlook copy by normalized
+cross-correlation on a 24 px grey thumbnail: **0.9997–0.9998 for all three**, with
+the runner-up ≤ 0.84. Every "Oleksii Orlov" match was checked against the signed-in
+account's own id, because the directory holds namesakes. Outlook files, by person:
+`{…242C-0F0000000000}…` (Vlad), `{…1E2C-0F0000000000}…` (Dmytro),
+`{…2C2C-0F0000000000}…` (Alex). The Teams display name for Vlad is *Vladyslav
+Butenko*; the site prints *Vlad Butenko*, Alex's words.
+
+**Treatment.** Karsten's (§3.1) apart from size: `-auto-orient` → crop → Lanczos to
+240 × 240 → unsharp `0x0.8+0.6+0.02` → `-brightness-contrast 0x4` → strip →
+progressive JPEG q85. The crops bring each head to about the size of Karsten's in
+the circle: Dmytro's full frame; Vlad's 260 px from `+20+8`; Alex's 200 px from
+`+50+13`, because his source is a head-and-shoulders shot at a third of the frame
+and would otherwise sit at half the size of the others.
+
+**Identity.** Matched by the directory's own name key, not by position or by face,
+which is a stronger footing than §3.1's team-slide offset. Alex still sees all three
+faces on the Contacts tabs; if one is wrong, blank that person's `photo` and the
+card falls back to initials.
 
 ---
 
