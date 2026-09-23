@@ -6003,3 +6003,95 @@ shows 107 files, each at its local byte size.
 **Checks.** After the final copy the two trees were identical (`diff -rq`, excluding the new files). `node tools/check-grammar.js` prints OK with the three known warnings. The live artifact was not republished: round 11's version 8 stands.
 
 **Open for Alex.** On the MacBook Air: clone this repository, install its autosync agent with AO-Personal-OS's `automations/git-autosync/setup.sh <this repository>`, and update the plugin.
+
+## 32. Round 12 — the forms send email, and every kit link lives in one file, 2026-09-23
+
+**The asks** (Alex, in session):
+1. Every form submission emails oracle@softserveinc.com (in test mode olekorlov@softserveinc.com), with context and a call to action for the reader.
+2. A kit request does the same, clearly separated, and says the kit already went out automatically, so nobody sends it again by hand.
+3. The requester gets a structured kit email: a thank-you, a note that someone will contact them shortly, and per pack the product page, one-pager, deck, feature list, interactive demo and video (if any), each as a generic preview picture, a linked name and one line on its intended use.
+4. All those links live in one simple, human-editable config file in this repository, with the demo and video links refactored into it.
+5. Later, on the first copy: *"Make sure that email text reads well outside this session and website context. 'Thanks for requesting it.' doesn't sound as a best opener here."*
+
+**What shaped the decisions** (found in session, before anything was built):
+- **The claude.ai artifact blocks every request to another host.** No form on the preview link can send anything, whatever sits behind it. Sending works from a local run or a real host.
+- **Only SoftServe's own Microsoft 365 can send as a softserveinc.com address.** The domain publishes DMARC `p=quarantine`, so Gmail or a mail service sending as `@softserveinc.com` would land in spam.
+- **Anything under `site/` is public.** `config.js` is readable in view-source, and the kit documents carry the package prices the site keeps off its pages.
+
+**Alex's decisions** (2026-09-23, asked as three questions after a comparison table each):
+- **The sender:** an n8n workflow, signing in to Outlook as olekorlov@softserveinc.com if SoftServe does not require admin approval, and otherwise sending from alex@alexorlov.co "for now, then we will replace". Which one applies is known only when Alex signs in, so the build uses the second (Zoho SMTP) until he does.
+- **The links file lives beside the site**, not in it: private, with one sync command for the links the site's buttons read.
+- **Test locally for now**, with the public host chosen later.
+
+**Split.** Opus (this session) did the research, the build, the n8n workflow, the checker, the QA and the docs. Fable made one messaging and UX pass (the copy, the *All offers* layout, the artifact names and use lines). After Alex's note it made a second pass, reading every email the way it arrives. Opus subagents drew the six preview pictures to a written spec, and a fresh-context Opus reader, holding only the rendered emails, cold-read the second copy.
+
+### 32.1 What changed
+
+| Where | Before | After |
+|---|---|---|
+| Kit links | `config.js` per product: `demoUrl`, `demoPreviewUrl`, `videoUrl`, and a `materials` map with different keys per product; the manifest rows in `content.js` `sellers.materials` | `links.json` at the repo root, one entry per product with the same six keys (`onePager`, `salesDeck`, `featureList`, `interactiveDemo`, `interactiveDemoArtifact`, `video`) plus `siteUrl`. Never published. The site reads `site/data/links.js` (three keys), written by `tools/sync-links.js` |
+| `content.js` | `products[].sellers` (the unrendered manifest), `shared.materialStates` | removed; the kit is the same six pieces for every product |
+| Forms | `formEndpoint: ""`, so every form opened the mail client; `kitAutoSend: false` | the same in git, where a committed URL fails the checker. A local run reads the endpoint from `localStorage`, and a deployed copy sets its own; `kitAutoSend: true` |
+| Emails | none | `mail/`: `settings.json` (test/live, inboxes, sender, caps), `copy.json` (every word), `render.js` (validation and layout), `catalog.json` (generated), `img/` (six pictures), `n8n/` (Code nodes and the redacted export) |
+| Sender | none | n8n **Oracle site forms (cloud)** (`co9bpWm6xVIPMfcB`), with the backstop **Oracle site forms — error alerts** (`ih0qkEs5xOgpH2Kd`) |
+| Checker | the demo rule read `config.js` `demoUrl` | reads `links.json`. New assertions: the links file is valid and complete; its two copies are current; no retired field comes back; the kit domains are identical in `config.js` and `mail/settings.json`; no endpoint is committed; the copy has no em dash or retired word; every email renders with no token left, both with today's links and with every link filled; five invalid requests are refused with the right code |
+| Manifest | contract round 11 | round 12, with `links`, `siteLinks`, `syncLinks` and `mail`; demo targets now in `links.json`; `data/links.js` named in the publish rule; `links.json` and `mail/` never ship |
+
+### 32.2 How a submission is handled
+
+1. The page `POST`s to the workflow.
+2. n8n reads `links.json`, `mail/settings.json`, `mail/catalog.json`, `mail/copy.json`, `mail/render.js` and the six pictures from GitHub `main`, through a read-only fine-grained token. A pushed edit is live on the next request.
+3. It runs `render.js` from those files, so the email logic has one home. A probe run proved a Code node can execute fetched source (`new Function`), keep state between runs and format time zones.
+4. `validate()` re-checks the form, the email and the consent, and for the kit the domain and the product.
+5. The caps apply: `limits.perHour` submissions (30) and `kit.perAddressPerDay` kits to one address (3). Past a cap the page gets a 429, and Alex gets one alert an hour.
+6. For a kit, the workflow sends the kit email (pictures inline by `cid:kit-<key>`), then the practice copy, and answers 200 only after the kit was accepted. A failed kit sends a *send it by hand* notice listing the links, answers 502, and alerts Alex on Telegram.
+7. For the two contact forms it sends the practice copy (Reply-To = the visitor). If that fails, the Telegram alert carries the whole request, so the lead is not lost.
+8. Anything unexpected ends on an alerted path, and a crash outside every path reaches the backstop workflow.
+
+The browser may call the webhook only from `http://127.0.0.1:8765` and `http://localhost:8765`, listed in `tools/n8n-workflow.js`. The webhook path lives only in `.work/n8n/webhook-path.txt` on this Mac, and `mail/n8n/workflow.json` carries it redacted.
+
+### 32.3 The copy (Fable), and the note that reshaped it
+
+- **v1.** Fable wrote every string against a key schema and chose the *All offers* layout: product rows first (the name to its page, its one-liner, links to its other pieces; a row never names what is absent), then the six cards once as a legend, because the pictures are the same for every product. Names: *Product page · One-pager · Sales deck · Feature list · Interactive demo · Demo video*. *One-pager*, not *Sales one-pager*, so no two peers open on *Sales*. Six use lines, each opening on a different word and in a different sentence shape.
+- **Alex's note** found the class behind *"Thanks for requesting it."*: strings written field by field, from inside the site. An email is read cold, in an inbox, by someone who may not remember the form, so its first sentence says who is writing and what it is, and nothing leans on "it", "the site" or "the team" before naming them. v2 rewrote every opener and intro that way. The kit email now opens *"This is the kit for {product}, one of the products SoftServe builds on Oracle's AI platforms, sent by SoftServe's Oracle AI & Data practice."*, and the practice banners name who asked, for what, on which site.
+- **The rule and its mechanism.** The rule is in AO-Personal-OS `client-documents.md` ("A message read outside the product stands alone") and in START-HERE §4. The mechanism: `tools/mail-preview.js` also writes `.work/mail-preview/as-read.txt`, every email as its reader meets it, and that file, not `copy.json`, is what a copy review reads.
+
+### 32.4 The pictures
+
+Six skeletons, one per artifact kind, on the SS26 tokens:
+- a 480 × 300 card in `#edf0f2` with a 16 px octagonal cut;
+- white silhouettes with grey bars and no text;
+- one action-blue element each, and at most one orange accent bar.
+
+The kinds: a browser window (product page), an A4 sheet with a blue strip (one-pager), stacked slides with a bar chart (deck), a status-dot table (feature list), an app window with a hint bubble and a cursor (interactive demo), and a dark frame with a play button (video). The sources are in `mail/img/src/`. To render one:
+
+```
+perl -e 'alarm 40; exec @ARGV' "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars --no-first-run --user-data-dir=/private/tmp/claude-502/chrome-mailimg --default-background-color=00000000 --window-size=480,300 --screenshot=mail/img/<name>.png file://<repo>/mail/img/src/<name>.svg
+```
+
+Chrome writes the file at once but does not exit, hence the 40-second alarm. The emails show the pictures at 160 × 100 (112 × 70 on a phone), with the transparent corners keeping the octagonal cut.
+
+### 32.5 Checks
+
+- The checker prints OK with the three known warnings.
+- A scratch copy with five injected faults (a stale `links.js`, an em dash in the copy, a committed endpoint, a mismatched domain list, a retired `demoPreviewUrl`) fails each one, naming the fix.
+- In the browser, on the local site:
+  - a product page renders *Talk to us*, *Interactive demo*, the badge and the frame from `data/links.js`;
+  - `?demo=1` returns exactly the three walkthroughs;
+  - Account insights keeps its pending frame and no badge;
+  - the console is clean.
+- With the endpoint set and the workflow inactive, a kit request shows *"That didn't send. Try again, or write to oracle@softserveinc.com."*: the truthful failure path.
+- All 13 emails were rendered and read at 700 and 375 px. On a phone there is no sideways scroll, and the pictures step down to 112 px.
+- No email was sent in this round before Alex's go-ahead.
+
+### 32.6 Open for Alex
+
+- The sender credential in n8n (Outlook, or Zoho SMTP as alex@alexorlov.co) and the read-only GitHub token; then activating the workflow and a test to olekorlov@softserveinc.com.
+- `mail/settings.json` `mode: "live"` when the emails have been seen.
+- The kit document links: none exists yet.
+- A public host for the forms.
+- Who makes the promised follow-up, and how fast.
+- The manifest's extra rows with no slot.
+- The packaging plugin's cards, in Oracle-Packaging-Skills.
+
+The list is repeated in START-HERE §9.
