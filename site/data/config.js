@@ -3,7 +3,7 @@ window.SITE_CONFIG = {
   formEndpoint: "",
   sellerGate: {
     allowedDomains: ["softserveinc.com", "oracle.com"],
-    kitAutoSend: false,
+    kitAutoSend: true,
     kitEmailKey: "oracle-ai-solutions:kit-email",
     legacyStorageKey: "oracle-ai-solutions:seller-unlocked"
   },
@@ -16,123 +16,57 @@ window.SITE_CONFIG = {
     "cross-system-erp-qa",
     "business-metrics-qa"
   ],
+  /* Links to the walkthrough, the video and the kit documents are not here:
+     they live in links.json at the repo root (round 12, docs/CONFIG.md). */
   products: {
     "account-insights": {
       marketplace: false,
       marketplaceUrl: "",
-      demoUrl: "",
-      demoPreviewUrl: "",
       video: true,
-      videoUrl: "",
       videoPoster: "",
-      successStoryUrl: "",
-      materials: {
-        "accelerator-pack-onepager": "",
-        "sales-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": ""
-      }
+      successStoryUrl: ""
     },
     "case-evidence-collection": {
       marketplace: false,
       marketplaceUrl: "",
-      demoUrl: "",
-      demoPreviewUrl: "",
       video: false,
-      videoUrl: "",
       videoPoster: "",
-      successStoryUrl: "",
-      materials: {
-        "sales-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": ""
-      }
+      successStoryUrl: ""
     },
     "plan-vs-actual-investigation": {
       marketplace: false,
       marketplaceUrl: "",
-      demoUrl: "",
-      demoPreviewUrl: "",
       video: false,
-      videoUrl: "",
       videoPoster: "",
-      successStoryUrl: "",
-      materials: {
-        "sales-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": ""
-      }
+      successStoryUrl: ""
     },
     "large-document-extraction": {
       marketplace: true,
       marketplaceUrl: "",
-      demoUrl: "demo/large-document-extraction/index.html",
-      demoPreviewUrl: "https://claude.ai/artifact/NdxY4f1D6hxC7pjyMRs6zP",
       video: true,
-      videoUrl: "",
       videoPoster: "assets/img/posters/large-document-extraction.jpg",
-      successStoryUrl: "",
-      materials: {
-        "sales-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": "",
-        "marketplace-package": ""
-      }
+      successStoryUrl: ""
     },
     "workforce-optimization": {
       marketplace: true,
       marketplaceUrl: "",
-      demoUrl: "demo/workforce-optimization/index.html",
-      demoPreviewUrl: "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
       video: true,
-      videoUrl: "",
       videoPoster: "assets/img/posters/workforce-optimization.jpg",
-      successStoryUrl: "",
-      materials: {
-        "sales-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": "",
-        "marketplace-package": ""
-      }
+      successStoryUrl: ""
     },
     "cross-system-erp-qa": {
       marketplace: false,
       marketplaceUrl: "",
-      demoUrl: "demo/cross-system-erp-qa/index.html",
-      demoPreviewUrl: "https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb",
       video: false,
-      videoUrl: "",
       videoPoster: "assets/img/posters/cross-system-erp-qa.jpg",
-      successStoryUrl: "",
-      materials: {
-        "lakehouse-jumpstart-deck": "",
-        "lakehouse-quickstart-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": ""
-      }
+      successStoryUrl: ""
     },
     "business-metrics-qa": {
       marketplace: false,
       marketplaceUrl: "",
-      demoUrl: "",
-      demoPreviewUrl: "",
       video: false,
-      videoUrl: "",
       videoPoster: "",
-      successStoryUrl: "",
-      materials: {
-        "lakehouse-jumpstart-deck": "",
-        "lakehouse-quickstart-deck": "",
-        "one-pager": "",
-        "feature-list": "",
-        "demo-video": ""
-      }
+      successStoryUrl: ""
     }
   }
 };

@@ -2,9 +2,20 @@
   "use strict";
 
   var HONEYPOT = "site-reference";
+  /* Where a local run finds the form endpoint (round 12). A live trigger URL is
+     never committed, so config.js ships `formEndpoint: ""`; a deployed copy sets
+     it in its own config.js, and on 127.0.0.1 or localhost a tester sets
+     localStorage["oracle-ai-solutions:form-endpoint"] by hand (mail/README.md). */
+  var LOCAL_ENDPOINT_KEY = "oracle-ai-solutions:form-endpoint";
 
   function content() { return window.SITE_CONTENT; }
   function config() { return window.SITE_CONFIG; }
+
+  function endpoint() {
+    if (config().formEndpoint) return config().formEndpoint;
+    if (!/^(127\.0\.0\.1|localhost)$/.test(window.location.hostname)) return "";
+    try { return window.localStorage.getItem(LOCAL_ENDPOINT_KEY) || ""; } catch (error) { return ""; }
+  }
 
   function instance(kind) {
     var forms = content().forms;
@@ -237,11 +248,11 @@
       if (!validate(form, data)) return;
 
       var status = form.querySelector(".form-status");
-      var endpoint = config().formEndpoint;
+      var target = endpoint();
 
-      if (endpoint) {
+      if (target) {
         status.textContent = "…";
-        window.fetch(endpoint, {
+        window.fetch(target, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload(kind, data))
@@ -268,10 +279,11 @@
 
   /* A short form of its own — work email, the kit, consent — because eligibility
      is the email's domain, not a role the reader declares. The domain is checked
-     here to route the reader, and must be checked again by whatever sits behind
-     the endpoint. The page never says the kit was emailed unless an auto-sender
-     is configured (`sellerGate.kitAutoSend`); with no endpoint the visitor's own
-     mail client carries the request, and the confirmation says so. */
+     here to route the reader, and is checked again by the sender behind the
+     endpoint. The page says the kit was emailed only when the POST succeeded and
+     `sellerGate.kitAutoSend` is on — the sender answers 2xx only after the kit
+     email went out (mail/README.md); with no endpoint the visitor's own mail
+     client carries the request, and the confirmation says so. */
 
   function kitCopy() { return content().salesKit.form; }
   function gateConfig() { return config().sellerGate || {}; }
@@ -456,11 +468,11 @@
         catch (error) { /* not remembered */ }
       };
       var status = form.querySelector(".form-status");
-      var endpoint = config().formEndpoint;
+      var target = endpoint();
 
-      if (endpoint) {
+      if (target) {
         status.textContent = copy.submitting;
-        window.fetch(endpoint, {
+        window.fetch(target, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ form: "kit", email: email, product: all ? "all" : slug, consent: true, page: window.location.href })
