@@ -84,6 +84,37 @@ function domainAllowed(email, domains) {
   });
 }
 
+/* The calendar day a request arrived on, in the practice's time zone, as a
+   UTC midnight so day arithmetic cannot drift across a DST change. */
+function localDay(iso, timeZone) {
+  var date = iso ? new Date(iso) : new Date();
+  if (isNaN(date.getTime())) date = new Date();
+  var ymd;
+  try {
+    ymd = new Intl.DateTimeFormat("en-CA", { timeZone: timeZone || "UTC", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  } catch (error) {
+    ymd = date.toISOString().slice(0, 10);
+  }
+  var p = ymd.split("-");
+  return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+}
+
+/* "Within two working days", as a date the reader does not have to work out. */
+function addWorkingDays(day, n) {
+  var d = new Date(day.getTime());
+  while (n > 0) {
+    d.setUTCDate(d.getUTCDate() + 1);
+    if (d.getUTCDay() !== 0 && d.getUTCDay() !== 6) n--;
+  }
+  return d;
+}
+
+function formatDay(day, short) {
+  return day.toLocaleDateString("en-GB", short
+    ? { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }
+    : { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" });
+}
+
 function formatTime(iso, timeZone) {
   var date = iso ? new Date(iso) : new Date();
   if (isNaN(date.getTime())) date = new Date();
@@ -293,7 +324,11 @@ function kitVars(request, ctx) {
   var product = all ? null : productBySlug(ctx.catalog, request.product);
   var name = product ? product.name : "";
   var kitName = all ? ctx.catalog.kitNameAll : fill(ctx.catalog.kitName, { product: name });
-  return { product: name, email: request.email, kitName: kitName, replyTo: replyTo(ctx.settings || {}) };
+  var settings = ctx.settings || {};
+  return {
+    product: name, email: request.email, kitName: kitName, replyTo: replyTo(settings),
+    date: formatDay(localDay(request.submittedAt, settings.timezone), false)
+  };
 }
 
 /* The site's one-liners use em dashes; the emails do not (client-documents.md). */
@@ -317,7 +352,15 @@ function renderKit(request, ctx) {
   var subject = line(fill(all ? copy.subjectAll : copy.subject, vars));
   var preheader = fill(all ? copy.preheaderAll : copy.preheader, vars);
   var rows = [brandLine(), heading(fill(all ? copy.headingAll : copy.heading, vars))];
-  rows.push(row(para(fillHtml(all ? copy.thanksAll : copy.thanks, vars)) + para(fillHtml(copy.followUp, vars)), "22px 32px 4px"));
+  /* Cold read (PROVENANCE §32.3): a reader who forgot the form first learns
+     what the product is and why this email came, then the rest. */
+  var product = all ? null : productBySlug(ctx.catalog, request.product);
+  var opening = "";
+  if (product && product.oneLiner) {
+    opening += para(esc(plainDashes(product.oneLiner)), "font-size:17px;line-height:1.5;color:" + MUTED + ";");
+  }
+  if (copy.reason) opening += para(fillHtml(copy.reason, vars), "font-size:15px;color:" + MUTED + ";");
+  rows.push(row(opening + para(fillHtml(all ? copy.thanksAll : copy.thanks, vars)) + para(fillHtml(copy.followUp, vars)), "18px 32px 4px"));
 
   var used = {};
   if (!all) {
@@ -358,10 +401,13 @@ function renderKit(request, ctx) {
   }
 
   rows.push(row(para(fillHtml(copy.signoff, vars), "margin-bottom:4px;") + para(fillHtml(copy.contact, vars), "font-size:14px;color:" + MUTED + ";") +
-    para(fillHtml(copy.replyNote, vars), "font-size:14px;color:" + MUTED + ";"), "12px 32px 8px"));
+    (copy.replyNote ? para(fillHtml(copy.replyNote, vars), "font-size:14px;color:" + MUTED + ";") : ""), "12px 32px 8px"));
   rows.push(row(small(fillHtml(copy.footer, vars)), "12px 32px 28px"));
 
-  var textLines = [fill(all ? copy.headingAll : copy.heading, vars), "", fill(all ? copy.thanksAll : copy.thanks, vars), fill(copy.followUp, vars), ""];
+  var textLines = [fill(all ? copy.headingAll : copy.heading, vars), ""]
+    .concat(product && product.oneLiner ? [plainDashes(product.oneLiner), ""] : [])
+    .concat(copy.reason ? [fill(copy.reason, vars), ""] : [])
+    .concat([fill(all ? copy.thanksAll : copy.thanks, vars), fill(copy.followUp, vars), ""]);
   kits.forEach(function (k) {
     if (all) textLines.push((productBySlug(ctx.catalog, k.slug) || {}).name || k.slug);
     k.included.forEach(function (item) { textLines.push("- " + item.name + ": " + item.url + (all ? "" : "\n  " + item.use)); });
