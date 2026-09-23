@@ -69,7 +69,7 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
 |---|---|---|
 | `#/` Home | Seven screens: <br>• hero — a three-line H1, the **three-layer stack** (Oracle platforms → SoftServe product groups → SoftServe services, read bottom-up) <br>• the three-figure proof strip, led by **from 30 days** <br>• two ways in (products · services) — **two photographic panels**, the copy in white on each photograph under a scrim <br>• **six group tiles**, each an image, a one-liner and a link into the filtered catalog <br>• how we deliver <br>• anonymized case studies (Proven / Forecast / Estimated) — each card **a photo band** (the industry's picture, carrying the descriptor and area) **over a white body** <br>• About SoftServe (the page's one dark band) <br>• contact | PROVENANCE §18, §28, §30 |
 | `#/products` | Catalog with a facet rail (Oracle platform · what it does · Artifacts) and tiles. **Both radio rails are fixed lists** in canonical order — three platforms and all six groups, always — with a zero-count option disabled and printing no number; the one a deep link arrived on renders selected above its own empty state. *Oracle AI for Fusion Applications* is not offered (`catalog: false`): no product runs on it. No total, no denominator. `?cat=<id>` and `?tech=<id>` are both honored. | §17, §18.9, §28 |
-| `#/products/<slug>[/<tab>]` | Seven product pages. <br>• Tabs: **Overview · Use cases · Technology · Jumpstart · Contacts** (round 10). Overview is Problem → Solution · How it works · More detail, with Outcomes & ROI in the rail; **Use cases** holds the industry tabs and the case study; **Contacts** is one row — the contact card beside a two-tab switch, *Talk to us* (open by default) and *Get the sales kit* (for sellers), so only one form is ever open and neither is below the fold; `…/contacts#kit` opens on the kit tab. <br>• Retired segments redirect in place: `pov` → Jumpstart, `demo` and `sellers` → Contacts. <br>• Three products have an interactive walkthrough under `site/demo/`. | §15–§19, §22, §24, §29 |
+| `#/products/<slug>[/<tab>]` | Seven product pages. <br>• Tabs: **Overview · Use cases · Technology · Jumpstart · Contacts** (round 10). Overview is Problem → Solution · How it works · More detail, with Outcomes & ROI in the rail; **Use cases** opens on the industry tabs, with no heading over them (round 13), then the case study; **Contacts** is one row — the contact card (Karsten, then the product's lead, over the one address; round 13) beside a two-tab switch, *Talk to us* (open by default) and *Get the sales kit* (for sellers), so only one form is ever open and neither is below the fold; `…/contacts#kit` opens on the kit tab. <br>• Retired segments redirect in place: `pov` → Jumpstart, `demo` and `sellers` → Contacts. <br>• Three products have an interactive walkthrough under `site/demo/`. | §15–§19, §22, §24, §29 |
 | `#/services` | Three screens, one message each, then contact: <br>• *Frontier AI on Oracle* (the practice, with the four platform cards under their full Oracle names) <br>• *Every step has a number* (Discovery → Jumpstart proof of value → Integration → **Scaling**) <br>• *Not a project. A proof.* (4–8 weeks) | §21, §23, §28 |
 | `#/sellers` | *Get the sales kit*, for all offers or one product (work email at softserveinc.com or oracle.com), **emailed automatically** since round 12. Below it, the demo form for a seller who already has an account in mind. | §24, §32 |
 
@@ -98,13 +98,14 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
   - Beyond that, the brief in §2 applies (still to be confirmed).
 - **No totals and no gaps.** Never print the size of the catalog ("seven products"). Never name what is missing ("yet", "so far").
 - **A case study states its status once**, in one word: the chip.
-- **Truthful confirmations.** Never say "we've emailed" unless something actually sent the email. With no `formEndpoint`, a form opens the visitor's mail client, and the page says so. The kit's *Check your inbox* shows only after the sender answered that the email went out.
+- **Forms send in the background, as on any website** (Alex, 2026-09-24). A form posts, shows *Sending…*, then confirms the outcome: *Thanks, your request is in* or *Check your inbox*. **No form ever opens the visitor's mail app.** A copy that cannot send (the claude.ai preview, a local run without `site/data/endpoint.local.json`) says so under each form before anyone types. A failed send is a red line under the form, which keeps what was typed. Never say "we've emailed" unless the sender answered that the email went out. The checker fails a mail-app fallback in `forms.js` or in the copy.
 - **Every kit link lives in `links.json`**, outside `site/`, because anything under `site/` is readable in view-source and the kit documents carry prices. `config.js` holds no link to a kit artifact, and a committed `formEndpoint` fails the checker: a live trigger URL never enters git.
 - **Nothing internal ships in site copy.** The *Internal* panel is the only exception, and it is temporary (§8).
 
 **Messaging** (from Alex's reviews)
 - **A message read outside the product stands alone** (Alex, 2026-09-23, on the kit email's opener *"Thanks for requesting it."*). An email is read cold, in an inbox, by someone who may not remember the form: its first sentence says who is writing and what it is, and nothing leans on "it", "the site" or "the team" before naming them. Review email copy in `.work/mail-preview/as-read.txt` (the email as received), never field by field (`mail/README.md`).
 - **Persona first.** Every headline speaks to its reader (a rep on a live call, a buyer on Oracle) in that reader's words. Never counts, taxonomy or packaging terms ("packaged", "workflow pattern", "ready-to-run", "pods").
+- **A label earns its words** (Alex, 2026-09-23, round 13, on *By industry* and *See all products, with filters*). Don't put a heading over controls that already name what they hold: a tab bar that says *Use cases* and a row of industry tabs need no *By industry* between them. Don't let a link describe the page it opens (*with filters*); it names where it goes. The checker enforces both instances.
 - **Structure before copy.** Work out the audience, then the positioning, then three or four messages, then one screen per message, and set the length target first. A page is an argument, not an inventory.
 - **Headings are display lines**, so the argument moves into the lead:
   - H1: two to four words, ≤ ~24 characters a line, two lines at most.
@@ -178,7 +179,7 @@ Two more, from Alex's review of round 10 (2026-09-23), and they hold everywhere:
 Exact commands are in HANDOFF §4.
 
 - **Run.**
-  - Start the server with `preview_start {name: "oracle-site"}` (python `http.server` on 8765).
+  - Start the server with `preview_start {name: "oracle-site"}`: `tools/serve.py` on 8765, answering this Mac only and never cached, so a reload always shows the saved files. With `site/data/endpoint.local.json` present, the forms really send, in the sender's test mode (`mail/README.md`, "Testing").
   - Browse `http://127.0.0.1:8765`, not `localhost`.
   - A QA subagent can kill the shared server; restart it before blaming the page.
 - **Fresh assets.** The preview caches hard. Call `fetch('<file>', {cache: 'reload'})` for every changed file, or re-point the stylesheet link with `?v=`, then navigate.
@@ -222,7 +223,7 @@ Exact commands are in HANDOFF §4.
 - **A duration, a price or a promise is a commitment, not copy.**
   - The 4–8-week sweep compressed *Plan vs actual investigation* from 12 + 2 weeks. It was flagged for delivery, not shipped as settled.
   - The same goes for the kit's "two working days".
-- **Truthful states beat optimistic ones.** The kit form has three confirmations (mail client opened · request received · kit emailed), and only a real auto-sender may use the third.
+- **Truthful states beat optimistic ones, and a fallback must not hand the visitor a mechanism.** The kit form confirms only what happened: *request received*, or *kit emailed* when the sender says it went out. Until 2026-09-24 a copy with no endpoint opened the visitor's mail app under a success mark. Alex read that as broken, so a copy that cannot send now says so plainly instead.
 - **A name built on "Oracle" needs a trademark check** against Oracle's third-party guidelines before launch.
 - **A checklist is for ticking, not reading.** The first Internal panel gave every item a status chip, a flag and an "On the site" paragraph; Alex: "much less verbose (1–2 line items)". One line to tick; the analysis goes in the docs and the report.
 - **Use the lightest storage that does the job.** "Saved" meant saved in Alex's browser, not a database. Check what a capability costs before reaching for it: `db` would have made the artifact organization-internal.
@@ -271,7 +272,6 @@ Exact commands are in HANDOFF §4.
     Recommended: unify on *Talk to us* next round;
   - the product *For sellers* tab is gone, its kit now the second tab of the Contacts
     switch, and `…/sellers` redirects — reversible, since the tab is data;
-  - the mailto subject for a product request now reads `Talk to us — <product>`;
   - `large-document-extraction`'s `metricsNote` now points across tabs, to the case
     study on Use cases — the first cross-tab pointer on a product page;
   - **from Alex's same-day review (§29.7):** the stepper's frame is pinned by keeping
@@ -292,9 +292,15 @@ Exact commands are in HANDOFF §4.
   - **the sender:** SoftServe's Azure AD requires admin approval for n8n, so the pilot sends from a temporary address outside SoftServe's domain. The real integration is a SoftServe app registration for Microsoft Graph, which needs an IT request (`mail/README.md`, "Replacing the sender");
   - **test to live:** `mail/settings.json` `mode`, once Alex has seen the emails in his inbox;
   - **the kit documents:** no one-pager, sales deck or feature list link exists yet, so a kit today carries the product page and, for three products, the interactive demo, and the practice copy names what was left out;
-  - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they open the mail client, and an emailed product link opens the home page there (the artifact drops the route);
+  - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they say under each form that the preview cannot send, and an emailed product link opens the home page there (the artifact drops the route);
   - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
   - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit.
+- **Round 13 (§33.4):**
+  - **publishing:** the shared link still shows the site before round 12. Rounds 12 and 13 go out together from HEAD when Alex says so, with `data/links.js` and never `data/endpoint.local.json` or the whole folder;
+  - **the three new faces** are matched by the directory's own name key (`ASSETS.md` §3.2), not by eye; a wrong one is fixed by blanking its `photo`;
+  - **Vlad or Vladyslav:** the directory's name is *Vladyslav Butenko*, and the site prints *Vlad*, Alex's word;
+  - **the packaging plugin** has to write `contactPerson` for a new product, which the checker now requires (contract round 13); that change belongs in Oracle-Packaging-Skills;
+  - **Home S7 and Services** still name Karsten alone.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
@@ -311,7 +317,7 @@ Exact commands are in HANDOFF §4.
 | `docs/SCHEMA.md` | You add, rename or retire a `content.js` key |
 | `docs/CONFIG.md` | You touch a switch in `config.js` |
 | `docs/VISUAL-GRAMMAR.md` | You change a component or a page composition |
-| `docs/PROVENANCE.md` | You need a fact's source or a round's decisions (§18 home, §20 name, §21 and §23 Services, §24 sales kit, §25 START-HERE, Internal panel and logos, §27 the SS26 theme, §28 the home page re-argued — three layers, six groups, Artifacts — §29 the product pages — one contact ask, the Use cases tab, the stepper — §30 the home page's photographs and the two "Hours" figures — §31 the move to this repository). At 6,000 lines, search it; don't read it top to bottom. |
+| `docs/PROVENANCE.md` | You need a fact's source or a round's decisions (§18 home, §20 name, §21 and §23 Services, §24 sales kit, §25 START-HERE, Internal panel and logos, §27 the SS26 theme, §28 the home page re-argued — three layers, six groups, Artifacts — §29 the product pages — one contact ask, the Use cases tab, the stepper — §30 the home page's photographs and the two "Hours" figures — §31 the move to this repository — §32 the forms' email and `links.json` — §33 the product leads on the Contacts card). At 6,000 lines, search it; don't read it top to bottom. |
 | `docs/SS26-THEME.md` | You touch either theme: what the current SoftServe brand is, the token map, the shape and colour rules, the fonts, and what is open |
 | `docs/ASSETS.md` | You work on images, step frames or posters, and how they were made |
 | `docs/HANDOFF-workforce-demo.md`, `docs/HANDOFF-erp-qa-demo.md` | You work on a walkthrough; each is owned by its own session |
