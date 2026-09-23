@@ -1827,6 +1827,16 @@ if (/request a demo/i.test(raw)) {
       var text = fs.readFileSync(path.join(root, rel), "utf8");
       var hit = text.match(/https?:\/\/[a-z0-9.-]+\/webhook(-test)?\/[A-Za-z0-9_-]+|[a-z0-9-]+\.app\.n8n\.cloud/);
       if (hit) fail(rel, "carries \"" + hit[0] + "\": a live trigger URL or an n8n instance address never enters git; it belongs to the deployment");
+      /* The sender's own files ship placeholders only: an address there is an
+         example, the practice mailbox the site already prints, or the self-check's
+         fixed sample (rendered, never sent). */
+      if (/^mail[\/\\]n8n[\/\\]/.test(rel)) {
+        (text.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g) || []).forEach(function (address) {
+          if (!/@example\.(com|invalid)$/i.test(address) && !/^self-check@/i.test(address) && address !== CFG.contactEmail) {
+            fail(rel, "names " + address + ": a deployment's addresses belong in n8n's Deployment settings, not in the repo");
+          }
+        });
+      }
     });
   })(".");
   var refusals = [
