@@ -1405,10 +1405,10 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 .footer-links, .social-row { list-style: none; margin: 0; padding: 0; }
-.footer-links { display: flex; flex-wrap: wrap; align-items: baseline; min-width: 0; }
-.footer-links a { font-size: .875rem; font-weight: 400; line-height: 1.2; color: #fafaf8; }
+.footer-links { display: flex; flex-wrap: wrap; align-items: baseline; min-width: 0; font-size: .875rem; line-height: 1.2; }
+.footer-links a { font-weight: 400; color: #fafaf8; }
 .footer-links a:hover { text-decoration: underline; }
-.footer-sep { font-size: .875rem; font-weight: 300; line-height: 1.2; }
+.footer-sep { font-weight: 300; }
 
 /* Bare glyphs, as in the brand's footer: no circle, no border. A 24 px hit
    area around each 16 px glyph keeps the brand's 40 px pitch. */
