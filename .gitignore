@@ -1,6 +1,8 @@
 .DS_Store
 # per-machine working files: the publish wrapper, QA shots, specimens
 .work/
+# this machine's form endpoint for local runs: a live trigger URL, never committed or published
+site/data/endpoint.local.json
 node_modules/
 # generated from the practice deny-list (oracle-packs shared/tools/denylist.txt); holds customer names
 tools/deny-list.json
