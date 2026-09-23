@@ -43,10 +43,7 @@
     chevron: '<path d="m9 6 6 6-6 6"></path>',
     chevronDown: '<path d="m6 9 6 6 6-6"></path>',
     mail: '<rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3.5 7 8.5 6 8.5-6"></path>',
-    globe: '<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path>',
     linkedin: '<rect x="3.5" y="3.5" width="17" height="17" rx="2"></rect><path d="M8 10.5V16M8 7.8v.2M12 16v-3.2a1.8 1.8 0 0 1 3.6 0V16"></path>',
-    facebook: '<path d="M14.5 8.5h2.2M14.5 21v-9.4c0-1.7.9-2.6 2.4-2.6M11 12.6h5.4"></path><rect x="3.5" y="3.5" width="17" height="17" rx="2"></rect>',
-    youtube: '<rect x="3" y="6" width="18" height="12" rx="3"></rect><path d="m11 9.8 3.6 2.2-3.6 2.2z"></path>',
     dot: '<circle cx="12" cy="12" r="4"></circle>',
 
     alert: '<path d="M10.3 3.9 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path><path d="M12 8.5v5M12 16.6v.4"></path>',
