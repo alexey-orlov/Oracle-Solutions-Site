@@ -262,11 +262,12 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload(kind, data))
         }).then(function (response) {
-          if (!response.ok) throw new Error("rejected");
+          if (!response.ok) throw new Error(response.status === 429 ? "limited" : "rejected");
           confirmation(block, kind === "contact" ? "contactPosted" : "posted");
-        }).catch(function () {
+        }).catch(function (error) {
           busy(form, false);
-          setStatus(status, fill(C.forms.errors.send, { mailbox: mailboxLink() }), "error");
+          var line = error && error.message === "limited" ? C.forms.errors.limited : C.forms.errors.send;
+          setStatus(status, fill(line, { mailbox: mailboxLink() }), "error");
         });
       });
     });
@@ -484,12 +485,13 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ form: "kit", email: email, product: all ? "all" : slug, consent: true, page: window.location.href })
         }).then(function (response) {
-          if (!response.ok) throw new Error("rejected");
+          if (!response.ok) throw new Error(response.status === 429 ? "limited" : "rejected");
           remember();
           kitConfirmation(block, gateConfig().kitAutoSend ? "sent" : "queued", vars, opts);
-        }).catch(function () {
+        }).catch(function (error) {
           busy(form, false);
-          setStatus(status, fill(copy.errors.send, { mailbox: mailboxLink() }), "error");
+          var line = error && error.message === "limited" ? copy.errors.limited : copy.errors.send;
+          setStatus(status, fill(line, { mailbox: mailboxLink() }), "error");
         });
       });
     });

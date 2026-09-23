@@ -1712,9 +1712,10 @@ if (/request a demo/i.test(raw)) {
   token("salesKit.form.otherRoute", form.otherRoute, "routeLink");
   token("salesKit.form.kitName", form.kitName, "product");
   token("salesKit.form.offline", form.offline, "mailbox");
-  need("salesKit.form.errors", form.errors || {}, ["email", "domain", "send"]);
+  need("salesKit.form.errors", form.errors || {}, ["email", "domain", "send", "limited"]);
   token("salesKit.form.errors.domain", (form.errors || {}).domain, "routeLink");
   token("salesKit.form.errors.send", (form.errors || {}).send, "mailbox");
+  token("salesKit.form.errors.limited", (form.errors || {}).limited, "mailbox");
   var conf = form.confirmations || {};
   ["sent", "queued"].forEach(function (k) {
     var c = conf[k] || {};
@@ -1731,8 +1732,11 @@ if (/request a demo/i.test(raw)) {
   var formsCopy = C.forms || {};
   need("forms", formsCopy, ["offline"]);
   token("forms.offline", formsCopy.offline, "mailbox");
-  need("forms.errors", formsCopy.errors || {}, ["send"]);
+  /* A 429 from the sender is a send cap, not a glitch: "try again" would be wrong,
+     so it gets its own line (2026-09-24: three retries all hit the cap). */
+  need("forms.errors", formsCopy.errors || {}, ["send", "limited"]);
   token("forms.errors.send", (formsCopy.errors || {}).send, "mailbox");
+  token("forms.errors.limited", (formsCopy.errors || {}).limited, "mailbox");
   need("forms.labels", formsCopy.labels || {}, ["sending"]);
   ["mailto", "error"].forEach(function (k) {
     if ((formsCopy.confirmations || {})[k] !== undefined) fail("forms.confirmations." + k, "is retired: a failure is a line under the form, and no form opens a mail app");
@@ -1747,6 +1751,9 @@ if (/request a demo/i.test(raw)) {
   var formsSrc = fs.readFileSync(path.join(root, "site/assets/forms.js"), "utf8");
   if (/location\.(href|assign|replace)[^;\n]*mailto|window\.open\([^)]*mailto/.test(formsSrc)) {
     fail("site/assets/forms.js", "opens a mailto: link on submit: a form sends in the background or says it cannot");
+  }
+  if ((formsSrc.match(/status === 429/g) || []).length < 2) {
+    fail("site/assets/forms.js", "both form kinds must answer a 429 with their errors.limited line, not the generic one");
   }
 
   /* Sellers and partners are different readers: the kit goes to seller domains only. */

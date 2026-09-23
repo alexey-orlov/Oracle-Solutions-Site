@@ -2908,7 +2908,7 @@ window.SITE_CONTENT = {
         email: "Enter your work email.",
         domain: "The kit only goes to @softserveinc.com and @oracle.com addresses. Customer or partner? {routeLink} instead.",
         send: "That didn’t send. Please try again, or email {mailbox}.",
-        limited: "Not sent: too many kit requests from this address today. The kits already sent are in your inbox or its spam folder. For anything else, email {mailbox}."
+        limited: "Not sent: the limit on kit requests has been reached for now. Kits already sent are in your inbox or its spam folder. For anything else, email {mailbox}."
       },
       offline: "This preview can’t send the kit. Email {mailbox} to ask for it.",
       confirmations: {
