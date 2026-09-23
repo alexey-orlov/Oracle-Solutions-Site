@@ -289,7 +289,7 @@ Exact commands are in HANDOFF §4.
   - joint delivery with Oracle's AI & Data organization and *"Scope, timeline and
     price on every product page"* left the home page with S2's old bullets.
 - **Round 12 (§32.6):**
-  - **the sender:** SoftServe's Azure AD requires admin approval for n8n, so the pilot sends from a temporary address outside SoftServe's domain. The real integration is a SoftServe app registration for Microsoft Graph, which needs an IT request (`mail/README.md`, "Replacing the sender");
+  - **the sender:** SoftServe's Azure AD requires admin approval for n8n, so the pilot sends from a temporary address outside SoftServe's domain. **It blocks going live:** of round 12's six test emails, Zoho accepted all six and Alex's SoftServe inbox got one, 49 minutes late, with neither kit among them (§32.9). The real integration is a SoftServe app registration for Microsoft Graph, which needs an IT request (`mail/README.md`, "Replacing the sender");
   - **test to live:** `mail/settings.json` `mode`, once Alex has seen the emails in his inbox;
   - **the kit documents:** no one-pager, sales deck or feature list link exists yet, so a kit today carries the product page and, for three products, the interactive demo, and the practice copy names what was left out;
   - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they say under each form that the preview cannot send, and an emailed product link opens the home page there (the artifact drops the route);

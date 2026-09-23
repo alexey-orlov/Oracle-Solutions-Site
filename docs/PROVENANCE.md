@@ -6142,6 +6142,20 @@ Alex's sixth ask: the repository will be shared, others need not see his credent
 
 The webhook path appears in no commit (`git log -S`, 0).
 
+### 32.9 Alex's first real test: the cap, and the kits that never arrived, 2026-09-24
+
+**What happened.** On the fixed page, Alex asked for a kit three times, and each time saw *"That didn't send. Please try again"*. The sender's runs (748–750) show why. All three were refused by `kit.perAddressPerDay` (3 in a rolling 24 hours), because round 12's live tests had already sent three kits to his address. A refusal is not a glitch, so "try again" was wrong three times over.
+
+**Changed.**
+- `kit.perAddressPerDay` 3 → 10. A seller can legitimately want 8 different kits (7 products plus *All offers*), so 3 blocked real use, not only testing.
+- A 429 now gets its own line on both forms (`forms.errors.limited`, `salesKit.form.errors.limited`), with no "try again". The checker requires both lines and the 429 branch in `forms.js`.
+
+**Delivery, still open.** Round 12's test sent six emails, and Zoho accepted all six (`250 Message received`, one message id each). Alex's SoftServe inbox has one of them: the Workforce optimization practice copy. It arrived at 00:33 Kyiv, 49 minutes after sending, under Microsoft's *"This email originated from outside the organization"* banner. Neither kit email arrived, and neither did the other three notices.
+- The sender's DNS is sound: MX at Zoho EU, SPF covering `zohomail.eu`, Zoho's DKIM key at `zmail._domainkey`. It has no DMARC record.
+- So the likeliest cause (inferred) is SoftServe's Microsoft 365 filtering: it is holding, junking or quarantining mail from an unfamiliar outside domain, and mail with inline pictures and links most of all. The same filtering is likely at oracle.com.
+- To check: Junk, Focused/Other, the Microsoft 365 quarantine, and alex@alexorlov.co's inbox for bounces.
+- **This is the temporary sender's structural weakness.** The fix is sending from SoftServe's own Microsoft 365 (§32.6 and `mail/README.md`, "Replacing the sender"), and it now blocks going live, not just polish.
+
 ## 33. Round 13 — a second contact on every product page, and two labels cut, 2026-09-24
 
 **The asks** (Alex, in session, 2026-09-23):
