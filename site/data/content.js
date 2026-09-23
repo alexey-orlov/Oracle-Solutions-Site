@@ -197,13 +197,6 @@ window.SITE_CONTENT = {
       jumpstartInvestment: "Investment",
       jumpstartScoped: "Scope, price and duration are set in scoping.",
       jumpstartNext: "After the Jumpstart"
-    },
-    materialStates: {
-      "link-pending": "Link pending",
-      "coming-soon": "Coming soon",
-      "superseded": "Superseded — do not distribute",
-      "planned": "Planned",
-      "available": "Open"
     }
   },
 
