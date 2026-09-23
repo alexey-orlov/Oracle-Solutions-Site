@@ -15,6 +15,8 @@
 
   function C() { return window.SITE_CONTENT; }
   function cfg(slug) { return window.SITE_CONFIG.products[slug] || {}; }
+  /* The walkthrough and video links (round 12: links.json, via data/links.js). */
+  function lnk(slug) { return (window.SITE_LINKS || {})[slug] || {}; }
   function label(key) { return window.UI.sectionLabel(key); }
 
   function findProduct(slug) {
@@ -78,23 +80,24 @@
   function posterFor(product) {
     var conf = cfg(product.slug);
     if (conf.videoPoster) return conf.videoPoster;
-    var id = youtubeId(conf.videoUrl);
+    var id = youtubeId(lnk(product.slug).video);
     if (id) return "https://img.youtube.com/vi/" + id + "/maxresdefault.jpg";
     return "";
   }
 
   /* The frame is promised before the file exists: `video: true` puts it on the
-     page, `videoUrl` decides whether the click plays a recording or says when
-     one is coming. Either way the hero keeps the same two-column shape, so a
-     product does not change layout the day its video lands. */
+     page, the `video` link decides whether the click plays a recording or says
+     when one is coming. Either way the hero keeps the same two-column shape, so
+     a product does not change layout the day its video lands. */
   function heroMedia(product) {
     var UI = window.UI;
     var conf = cfg(product.slug);
-    if (!conf.video && !conf.videoUrl) return "";
+    var videoLink = lnk(product.slug).video;
+    if (!conf.video && !videoLink) return "";
     var poster = posterFor(product);
     var caption = C().shared.videoCaption;
-    var hook = conf.videoUrl
-      ? ' data-video="' + UI.esc(conf.videoUrl) + '"' +
+    var hook = videoLink
+      ? ' data-video="' + UI.esc(videoLink) + '"' +
         ' data-video-title="' + UI.esc(product.name) + '"'
       : ' data-video-pending="' + UI.esc(product.slug) + '"';
     return '<div class="hero-media">' +
@@ -114,14 +117,14 @@
      uses, so the two controls cannot open different things (round 9). It lives
      in assets/app.js with the badge; the fallback keeps this page working if
      it is ever rendered without the shared layer. */
-  function demoHref(conf) {
-    if (window.UI && typeof window.UI.demoHref === "function") return window.UI.demoHref(conf);
-    return conf.demoUrl || "";
+  function demoHref(link) {
+    if (window.UI && typeof window.UI.demoHref === "function") return window.UI.demoHref(link);
+    return link.interactiveDemo || "";
   }
 
   function heroCtas(product, hasMedia) {
     var UI = window.UI;
-    var conf = cfg(product.slug);
+    var link = lnk(product.slug);
     var out = [UI.button({
       label: C().site.primaryCta.label,
       href: contactsRoute(product.slug),
@@ -129,21 +132,21 @@
     })];
     /* The interactive walkthrough opens in its own tab: it is a self-contained
        page with its own guide, and a seller mid-call must not lose the product
-       page behind it. Rendered only when a demoUrl is configured. One icon, the
-       badge's own pointer, leading the label — the pointer is what says
-       "walkthrough you click", so a trailing external glyph would only dilute it
-       (round 10). */
-    if (conf.demoUrl) {
+       page behind it. Rendered only when an interactive demo is linked. One
+       icon, the badge's own pointer, leading the label — the pointer is what
+       says "walkthrough you click", so a trailing external glyph would only
+       dilute it (round 10). */
+    if (link.interactiveDemo) {
       out.push(UI.button({
-        label: C().shared.demoCta, href: demoHref(conf),
+        label: C().shared.demoCta, href: demoHref(link),
         kind: "secondary", icon: "cursor-click",
         attrs: { target: "_blank", rel: "noopener" }
       }));
     }
-    if (conf.videoUrl && !hasMedia) {
+    if (link.video && !hasMedia) {
       out.push(UI.button({
         label: C().shared.videoCaption, kind: "secondary", icon: "play",
-        attrs: { "data-video": conf.videoUrl, "data-video-title": product.name }
+        attrs: { "data-video": link.video, "data-video-title": product.name }
       }));
     }
     /* No Marketplace button here: the Marketplace badge in the chip row is the

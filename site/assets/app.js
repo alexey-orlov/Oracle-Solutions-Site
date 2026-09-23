@@ -207,28 +207,38 @@
      still renders the badge — the flag says the listing is there — but it is
      inert rather than a link to nowhere.
 
-     Round 9 (Alex): the demo badge reads `demoUrl`, the walkthrough it opens,
-     not the `video` flag, which only decides whether the product page carries a
-     video frame. Cross-system ERP Q&A has a walkthrough and no video, and was
-     the product missing its badge. */
+     Round 9 (Alex): the demo badge reads the walkthrough it opens, not the
+     `video` flag, which only decides whether the product page carries a video
+     frame. Cross-system ERP Q&A has a walkthrough and no video, and was the
+     product missing its badge. */
   function hasDemo(slug) {
-    var conf = (CFG.products && CFG.products[slug]) || {};
-    return typeof conf.demoUrl === "string" && conf.demoUrl.trim().length > 0;
+    var link = links(slug).interactiveDemo;
+    return typeof link === "string" && link.trim().length > 0;
   }
 
-  /* Where the walkthrough opens. `demoUrl` is the canonical relative path — the
-     walkthrough ships inside site/ — but while the site is previewed as a
-     claude.ai artifact a relative link opens a supporting file as a top-level
-     page, which the host refuses; there the standalone demo artifact in
-     `demoPreviewUrl` is used instead. The product page's button and the demo
-     badge both read this, so the two can never open different things. */
-  function demoHref(conf) {
-    var entry = conf || {};
-    if (!entry.demoUrl) return "";
+  /* Round 12: every link a product's sales kit uses lives in links.json at the
+     repo root. tools/sync-links.js copies the three the site's buttons read —
+     the walkthrough, its artifact copy, the video — into data/links.js; the kit
+     documents never enter site/, where anyone could read them. */
+  function links(slug) {
+    var all = window.SITE_LINKS || {};
+    return all[slug] || {};
+  }
+
+  /* Where the walkthrough opens. `interactiveDemo` is the canonical relative
+     path — the walkthrough ships inside site/ — but while the site is previewed
+     as a claude.ai artifact a relative link opens a supporting file as a
+     top-level page, which the host refuses; there the walkthrough's own
+     artifact, `interactiveDemoArtifact`, is used instead. The product page's
+     button and the demo badge both read this, so the two can never open
+     different things. */
+  function demoHref(entry) {
+    var link = entry || {};
+    if (!link.interactiveDemo) return "";
     var onArtifactHost = /(^|\.)claude\.ai$/i.test(window.location.hostname) ||
       /\/code\/frame\/|\/_f\//.test(window.location.pathname);
-    if (onArtifactHost && entry.demoPreviewUrl) return entry.demoPreviewUrl;
-    return entry.demoUrl;
+    if (onArtifactHost && link.interactiveDemoArtifact) return link.interactiveDemoArtifact;
+    return link.interactiveDemo;
   }
 
   function availabilityBadges(slug) {
@@ -625,6 +635,7 @@
     availabilityBadges: availabilityBadges,
     demoHref: demoHref,
     hasDemo: hasDemo,
+    links: links,
     badgeRow: badgeRow,
     caseStatusChip: caseStatusChip,
     caseMedallion: caseMedallion,
