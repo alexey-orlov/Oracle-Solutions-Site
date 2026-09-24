@@ -1,52 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="Abstract app window with a record and a three-step flow, the last step checked">
-  <!-- SS26 placeholder · ground -->
-  <rect x="0" y="0" width="960" height="600" fill="#edf0f2"/>
+  <!-- SS26 placeholder, round 16: the window's interior only. The tile draws
+       the frame (a white window on a photographic stage), so the ground and
+       the outline are gone, and the interior is scaled to fill the viewBox. -->
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
 
-  <!-- window, octagonal 4px cuts -->
-  <polygon points="76,56 884,56 888,60 888,540 884,544 76,544 72,540 72,60" fill="#ffffff" stroke="#bdcbd7" stroke-width="1.5"/>
+  <g transform="scale(1.2295) translate(-72 -56)">
+    <!-- title bar -->
+    <polygon points="76,56 884,56 888,60 888,112 72,112 72,60" fill="#e1e7eb"/>
+    <path d="M72 112 H888" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
+    <rect x="100" y="78" width="12" height="12" fill="#bdcbd7"/>
+    <rect x="122" y="78" width="12" height="12" fill="#bdcbd7"/>
+    <rect x="144" y="78" width="12" height="12" fill="#bdcbd7"/>
 
-  <!-- title bar -->
-  <polygon points="76,56 884,56 888,60 888,112 72,112 72,60" fill="#e1e7eb"/>
-  <path d="M72 112 H888" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
-  <rect x="100" y="78" width="12" height="12" fill="#bdcbd7"/>
-  <rect x="122" y="78" width="12" height="12" fill="#bdcbd7"/>
-  <rect x="144" y="78" width="12" height="12" fill="#bdcbd7"/>
+    <!-- left rail -->
+    <polygon points="72,112 208,112 208,544 76,544 72,540" fill="#e1e7eb"/>
+    <path d="M208 112 V544" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
+    <rect x="88" y="148" width="104" height="14" fill="#c1dff4"/>
+    <rect x="88" y="184" width="104" height="14" fill="#d1dae2"/>
+    <rect x="88" y="220" width="104" height="14" fill="#d1dae2"/>
+    <rect x="88" y="256" width="104" height="14" fill="#d1dae2"/>
+    <rect x="88" y="292" width="104" height="14" fill="#d1dae2"/>
 
-  <!-- left rail -->
-  <polygon points="72,112 208,112 208,544 76,544 72,540" fill="#e1e7eb"/>
-  <path d="M208 112 V544" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
-  <rect x="88" y="148" width="104" height="14" fill="#c1dff4"/>
-  <rect x="88" y="184" width="104" height="14" fill="#d1dae2"/>
-  <rect x="88" y="220" width="104" height="14" fill="#d1dae2"/>
-  <rect x="88" y="256" width="104" height="14" fill="#d1dae2"/>
-  <rect x="88" y="292" width="104" height="14" fill="#d1dae2"/>
+    <!-- content: a record card with three field rows, then a three-step flow -->
+    <rect x="240" y="138" width="180" height="14" fill="#d1dae2"/>
+    <rect x="824" y="134" width="32" height="22" fill="#d1dae2"/>
+    <rect x="240" y="176" width="616" height="196" fill="#e1e7eb"/>
+    <rect x="264" y="208" width="112" height="12" fill="#d1dae2"/>
+    <rect x="400" y="208" width="300" height="12" fill="#d1dae2"/>
+    <rect x="264" y="260" width="112" height="12" fill="#d1dae2"/>
+    <rect x="400" y="260" width="240" height="12" fill="#d1dae2"/>
+    <rect x="264" y="312" width="112" height="12" fill="#d1dae2"/>
+    <rect x="400" y="312" width="336" height="12" fill="#d1dae2"/>
+    <rect x="240" y="412" width="168" height="80" fill="#e1e7eb"/>
+    <rect x="264" y="446" width="120" height="12" fill="#d1dae2"/>
+    <rect x="408" y="450" width="56" height="4" fill="#d1dae2"/>
+    <rect x="464" y="412" width="168" height="80" fill="#e1e7eb"/>
+    <rect x="488" y="446" width="120" height="12" fill="#d1dae2"/>
+    <rect x="632" y="450" width="56" height="4" fill="#d1dae2"/>
+    <rect x="688" y="412" width="168" height="80" fill="#e1e7eb"/>
+    <path d="M748 452 L764 468 L796 432" fill="none" stroke="#bdcbd7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- content: a record card with three field rows, then a three-step flow -->
-  <rect x="240" y="138" width="180" height="14" fill="#d1dae2"/>
-  <rect x="824" y="134" width="32" height="22" fill="#d1dae2"/>
-  <rect x="240" y="176" width="616" height="196" fill="#e1e7eb"/>
-  <rect x="264" y="208" width="112" height="12" fill="#d1dae2"/>
-  <rect x="400" y="208" width="300" height="12" fill="#d1dae2"/>
-  <rect x="264" y="260" width="112" height="12" fill="#d1dae2"/>
-  <rect x="400" y="260" width="240" height="12" fill="#d1dae2"/>
-  <rect x="264" y="312" width="112" height="12" fill="#d1dae2"/>
-  <rect x="400" y="312" width="336" height="12" fill="#d1dae2"/>
-  <rect x="240" y="412" width="168" height="80" fill="#e1e7eb"/>
-  <rect x="264" y="446" width="120" height="12" fill="#d1dae2"/>
-  <rect x="408" y="450" width="56" height="4" fill="#d1dae2"/>
-  <rect x="464" y="412" width="168" height="80" fill="#e1e7eb"/>
-  <rect x="488" y="446" width="120" height="12" fill="#d1dae2"/>
-  <rect x="632" y="450" width="56" height="4" fill="#d1dae2"/>
-  <rect x="688" y="412" width="168" height="80" fill="#e1e7eb"/>
-  <path d="M748 452 L764 468 L796 432" fill="none" stroke="#bdcbd7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- group icon: three linked steps with a check on the last, 24-grid at 1.5px, scaled 11x -->
-  <g opacity="0.25" transform="translate(516,146) scale(11)" fill="none" stroke="#4c5156" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M0.6 8.2 H6.2 V15.8 H0.6 Z"/>
-    <path d="M6.2 12 H9.2"/>
-    <path d="M9.2 8.2 H14.8 V15.8 H9.2 Z"/>
-    <path d="M14.8 12 H17.8"/>
-    <path d="M17.8 8.2 H23.4 V15.8 H17.8 Z"/>
-    <path d="M18.8 12.1 L20.2 13.7 L22.5 10.3"/>
+    <!-- group icon: three linked steps with a check on the last, 24-grid at 1.5px, scaled 11x -->
+    <g opacity="0.25" transform="translate(516,146) scale(11)" fill="none" stroke="#4c5156" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0.6 8.2 H6.2 V15.8 H0.6 Z"/>
+      <path d="M6.2 12 H9.2"/>
+      <path d="M9.2 8.2 H14.8 V15.8 H9.2 Z"/>
+      <path d="M14.8 12 H17.8"/>
+      <path d="M17.8 8.2 H23.4 V15.8 H17.8 Z"/>
+      <path d="M18.8 12.1 L20.2 13.7 L22.5 10.3"/>
+    </g>
   </g>
 </svg>
