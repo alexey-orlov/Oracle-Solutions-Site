@@ -3535,8 +3535,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .gtile:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gtile, .gtile-img, .gtile-arrow { transition: none; }
-  .gtile:hover .gtile-img, .gtile:focus-visible .gtile-img { transform: none; }
+  .gtile, .gtile-img, .gtile-stage, .gtile-arrow { transition: none; }
+  .gtile:hover .gtile-img, .gtile:focus-visible .gtile-img,
+  .gtile:hover .gtile-stage, .gtile:focus-visible .gtile-stage { transform: none; }
   .gtile:hover .gtile-arrow, .gtile:focus-visible .gtile-arrow { transform: none; }
 }
 
@@ -3546,18 +3547,21 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    every width — 3 × 2, 2 × 3, then a single column on a phone. */
 @media (max-width: 900px) {
   .gtiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .gtile-name { font-size: 1.125rem; }
+  .gtile-name { font-size: 1.375rem; }
 }
 
 @media (max-width: 560px) {
   .gtiles { grid-template-columns: minmax(0, 1fr); }
+  .gtile-name { font-size: 1.25rem; }
+  .gtile-body { padding: 1.25rem; }
 }
 
 /* ——— S4: how we deliver ——— */
 
-/* Three steps on one horizontal track, each ending on the one fact a reader
-   wants from it. The caveat sits under the track, in the same block as the
-   figures it qualifies — a number never renders without its disclaimer. */
+/* Round 16: five stages on one horizontal track across the full width, each
+   ending on how long it takes, then the three reasons to pick this team as a
+   hairline list, then the screen's one button. The durations are floors, so
+   the block carries no caveat row. */
 
 .deliver { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: clamp(2rem, 4vw, 4.5rem); align-items: start; }
 .deliver-main { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; }
