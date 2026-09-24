@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 /**
- * sync-links.js — derives the two files that read links.json, the repo's one
- * links file (round 12):
+ * sync-links.js — validates links.json, the one file that holds a product's
+ * links (round 12; nothing copies them since round 15), and writes the one file
+ * the kit email derives from the site:
  *
- *   site/data/links.js   the public subset the site's buttons need: the
- *                        walkthrough, its artifact copy, the video. The kit
- *                        documents (one-pager, deck, feature list) never go
- *                        here — anything under site/ is readable by anyone.
  *   mail/catalog.json    each product's name, one-liner and group, from
  *                        content.js, for the kit email (the sender cannot run
- *                        content.js).
+ *                        content.js). Names only: no link is copied.
+ *
+ * The site's own view of links.json (the walkthrough, its artifact copy, the
+ * video) is never stored: tools/site_links.py builds it when asked — on every
+ * request in tools/serve.py, once for a publish.
  *
  *   node tools/sync-links.js           validate, then write whatever changed
  *   node tools/sync-links.js --check   validate and compare only; exit 1 if stale
  *
- * tools/check-grammar.js runs the same comparison, so a publish cannot ship a
- * stale copy. No dependencies.
+ * tools/check-grammar.js runs the same validation and comparison. No dependencies.
  */
 
 "use strict";
@@ -26,13 +26,17 @@ var vm = require("vm");
 
 var ROOT = path.resolve(__dirname, "..");
 var LINKS = "links.json";
-var SITE_OUT = "site/data/links.js";
 var CATALOG_OUT = "mail/catalog.json";
 
 /* The six keys every product carries, in the order the file lists them. */
 var KEYS = ["onePager", "salesDeck", "featureList", "interactiveDemo", "interactiveDemoArtifact", "video"];
-/* The ones the site's own buttons read; the rest stay out of site/. */
+/* The ones the site's own buttons read (tools/site_links.py PUBLIC_KEYS); the
+   kit documents never reach the site. */
 var PUBLIC_KEYS = ["interactiveDemo", "interactiveDemoArtifact", "video"];
+/* A product is keyed by its slug everywhere: content.js, links.json, the pack's
+   `slug:` in Oracle-Packaging-Skills packs/<slug>/pack-spec.md, and the
+   walkthrough's folder site/demo/<slug>/. */
+var SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function loadSite(root) {
   var box = { window: {} };
@@ -58,6 +62,7 @@ function validate(links, slugs) {
   });
   Object.keys(products).forEach(function (slug) {
     var where = 'products["' + slug + '"]';
+    if (!SLUG.test(slug)) errors.push(where + ": not a slug — lowercase words joined by hyphens, the same id as content.js and the pack's slug:");
     if (slugs.indexOf(slug) === -1) errors.push(where + ": no product with this slug in content.js");
     var entry = products[slug] || {};
     KEYS.forEach(function (key) {
