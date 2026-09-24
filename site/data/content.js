@@ -225,7 +225,7 @@ window.SITE_CONTENT = {
         accent: "Built on Oracle.",
         proof: "Proven in weeks."
       },
-      lead: "One team that knows AI and Oracle’s platforms to the same depth, so you get the full power of Oracle AI — proven on your own data in a fixed-scope Jumpstart, then taken to production in your tenancy.",
+      lead: "SoftServe’s leading AI practice and fast-track method, combined with the full power of Oracle’s data and cloud platforms, accelerate your time to value.",
       ctas: [
         { label: "Explore the products", route: "#/#products", kind: "primary" },
         { label: "How we deliver", route: "#/#how-we-deliver", kind: "secondary" }
@@ -252,14 +252,14 @@ window.SITE_CONTENT = {
     },
 
     twoWays: {
-      eyebrow: "Two ways in",
-      title: "Products, services, one team.",
+      eyebrow: "What we offer",
+      title: "A head start that scales.",
       panels: [
         {
           id: "products",
           icon: "cube",
           title: "Enterprise AI agents and workflows",
-          body: "Ready-made AI agents and human-AI workflows that embody the expertise of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms.",
+          body: "Ready-made AI agents and human-AI workflows that embody the know-how of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms.",
           bullets: [
             "Best-practice workflows and AI pipelines",
             "Accelerators that shorten time to value",
@@ -276,7 +276,7 @@ window.SITE_CONTENT = {
           id: "practice",
           icon: "users",
           title: "Expert services, from proof to scale",
-          body: "With a large, dedicated practice of experts in both AI and Oracle, and a delivery method proven with Fortune 500 customers over decades, we accelerate your time to value with AI.",
+          body: "With a large, dedicated practice of experts in both AI and Oracle, and a delivery method honed with Fortune 500 customers, we take your first use case into production in your tenancy, then across the business.",
           bullets: [
             "A proof of value from 30 days, on your own data",
             "Measurable ROI in focus from day one",
@@ -294,31 +294,31 @@ window.SITE_CONTENT = {
 
     catalog: {
       eyebrow: "Products",
-      title: "Start from the job to be done",
-      lead: "Every group is a family of agents and human-AI workflows for one kind of job, distilled from engagements already delivered: the rules, review steps and checks the job needs, on Oracle’s AI platforms, proven on your data in a Jumpstart. Open a group to see its products.",
+      title: "Kick off your AI adoption.",
       cta: { label: "See all products", route: "#/products" }
     },
 
     delivery: {
       eyebrow: "Services",
-      title: "Prove it on your data first, then take it to production.",
+      title: "The method behind the speed.",
       anchor: "how-we-deliver",
       steps: [
-        { title: "Jumpstart proof of value", body: "A fixed-scope pilot on your own data and a limited rule set, in a separate environment, with zero integration. Success metrics are signed before the clock starts.", factLabel: "Duration", fact: "4–8 weeks" },
-        { title: "Integration", body: "We connect it to your systems, embed it in the workflow and take it live at one location or for one document type, with no manual work left in the loop.", factLabel: "Duration", fact: "3–5 months" },
-        { title: "Scaling", body: "Extend across locations and document types, with per-region rules and data workflows. An optional managed service keeps it running and re-tuned.", factLabel: "Duration", fact: "3–12 months" }
+        { title: "Workshop", body: "With your team, we pin down the use case, set the fastest path to proving value on your real data, and try the products hands-on to see how they fit.", factLabel: "Duration", fact: "Time-boxed" },
+        { title: "Jumpstart proof of value", body: "A fixed-scope pilot on your own data and a limited rule set, in a separate environment, with zero integration. Success metrics are signed before the clock starts.", factLabel: "Duration", fact: "From 4 weeks" },
+        { title: "Integration", body: "We connect it to your systems, embed it in the workflow and take it live at one location or for one document type, with no manual work left in the loop.", factLabel: "Duration", fact: "From 3 months" },
+        { title: "Scaling", body: "Extend across locations and document types, with per-region rules where they differ.", factLabel: "Duration", fact: "From 3 months" },
+        { title: "Managed services", body: "If you want it, we keep it running and re-tuned, with periodic accuracy and cost reviews. Or your team runs it, trained and certified by us.", factLabel: "Duration", fact: "For as long as you choose" }
       ],
-      footnote: "Figures are illustrative and confirmed in scoping.",
       why: {
         title: "Why SoftServe on Oracle",
         pillars: [
           { icon: "network", title: "Platform depth", body: "Architects who own the Oracle reference architecture across Oracle Autonomous AI Lakehouse, Oracle AI Data Platform, Oracle AI for Fusion Applications and OCI + NVIDIA NeMo." },
-          { icon: "spark", title: "Agentic-AI experience", body: "Agents and workflows built and tested on real enterprise data, with evaluation, guardrails and governance hardening available on every engagement." },
+          { icon: "spark", title: "Agentic-AI experience", body: "Agents and workflows built and tested on real enterprise systems, with evaluation, guardrails and governance hardening on every engagement." },
           { icon: "audit", title: "Fixed-scope delivery", body: "Signed success metrics up front, and every Jumpstart ends with an executive readout and a costed expansion plan." }
         ]
       },
       ctas: [
-        { label: "Explore the services", route: "#/services", kind: "primary" }
+        { label: "See the full method", route: "#/services#how-we-engage", kind: "primary" }
       ]
     },
 
@@ -337,7 +337,7 @@ window.SITE_CONTENT = {
         area: "Field-service operations across three countries",
         industry: "manufacturing",
         status: "modeled",
-        metric: { value: "+4.5%", label: "median gain in jobs per technician per day, against the current plan" },
+        metric: { value: "+4.5% productivity", label: "median gain in jobs per technician per day, against the current plan" },
         line: "Dispatchers built the four-week field-service plan by hand, region by region; NVIDIA cuOpt on Oracle Cloud Infrastructure now builds it and a dispatcher approves it.",
         footnote: "Simulated on the customer’s own historical operations data and scored against the plan dispatchers build today; illustrative, not contractual.",
         product: { slug: "workforce-optimization", name: "Workforce optimization" }
@@ -348,7 +348,7 @@ window.SITE_CONTENT = {
         area: "Ground-handling contract management",
         industry: "travel-transport",
         status: "measured",
-        metric: { value: "5–15 min", label: "to extract a 60–100-page agreement end to end, down from 3–5 days" },
+        metric: { value: "5–15 min a contract", label: "to extract 60–100 pages end to end, down from 3–5 days" },
         line: "Contract rates were keyed into a cost-management system page by page; reviewers now validate AI-extracted rates beside the source PDF, every value cited to its page, and export.",
         footnote: "Measured end to end on the customer’s own agreements during the proof of value; illustrative, not contractual.",
         product: { slug: "large-document-extraction", name: "Large docs processing and review" }
@@ -359,7 +359,7 @@ window.SITE_CONTENT = {
         area: "Account planning across a global enterprise account base",
         industry: "logistics",
         status: "in-preparation",
-        metric: { value: "Same day", label: "from a market signal to a qualified opportunity a seller can act on" },
+        metric: { value: "Same-day insight", label: "from a market signal to a qualified opportunity a seller can act on" },
         line: "The first engagement will run on the customer’s own account base: every opportunity scored for magnitude and confidence, with its evidence cited.",
         footnote: "The comparison is the customer’s own account-planning cycle today, on success metrics signed before the work starts.",
         product: { slug: "account-insights", name: "Account insights" }
@@ -370,7 +370,7 @@ window.SITE_CONTENT = {
         area: "Plan versus actual across completed work packages",
         industry: "construction",
         status: "in-preparation",
-        metric: { value: "Every variance", label: "traced to its schedule, cost or contract source, in hours of expert time rather than weeks" },
+        metric: { value: "Variances traced", label: "each to its schedule, cost or contract source, in hours of expert time rather than weeks" },
         line: "One completed project sample, with the customer’s own schedule, cost and contract exports reconstructed into a single package-level view.",
         footnote: "Against the expert hours the same analysis takes today, on a sample the customer’s own experts validate.",
         product: { slug: "plan-vs-actual-investigation", name: "Plan vs actual investigation" }
