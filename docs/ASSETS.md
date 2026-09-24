@@ -639,7 +639,7 @@ ink marks invert back with `filter: invert(1)` rather than carrying a second fil
 (`.about-partner-mark`). The footer carries no partner marks since round 14.
 
 **The footer's spark (round 14).** `assets/img/softserve-star-white.svg` (135×154,
-from SoftServe's brand kit, `BRAND/logos/`, PROVENANCE §2) is drawn 24 px wide at
+from SoftServe's brand kit, `BRAND/logos/`, PROVENANCE §5) is drawn 24 px wide at
 the right of the copyright row, where softserveinc.com's own footer puts the same
 mark: its `hero-icon.svg` (`viewBox 0 0 104 119`) is the same path at 0.77×,
 compared point by point on 2026-09-24. It is a white file on the black block, and
