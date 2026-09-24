@@ -212,17 +212,29 @@
      names: the picture says what the software looks like, the line says what
      the group does to someone with no context, and the whole tile is the link
      into the catalog filtered to that group. Text never sits on the image
-     (VISUAL-GRAMMAR §1.1), and the tile carries one action, which is itself. */
+     (VISUAL-GRAMMAR §1.1), and the tile carries one action, which is itself.
+     Round 16 (Alex: "not to be grey"): the software sits as a window on a
+     stage, one of the site's own chrome photographs under a light veil, so the
+     colour comes from the photograph and the tile body is white. Only the
+     photograph moves on hover; the window holds still. */
   function groupTiles(C) {
     var UI = window.UI;
     var block = C.overview.catalog;
 
     var tiles = (C.facets.categories || []).map(function (category) {
+      var stage = category.stage && category.stage.file
+        ? '<img class="gtile-stage" src="' + UI.esc(category.stage.file) + '" alt=""' +
+            (category.stage.focal ? ' style="object-position:' + UI.esc(category.stage.focal) + '"' : "") +
+            ' loading="lazy" decoding="async">' +
+          '<span class="gtile-veil" aria-hidden="true"></span>'
+        : "";
+      var picture = category.image
+        ? '<img class="gtile-img" src="' + UI.esc(category.image) + '" alt="" loading="lazy" decoding="async">'
+        : "";
       return '<a class="gtile reveal" href="#/products?cat=' + UI.esc(category.id) + '">' +
-        '<span class="gtile-band">' +
-          (category.image
-            ? '<img class="gtile-img" src="' + UI.esc(category.image) + '" alt="" loading="lazy" decoding="async">'
-            : "") +
+        '<span class="gtile-band' + (stage ? " gtile-band--stage" : "") + '">' +
+          stage +
+          (stage ? '<span class="gtile-window">' + picture + "</span>" : picture) +
         "</span>" +
         '<span class="gtile-body">' +
           '<span class="gtile-name">' + UI.esc(category.full) + "</span>" +
