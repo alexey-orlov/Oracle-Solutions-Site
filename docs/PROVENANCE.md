@@ -6268,3 +6268,51 @@ The list is repeated in START-HERE §9.
 - ***For sellers*** stayed in the row. Say if it should go; the checker and START-HERE §3 change with it.
 
 The list is repeated in START-HERE §9.
+
+## 35. Round 15 — one links file, and nothing copied, 2026-09-24
+
+**The ask** (Alex, 2026-09-24, with the first kit links): "make sure we have a separate config file that stores the links, and they are not saved anywhere else; make sure the website (for email links and in-site links) picks links from this config and doesn't store it anywhere else; make sure config follows the convention on referencing apps so that it's natively mapped with minisite product listings + per-pack md files."
+
+**Split:** one Opus session, no Fable pass. The round moved plumbing, not copy, UX or design.
+
+### 35.1 What changed
+
+| | Before | After |
+|---|---|---|
+| The site's links | `site/data/links.js`, written by `tools/sync-links.js` and committed; the checker failed a stale copy | Not a file. `tools/site_links.py` builds it from `links.json` when asked: `tools/serve.py` answers `/data/links.js` on every request, a publish writes `.work/publish/data/links.js`. `site/data/links.js` is git-ignored, and the checker fails it if it exists |
+| `tools/sync-links.js` | validated `links.json`; wrote `site/data/links.js` and `mail/catalog.json` | validates `links.json`, now also every key a slug and a walkthrough inside the site in its own `demo/<slug>/` folder; writes `mail/catalog.json` only (names, no links) |
+| The checker | loaded `site/data/links.js` | evaluates `python3 tools/site_links.py`; fails a stored copy, a missing `.gitignore` line, a kit key reaching the site, and any link from `links.json` repeated in another file (`docs/PROVENANCE.md` excepted) |
+| Docs that repeated a link | the three walkthrough artifact URLs in README's preview table, CONFIG §3a's example, `HANDOFF-erp-qa-demo.md` (six places) and `HANDOFF-workforce-demo.md` | each names its key, `links.json` › `<slug>.interactiveDemoArtifact` |
+| `links.json` | every kit document empty | Account insights and Workforce optimization: one-pager, sales deck and feature list, from SoftServe OneDrive `Oracle AI & Data Solutions/<pack>/`. `$help` states the one-file rule, the slug keys and the path rule for walkthroughs |
+| Manifest | round 14; `paths.siteLinks` = `site/data/links.js` | round 15; `paths.siteLinks` = `.work/publish/data/links.js`, `paths.buildSiteLinks`, `paths.$linksComment`; `publish.fullTree` and `demoTargets` follow |
+
+### 35.2 Decisions
+
+- **A generated file under `site/` is still a copy.** Git-ignoring `site/data/links.js` would have kept one on disk, where a plain server, a `file://` open or a whole-folder publish could ship it stale. The server builds it per request instead, and a publish builds it outside `site/`.
+- **Python builds it, not Node.** `tools/serve.py` already needs Python, and one Mac that works on this repo has no Node on its path (HANDOFF §9). The checker runs the same builder, so the site, a publish and the checks read one implementation. Only the list of the three public keys is written twice, and the checker fails a mismatch in either direction.
+- **Keys are slugs, and that is the mapping.** The packaging plugin's contract already makes a pack's `slug:` "the folder, the listing slug and the file names" (pack-spec schema, `meta.slug`), so no lookup table was added. The validator now enforces the slug's shape and the walkthrough's folder.
+- **The localhost walkthrough addresses stayed paths.** Alex sent `http://localhost:8765/demo/<slug>/index.html` for three walkthroughs. `links.json` already held `demo/<slug>/index.html` for each, the form every host resolves against its own address, so no value changed.
+- **Alex's six links were stored as given**, after each was opened in his browser: five open the intended file. Account insights' sales-deck link opens the pack's folder (35.4).
+- **PROVENANCE may quote history.** A round log records what was published where; the sweep skips it.
+
+### 35.3 Checks
+
+- `node --check` on the two changed scripts, `py_compile` on the two Python tools, `node tools/sync-links.js` OK, and the checker OK with the three known warnings.
+- **Negative test.** A scratch copy with seven injected faults fails each one: a stray `site/data/links.js`, a doc repeating a link from `links.json` (with a different `?e=` suffix), the `.gitignore` line removed, a walkthrough in another product's folder, a localhost walkthrough address, a key that is not a slug, and a kit key added to the builder's public keys.
+- **In the browser**, on a fresh `tools/serve.py` (the three servers already running for other sessions run the old code, 35.4): `/data/links.js` carries the three public keys for all seven products. The *Interactive demo* button on Workforce optimization opens `demo/workforce-optimization/index.html`, Account insights has none, no SharePoint link reaches any page, the *Interactive demo* filter lists the three products with a walkthrough, and the console is clean.
+- **The kit email**, rendered from the real `links.json` (`node tools/mail-preview.js`): Account insights carries the product page, one-pager, sales deck and feature list; Workforce optimization carries those plus the interactive demo.
+- **Link scope.** Through the SharePoint sharing API, each of the six items carries one *People in SoftServe* view link and no *Anyone* link.
+- **Not published.** Rounds 12 to 15 go out together from HEAD when Alex says so.
+- **Commits.** git-autosync swept the code and most docs into `autosync:` commits (17:33–17:50); `eb83c81` holds Alex's links.
+
+### 35.4 Open for Alex
+
+- **Account insights' sales deck** links to its folder, not the deck: the 14.6 MB deck had not reached the cloud, and the folder also shows the internal executive summary. Swap in the deck's own link once it syncs.
+- **Oracle sellers cannot open the six links.** They are *People in SoftServe* links, the only kind SoftServe's OneDrive allows.
+- **The Workforce optimization deck** still names Bosch on its proof slide, with the logo, and the name is not cleared.
+- **The recorded demos** for Workforce optimization and Large docs sit in their OneDrive folders with no link, so `video` stays empty.
+- **Opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, by design.
+- **Other sessions' preview servers** on ports 8765, 8767 and 49837 run the old `tools/serve.py` and answer `/data/links.js` with a 404 until restarted.
+- **The packaging plugin** still says `sync-links.js` writes `data/links.js`; its references should follow round 15.
+
+The list is repeated in START-HERE §9.
