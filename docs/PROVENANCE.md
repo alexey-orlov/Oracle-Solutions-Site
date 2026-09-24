@@ -6445,7 +6445,7 @@ The round-7 duration rule is narrowed: the ranges still hold on the seven Jumpst
   - the console is clean and no image is broken on ten routes;
   - the deny-list grep returns nothing.
 - **Not published.** Rounds 12 to 16 go out together from HEAD when Alex says so. That publish carries the three redrawn SVGs under `assets/img/groups/`. The stage photographs are existing files; confirm with `list_files` that `heroes/business-metrics-qa.jpg`, `heroes/case-evidence-collection.jpg`, `industries/energy.jpg` and `industries/automotive.jpg` are on the artifact.
-- **Commits.** git-autosync swept the code into `autosync:` commits (19:30–19:41). The docs are committed as `docs:`.
+- **Commits.** git-autosync swept the code and the docs into `autosync:` commits (19:30–19:55); the round has no semantic commit of its own.
 
 ### 36.6 Open for Alex
 
