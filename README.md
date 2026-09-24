@@ -28,15 +28,7 @@ Read `docs/SS26-THEME.md` before changing either. Both run from the same server:
 
 ## Preview
 
-- **Preview artifacts** (`docs/START-HERE.md` §1): the site is https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri, the one to publish to; the previous near-black theme is archived, frozen, at https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN. The walkthroughs also stand alone, one artifact each:
-
-| Walkthrough | Standalone preview |
-|---|---|
-| Large docs processing and review | https://claude.ai/artifact/NdxY4f1D6hxC7pjyMRs6zP |
-| Workforce optimization | https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e |
-| Cross-system ERP Q&A | https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb |
-
-  A standalone URL belongs in that product's `interactiveDemoArtifact` in `links.json` as soon as it exists (`docs/CONFIG.md` §3a) — that is the link the site's own artifact preview uses, and the one the kit email sends while the site is a claude.ai link.
+- **Preview artifacts** (`docs/START-HERE.md` §1): the site is https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri, the one to publish to; the previous near-black theme is archived, frozen, at https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN. The three walkthroughs (Large docs processing and review, Workforce optimization, Cross-system ERP Q&A) also stand alone, one artifact each. Their addresses live only in `links.json`, as each product's `interactiveDemoArtifact` (`docs/CONFIG.md` §3a): the link the site's own artifact preview uses, and the one the kit email sends while the site is a claude.ai link.
 - **Forms on the preview:** the claude.ai artifact blocks every request to another host, so there each form says under itself that the preview cannot send, and names the practice mailbox. No form opens a mail app. The emails the forms send (`mail/README.md`) work from a local run or a real host.
 - **Locally:** `python3 tools/serve.py` (port 8765, this Mac only, never cached), or the `oracle-site` entry in `.claude/launch.json`. See [Run it locally](#run-it-locally).
 
@@ -47,7 +39,7 @@ Read `docs/SS26-THEME.md` before changing either. Both run from the same server:
 ```
 oracle-solutions-site/
 ├── README.md                 this file
-├── links.json                every link a product's sales kit uses, one place, never deployed (docs/CONFIG.md §3a)
+├── links.json                every link a product uses, and the only file that stores one; never deployed (docs/CONFIG.md §3a)
 ├── mail/                     the emails the forms send — never deployed (mail/README.md)
 │   ├── settings.json         test or live, the practice mailbox, the kit's domains, send caps
 │   ├── copy.json             every word of every email
@@ -64,9 +56,10 @@ oracle-solutions-site/
 │   └── asset-candidates/     images considered but not shipped; logos/ holds the customer marks, kept outside site/ so nothing can ship them
 ├── tools/
 │   ├── check-grammar.js      asserts every product fills every grammar slot, and the links and emails hold
-│   ├── sync-links.js         validates links.json; writes site/data/links.js and mail/catalog.json
+│   ├── sync-links.js         validates links.json; writes mail/catalog.json (product names, no links)
+│   ├── site_links.py         builds data/links.js from links.json when asked (serve.py, a publish); never stored
 │   ├── mail-preview.js       renders every email to .work/mail-preview/, plus as-read.txt for a copy review
-│   ├── serve.py              the local server: port 8765, this Mac only, never cached
+│   ├── serve.py              the local server: port 8765, this Mac only, never cached; answers data/links.js from links.json
 │   ├── n8n-workflow.js       builds the n8n workflow from mail/n8n/
 │   ├── erp-qa-check.js       reconciles the ERP Q&A walkthrough's numbers (329 assertions)
 │   ├── capture-demo-frames.mjs   drives a walkthrough in headless Chrome (tour QA, step frames, poster)
@@ -86,7 +79,7 @@ oracle-solutions-site/
     ├── data/
     │   ├── config.js         window.SITE_CONFIG — switches, the kit's domains, form destination
     │   ├── endpoint.local.json  this machine's form endpoint for local runs — git-ignored, never published
-    │   ├── links.js          window.SITE_LINKS — the walkthrough and video links (generated from links.json)
+    │   ├── (links.js)        window.SITE_LINKS — not a file: built from links.json on request (tools/site_links.py)
     │   ├── content.js        window.SITE_CONTENT — every word on the site
     │   ├── review.js         TEMPORARY: window.SITE_REVIEW — the list the Internal panel shows
     │   └── diagrams.js       window.SITE_DIAGRAMS — the per-product architecture diagrams, drawn as inline SVG
