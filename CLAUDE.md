@@ -10,12 +10,12 @@ This repository is private and stays private: `docs/` holds customer names and l
 - `links.json` holds every link a product's sales kit uses and `mail/` the emails the forms send (manual: `mail/README.md`). Neither is ever published. A live trigger URL (the n8n webhook) never enters git: it lives in `.work/n8n/` on the Mac that built the workflow.
 - `tools/check-grammar.js` is the site's checker and its gate. Every owner rule that can be checked becomes an assertion there.
 - `docs/` holds the site's own records.
-- `site.manifest.json` is the site's machine-readable description of itself: the publish target and the artifacts never to publish, the wrapper's strip lines, the paths that never ship, the checker command, the preview entry and the contract round. The `oracle-packs-web` plugin reads it before it touches the site. Change it in the same commit as the thing it describes, and bump `contract.round` in any round that changes a `content.js` key, a config switch, a product tab, a checker rule or a publish rule.
+- `site.manifest.json` is the site's machine-readable description of itself: the publish target and the artifacts never to publish, the wrapper's strip lines, the paths that never ship, the checker command, the preview entry and the contract round. The `oracle-packs` plugin's listing and demo skills read it before they touch the site. Change it in the same commit as the thing it describes, and bump `contract.round` in any round that changes a `content.js` key, a config switch, a product tab, a checker rule or a publish rule.
 
 ## Neighbours on this Mac
 
 - **AO-Personal-OS** (`~/Documents/GitHub/AO-Personal-OS`): Alex's personal OS. The practice wiki is `context/areas/softserve/oracle*.md`, and the general client-document rules are `.claude/references/client-documents.md`. Read them from here. Wiki updates go through that repo's `context-update` skill, run in a session there.
-- **Oracle-Packaging-Skills** (`~/Documents/GitHub/Oracle-Packaging-Skills`): the `oracle-packs` plugins. `/oracle-packs-web:listing` and `/oracle-packs-web:demo` write product entries and walkthroughs into this site. They find it through `--site`, `$ORACLE_SITE_ROOT` or a session opened here, and they follow `site.manifest.json`. Changes to the plugins are made in that repo.
+- **Oracle-Packaging-Skills** (`~/Documents/GitHub/Oracle-Packaging-Skills`): the `oracle-packs` plugin. `/oracle-packs:listing` and `/oracle-packs:demo` write product entries and walkthroughs into this site. They find it through `--site`, `$ORACLE_SITE_ROOT` or a session opened here, and they follow `site.manifest.json`. Changes to the plugin are made in that repo.
 
 ## Rules carried over from AO-Personal-OS
 

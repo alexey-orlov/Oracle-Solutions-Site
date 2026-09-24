@@ -316,8 +316,7 @@ Exact commands are in HANDOFF §4.
   - **trademark attribution:** the Oracle and NVIDIA trademark sentence left the footer with the marks; if the launch trademark check wants one, it comes back as one fine-print line above the copyright row;
   - **For sellers** stayed first in the link row although Alex's list named only SoftServe's items, because it is the only permanent way to `#/sellers`.
 - **Round 15 (§35.4):**
-  - **opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, because `site/` stores no copy of the links; `tools/serve.py` and a publish are the two ways it gets them;
-  - **the packaging plugin** (`oracle-packs-web`) still says `sync-links.js` writes `data/links.js`. Until its references follow round 15, a publish it drives takes `data/links.js` from the manifest's `paths.buildSiteLinks` and `paths.siteLinks`.
+  - **opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, because `site/` stores no copy of the links; `tools/serve.py` and a publish are the two ways it gets them.
 - **Round 16 (§36.6):**
   - **products or apps:** Alex's drafts said *apps* and *applications*; the site kept *products* everywhere, and a rename is site-wide;
   - **one floor, two ways on the home page:** *from 30 days* (the hero tile, the S2 bullet) beside *From 4 weeks* (the Jumpstart stage);
