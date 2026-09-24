@@ -58,6 +58,10 @@ var PILLARS = ["fast", "low-risk", "tangible"];
    2026-09-18 decision), because the hero stack's top band says "Scaling" and one
    page may not carry both words for one thing. */
 var NEXT_TIERS = ["Integration", "Scaling"];
+/* Round 16 (Alex): the delivery method is five stages, on the home track and
+   on the Services track alike, under these names. "Managed services" matches
+   the hero stack's fourth service tile. */
+var DELIVERY_STAGES = ["Workshop", "Jumpstart proof of value", "Integration", "Scaling", "Managed services"];
 /* A matrix row carrying a restrictive asterisk is PARTIAL: an unqualified
    SUPPORTED tag on it would overstate the source. */
 var CAP_STATES = ["supported", "partial", "roadmap"];
@@ -1359,16 +1363,33 @@ if (!arr(C.products) || C.products.length !== 7) {
     if (d.anchor !== "how-we-deliver") {
       fail("overview.delivery", 'anchor is "' + d.anchor + '", expected "how-we-deliver" — the hero CTA and the S2 practice panel both link to it');
     }
-    if (!arr(d.steps) || d.steps.length !== 3) {
-      fail("overview.delivery.steps", "must hold exactly 3 steps — proof of value, integration, scale, got " +
-        (arr(d.steps) ? d.steps.length : "none"));
+    /* Round 16 (Alex): five stages. A Workshop comes first ("discover use case,
+       define the fastest path to prove value on the real data + play with the
+       pre-built apps"), and the managed service is a stage of its own, last,
+       which the customer "MAY (but not SHOULD) opt for". */
+    if (!arr(d.steps) || d.steps.length !== DELIVERY_STAGES.length) {
+      fail("overview.delivery.steps", "must hold exactly " + DELIVERY_STAGES.length + " stages — " +
+        DELIVERY_STAGES.join(" · ") + ", got " + (arr(d.steps) ? d.steps.length : "none"));
     } else d.steps.forEach(function (st, i) {
       reqStr("overview.delivery.steps[" + i + "]", st, ["title", "body", "factLabel", "fact"]);
+      if (st.title !== DELIVERY_STAGES[i]) {
+        fail("overview.delivery.steps[" + i + "]", 'title is "' + st.title + '" — stage ' + (i + 1) + ' is "' + DELIVERY_STAGES[i] + '"');
+      }
     });
-    /* Rule 1 of VISUAL-GRAMMAR: every step's `fact` carries a duration and the
-       first one carries a price, and this block has no other caveat row. */
-    if (!str(d.footnote)) {
-      fail("overview.delivery", "footnote missing — the step facts carry durations and a price, and a number never renders without its caveat in the same block");
+    var managed = arr(d.steps) ? d.steps[DELIVERY_STAGES.length - 1] : null;
+    if (managed && str(managed.body)) {
+      if (!/\bif you (want|choose|prefer)\b|\boptional\b|\byou may\b|\bas long as you choose\b/i.test(managed.body + " " + (managed.fact || ""))) {
+        fail("overview.delivery.steps[" + (DELIVERY_STAGES.length - 1) + "]", "must say the customer may choose the managed service — it is optional");
+      }
+      if (/\bshould\b|\bmust\b|\brecommended\b|\bneed to\b|\brequired\b/i.test(managed.body)) {
+        fail("overview.delivery.steps[" + (DELIVERY_STAGES.length - 1) + "]", "says the customer should take the managed service — it is their choice, never a need");
+      }
+    }
+    /* Round 16 (Alex: remove the disclaimer): the durations are floors
+       ("From 4 weeks", "From 3 months"), true as stated, so the block carries
+       no caveat row. */
+    if (d.footnote !== undefined) {
+      fail("overview.delivery.footnote", "removed in round 16 — the stage durations are floors and carry no caveat");
     }
     var why = d.why;
     if (!why) fail("overview.delivery.why", "missing — the three pillars beside the ladder");
@@ -1474,7 +1495,7 @@ if (!arr(C.products) || C.products.length !== 7) {
     ["overview.twoWays.title", (o.twoWays || {}).title, true],
     ["overview.catalog.title", (o.catalog || {}).title, true],
     ["overview.caseStudiesIntro.title", (o.caseStudiesIntro || {}).title, true],
-    ["overview.delivery.title", (o.delivery || {}).title, false],
+    ["overview.delivery.title", (o.delivery || {}).title, true],
     ["overview.about.title", (o.about || {}).title, false],
     ["overview.contact.heading", (o.contact || {}).heading, false]
   ].forEach(function (row) {
