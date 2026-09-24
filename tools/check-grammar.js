@@ -1020,6 +1020,21 @@ if (!arr(C.products) || C.products.length !== 7) {
         checkAsset(where, "group tile image", c.image);
       }
     }
+    /* Round 16 (Alex, on the grey tiles: "not to be grey; stay closer to
+       softserveinc.com"): each tile's software sits as a window on a stage, one
+       of the site's own photographs, so the colour comes from the picture. The
+       stage is a photograph (never an SVG, never a logo), on disk, with a
+       two-percentage focal point. */
+    if (!c.stage || !str(c.stage.file) || !str(c.stage.focal)) {
+      fail(where, "stage needs { file, focal } — the photograph the tile's window sits on");
+    } else {
+      if (!/^assets\/img\/(heroes|industries)\/[a-z0-9-]+\.(jpg|jpeg|png|webp)$/.test(c.stage.file)) {
+        fail(where, 'stage.file "' + c.stage.file + '" must be a photograph under assets/img/heroes/ or assets/img/industries/');
+      } else if (!fs.existsSync(path.join(root, "site", c.stage.file))) {
+        fail(where, "stage photograph not on disk: site/" + c.stage.file);
+      }
+      if (!/^\d{1,3}% \d{1,3}%$/.test(c.stage.focal)) fail(where, 'stage.focal "' + c.stage.focal + '" must be two percentages, e.g. "50% 50%"');
+    }
     /* The empty state is a capability, never a gap: the no-"yet" rule of §18.9
        applies to it more than to any other string, because it is the one a
        reader meets where a product does not exist. */
@@ -1193,6 +1208,21 @@ if (!arr(C.products) || C.products.length !== 7) {
   else if (words(h.lead) > 45) {
     fail("overview.hero", "lead is " + words(h.lead) + " words (max 45 — it sits in a column beside the stack visual)");
   }
+  /* Round 16 (Alex rewrote the lead as "leading enterprise AI practice,
+     accelerated delivery methodology combined with the power of Oracle data &
+     cloud … accelerate their time-to-value with AI"): the lead is the promise,
+     what SoftServe and Oracle bring and the time to value it buys. The
+     procedure (the stages, the scope, where it runs) is S4's, and the old lead
+     that walked through it is what he replaced. */
+  if (str(h.lead)) {
+    if (!/\btime to value\b/i.test(h.lead)) {
+      fail("overview.hero.lead", 'must carry the promise, "time to value" — the lead is what the reader gets, not how');
+    }
+    var procedure = h.lead.match(/Jumpstart|proof of value|Workshop|Integration|Scaling|tenancy|fixed-scope|fixed price/i);
+    if (procedure) {
+      fail("overview.hero.lead", 'names "' + procedure[0] + '" — the lead is the promise; the stages, the scope and the hosting belong to S4');
+    }
+  }
   if (!arr(h.ctas) || h.ctas.length !== 2) {
     fail("overview.hero.ctas", "must hold exactly 2 buttons, got " + (arr(h.ctas) ? h.ctas.length : "none"));
   } else h.ctas.forEach(function (c, i) {
@@ -1300,7 +1330,12 @@ if (!arr(C.products) || C.products.length !== 7) {
   var cat = o.catalog;
   if (!cat) fail("overview.catalog", "missing — S3, the products screen");
   else {
-    reqStr("overview.catalog", cat, ["eyebrow", "title", "lead"]);
+    reqStr("overview.catalog", cat, ["eyebrow", "title"]);
+    /* Round 16 (Alex): the lead is removed. Each tile says what its group does,
+       so a paragraph over the six said it a second time. */
+    if (cat.lead !== undefined) {
+      fail("overview.catalog.lead", "removed in round 16 — each tile says what its group does, and a lead over them says it twice");
+    }
     reqCta("overview.catalog.cta", cat.cta);
     /* Round 13 (Alex): the link names where it goes, not the controls on the
        page it opens — "See all products", not "…, with filters". */
