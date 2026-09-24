@@ -2769,12 +2769,18 @@ window.SITE_CONTENT = {
         },
         {
           title: "Scaling",
-          body: "All locations and document types over 3–12 months. Then a managed service with periodic accuracy and cost reviews — or your own team, trained and certified.",
+          body: "All locations and document types over 3–12 months, with per-region rules where they differ.",
           factLabel: "Ends with",
           fact: "The same readout, organization-wide"
+        },
+        {
+          title: "Managed services",
+          body: "Optional, for as long as you choose: we keep it running and re-tuned, with periodic accuracy and cost reviews.",
+          factLabel: "Ends with",
+          fact: "Your own team taking over, trained and certified, when you decide"
         }
       ],
-      footnote: "On one engagement that discipline took a customer’s existing AI solution to 81% accuracy — past the point where checking the output beats doing the job by hand. Both ends are optional: if you are already convinced, start at integration, and a process that is identical everywhere may never need to scale. Durations are illustrative and confirmed in scoping."
+      footnote: "On one engagement that discipline took a customer’s existing AI solution to 81% accuracy — past the point where checking the output beats doing the job by hand. Not every stage is for everyone: if you are already convinced, start at integration; a process that is identical everywhere may never need to scale; and managed services are yours to take or leave. Durations are illustrative and confirmed in scoping."
     },
 
     proofOfValue: {
