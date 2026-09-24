@@ -34,7 +34,7 @@ window.SITE_REVIEW = {
     {
       title: "Commitments and disclosures",
       items: [
-        { id: "pov-duration", text: "A PoV runs from 30 days (4–8 weeks, to agree with delivery)" },
+        { id: "pov-duration", text: "Delivery to agree: PoV from 30 days/4 weeks, stages from 3 months" },
         { id: "prices", text: "Only the PoV price on site; others in materials", note: "2 products still show Integration prices" },
         { id: "customer-names", text: "No customer names (no confirmation of use yet)" },
         { id: "planned-products", text: "Catalog includes existing and planned products", note: "Nothing marks a product as planned" }
