@@ -100,6 +100,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
 - **A case study states its status once**, in one word: the chip.
 - **Forms send in the background, as on any website** (Alex, 2026-09-24). A form posts, shows *Sending…*, then confirms the outcome: *Thanks, your request is in* or *Check your inbox*. **No form ever opens the visitor's mail app.** A copy that cannot send (the claude.ai preview, a local run without `site/data/endpoint.local.json`) says so under each form before anyone types. A failed send is a red line under the form, which keeps what was typed. Never say "we've emailed" unless the sender answered that the email went out. The checker fails a mail-app fallback in `forms.js` or in the copy.
 - **Every kit link lives in `links.json`**, outside `site/`, because anything under `site/` is readable in view-source and the kit documents carry prices. `config.js` holds no link to a kit artifact, and a committed `formEndpoint` fails the checker: a live trigger URL never enters git.
+- **A link is stored in `links.json` and nowhere else** (Alex, 2026-09-24). The site and the email both read that file, and no other file keeps a copy: not `site/` (the checker fails `site/data/links.js`), not a doc, not a pack spec. A doc names the key (`links.json` › `<slug>.<key>`) instead of repeating the URL, and the checker fails a link from `links.json` found in any other file (`docs/PROVENANCE.md`, the round log, excepted). A walkthrough is stored as its path, `demo/<slug>/index.html`, never as a localhost or preview address.
 - **Nothing internal ships in site copy.** The *Internal* panel is the only exception, and it is temporary (§8).
 
 **Messaging** (from Alex's reviews)
@@ -164,7 +165,7 @@ Two more, from Alex's review of round 10 (2026-09-23), and they hold everywhere:
    - Opus does the rest: research, build, checker, QA, publish, docs.
    - The report says which steps used Fable. Token efficiency matters: one compact Fable pass, not a fan-out.
 4. **Build.**
-   - Run `node --check` on changed JS, then `node tools/check-grammar.js`, which must print OK. After a `links.json` change run `node tools/sync-links.js` first; after an email change, `node tools/mail-preview.js --sample` and a cold read of `.work/mail-preview/as-read.txt`.
+   - Run `node --check` on changed JS, then `node tools/check-grammar.js`, which must print OK. After a `links.json` change run `node tools/sync-links.js` first (it validates the file); after an email change, `node tools/mail-preview.js --sample` and a cold read of `.work/mail-preview/as-read.txt`.
    - Turn every new owner rule into a checker assertion, so it survives the next rewrite.
 5. **Look, then publish** (§6).
 6. **Record.**
@@ -179,7 +180,7 @@ Two more, from Alex's review of round 10 (2026-09-23), and they hold everywhere:
 Exact commands are in HANDOFF §4.
 
 - **Run.**
-  - Start the server with `preview_start {name: "oracle-site"}`: `tools/serve.py` on 8765, answering this Mac only and never cached, so a reload always shows the saved files. With `site/data/endpoint.local.json` present, the forms really send, in the sender's test mode (`mail/README.md`, "Testing").
+  - Start the server with `preview_start {name: "oracle-site"}`: `tools/serve.py` on 8765, answering this Mac only and never cached, so a reload always shows the saved files. It also answers `data/links.js` from `links.json`; a plain `python3 -m http.server` does not, and the *Interactive demo* buttons disappear under it. With `site/data/endpoint.local.json` present, the forms really send, in the sender's test mode (`mail/README.md`, "Testing").
   - Browse `http://127.0.0.1:8765`, not `localhost`.
   - A QA subagent can kill the shared server; restart it before blaming the page.
 - **Fresh assets.** The preview caches hard. Call `fetch('<file>', {cache: 'reload'})` for every changed file, or re-point the stylesheet link with `?v=`, then navigate.
@@ -195,7 +196,7 @@ Exact commands are in HANDOFF §4.
 - **Publish** — each theme to its own artifact (§1); never cross them.
   - Strip the nine skeleton lines (listed in `site.manifest.json`, `publish.wrapper`) from `site/index.html` into `.work/publish/index.html` (exact-line `grep -v -x -F`, HANDOFF §4). A session opened in another folder publishes from a copy staged in its scratchpad.
   - The publish must carry `assets/fonts/*` with an explicit `contentType`, and only what the page references — nine legacy files and `assets/site-legacy.css` are deliberately absent from the artifact.
-  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9, `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact), and `assets/img/softserve-star-white.svg` since round 14 (the footer's spark). Files left out of the map are kept, so a new file that is not in it never reaches the artifact.
+  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9, `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact; since round 15 it is built for each publish with `python3 tools/site_links.py --out .work/publish/data/links.js` and mapped from that file, because `site/` holds no copy), and `assets/img/softserve-star-white.svg` since round 14 (the footer's spark). Files left out of the map are kept, so a new file that is not in it never reaches the artifact.
   - Then run `action: list_files` to confirm that the new files are live and that nothing is published that should not be.
 - **Refused publish** ("not built on the newer version") means another session published in between:
   1. `read_file` the live copies of the files you changed.
@@ -292,12 +293,12 @@ Exact commands are in HANDOFF §4.
 - **Round 12 (§32.6):**
   - **the sender:** SoftServe's Azure AD requires admin approval for n8n, so the pilot sends from a temporary address outside SoftServe's domain. **It blocks going live:** of round 12's six test emails, Zoho accepted all six and Alex's SoftServe inbox got one, 49 minutes late, with neither kit among them (§32.9). The real integration is a SoftServe app registration for Microsoft Graph, which needs an IT request (`mail/README.md`, "Replacing the sender");
   - **test to live:** `mail/settings.json` `mode`, once Alex has seen the emails in his inbox;
-  - **the kit documents:** the final files live in SoftServe OneDrive, `Oracle AI & Data Solutions/<pack>/`, one folder per pack and nothing but finals (Alex, 2026-09-24); Account insights and Workforce optimization have theirs. But that OneDrive allows no *Anyone* link (tenant policy, checked through its sharing API on 2026-09-24), and a *People in SoftServe* link does not open for an Oracle seller, so `links.json` still holds none. A kit today carries the product page and, for three products, the interactive demo, and the practice copy names what was left out. The route (an IT exception, a practice site that allows *Anyone* links, or SoftServe-only links) is Alex's call;
+  - **the kit documents:** the final files live in SoftServe OneDrive, `Oracle AI & Data Solutions/<pack>/`, one folder per pack and nothing but finals (Alex, 2026-09-24). Account insights and Workforce optimization carry their one-pager, sales deck and feature list in `links.json` since 2026-09-24. All six are *People in SoftServe* links, the only kind that OneDrive allows (no *Anyone* link, tenant policy, checked through its sharing API), so they do not open for an Oracle seller. Account insights' `salesDeck` opens the pack's folder, not the deck: the deck had not reached the cloud, and the folder also shows the internal executive summary. Workforce optimization's deck still names Bosch on its proof slide, with the logo, and the name is not cleared. The other five products carry the product page and, for two of them, the interactive demo; the practice copy names what was left out. Recorded demo videos for Workforce optimization and Large docs sit in the same folders with no link yet;
   - **a public host:** the forms send only from a local run until the site has a real address; on the claude.ai link they say under each form that the preview cannot send, and an emailed product link opens the home page there (the artifact drops the route);
   - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
   - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit.
 - **Round 13 (§33.4):**
-  - **publishing:** the shared link still shows the site before round 12. Rounds 12–14 go out together from HEAD when Alex says so, with `data/links.js` and never `data/endpoint.local.json` or the whole folder;
+  - **publishing:** the shared link still shows the site before round 12. Rounds 12–15 go out together from HEAD when Alex says so, with `data/links.js` built by `tools/site_links.py` (§6) and never `data/endpoint.local.json` or the whole folder;
   - **the three new faces** are matched by the directory's own name key (`ASSETS.md` §3.2), not by eye; a wrong one is fixed by blanking its `photo`;
   - **Vlad or Vladyslav:** the directory's name is *Vladyslav Butenko*, and the site prints *Vlad*, Alex's word;
   - **Home S7 and Services** still name Karsten alone.
@@ -305,6 +306,9 @@ Exact commands are in HANDOFF §4.
   - **publishing:** the footer goes out with rounds 12 and 13, and that publish has to add `assets/img/softserve-star-white.svg`, which the artifact does not carry yet;
   - **trademark attribution:** the Oracle and NVIDIA trademark sentence left the footer with the marks; if the launch trademark check wants one, it comes back as one fine-print line above the copyright row;
   - **For sellers** stayed first in the link row although Alex's list named only SoftServe's items, because it is the only permanent way to `#/sellers`.
+- **Round 15 (§35.4):**
+  - **opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, because `site/` stores no copy of the links; `tools/serve.py` and a publish are the two ways it gets them;
+  - **the packaging plugin** (`oracle-packs-web`) still says `sync-links.js` writes `data/links.js`. Until its references follow round 15, a publish it drives takes `data/links.js` from the manifest's `paths.buildSiteLinks` and `paths.siteLinks`.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
