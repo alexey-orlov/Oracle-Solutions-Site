@@ -6315,4 +6315,4 @@ The list is repeated in START-HERE §9.
 - **Other sessions' preview servers** on ports 8765, 8767 and 49837 run the old `tools/serve.py` and answer `/data/links.js` with a 404 until restarted.
 - **The packaging plugin** still says `sync-links.js` writes `data/links.js`; its references should follow round 15.
 
-The list is repeated in START-HERE §9.
+START-HERE §9 carries the kit items under round 12 and the rest under round 15; the preview servers need only a restart.
