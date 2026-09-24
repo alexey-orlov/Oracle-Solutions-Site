@@ -94,9 +94,10 @@
 
   /* ————— S2: it's all about ROI — every step ends in a number ————— */
 
-  /* The home page's step track under the same step names, with Discovery ahead
-     of them. Each step's labelled fact is what it ends with — the measured
-     artefact — so the track reads as a sequence of results, not of durations. */
+  /* The home page's five stages under the same names, Workshop to managed
+     services (round 16). Each step's labelled fact is what it ends with — the
+     measured artefact — so the track reads as a sequence of results, not of
+     durations. */
   function engage(content) {
     var UI = window.UI;
     var block = content.services.howWeEngage;
@@ -118,7 +119,7 @@
     return '<section class="section home-screen services-engage" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
       head({ eyebrow: block.eyebrow, title: block.title, lead: block.lead }) +
       '<div class="deliver-main reveal">' +
-        '<div class="ladder3' + (list.length === 4 ? " ladder3--four" : "") + '">' + steps + "</div>" +
+        '<div class="ladder3' + (list.length === 5 ? " ladder3--five" : list.length === 4 ? " ladder3--four" : "") + '">' + steps + "</div>" +
         '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" +
       "</div>" +
       "</div></section>";

@@ -257,16 +257,23 @@
 
   /* ————— S4: how we deliver ————— */
 
-  /* Three steps on one horizontal track, each ending on the one fact a reader
-     wants from it — duration, and for the first step the price as well. The
-     caveat sits under the track, in the same block as the figures it qualifies.
-     The three reasons to pick this team are peers beside the ladder, not a
-     fourth step in it. */
+  /* Five stages on one horizontal track, each ending on the one fact a reader
+     wants from it: how long it takes. Round 16 (Alex): a Workshop comes first,
+     the managed service is a stage of its own and the customer's choice, and
+     the durations are floors ("From 4 weeks"), so the block carries no caveat.
+     The three reasons to pick this team follow the track as a hairline list
+     across the full width, not a column beside it, and the screen ends on its
+     one button. */
+  function ladderModifier(count) {
+    return count === 5 ? " ladder3--five" : count === 4 ? " ladder3--four" : "";
+  }
+
   function delivery(C) {
     var UI = window.UI;
     var block = C.overview.delivery;
+    var list = block.steps || [];
 
-    var steps = (block.steps || []).map(function (step, index) {
+    var steps = list.map(function (step, index) {
       return '<div class="ladder3-step">' +
         '<span class="ladder3-dot" aria-hidden="true"></span>' +
         '<span class="ladder3-index nums">' + UI.esc(String(index + 1)) + "</span>" +
@@ -299,18 +306,16 @@
 
     return '<section class="section home-screen" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
       head({ eyebrow: block.eyebrow, title: block.title }) +
-      '<div class="deliver reveal">' +
-        '<div class="deliver-main">' +
-          '<div class="ladder3">' + steps + "</div>" +
-          '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" +
-          '<div class="cta-row deliver-cta">' + ctas + "</div>" +
-        "</div>" +
+      '<div class="deliver deliver--stacked reveal">' +
+        '<div class="ladder3' + ladderModifier(list.length) + '">' + steps + "</div>" +
+        (block.footnote ? '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" : "") +
         '<div class="deliver-why">' +
-          /* One accent per screen: the teal on this one is the head eyebrow and
-             the first step's dot, so the column label is the dim eyebrow. */
+          /* One accent per screen: the head eyebrow carries it, so the list's
+             label is the dim eyebrow. */
           '<p class="eyebrow">' + UI.esc(block.why.title) + "</p>" +
-          '<div class="pillars">' + pillars + "</div>" +
+          '<div class="pillars pillars--list">' + pillars + "</div>" +
         "</div>" +
+        '<div class="cta-row deliver-cta">' + ctas + "</div>" +
       "</div>" +
       "</div></section>";
   }
