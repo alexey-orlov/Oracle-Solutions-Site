@@ -2,7 +2,7 @@
   "$comment": "The mini-site's machine-readable description of itself. The oracle-packs-web plugin reads it before it edits, checks, previews or publishes this site. Change it in the same commit as the thing it describes. Prose rules live in docs/START-HERE.md; enforcement lives in tools/check-grammar.js.",
   "name": "Oracle AI & Data Solutions",
   "contract": {
-    "round": 14,
+    "round": 15,
     "asOf": "2026-09-24",
     "$comment": "Bump in any round that changes a content.js key, a config switch, a product tab, a checker rule or a publish rule. The plugin compares this with the round its own listing references were written against and defers to the site when the site is newer."
   },
@@ -25,7 +25,9 @@
     "demos": "site/demo",
     "denyList": "tools/deny-list.json",
     "links": "links.json",
-    "siteLinks": "site/data/links.js",
+    "$linksComment": "Round 15: links.json is the only file that stores a link, keyed by the product slug (= the listing's slug = the pack's slug: = site/demo/<slug>/). data/links.js is never a file under site/: tools/serve.py answers it from links.json, and a publish builds it with buildSiteLinks into siteLinks and maps data/links.js to that file.",
+    "siteLinks": ".work/publish/data/links.js",
+    "buildSiteLinks": "python3 tools/site_links.py --out .work/publish/data/links.js",
     "syncLinks": "node tools/sync-links.js",
     "mail": "mail"
   },
@@ -79,8 +81,8 @@
       "assets/site-legacy.css",
       "data/endpoint.local.json"
     ],
-    "fullTree": "Every path the target's list_files already shows, plus the new files: since round 12 that includes data/links.js, without which every Interactive demo button disappears, and since round 14 assets/img/softserve-star-white.svg, the footer's spark. Never the whole folder: the archived theme's files stay off this artifact.",
-    "demoTargets": "links.json: products[<slug>].interactiveDemoArtifact, then node tools/sync-links.js (round 12; config.js carries no link to a kit artifact)"
+    "fullTree": "Every path the target's list_files already shows, plus the new files: since round 12 that includes data/links.js, without which every Interactive demo button disappears — since round 15 built for each publish by paths.buildSiteLinks and mapped from paths.siteLinks, never from site/ — and since round 14 assets/img/softserve-star-white.svg, the footer's spark. Never the whole folder: the archived theme's files stay off this artifact.",
+    "demoTargets": "links.json: products[<slug>].interactiveDemoArtifact (round 12; config.js carries no link to a kit artifact). Nothing copies it (round 15): the next publish builds data/links.js from links.json"
   },
   "neverShip": {
     "paths": [

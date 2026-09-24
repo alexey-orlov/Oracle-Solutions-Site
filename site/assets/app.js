@@ -214,9 +214,10 @@
   }
 
   /* Round 12: every link a product's sales kit uses lives in links.json at the
-     repo root. tools/sync-links.js copies the three the site's buttons read —
-     the walkthrough, its artifact copy, the video — into data/links.js; the kit
-     documents never enter site/, where anyone could read them. */
+     repo root, and since round 15 nowhere else. data/links.js is built from it
+     when asked (tools/site_links.py: served by tools/serve.py, written into a
+     publish) and carries the three the site's buttons read — the walkthrough,
+     its artifact copy, the video. The kit documents never reach the site. */
   function links(slug) {
     var all = window.SITE_LINKS || {};
     return all[slug] || {};
