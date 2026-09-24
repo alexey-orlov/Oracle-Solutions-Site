@@ -463,6 +463,7 @@ window.SITE_CONTENT = {
         full: "Enterprise knowledge & analytics",
         line: "Plain-language answers and analysis over your governed data, from the ERP to the systems around it, with the source behind every answer.",
         image: "assets/img/groups/knowledge-analytics.jpg",
+        stage: { file: "assets/img/heroes/business-metrics-qa.jpg", focal: "50% 52%" },
         emptyState: "Knowledge and analytics assistants are scoped per engagement. Tell us the questions your teams ask, and which systems hold the answers."
       },
       {
@@ -471,6 +472,7 @@ window.SITE_CONTENT = {
         full: "Deep research & investigation",
         line: "Agents that read across your systems and outside sources and bring back a cited answer: an account brief, a case file, a variance explained.",
         image: "assets/img/groups/deep-research.svg",
+        stage: { file: "assets/img/heroes/case-evidence-collection.jpg", focal: "50% 42%" },
         emptyState: "Deep research agents are scoped per engagement. Tell us the question your people spend days answering."
       },
       {
@@ -479,6 +481,7 @@ window.SITE_CONTENT = {
         full: "Document processing",
         line: "Long contracts and records turned into checked, structured data, every value traced to its page and approved by a reviewer.",
         image: "assets/img/groups/documents.jpg",
+        stage: { file: "assets/img/heroes/large-document-extraction.jpg", focal: "50% 50%" },
         emptyState: "Document processing is scoped per engagement. Tell us the document type and the system it feeds."
       },
       {
@@ -487,6 +490,7 @@ window.SITE_CONTENT = {
         full: "Transaction & process execution",
         line: "Agents that carry a process step through to completion — an order, a claim, a ticket, a posting — inside your systems, with a person approving what moves.",
         image: "assets/img/groups/transactions.svg",
+        stage: { file: "assets/img/industries/energy.jpg", focal: "50% 50%" },
         emptyState: "Transaction and process agents are scoped per engagement. Tell us the process step your people complete by hand today."
       },
       {
@@ -495,6 +499,7 @@ window.SITE_CONTENT = {
         full: "Forecasting & optimization",
         line: "Forecasts and plans computed against every constraint at once — demand, routes, shifts, allocations — for the people who own them to approve.",
         image: "assets/img/groups/forecasting-optimization.jpg",
+        stage: { file: "assets/img/heroes/workforce-optimization.jpg", focal: "50% 55%" },
         emptyState: "Forecasting and optimization is scoped per engagement. Tell us the plan your planners or dispatchers build by hand today."
       },
       {
@@ -503,6 +508,7 @@ window.SITE_CONTENT = {
         full: "Video & image intelligence",
         line: "Cameras, footage and photos read by AI: defects spotted, scenes found, events flagged, for a person to confirm.",
         image: "assets/img/groups/video-image.svg",
+        stage: { file: "assets/img/industries/automotive.jpg", focal: "50% 50%" },
         emptyState: "Video and image work is delivered as an engagement today, on OCI + NVIDIA NeMo. Tell us the footage or the inspection you have in mind."
       }
     ],
@@ -676,7 +682,7 @@ window.SITE_CONTENT = {
           industry: "logistics",
           status: "in-preparation",
           metrics: [
-            { value: "Same day", label: "from a market signal to a qualified opportunity a seller can act on" },
+            { value: "Same-day insight", label: "from a market signal to a qualified opportunity a seller can act on" },
             { value: "Every account", label: "a signal affects, not only the one it names" }
           ],
           story: "A first engagement is being prepared on the customer’s own account base — CRM and account framing, the capability catalog and public filings — with NVIDIA AI-Q on Oracle Cloud Infrastructure. It measures the accuracy and the confidence calibration of the generated opportunities against reviewer approve and reject decisions. The figures above are estimates for that engagement, set against the customer’s account-planning cycle today; illustrative, not contractual.",
@@ -1300,7 +1306,7 @@ window.SITE_CONTENT = {
           industry: "construction",
           status: "in-preparation",
           metrics: [
-            { value: "Every variance", label: "traced to its schedule, cost or contract source, in hours of expert time rather than weeks" }
+            { value: "Variances traced", label: "each to its schedule, cost or contract source, in hours of expert time rather than weeks" }
           ],
           story: "A first engagement is being prepared, scoped to one use case on one completed project sample — the customer’s own schedule, cost and contract exports. It will run on Oracle Cloud Infrastructure, with NVIDIA AI-Q over an evidence layer, reconstructing those records into one package-level view of plan versus actual; the figure above is an estimate for that engagement, set against the expert hours the same analysis takes today; illustrative, not contractual.",
           scope: [
@@ -1630,7 +1636,7 @@ window.SITE_CONTENT = {
           industry: "travel-transport",
           status: "measured",
           metrics: [
-            { value: "5–15 min", label: "to extract a 60–100-page agreement end to end, down from 3–5 days" }
+            { value: "5–15 min a contract", label: "to extract 60–100 pages end to end, down from 3–5 days" }
           ],
           story: "Ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on the customer’s own Oracle Cloud Infrastructure tenancy with NVIDIA AI-Q: reviewers validate AI-extracted rates beside the source PDF, every value cited to its page, and export in minutes. Measured end to end on the customer’s own agreements during the proof of value; figures are illustrative, not contractual.",
           scope: [
@@ -1955,7 +1961,7 @@ window.SITE_CONTENT = {
           industry: "manufacturing",
           status: "modeled",
           metrics: [
-            { value: "+4.5%", label: "median gain in jobs per technician per day, optimized against the current plan" },
+            { value: "+4.5% productivity", label: "median gain in jobs per technician per day, optimized against the current plan" },
             { value: "~5x", label: "return within three years on the modeled rollout" }
           ],
           story: "Dispatchers planned a residential appliance-repair field force by hand — postcode-based work zones and technician allocations, region by region. NVIDIA cuOpt on Oracle Cloud Infrastructure was run against the customer’s own historical operations data with dispatcher approval in the loop: 83% of the 12 modeled simulations came out positive, and dispatcher productivity improved 15–20% during the pilot. Figures are forecast from those simulations against the customer’s own historical baseline; illustrative, not contractual.",
@@ -2744,10 +2750,10 @@ window.SITE_CONTENT = {
       lead: "Measuring what an innovation changes is the discipline behind everything we do. Two or three success metrics and today’s baseline are signed by you, Oracle and SoftServe before the clock starts; each step is judged against them, and you decide the next one on the measured result.",
       steps: [
         {
-          title: "Discovery",
-          body: "Short and time-boxed: which workflow carries the value, whether its data is ready, and what a result would be worth to you.",
+          title: "Workshop",
+          body: "Short and time-boxed, hands-on with your team: which use case carries the value, whether its data is ready, and which of the products fits it.",
           factLabel: "Ends with",
-          fact: "A value hypothesis and the workflow to prove first"
+          fact: "A value hypothesis and the use case to prove first"
         },
         {
           title: "Jumpstart proof of value",
