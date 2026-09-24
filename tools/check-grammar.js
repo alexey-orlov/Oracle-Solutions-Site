@@ -1743,9 +1743,10 @@ if (/request a demo/i.test(raw)) {
 /* ---- round 7 · one proof-of-value duration (Alex, 2026-09-17) ----
    "Make sure that we always mention 4–8 weeks PoV, consistently across the
    site": every Jumpstart states it in its promise, its short form (which the
-   seller CTA interpolates) and its investment figure; the home hero tile, the
-   home step track and the Services page carry it; and no other proof-of-value
-   duration survives anywhere in the data (PROVENANCE §23). */
+   seller CTA interpolates) and its investment figure; the Services page
+   carries it; and no other proof-of-value duration survives anywhere in the
+   data (PROVENANCE §23). Since round 16 the home track states floors instead
+   ("From 4 weeks"), and the hero tile has said "from 30 days" since round 9. */
 (function () {
   var POV = "4–8 weeks";
   (C.products || []).forEach(function (p) {
@@ -2290,6 +2291,24 @@ if (/assets\/img\/logos\//.test(raw)) {
      silently renders the Bold cut. */
   var heavy = css.match(/font-weight: ?(600|800|900)\b/g);
   if (heavy) fail(V2_CSS, "uses " + heavy.length + " heading weight(s) the brand does not have (" + heavy.join(", ") + ")");
+
+  /* Round 16 (Alex, on the home page's group tiles and "Why SoftServe on
+     Oracle": "not to be grey", "not so boring/grayish"; round 11 said the same
+     of S2 and S5). No grey on grey: a home tile rests white with a hairline and
+     takes its colour from its photograph, and the Why rows are rows between
+     hairlines with no fill. #edf0f2 is their hover step, never their rest. */
+  function cssRule(selector) {
+    var at = css.indexOf("\n" + selector + " {");
+    return at === -1 ? "" : css.slice(at, css.indexOf("}", at));
+  }
+  var tileRule = cssRule(".gtile");
+  if (!tileRule || /background:\s*var\(--bg-(raised|inset)\)/.test(tileRule) || !/border:\s*1px solid/.test(tileRule)) {
+    fail(V2_CSS, ".gtile must rest white with a 1 px hairline — a grey tile on a grey image band is the look Alex rejected");
+  }
+  var whyRule = cssRule(".pillars.pillars--list .pillar");
+  if (!whyRule || !/background:\s*none/.test(whyRule)) {
+    fail(V2_CSS, "the Why SoftServe rows must carry no fill — they are rows between hairlines, not grey cards");
+  }
 
   /* Shape is the corner cut; the pill and the old radii are retired. */
   ["--r-pill", "--r-lg", "--r-md"].forEach(function (t) {
