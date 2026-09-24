@@ -2659,6 +2659,24 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .services-engage .ladder3-body, .services-pov-panels .way-body, .services-page-proof .band-body,
 .proof-stat-label, .proof-note { text-wrap: pretty; }
 
+/* Round 16: five stages, Workshop to managed services. Five body-size columns
+   would be ~230 px at 1440, under the ~290 px a body-size line needs, so the
+   five-up track sets its bodies one step down, at the home page's size, and
+   turns vertical — back at body size — below 1280 px. */
+.services-engage .ladder3--five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.services-engage .ladder3--five .ladder3-title { font-size: 1.125rem; }
+.services-engage .ladder3--five .ladder3-body { font-size: var(--fs-sm); }
+
+@media (max-width: 1280px) {
+  .services-engage .ladder3--five { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; column-gap: 0; row-gap: 1.75rem; }
+  .services-engage .ladder3--five .ladder3-step { display: flex; flex-direction: column; grid-row: auto; padding-top: 0; padding-left: 1.25rem; }
+  .services-engage .ladder3--five .ladder3-step::before { top: 0; bottom: -1.75rem; left: 0; right: auto; width: 1px; height: auto; }
+  .services-engage .ladder3--five .ladder3-step:last-child::before { bottom: 0; right: auto; }
+  .services-engage .ladder3--five .ladder3-dot { top: .3125rem; left: -.1875rem; margin-top: 0; }
+  .services-engage .ladder3--five .ladder3-title { font-size: 1.25rem; }
+  .services-engage .ladder3--five .ladder3-body { font-size: var(--fs-body); max-width: 44rem; }
+}
+
 /* Four body-size steps need about 290 px each, so the track turns vertical below
    1100 px — before the columns get narrower than a readable line. */
 @media (max-width: 1100px) {
@@ -3412,17 +3430,21 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   align-items: stretch;
 }
 
+/* Round 16 (Alex: "not to be grey; stay closer to softserveinc.com"): the
+   tile is the case card's construction, white with a hairline, and its colour
+   comes from its photograph. */
 .gtile {
   display: flex;
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg);
   color: inherit;
   transition: background-color var(--t-slow) var(--ease);
 }
 
-.gtile:hover, .gtile:focus-visible { background: var(--bg-inset); }
+.gtile:hover, .gtile:focus-visible { background: var(--bg-raised); }
 
 .gtile-band {
   display: block;
@@ -3436,8 +3458,45 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 .gtile-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
 
+/* The stage: one of the site's chrome photographs under a flat veil, so six
+   different pictures read as one family, and the software on it as a white
+   window. The window keeps a 7 % / 11.2 % margin at the top left (28 px at
+   400 × 250) and bleeds off the right and the bottom, the product-marketing
+   crop: a UI reads as a UI from its top-left corner. The band's own ground is
+   the dark panel, seen only if the photograph fails to load. */
+.gtile-band--stage { background: var(--surface-dark-raised); }
+
+.gtile-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transition: transform var(--t-slow) var(--ease);
+}
+
+.gtile-veil { position: absolute; inset: 0; background: rgba(0, 0, 0, .22); pointer-events: none; }
+
+.gtile-window {
+  position: absolute;
+  left: 7%;
+  top: 11.2%;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #ffffff;
+}
+
+.gtile-window .gtile-img { object-position: left top; transition: none; }
+
+/* Only the photograph moves: the window holds still, which gives the tile
+   depth without a lift or a shadow. */
 @media (hover: hover) {
-  .gtile:hover .gtile-img, .gtile:focus-visible .gtile-img { transform: scale(1.071); }
+  .gtile:hover .gtile-band:not(.gtile-band--stage) .gtile-img,
+  .gtile:focus-visible .gtile-band:not(.gtile-band--stage) .gtile-img,
+  .gtile:hover .gtile-stage, .gtile:focus-visible .gtile-stage { transform: scale(1.071); }
 }
 
 .gtile-body {
@@ -3445,20 +3504,20 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   flex: 1;
   flex-direction: column;
   gap: .5rem;
-  padding: 1.125rem 1.125rem 1.25rem;
+  padding: 1.5rem;
 }
 
-/* The H4-class title: Replica 700, 20px, 18 on a phone. */
+/* Replica 400 at 24 px, the reference's card-title weight; 20 on a phone. */
 .gtile-name {
   font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 1.25rem;
-  line-height: 1.3;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.2;
   color: var(--text);
   transition: color var(--t-base) var(--ease);
 }
 
-.gtile-line { color: var(--text-muted); }
+.gtile-line { color: var(--text-dim); }
 
 /* Pinned to the foot, so six tiles of different line counts still end level. */
 .gtile-foot { margin-top: auto; padding-top: .75rem; }
