@@ -3460,10 +3460,11 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* The stage: one of the site's chrome photographs under a flat veil, so six
    different pictures read as one family, and the software on it as a white
-   window. The window keeps a 7 % / 11.2 % margin at the top left (28 px at
+   window. The window keeps a 14 % / 20 % margin at the top left (56 × 50 px at
    400 × 250) and bleeds off the right and the bottom, the product-marketing
-   crop: a UI reads as a UI from its top-left corner. The band's own ground is
-   the dark panel, seen only if the photograph fails to load. */
+   crop: a UI reads as a UI from its top-left corner. The brief's 7 % / 11.2 %
+   left a 28 px strip that read as a dark frame, not a photograph. The band's
+   own ground is the dark panel, seen only if the photograph fails to load. */
 .gtile-band--stage { background: var(--surface-dark-raised); }
 
 .gtile-stage {
@@ -3480,8 +3481,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 .gtile-window {
   position: absolute;
-  left: 7%;
-  top: 11.2%;
+  left: 14%;
+  top: 20%;
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
