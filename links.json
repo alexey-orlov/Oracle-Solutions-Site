@@ -1,9 +1,10 @@
 {
   "$help": [
-    "Every link a product's sales kit uses, in one place. Edit a value, save, and git-autosync pushes it within a minute.",
-    "onePager, salesDeck, featureList: the kit documents. Paste a link anyone at Oracle or SoftServe can open. The kit email picks it up at once; nothing else to run.",
-    "interactiveDemo, interactiveDemoArtifact, video: these also drive the site's buttons. After changing one, run  node tools/sync-links.js  and publish the site.",
-    "interactiveDemo is the walkthrough's path inside site/ (or a full https:// URL). interactiveDemoArtifact is the same walkthrough published as its own claude.ai artifact, used while the site itself runs as one. video is the recorded demo: a YouTube, Vimeo, SharePoint or Stream link.",
+    "Every link a product uses, and the only file that stores one: no other file may repeat a link from here (tools/check-grammar.js fails it). Edit a value, save, and git-autosync pushes it within a minute.",
+    "Each product is keyed by its slug, the one id it has everywhere: its slug in site/data/content.js, the pack's slug: in Oracle-Packaging-Skills packs/<slug>/pack-spec.md, and its walkthrough's folder site/demo/<slug>/.",
+    "onePager, salesDeck, featureList: the kit documents, emailed only, never shown on the site. Paste a link anyone at Oracle or SoftServe can open. The kit email reads this file from GitHub, so it picks a change up at once; nothing else to run.",
+    "interactiveDemo, interactiveDemoArtifact, video: these also drive the site's buttons. The site reads them through tools/site_links.py: the local server (tools/serve.py) on every request, a publish once. After changing one, publish the site.",
+    "interactiveDemo is the walkthrough's path inside site/, demo/<slug>/index.html (or a full https:// URL), never a localhost or preview address: the local server, the published site and the email each resolve it against their own address. interactiveDemoArtifact is the same walkthrough published as its own claude.ai artifact, used while the site itself runs as one. video is the recorded demo: a YouTube, Vimeo, SharePoint or Stream link.",
     "Leave a value as \"\" while the artifact does not exist: the kit email leaves it out, and the practice's copy of the request names it as missing.",
     "siteUrl is the address the kit email links product pages to. This file is never published: it sits outside site/."
   ],

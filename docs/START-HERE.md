@@ -2,7 +2,7 @@
 
 Read this page first in every new session. It holds what the site is for, the brief and the rules it is built to, how a round of work runs, and what earlier rounds learned the hard way. Detail lives in the docs mapped in §10. Keep this page current: when a requirement, rule or procedure changes, rewrite the line — never append a dated update.
 
-Current as of 2026-09-24, after round 14: the footer is softserveinc.com's, cut down, with no Oracle or NVIDIA marks (PROVENANCE §34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 14 are not on the shared link yet** (§9).
+Current as of 2026-09-24, after round 15: `links.json` is the only file that stores a link. The local server and a publish build the site's `data/links.js` from it, the email reads it from GitHub, and the checker fails a stored copy or a link repeated anywhere else (PROVENANCE §35). Round 14 made the footer softserveinc.com's, cut down, with no Oracle or NVIDIA marks (§34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 15 are not on the shared link yet** (§9).
 
 ## 1. What it is
 
@@ -28,7 +28,7 @@ Current as of 2026-09-24, after round 14: the footer is softserveinc.com's, cut 
   - Page renderers: `site/pages/`, one per page.
   - Shared UI and the router: `site/assets/app.js`.
   - Forms: `site/assets/forms.js`. The emails they send: `mail/` — the words, the layout, the pictures, test or live — run by an n8n workflow; `mail/README.md` is its manual.
-  - Links: `links.json` at the repo root holds every link a product's sales kit uses; it never ships. `tools/sync-links.js` copies the walkthrough and video links into `site/data/links.js`.
+  - Links: `links.json` at the repo root holds every link a product uses and is the only file that stores one; it never ships. Each product is keyed by its slug, which is also the listing's slug, the pack's `slug:` in Oracle-Packaging-Skills and its walkthrough's folder `site/demo/<slug>/`. The site's `data/links.js` is never a file: `tools/site_links.py` builds it from `links.json` when asked, on every request in `tools/serve.py` and once per publish.
 - **Preview:** two artifacts, one per theme, both **shared with anyone who has the link**, so every publish is live at once. Both URLs are also in `site.manifest.json`, which the packaging plugin reads; change them in both places.
   - **The site:** https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri. This is the one to publish to.
   - **The archive** (previous near-black theme, frozen): https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN (the same artifact as https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b). Do not republish it.
