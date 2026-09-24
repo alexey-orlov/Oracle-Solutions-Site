@@ -6214,3 +6214,57 @@ The webhook path appears in no commit (`git log -S`, 0).
 - **Home S7 and Services** still name Karsten alone, which is correct for a practice-level ask. Say if either should carry a second person too.
 
 The list is repeated in START-HERE §9.
+
+## 34. Round 14 — softserveinc.com's footer, cut down, 2026-09-24
+
+**The asks** (Alex, in session, 2026-09-24):
+1. *"Remove nvidia and oracle logos from footer; use exactly the same footer that is used on Softserveinc.com."*
+2. Later in the same turn: *"actually, not the same but create a small version (no hot links, no Austin office, no frame around links, Privacy Notice and Terms and Conditions + SoftServe website links + all social links + copyright / logo last row"*, with the two URLs `https://www.softserveinc.com/en-us/privacy` and `https://www.softserveinc.com/en-us/terms-and-conditions`.
+
+**Split.** Opus (this session) did all of it: measuring softserveinc.com's footer, the build, the checker, the QA and the docs. There was no Fable pass: the content was Alex's list, and the geometry is the brand's own, measured.
+
+### 34.1 What changed
+
+| Where | Before | After |
+|---|---|---|
+| Footer | *Contact us* heading, a one-sentence description and a *Request a scoping call* button; four line-drawn social icons; the Oracle and NVIDIA wordmarks with *Built with Oracle and NVIDIA*; a link row (*For sellers* · *Privacy policy* · *Terms and conditions* · *SoftServe · All rights reserved*); a trademark sentence | softserveinc.com's footer cut down: a link row — *For sellers* - *Privacy Notice* - *Terms and Conditions* - *SoftServe website* on the left, the brand's eight social glyphs on the right, no frame — over *© Copyright {year} SoftServe Inc.* with the SoftServe spark. 315 px at 1440, band included |
+| Legal links | *Privacy policy* → `/en-us/privacy-policy` · *Terms and conditions* | *Privacy Notice* → `/en-us/privacy` · *Terms and Conditions* → `/en-us/terms-and-conditions`: the brand's names, Alex's URLs |
+| Social | SoftServe (globe) · LinkedIn · Facebook · YouTube, 1.5 px line icons | LinkedIn · YouTube · Facebook · Instagram · TikTok · X · SoundCloud · Bluesky: the brand's order, URLs and filled glyphs |
+| Data | `site.footer.heading`, `description`, `contactCta`, `legalLine`, `builtWith`, `trademarkLine` | retired; `siteLink` and `copyright` added; `content-case.js` loses its footer row (42 → 41) |
+| Code | `renderFooter()` with `button()` and two wordmark `<img>`s | `renderFooter()` + `SOCIAL_GLYPHS` + `socialGlyph()`; `globe`, `facebook` and `youtube` left `ICONS`; the footer CSS rewritten; the dead `.site-footer` button overrides and the `.built-with`, `.footer-legal` and `.trademark` rules removed; print hides the glyph row and inverts the spark |
+| Checker | `sellersLink` only | + a retired key fails · exactly the two legal links · `siteLink` on softserveinc.com · the eight socials in order, https, each with a glyph · the copyright line verbatim · `renderFooter()` may not name an Oracle or NVIDIA mark |
+| Manifest | contract round 13 | round 14; `publish.fullTree` names the spark file |
+
+### 34.2 Decisions
+
+- **The brand's footer, minus what Alex named.** Everything he did not name follows softserveinc.com as measured on 2026-09-24 at 1024 and 375: 14 px Replica 400 in `#fafaf8` at every width (not `--fs-sm`, which steps to 16), Light dash separators, 16 px glyphs at a 40 px pitch in `#e0e0e0`, the row stacking and centring at 768, the `#edf0f2` band (152 / 144 / 72 px), and 20 / 30 / 35 px of rhythm plus the 12 px the frame used to pad.
+- ***For sellers* stays first in the link row.** Alex's list names only SoftServe's items, but this link is the only permanent way to `#/sellers` (round 8), and the checker already required it. Dropping it would orphan the all-offers kit.
+- **The contact block went.** The brand's footer has none, the header's *Talk to us* is on every page, and Home, Services and every product page carry a contact form. It also retires one of the stray phrasings of the ask open since round 10 and the footer's repeat of Home S7 (open since §18).
+- **The trademark sentence went with the marks.** It was written in round 1 and flagged as needing a legal eye (§5, `C15`). If the launch trademark check wants an attribution, it comes back as one fine-print line above the copyright row.
+- ***SoftServe website* is a text link, last in the row.** It replaces the old globe icon, which would have been a line icon among filled marks. The label is Alex's words.
+- **The glyphs are SoftServe's, not redrawn.** Their paths are read from the files softserveinc.com serves (`assets.softserveinc.com/icons/*.svg`) and inlined with `currentColor`, so hover and print need no extra files. This is the one exception to the 1.5 px line-icon rule (VISUAL-GRAMMAR §6, SS26-THEME §4). The spark is the brand-kit file already in the tree, path-identical to the brand footer's `hero-icon.svg` (`ASSETS.md`).
+- **The year is filled at render** (`{year}`), so the line never goes stale. The old line printed no year for the same reason.
+- **Links open in a new tab,** as the old legal links did. The brand's own footer opens them in place because it is the same site.
+- **The archive was not restyled.** `index-legacy.html` shares `app.js`, so a local run of it renders the new footer without styles; its artifact is frozen and unaffected (SS26-THEME).
+
+### 34.3 Checks
+
+- `node --check` passes on the four changed scripts. The checker prints OK with the three known warnings, before and after the email session's commits landed in the same files.
+- **Negative test.** A scratch copy with six injected faults fails each one: a retired key back (`builtWith`), the old privacy link, seven socials, another copyright line, a missing glyph, and an Oracle mark in `renderFooter()`.
+- In the browser, on a local server on port 49837 (8765 and 8767 were held by other sessions):
+  - 1440 and 1280: one link row, the glyphs 16 px wide at a 40 px pitch;
+  - 1024: the band steps to 144 px, still one row;
+  - 768: the row stacks and centres, as the brand's does;
+  - 375 and 320: the links wrap to two centred lines, the eight glyphs hold one line (the gap narrows to 10 px at 360 and below), and the spark stays at the right of the copyright row;
+  - no horizontal overflow at any width; the footer is the same on Home, Products, two product pages, Services and For sellers, with no Oracle or NVIDIA image in it; the console is clean;
+  - the deny-list grep returns nothing.
+- **Not published.** The shared link still shows the site before round 12, and a publish from the working tree ships rounds 12 to 14 together. The footer goes out with them from HEAD when Alex says so, and that publish has to add `assets/img/softserve-star-white.svg`.
+- **Commits.** git-autosync swept the code into `autosync:` commits (00:28–00:39), interleaved with the email session's; the docs are committed as `docs:`.
+
+### 34.4 Open for Alex
+
+- **Publishing** the footer, with rounds 12 and 13.
+- **Trademark attribution:** the site carries none now; the launch trademark check decides whether one comes back.
+- ***For sellers*** stayed in the row. Say if it should go; the checker and START-HERE §3 change with it.
+
+The list is repeated in START-HERE §9.
