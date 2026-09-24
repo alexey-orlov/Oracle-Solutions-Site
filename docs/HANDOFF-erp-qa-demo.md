@@ -191,7 +191,7 @@ do not fit 640 × 400 without cutting text and were dropped
 deliberately — the Trace panel in `-3` and the question bubble in `-4`;
 `docs/ASSETS.md` §1 records the measurements.
 
-**Done by the main session, 2026-09-17:** the walkthrough is published as its own artifact (https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb — filled into `demoPreviewUrl` in `config.js`, the README preview table and `docs/CONFIG.md` §3), the site artifact (https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b) was read and republished as a full tree of 95 files with the four SVG illustrations removed, the demo artifact was checked in the viewer, and the wiki was folded. The list below is the plan that was executed.
+**Done by the main session, 2026-09-17:** the walkthrough is published as its own artifact (`links.json` › `cross-system-erp-qa.interactiveDemoArtifact` — filled into `demoPreviewUrl` in `config.js`, the README preview table and `docs/CONFIG.md` §3), the site artifact (https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b) was read and republished as a full tree of 95 files with the four SVG illustrations removed, the demo artifact was checked in the viewer, and the wiki was folded. The list below is the plan that was executed.
 
 1. Publish the walkthrough as its **own** artifact (wrapper-free copy under
    `.work/`, `demo.css` / `demo.js` / `data.js` as supporting files).
@@ -278,10 +278,10 @@ current on disk. `node tools/erp-qa-check.js` 329 assertions passing,
 `node tools/check-grammar.js` OK, the tour clean at three viewports, the product
 page verified headlessly (`.work/erpqa-qa/product-page-r2.png`).
 
-**Done by the main session, 2026-09-17, round 2:** the standalone artifact (https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb) and the site artifact (https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b) were republished in place with the round-2 demo, the five re-cut images and the manifest, the demo was checked in the viewer, the "What the AI has to go on" copy nit was applied, and the wiki was folded. The list below was the plan:
+**Done by the main session, 2026-09-17, round 2:** the standalone artifact (`links.json` › `cross-system-erp-qa.interactiveDemoArtifact`) and the site artifact (https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b) were republished in place with the round-2 demo, the five re-cut images and the manifest, the demo was checked in the viewer, the "What the AI has to go on" copy nit was applied, and the wiki was folded. The list below was the plan:
 
 1. **Republish the standalone walkthrough artifact in place** —
-   https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb still
+   `links.json` › `cross-system-erp-qa.interactiveDemoArtifact` still
    serves round 1's build. Read it first, then publish the wrapper-free copy
    with `demo.css` / `demo.js` / `data.js` as supporting files to the **same**
    URL, so `demoPreviewUrl` in `config.js`, the README preview table and
@@ -368,10 +368,10 @@ The interface fixes, the end card, the step counter, the five re-cut images and 
 Before/after sheets for the ten screens that changed most: `.work/erp-qa/fidelity/sheets/` (before) and
 `.work/erp-qa/fidelity/sheets-after/` (after).
 
-**Done by the main session, 2026-09-17, round 3:** the standalone artifact (https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb) and the site artifact (https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b, merged on top of another session's newer version that had added `pages/sellers.js`) were republished with the round-3 demo and the five re-cut images, the demo was checked in the viewer, and the wiki was folded. The list below was the plan:
+**Done by the main session, 2026-09-17, round 3:** the standalone artifact (`links.json` › `cross-system-erp-qa.interactiveDemoArtifact`) and the site artifact (https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b, merged on top of another session's newer version that had added `pages/sellers.js`) were republished with the round-3 demo and the five re-cut images, the demo was checked in the viewer, and the wiki was folded. The list below was the plan:
 
 1. **Republish the standalone walkthrough artifact in place** —
-   https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb — read it first, then publish the
+   `links.json` › `cross-system-erp-qa.interactiveDemoArtifact` — read it first, then publish the
    wrapper-free copy with `demo.css` / `demo.js` / `data.js` as supporting files to the **same** URL, so
    `demoPreviewUrl`, the README preview table and `docs/CONFIG.md` §3 stay correct without an edit.
 2. **Read, then republish the site artifact** (https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN) with the
@@ -455,7 +455,7 @@ change.
 The copy, the four re-cut images and this note are current on disk. Still to do by the main session:
 
 1. **Republish the standalone walkthrough artifact in place** —
-   https://claude.ai/code/artifact/6c822cc7-1c05-4504-ad61-7b64c86e9ceb — read it first, then publish the
+   `links.json` › `cross-system-erp-qa.interactiveDemoArtifact` — read it first, then publish the
    wrapper-free copy with `demo.css` / `demo.js` / `data.js` as supporting files to the **same** URL.
 2. **Read, then republish the site artifact** with the rebuilt demo folder, the three re-cut step frames and
    the poster. `config.js` and `content.js` are unchanged — the images kept their file names.
