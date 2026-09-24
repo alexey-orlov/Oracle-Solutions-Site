@@ -126,16 +126,14 @@ Platform ids and their two names: `oracle-ai-lakehouse` *AI Lakehouse* / Oracle 
 
 ## Run it locally
 
-Open `site/index.html` in a browser. That is the whole procedure — the site is written to work from `file://`.
-
-If a browser blocks local file access, serve the folder over HTTP instead:
+Serve the folder with the site's own server:
 
 ```bash
 python3 tools/serve.py 8765 site
-# then open http://localhost:8765/
+# then open http://127.0.0.1:8765/
 ```
 
-That same command is registered as the `oracle-site` entry in `.claude/launch.json`. Any static server will do. Nothing needs to be installed or compiled.
+That same command is registered as the `oracle-site` entry in `.claude/launch.json`. Nothing needs to be installed or compiled. The server answers `data/links.js` from `links.json` on every request, so an edited link shows on the next reload. Opened from `file://` or another static server, the site still runs, but without its *Interactive demo* and video buttons, because no copy of the links is stored under `site/`.
 
 ---
 
@@ -157,7 +155,7 @@ Full field-by-field reference: `docs/CONFIG.md`. In short:
 | `products.<slug>.marketplace` / `.marketplaceUrl` | The boolean is the switch: `true` → the **Oracle Marketplace** badge on the hero chip row and the product tile, and the count beside the **Oracle Marketplace** checkbox in the rail's *Artifacts* group. The URL only decides whether that badge is a link; set while the boolean is `false`, it fails the build. `true` today on `large-document-extraction` and `workforce-optimization`, both with an empty URL, so both badges are inert. |
 | `products.<slug>.video` | `true` → the product hero carries the 16:9 demo frame, and nothing else (the demo badge and the *Interactive demo* filter read the walkthrough link). With no `video` link in `links.json` yet, clicking the frame opens a short panel saying the recording is being prepared, with a button to that product's Contacts tab. `true` today on `workforce-optimization`, `large-document-extraction` and `account-insights`. |
 | `products.<slug>.successStoryUrl` | Non-empty → a "Download the success story" button appears. |
-| `links.json` (repo root) | **Every link a product's sales kit uses** (round 12, `docs/CONFIG.md` §3a): `onePager`, `salesDeck`, `featureList`, `interactiveDemo` (the single source for "this product has an interactive demo": the hero button, the badge and the *Artifacts* filter), `interactiveDemoArtifact` (its claude.ai copy, used while the site itself is an artifact) and `video` (plays in the hero frame, and turns the frame on by itself). Never deployed. After changing a walkthrough or video link, run `node tools/sync-links.js`, which writes the site's copy, `data/links.js`. |
+| `links.json` (repo root) | **Every link a product's sales kit uses** (round 12, `docs/CONFIG.md` §3a): `onePager`, `salesDeck`, `featureList`, `interactiveDemo` (the single source for "this product has an interactive demo": the hero button, the badge and the *Artifacts* filter), `interactiveDemoArtifact` (its claude.ai copy, used while the site itself is an artifact) and `video` (plays in the hero frame, and turns the frame on by itself). Never deployed, and the only file that stores a link (round 15): the local server and a publish build the site's `data/links.js` from it (`tools/site_links.py`), and the checker fails a link from it found in any other file. Keys are product slugs: the listing's `slug`, the pack's `slug:` and the walkthrough's folder `site/demo/<slug>/`. |
 
 **The rule behind every URL field: an empty string means the control is not rendered at all** — no placeholder, no greyed-out button, no "coming soon" line. Paste a URL and it appears on the next reload. Every URL is empty today, so none of those controls ship yet. `video` is the one boolean and the one exception: it puts the demo frame up ahead of the recording, and the panel behind the click is what keeps that honest.
 
@@ -225,6 +223,7 @@ Notes that matter in production:
 
 - **Serve over HTTPS.** The forms post from the browser; mixed content will be blocked.
 - **The form endpoint belongs to the deployed copy.** Set `formEndpoint` in the deployed `data/config.js` (never in git), add the host to `ORIGINS` in `tools/n8n-workflow.js` so the workflow accepts its requests, and set `siteUrl` in `links.json` to the host so the kit email links product pages that open (`mail/README.md`, "Moving to a public host").
+- **Build `data/links.js` into the deployed copy.** It is not a file in the repo: `python3 tools/site_links.py --out <deployed root>/data/links.js` builds it from `links.json`. Without it the *Interactive demo* and video buttons are missing.
 - **Do not deploy `docs/`.** It is internal.
 - **Nothing to unblock.** No webfont service is contacted: `assets/fonts/` holds the five licensed faces, and the CSS falls back to metric-matched system faces if one fails to load.
 - **Caching:** `index.html` should be served with a short cache lifetime, `assets/` and `data/` can be cached longer — but remember that `config.js` and `content.js` are how the site is edited, so do not put them behind a year-long cache.
