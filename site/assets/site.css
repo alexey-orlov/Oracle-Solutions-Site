@@ -3672,7 +3672,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* Round 16: the stacked S4. The track takes the full width, five across; the
    reasons follow it as a list, and the button closes the screen. */
-.deliver.deliver--stacked { display: flex; flex-direction: column; gap: 0; }
+.deliver.deliver--stacked { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+.deliver--stacked .deliver-cta { align-self: flex-start; }
 .deliver--stacked .deliver-note { margin-top: 1.5rem; }
 .deliver--stacked .deliver-why { margin-top: 4rem; gap: 1.5rem; }
 .deliver--stacked .deliver-cta { margin-top: 3rem; }
