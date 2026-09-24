@@ -297,10 +297,9 @@ Exact commands are in HANDOFF §4.
   - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
   - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit.
 - **Round 13 (§33.4):**
-  - **publishing:** the shared link still shows the site before round 12. Rounds 12 and 13 go out together from HEAD when Alex says so, with `data/links.js` and never `data/endpoint.local.json` or the whole folder;
+  - **publishing:** the shared link still shows the site before round 12. Rounds 12–14 go out together from HEAD when Alex says so, with `data/links.js` and never `data/endpoint.local.json` or the whole folder;
   - **the three new faces** are matched by the directory's own name key (`ASSETS.md` §3.2), not by eye; a wrong one is fixed by blanking its `photo`;
   - **Vlad or Vladyslav:** the directory's name is *Vladyslav Butenko*, and the site prints *Vlad*, Alex's word;
-  - **the packaging plugin** has to write `contactPerson` for a new product, which the checker now requires (contract round 13); that change belongs in Oracle-Packaging-Skills;
   - **Home S7 and Services** still name Karsten alone.
 - **Round 14 (§34.4):**
   - **publishing:** the footer goes out with rounds 12 and 13, and that publish has to add `assets/img/softserve-star-white.svg`, which the artifact does not carry yet;
