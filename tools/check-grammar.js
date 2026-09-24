@@ -1504,6 +1504,28 @@ if (!arr(C.products) || C.products.length !== 7) {
     if (row[2]) fail(row[0], message); else warn(row[0], message);
   });
 
+  /* Round 16: the promise is said once, big. Alex's drafts put "accelerate
+     time-to-value" in the hero lead and two H2s, over an S2 bullet that
+     already says it; no claim sits in more than two places, so the phrase is
+     the hero's and the bullet's, and every other heading carries its own facet
+     of the speed. */
+  var promiseCount = (JSON.stringify(o).match(/time[- ]to[- ]value/gi) || []).length;
+  if (promiseCount > 2) {
+    fail("overview", '"time to value" appears ' + promiseCount + " times on the home page — the promise is the hero's, and no claim sits in more than two places");
+  }
+
+  /* Round 16 (Alex): "Why SoftServe on Oracle" sits below the timeline, not
+     beside it, and the screen ends on its one button. */
+  var overviewSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
+  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function caseStudies("));
+  var deliveryHtml = deliverySrc.slice(deliverySrc.lastIndexOf("return '<section"));
+  var atTrack = deliveryHtml.indexOf('class="ladder3');
+  var atWhy = deliveryHtml.indexOf('class="deliver-why"');
+  var atCta = deliveryHtml.indexOf('class="cta-row deliver-cta"');
+  if (!(atTrack > -1 && atWhy > atTrack && atCta > atWhy)) {
+    fail("site/pages/overview.js", "delivery() must render the track, then the Why SoftServe list, then the button — the list sits below the timeline");
+  }
+
   /* --- every icon the two new screens name is in the registry --- */
   var namedIcons = [];
   ((tw || {}).panels || []).forEach(function (pn, i) {
@@ -1659,22 +1681,28 @@ if (/request a demo/i.test(raw)) {
   ["ladder", "ladderRules", "ladderFootnote", "howAPovRuns"].forEach(function (k) {
     if (e[k] !== undefined) fail("services.howWeEngage." + k, "retired in round 6 — the step track replaces the ladder");
   });
+  /* Round 16: the Services track is the home track, stage for stage. The
+     Discovery step it used to lead with is the home page's Workshop now (one
+     word for one thing), and the managed service left Scaling for a step of
+     its own on both pages. */
   var homeSteps = ((C.overview || {}).delivery || {}).steps || [];
   var steps = arr(e.steps) ? e.steps : [];
-  var offset = steps.length - homeSteps.length;
-  if (offset < 0 || offset > 1 || (offset === 1 && (steps[0] || {}).title !== "Discovery")) {
-    fail("services.howWeEngage.steps", "must be the home delivery steps (" + homeSteps.length + "), optionally led by Discovery");
+  if (steps.length !== homeSteps.length) {
+    fail("services.howWeEngage.steps", "must be the home delivery stages (" + homeSteps.length + "), in the same order, got " + steps.length);
   } else steps.forEach(function (step, i) {
     var where = "services.howWeEngage.steps[" + i + "]";
     ["title", "body", "factLabel", "fact"].forEach(function (k) {
       if (!str(step[k])) fail(where, k + " missing");
     });
-    /* One word for one thing: the steps both pages show carry the same names. */
-    var home = homeSteps[i - offset];
+    /* One word for one thing: the stages both pages show carry the same names. */
+    var home = homeSteps[i];
     if (home && step.title !== home.title) {
-      fail(where, 'title is "' + step.title + '", but the home step is "' + home.title + '"');
+      fail(where, 'title is "' + step.title + '", but the home stage is "' + home.title + '"');
     }
   });
+  if (steps.some(function (step) { return (step || {}).title === "Discovery"; })) {
+    fail("services.howWeEngage.steps", '"Discovery" is retired in round 16 — the first stage is the Workshop on both pages');
+  }
 
   var pov = s.proofOfValue || {};
   ["anchor", "eyebrow", "title", "lead", "footnote"].forEach(function (k) {
@@ -1730,8 +1758,22 @@ if (/request a demo/i.test(raw)) {
     if (fast && !/4–8 weeks|Four weeks/.test(fast.text || "")) fail(where + ".pillars[fast]", "must state the " + POV + " duration");
   });
   var o = C.overview || {};
-  var step = ((o.delivery || {}).steps || [])[0];
-  if (!step || step.fact !== POV) fail("overview.delivery.steps[0].fact", 'must be "' + POV + '"');
+  /* Round 16 (Alex: "4-8 weeks, 3-5 months, 3-12 months -> say 'from 4
+     weeks', from 3 months"): the home track states each stage's floor. The
+     Jumpstart is its second stage now, after the Workshop. Scope copy on the
+     product pages and Services keeps the ranges; that question is open. */
+  var homeTrack = (o.delivery || {}).steps || [];
+  var jump = homeTrack[1];
+  if (!jump || jump.fact !== "From 4 weeks") {
+    fail("overview.delivery.steps[1].fact", 'must be "From 4 weeks" — the home track states the floor');
+  }
+  [2, 3].forEach(function (i) {
+    var s = homeTrack[i];
+    if (!s || s.fact !== "From 3 months") fail("overview.delivery.steps[" + i + "].fact", 'must be "From 3 months" — the home track states the floor');
+  });
+  if (homeTrack.some(function (s) { return /\d\s*[–-]\s*\d/.test((s || {}).fact || ""); })) {
+    fail("overview.delivery.steps", "a stage states a range — the home track says each stage's floor, never a range");
+  }
   /* Round 9 (Alex): the hero figure is the shortest honest clock — "from 30
      days", the qualifier set small. Scope copy keeps 4–8 weeks everywhere else,
      which is what the rest of this block asserts; the two are not alternatives,
