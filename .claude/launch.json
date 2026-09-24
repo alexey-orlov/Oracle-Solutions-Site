@@ -12,16 +12,6 @@
       "port": 8765
     },
     {
-      "name": "oracle-site-alt",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": [
-        "tools/serve.py",
-        "8768",
-        "site"
-      ],
-      "port": 8768
-    },
-    {
       "name": "mail-preview",
       "runtimeExecutable": "python3",
       "runtimeArgs": [
