@@ -2,7 +2,7 @@
   "$comment": "The mini-site's machine-readable description of itself. The oracle-packs-web plugin reads it before it edits, checks, previews or publishes this site. Change it in the same commit as the thing it describes. Prose rules live in docs/START-HERE.md; enforcement lives in tools/check-grammar.js.",
   "name": "Oracle AI & Data Solutions",
   "contract": {
-    "round": 16,
+    "round": 17,
     "asOf": "2026-09-24",
     "$comment": "Bump in any round that changes a content.js key, a config switch, a product tab, a checker rule or a publish rule. The plugin compares this with the round its own listing references were written against and defers to the site when the site is newer."
   },
@@ -23,6 +23,7 @@
     "config": "site/data/config.js",
     "diagrams": "site/data/diagrams.js",
     "demos": "site/demo",
+    "$demosComment": "Round 17: tools/check-grammar.js reads the walkthroughs from the folders here. A folder site/demo/<slug>/ needs links.json <slug>.interactiveDemo, a path in that key needs its folder, and a full https:// link is taken as given.",
     "denyList": "tools/deny-list.json",
     "links": "links.json",
     "$linksComment": "Round 15: links.json is the only file that stores a link, keyed by the product slug (= the listing's slug = the pack's slug: = site/demo/<slug>/). data/links.js is never a file under site/: tools/serve.py answers it from links.json, and a publish builds it with buildSiteLinks into siteLinks and maps data/links.js to that file.",

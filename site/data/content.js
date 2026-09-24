@@ -850,6 +850,7 @@ window.SITE_CONTENT = {
       categoryChip: "Deep research & investigation",
       facet: "oci-nvidia",
       oneLiner: "Assembles the evidence trail for a case or complaint out of every system that holds a piece of it — cited, time-stamped, and ready for an investigator to decide on.",
+      packaged: false,
       statusNote: "In preparation — scoping conversations are open.",
       tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
       hero: {
@@ -1154,6 +1155,7 @@ window.SITE_CONTENT = {
       categoryChip: "Deep research & investigation",
       facet: "oci-nvidia",
       oneLiner: "Compares plan against actual across completed projects, orders and engagements, and assembles each variance with its candidate drivers and the source evidence behind them.",
+      packaged: false,
       statusNote: "In preparation — scoping conversations are open.",
       tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
       hero: {

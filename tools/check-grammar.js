@@ -5,8 +5,10 @@
  *
  *   node tools/check-grammar.js
  *
- * Exits 0 and prints "OK" when all seven products pass; exits 1 and lists
- * every failure otherwise. No dependencies.
+ * Exits 0 and prints "OK" when every product passes; exits 1 and lists
+ * every failure otherwise. No dependencies. It names no product and counts
+ * none: the product set, the walkthroughs and the unpackaged products are read
+ * from the site's data (round 17), so a new product needs no edit here.
  */
 
 "use strict";
@@ -52,7 +54,7 @@ var INDUSTRIES = [
 var STACK_KEYS = ["application", "ai-engine", "data-platform", "infrastructure", "custom"];
 var STACK_VENDORS = ["oracle", "nvidia", "softserve"];
 var DIRECTIONS = ["inbound", "outbound", "both"];
-/* G: the Jumpstart block is the same three pillars on all seven, in this order. */
+/* G: the Jumpstart block is the same three pillars on every product, in this order. */
 var PILLARS = ["fast", "low-risk", "tangible"];
 /* Round 9: the tiers are PoV Jumpstart / Integration / Scaling everywhere (the
    2026-09-18 decision), because the hero stack's top band says "Scaling" and one
@@ -104,13 +106,8 @@ var FACET_FULL = {
 /* The one platform no product runs on: it stays in the set for the hero stack
    and the Services cards, and is not offered as a catalog filter. */
 var NON_CATALOG_FACETS = ["oracle-ai-fusion"];
-/* The three products with an interactive walkthrough under site/demo/. The
-   Demo badge and the Artifacts filter read the walkthrough link (links.json
-   `interactiveDemo` since round 12), not the video flag. */
-var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-system-erp-qa"];
-/* Round 4, T1: only these two carry the muted "in preparation" status line;
-   every other product's state is told by its availability badges. */
-var UNPACKAGED = ["case-evidence-collection", "plan-vs-actual-investigation"];
+/* The products with a walkthrough (DEMO_SLUGS) and those with no package yet
+   (UNPACKAGED) are read from the data, under "the product set" below. */
 var RETIRED_TAGS = ["Available now", "Fixed-price offer", "In preparation"];
 var CUSTOMER_NAMES = ["Bosch", "Riyadh Air", "RiyadhAir", "Riyahd", "DHL", "SBG", "BSH", "Binladin", "Belron", "Channel 4", "KPN", "NHS", "OMV"];
 /* E: a one-liner says what the product does, for whom, with what outcome. It is
@@ -160,13 +157,54 @@ function checkHeroImage(where, image) {
    Round 5: the home page carries no hero photograph — the built-on stack visual
    is its only illustration — so `overview.hero.image` is retired, and the
    home-page block below fails if it returns. Services keeps its hero image, and
-   so do all seven products. */
+   so does every product. */
 checkHeroImage("services", C.services.hero && C.services.hero.image);
 
-/* ---- products ---- */
-if (!arr(C.products) || C.products.length !== 7) {
-  fail("products", "expected exactly 7 products, got " + (arr(C.products) ? C.products.length : "none"));
+/* ---- the product set, read from the data (round 17) ----
+   A count or a list of slugs here failed every product the packaging plugin
+   inserts (/oracle-packs:listing) until someone edited the checker. The set is
+   the products content.js holds, each slug once; config.js keys the same set
+   (below) and so does links.json (tools/sync-links.js, run in the round-12
+   block). The two subsets the checks need come from the data too:
+   - DEMO_SLUGS, the products with an interactive walkthrough: every folder
+     under the manifest's paths.demos (site/demo/<slug>/), plus any product
+     whose links.json walkthrough is a full https:// address, which has no
+     folder to find. The Interactive demo badge and the Artifacts filter read
+     the walkthrough link (links.json `interactiveDemo` since round 12), not
+     the video flag.
+   - UNPACKAGED, the products with no package yet, each flagged
+     `packaged: false` in content.js (round 4, T1; a flag since round 17). */
+var DEMOS_DIR = (JSON.parse(fs.readFileSync(path.join(root, "site.manifest.json"), "utf8")).paths || {}).demos;
+var DEMO_SLUGS = [];
+if (!str(DEMOS_DIR)) {
+  fail("site.manifest.json paths.demos", "missing — the checker reads the walkthroughs from the folders under it");
+} else if (fs.existsSync(path.join(root, DEMOS_DIR))) {
+  DEMO_SLUGS = fs.readdirSync(path.join(root, DEMOS_DIR), { withFileTypes: true })
+    .filter(function (entry) { return entry.isDirectory(); })
+    .map(function (entry) { return entry.name; });
 }
+Object.keys(LINKS).forEach(function (slug) {
+  var demo = (LINKS[slug] || {}).interactiveDemo;
+  if (/^https:/.test(demo || "") && DEMO_SLUGS.indexOf(slug) === -1) DEMO_SLUGS.push(slug);
+});
+var UNPACKAGED = (C.products || []).filter(function (p) { return p.packaged === false; })
+  .map(function (p) { return p.slug; });
+
+/* ---- products ---- */
+if (!arr(C.products) || !C.products.length) {
+  fail("products", "expected at least one product, got " + (arr(C.products) ? C.products.length : "none"));
+}
+/* What the count used to catch, without a count: an entry twice, or a product
+   dropped from content.js while config.js still keys it. */
+var productSlugs = {};
+(C.products || []).forEach(function (p, i) {
+  if (!str(p.slug)) return;
+  if (productSlugs[p.slug]) fail("products[" + i + "]", 'slug "' + p.slug + '" appears twice — one entry per product');
+  productSlugs[p.slug] = true;
+});
+Object.keys(CFG.products || {}).forEach(function (slug) {
+  if (!productSlugs[slug]) fail("config.products[" + slug + "]", "no product in content.js has this slug — config.js keys the same products");
+});
 
 (C.products || []).forEach(function (p) {
   var w = "products[" + p.slug + "]";
@@ -192,16 +230,22 @@ if (!arr(C.products) || C.products.length !== 7) {
   ["availability", "availabilityChip", "availabilityTooltip"].forEach(function (k) {
     if (p[k] !== undefined) fail(w, k + " is superseded by the availability badges — nothing renders it");
   });
+  /* Round 17: like `catalog` on a platform, the flag is only ever false; absent
+     means the product is packaged. */
+  if (p.packaged !== undefined && p.packaged !== false) {
+    fail(w, "packaged may only be set to false (a product with no package yet) — omit the key otherwise");
+  }
   if (p.statusNote !== undefined) {
     if (!str(p.statusNote)) fail(w, "statusNote must be a non-empty string where present");
     else if (UNPACKAGED.indexOf(p.slug) === -1) {
-      fail(w, "statusNote belongs only to the two unpackaged products (" + UNPACKAGED.join(", ") + ")");
+      fail(w, "statusNote belongs only to a product with no package yet, flagged packaged: false (today: " +
+        (UNPACKAGED.join(", ") || "none") + ")");
     } else if (sentences(p.statusNote) > 1) {
       fail(w, "statusNote is " + sentences(p.statusNote) + " sentences — it is one muted line under the hero one-liner");
     }
   }
   if (UNPACKAGED.indexOf(p.slug) !== -1 && !str(p.statusNote)) {
-    fail(w, "statusNote missing — an unpackaged product says so in one line, since it carries no availability badge");
+    fail(w, "statusNote missing — an unpackaged product (packaged: false) says so in one line, since it carries no availability badge");
   }
   (p.tags || []).forEach(function (tag) {
     if (RETIRED_TAGS.indexOf(tag) !== -1) {
@@ -534,7 +578,7 @@ if (!arr(C.products) || C.products.length !== 7) {
       }
     });
     if (str(v.title) && v.title !== "Jumpstart Proof-of-Value") {
-      fail(w, 'jumpstart.title is "' + v.title + '" — the block title is the same on all seven');
+      fail(w, 'jumpstart.title is "' + v.title + '" — the block title is the same on every product');
     }
     if (!arr(v.pillars) || v.pillars.length !== 3) fail(w, "jumpstart.pillars must hold exactly 3");
     else v.pillars.forEach(function (pillar, i) {
@@ -888,14 +932,16 @@ if (!arr(C.products) || C.products.length !== 7) {
   if (mp.icon !== "storefront") fail("shared.tagFamilies.availability.marketplace", 'icon is "' + mp.icon + '", expected "storefront"');
 
   /* The badge claims a walkthrough exists, so links.json has to hold one for
-     exactly the products whose walkthrough ships under site/demo/. */
+     exactly the products whose walkthrough ships under site/demo/ (DEMO_SLUGS,
+     read from the folders there since round 17). */
   (C.products || []).forEach(function (p) {
     var link = LINKS[p.slug] || {};
     var demo = link.interactiveDemo;
     var has = typeof demo === "string" && demo.trim().length > 0;
     var should = DEMO_SLUGS.indexOf(p.slug) !== -1;
-    if (has && !should) fail('links.json products["' + p.slug + '"]', "interactiveDemo is set but no walkthrough ships for this product");
-    if (!has && should) fail('links.json products["' + p.slug + '"]', "interactiveDemo is empty, so the interactive demo badge and filter would both miss a walkthrough that exists");
+    var folder = (DEMOS_DIR || "paths.demos") + "/" + p.slug + "/";
+    if (has && !should) fail('links.json products["' + p.slug + '"]', "interactiveDemo is set but no walkthrough ships for this product (no folder " + folder + ")");
+    if (!has && should) fail('links.json products["' + p.slug + '"]', "interactiveDemo is empty, so the interactive demo badge and filter would both miss the walkthrough in " + folder);
     if (has && !/^https:/.test(demo) && !fs.existsSync(path.join(root, "site", demo.replace(/\/index\.html$/, "")))) {
       warn('links.json products["' + p.slug + '"]', "interactiveDemo points at site/" + demo + ", which is not on disk");
     }
@@ -1100,7 +1146,7 @@ if (!arr(C.products) || C.products.length !== 7) {
     }
     if (!c.product || !str(c.product.slug) || !str(c.product.name)) fail(cw, "product needs { slug, name }");
     else {
-      if (slugs.indexOf(c.product.slug) === -1) fail(cw, 'product.slug "' + c.product.slug + '" is not one of the seven');
+      if (slugs.indexOf(c.product.slug) === -1) fail(cw, 'product.slug "' + c.product.slug + '" is not a product in content.js');
       var target = (C.products || []).filter(function (p) { return p.slug === c.product.slug; })[0];
       if (target && target.name !== c.product.name) {
         fail(cw, 'product.name "' + c.product.name + '" does not match products[' + c.product.slug + '].name "' + target.name + '"');
@@ -2380,4 +2426,4 @@ if (failures.length) {
   failures.forEach(function (f) { console.error("  ✗ " + f); });
   process.exit(1);
 }
-console.log("check-grammar: OK — 7 products, every grammar slot filled, and the home page's seven screens.");
+console.log("check-grammar: OK — " + C.products.length + " products, every grammar slot filled, and the home page's seven screens.");

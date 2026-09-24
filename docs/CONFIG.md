@@ -159,7 +159,7 @@ The retired gate's "unlocked" flag. The kit form removes it on load; delete this
 
 ## 3. Per-product keys — `products["<slug>"]`
 
-The seven slugs, exactly:
+One block per product in `content.js`, keyed by its slug, and none for a slug `content.js` does not hold: the checker fails either gap. Today's seven:
 
 ```
 account-insights
@@ -292,7 +292,7 @@ The interactive walkthrough — a self-contained guided demo of the product on p
 - the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
 - the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same link.
 
-Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the three products whose walkthrough ships under `site/demo/`, and `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
+Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the products whose walkthrough ships under `site/demo/`, which it reads from the folders there (the manifest's `paths.demos`, round 17): a folder with no link fails, and so does a path with no folder. A full `https://` link has no folder to check and is taken as given. `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
 
 ### `interactiveDemoArtifact`
 
@@ -375,7 +375,7 @@ All three are named in `content.js` (`overview.steps[].image`, `overview.industr
 
 ---
 
-## 4. Adding an eighth product
+## 4. Adding a product
 
 1. Add the product object to `products[]` in `content.js` (see `SCHEMA.md` for every field).
 2. Add a matching `products["<new-slug>"]` block to `config.js` with all five keys (`marketplace`, `marketplaceUrl`, `video`, `videoPoster`, `successStoryUrl`). `video` and `marketplace` must both be real booleans — `check-grammar.js` rejects a missing one and a quoted `"false"`, which would be truthy and turn the frame or the badge on.
@@ -383,6 +383,9 @@ All three are named in `content.js` (`overview.steps[].image`, `overview.industr
 3. Add the slug to `productOrder` where you want it to appear. Skipping this step is not an error — the product lands at the end of every list instead — but the position is a judgement about what a seller should meet first, so make it deliberately rather than by omission.
 4. Set its `facet` to one of the **four canonical technology ids**, and nothing else: `oci-nvidia` (*OCI + NVIDIA*), `oracle-ai-data-platform` (*Oracle AI Data Platform*), `oracle-ai-lakehouse` (*Oracle Autonomous AI Lakehouse*), `oracle-ai-fusion` (*Oracle AI for Fusion Applications*). There is no fifth platform and no `other` catch-all; a new Oracle platform is a new facet, added to `facets.technology`, to `shared.tagFamilies.tech.icons`, to both platform-card lists and to `check-grammar.js` in one edit. If it lands on a facet that currently has no products, nothing else is needed — the facet is already declared and will stop rendering its empty state once a product carries it.
 5. Give it a two-entry `tags` array: its `categoryChip`, then its facet's `label` **verbatim**. The engine it runs on — AI-Q, cuOpt, Select AI, a source system — goes in `technology`, never appended to the platform chip; `check-grammar.js` fails a third tag.
+6. If it ships a walkthrough, put it in `site/demo/<slug>/` and set `interactiveDemo` to `demo/<slug>/index.html` (§3a). If no package exists for it yet, give it `packaged: false` and a one-line `statusNote` (`SCHEMA.md`).
+
+`check-grammar.js` needs no edit for any of this. Since round 17 it names no product and counts none: it reads the product set from `content.js`, the walkthroughs from the folders under `site/demo/` and the unpackaged products from `packaged: false`.
 
 If the config block is missing, the product page still renders; every optional control simply stays hidden, exactly as if all its URLs were empty.
 

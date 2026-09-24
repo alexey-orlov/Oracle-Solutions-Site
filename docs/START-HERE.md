@@ -2,7 +2,7 @@
 
 Read this page first in every new session. It holds what the site is for, the brief and the rules it is built to, how a round of work runs, and what earlier rounds learned the hard way. Detail lives in the docs mapped in §10. Keep this page current: when a requirement, rule or procedure changes, rewrite the line — never append a dated update.
 
-Current as of 2026-09-24, after round 16: the home page was re-voiced. The hero lead is the promise; S2 is *What we offer*; S3's tiles sit on photographic stages; S4 is five stages, Workshop to Managed services, stated as floors with no caveat, with the Why list below the track (PROVENANCE §36). Round 15 made `links.json` the only file that stores a link. The local server and a publish build the site's `data/links.js` from it, the email reads it from GitHub, and the checker fails a stored copy or a link repeated anywhere else (PROVENANCE §35). Round 14 made the footer softserveinc.com's, cut down, with no Oracle or NVIDIA marks (§34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 16 are not on the shared link yet** (§9).
+Current as of 2026-09-24, after round 17: the checker names no product and counts none. It reads the product set from `content.js`, the walkthroughs from the folders under `site/demo/`, and the unpackaged products from a new `packaged: false` flag, so a product the packaging plugin lists passes it with no checker edit (PROVENANCE §37). Round 16 re-voiced the home page. The hero lead is the promise; S2 is *What we offer*; S3's tiles sit on photographic stages; S4 is five stages, Workshop to Managed services, stated as floors with no caveat, with the Why list below the track (PROVENANCE §36). Round 15 made `links.json` the only file that stores a link. The local server and a publish build the site's `data/links.js` from it, the email reads it from GitHub, and the checker fails a stored copy or a link repeated anywhere else (PROVENANCE §35). Round 14 made the footer softserveinc.com's, cut down, with no Oracle or NVIDIA marks (§34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 17 are not on the shared link yet** (§9).
 
 ## 1. What it is
 
@@ -307,7 +307,7 @@ Exact commands are in HANDOFF §4.
   - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
   - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit.
 - **Round 13 (§33.4):**
-  - **publishing:** the shared link still shows the site before round 12. Rounds 12–16 go out together from HEAD when Alex says so, with `data/links.js` built by `tools/site_links.py` (§6) and never `data/endpoint.local.json` or the whole folder;
+  - **publishing:** the shared link still shows the site before round 12. Rounds 12–17 go out together from HEAD when Alex says so, with `data/links.js` built by `tools/site_links.py` (§6) and never `data/endpoint.local.json` or the whole folder;
   - **the three new faces** are matched by the directory's own name key (`ASSETS.md` §3.2), not by eye; a wrong one is fixed by blanking its `photo`;
   - **Vlad or Vladyslav:** the directory's name is *Vladyslav Butenko*, and the site prints *Vlad*, Alex's word;
   - **Home S7 and Services** still name Karsten alone.
@@ -330,6 +330,10 @@ Exact commands are in HANDOFF §4.
   - **the floors are commitments:** *From 4 weeks* and *From 3 months* want delivery's sign-off;
   - **the Oracle-power claim** sits three times on the page (the hero lead, the S2 left body and its third bullet), as before the round;
   - **publishing** carries the three redrawn `assets/img/groups/*.svg`; check with `list_files` that the four stage photographs are on the artifact.
+- **Round 17 (§37.4):**
+  - **the packaging plugin:** its listing step needs no checker edit any more, and should set `packaged: false` and a `statusNote` on a product with no package yet;
+  - **CONFIG §4, step 4** still offers `oracle-ai-fusion` to a new product, which the checker fails;
+  - **the catalog-size rule** bans the word *seven* only: a ban, not a pin, but with eight products it would miss *eight*.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
@@ -346,7 +350,7 @@ Exact commands are in HANDOFF §4.
 | `docs/SCHEMA.md` | You add, rename or retire a `content.js` key |
 | `docs/CONFIG.md` | You touch a switch in `config.js` |
 | `docs/VISUAL-GRAMMAR.md` | You change a component or a page composition |
-| `docs/PROVENANCE.md` | You need a fact's source or a round's decisions (§18 home, §20 name, §21 and §23 Services, §24 sales kit, §25 START-HERE, Internal panel and logos, §27 the SS26 theme, §28 the home page re-argued — three layers, six groups, Artifacts — §29 the product pages — one contact ask, the Use cases tab, the stepper — §30 the home page's photographs and the two "Hours" figures — §31 the move to this repository — §32 the forms' email and `links.json` — §33 the product leads on the Contacts card — §34 the footer — §35 one links file, nothing copied — §36 the home page re-voiced: the promise in the hero, tiles on a stage, five stages). At 6,000 lines, search it; don't read it top to bottom. |
+| `docs/PROVENANCE.md` | You need a fact's source or a round's decisions (§18 home, §20 name, §21 and §23 Services, §24 sales kit, §25 START-HERE, Internal panel and logos, §27 the SS26 theme, §28 the home page re-argued — three layers, six groups, Artifacts — §29 the product pages — one contact ask, the Use cases tab, the stepper — §30 the home page's photographs and the two "Hours" figures — §31 the move to this repository — §32 the forms' email and `links.json` — §33 the product leads on the Contacts card — §34 the footer — §35 one links file, nothing copied — §36 the home page re-voiced: the promise in the hero, tiles on a stage, five stages — §37 the checker reads the product set, the walkthroughs and the unpackaged products from the data). At 6,000 lines, search it; don't read it top to bottom. |
 | `docs/SS26-THEME.md` | You touch either theme: what the current SoftServe brand is, the token map, the shape and colour rules, the fonts, and what is open |
 | `docs/ASSETS.md` | You work on images, step frames or posters, and how they were made |
 | `docs/HANDOFF-workforce-demo.md`, `docs/HANDOFF-erp-qa-demo.md` | You work on a walkthrough; each is owned by its own session |

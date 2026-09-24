@@ -6464,3 +6464,61 @@ The round-7 duration rule is narrowed: the ranges still hold on the seven Jumpst
    - its third bullet (*"The best of Oracle's AI platforms, built in"*).
 
 The list is repeated in START-HERE §9.
+
+## 37. Round 17 — the checker reads the product set from the data, 2026-09-24
+
+**The ask** (Alex, 2026-09-24, the first site prerequisite in the packaging-plugin refactor review): `tools/check-grammar.js` hard-coded product facts the site's data already holds (the three products with a walkthrough, the two unpackaged products and the count of seven), so a product that `/oracle-packs:listing` inserts could not pass the checker until someone edited the checker. Derive each from the data, keep every assertion, and pin no count.
+
+**Split:** one build session and no separate design pass. The round moved a checker rule and one content key, not copy, UX or design.
+
+### 37.1 What changed
+
+| | Before | After |
+|---|---|---|
+| The product set | `products.length === 7` | At least one product, each slug once. `config.js` must key exactly the same slugs (new: an entry with no product fails), and so must `links.json` (`tools/sync-links.js`, as before). The OK line prints the count it found |
+| Products with a walkthrough | `DEMO_SLUGS`, three slugs written into the checker | Every folder under the manifest's `paths.demos` (`site/demo/<slug>/`), plus any product whose `interactiveDemo` is a full `https://` link |
+| Unpackaged products | `UNPACKAGED`, two slugs written into the checker | `packaged: false` on the product in `content.js`, now set on `case-evidence-collection` and `plan-vs-actual-investigation`. Any other value fails |
+| Messages | *the two unpackaged products*, *all seven*, *not one of the seven* | They name the flag, or the folder the checker looked in, and no count |
+| Manifest | round 16 | round 17; `paths.$demosComment` says the checker reads the walkthroughs from `paths.demos` |
+| Docs | SCHEMA's invariants pinned `products.length === 7` and the two slugs that carry `statusNote`. CONFIG §4, *Adding an eighth product*, never mentioned the count, so following it failed the checker | SCHEMA gains `packaged?`. Its invariants, CONFIG §3, §3a and §4 (now *Adding a product*, with a sixth step) and VISUAL-GRAMMAR §1.2 and its table state the derived rules |
+
+### 37.2 Decisions
+
+- **Every assertion stays; only its source moved.** The walkthrough check still fails a folder with no link and a link with no folder. The status line still fails on a packaged product, and fails when an unpackaged one lacks it. On the current data the checker's output is the same, byte for byte, before and after.
+- **The unpackaged set needed a flag.** Reading "unpackaged" off `statusNote` itself would have turned both of its checks into tautologies. `packaged: false` is a second, independent statement that the note has to agree with. It works like `catalog: false` on a platform: only ever `false`, and absent in the normal case, so a packaged product carries nothing.
+- **The walkthroughs are the folders, not the links.** Deriving the set from `interactiveDemo` would have emptied the check. A walkthrough ships in its folder under `site/demo/` (`links.json` `$help`, CONFIG §3a), so the folder is the evidence the link is checked against. One side effect: a walkthrough folder with no link now fails. The old list missed that whenever the folder belonged to a product that was not on it.
+- **An `https://` walkthrough is taken as given.** `links.json` allows one, and it has no folder to find. Under the old list it needed a checker edit. No product uses one today.
+- **The count became the set it stood for.** `=== 7` caught an entry that was dropped or doubled. Both still fail on their own terms: a duplicate slug, or a slug that `config.js` or `links.json` keys and `content.js` does not hold.
+
+### 37.3 Checks
+
+- `node --check` on `tools/check-grammar.js` and `site/data/content.js`. `node tools/sync-links.js --check` reports the catalog up to date.
+- **The checker before and after**, on the current data: `check-grammar: OK — 7 products, every grammar slot filled, and the home page's seven screens.`, with the two known warnings, the About H2's length and the Internal panel. The two outputs are identical.
+- **The checker has no test harness**, so the cases ran on 16 scratch copies that were not committed. Each copy went through the new checker and the old one:
+  - *pass now, failed before:*
+    - an eighth product inserted the way the plugin inserts one (`content.js`, `config.js`, `links.json`, then `sync-links.js`). It prints *OK — 8 products*, and its only new warnings are for its missing step art;
+    - the same with a walkthrough folder and its link;
+    - the same, unpackaged (`packaged: false` and a note);
+    - an `https://` walkthrough with no folder;
+  - *fail now:*
+    - a walkthrough folder with no link, which the old checker passed;
+    - a link with no folder;
+    - a note on a packaged product;
+    - the flag removed and the note kept;
+    - the flag with no note;
+    - `packaged: true`;
+    - a duplicated entry;
+    - a `config.js` entry with no product;
+    - a product dropped from `content.js` alone;
+    - an empty catalog;
+    - a manifest with no `paths.demos`.
+- **Not published.** Nothing renders `packaged`, so no page changes. Rounds 12 to 17 go out together from HEAD when Alex says so.
+- **Commit.** One semantic commit on the branch `claude/eager-curie-kuog6o`. `main` gets it when Alex merges.
+
+### 37.4 Open for Alex
+
+- **The packaging plugin** (`oracle-packs`, `oracle-packs-web`): its listing step can drop any checker edit from the insert. It should set `packaged: false` and a `statusNote` on a product that has no package yet.
+- **CONFIG §4, step 4** offers `oracle-ai-fusion` as a facet for a new product, but the checker fails any product on it, as SCHEMA's invariants say. The step was left as it was.
+- **The catalog-size rule** still bans the word *seven* in the copy it sweeps. It is a ban, not a pin, so it never blocks a new product. With eight products it would miss *eight*.
+
+The list is repeated in START-HERE §9.
