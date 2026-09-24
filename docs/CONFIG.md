@@ -8,7 +8,7 @@ site/data/config.js      →  window.SITE_CONFIG
 
 It is plain JavaScript, loaded before the app. Edit it with any text editor, save, reload the page. There is no build step, no npm install, nothing to compile. The file must stay valid JavaScript: every value in quotes, every line ending in a comma except the last one in its block.
 
-**Every link a product's sales kit uses lives in `links.json` at the repo root, not here** (round 12, §3a below): the one-pager, the sales deck, the feature list, the interactive demo and the demo video. The kit email reads that file, and `tools/sync-links.js` copies the three links the site's own buttons need into `site/data/links.js`.
+**Every link a product's sales kit uses lives in `links.json` at the repo root, not here** (round 12, §3a below): the one-pager, the sales deck, the feature list, the interactive demo and the demo video. The kit email reads that file, and the site reads the three links its own buttons need from it through `tools/site_links.py`, on request; nothing stores a copy (round 15).
 
 Copy (headlines, product descriptions, prices, disclaimers) lives in `site/data/content.js` instead — see `SCHEMA.md`. The words of the emails live in `mail/copy.json` (`mail/README.md`).
 
@@ -248,20 +248,22 @@ Expected first for `workforce-optimization` and `large-document-extraction`. Emp
 
 ---
 
-## 3a. `links.json` — every kit link, in one file (round 12)
+## 3a. `links.json` — every link, in one file and nowhere else (rounds 12, 15)
 
-`links.json` at the **repo root** holds every link a product's sales kit uses (Alex, 2026-09-23: "links to all those sources stored in the repo in a simple, easily configurable and human-editable config file"). It sits outside `site/` on purpose: nothing under `site/` is private — anyone can read `config.js` in view-source — and the kit documents carry the package prices the site keeps off its pages. The kit email reads the file from GitHub on every request; the site reads a copy of the three links its own buttons need.
+`links.json` at the **repo root** holds every link a product's sales kit uses (Alex, 2026-09-23: "links to all those sources stored in the repo in a simple, easily configurable and human-editable config file"), and since round 15 it is the only file that stores one (Alex, 2026-09-24: "a separate config file that stores the links, and they are not saved anywhere else"). It sits outside `site/` on purpose: nothing under `site/` is private — anyone can read `config.js` in view-source — and the kit documents carry the package prices the site keeps off its pages. The kit email reads the file from GitHub on every request. The site reads the three links its own buttons need through `tools/site_links.py`, which builds `data/links.js` from this file when asked: on every request in `tools/serve.py`, once for a publish. No copy is kept under `site/`.
+
+**Keys are product slugs**, the one id a product has everywhere: its `slug` in `content.js`, the pack's `slug:` in Oracle-Packaging-Skills `packs/<slug>/pack-spec.md`, and the walkthrough's folder `site/demo/<slug>/`. A listing, its pack spec and its links therefore map onto each other with no lookup table. `sync-links.js` fails a key that is not a slug, and a walkthrough path outside its product's folder.
 
 ```json
 {
   "siteUrl": "https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri",
   "products": {
     "workforce-optimization": {
-      "onePager": "",
-      "salesDeck": "",
-      "featureList": "",
+      "onePager": "https://softserveinc-my.sharepoint.com/:b:/p/…",
+      "salesDeck": "https://softserveinc-my.sharepoint.com/:p:/p/…",
+      "featureList": "https://softserveinc-my.sharepoint.com/:b:/p/…",
       "interactiveDemo": "demo/workforce-optimization/index.html",
-      "interactiveDemoArtifact": "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
+      "interactiveDemoArtifact": "https://claude.ai/code/artifact/…",
       "video": ""
     }
   }
@@ -272,13 +274,13 @@ Every product in `content.js` needs an entry with all six keys; an empty string 
 
 | Key | What it is | Who reads it |
 |---|---|---|
-| `onePager`, `salesDeck`, `featureList` | The kit documents, as full `https://` links anyone at Oracle or SoftServe can open. A SharePoint or OneDrive link generated "for people in SoftServe" will not open for an Oracle seller. | the kit email only |
-| `interactiveDemo` | The walkthrough: a path inside `site/` (`demo/<slug>/index.html`), or a full `https://` link | the site and the kit email |
+| `onePager`, `salesDeck`, `featureList` | The kit documents, as full `https://` links anyone at Oracle or SoftServe can open. A SharePoint or OneDrive link generated "for people in SoftServe" will not open for an Oracle seller, and SoftServe's OneDrive makes no other kind today (tenant policy, checked 2026-09-24; START-HERE §9). | the kit email only |
+| `interactiveDemo` | The walkthrough: a path inside `site/` (`demo/<slug>/index.html`), or a full `https://` link. Never a localhost or preview address: the local server, the published site and the email each resolve the path against their own address | the site and the kit email |
 | `interactiveDemoArtifact` | The same walkthrough published as its own claude.ai artifact | the site on claude.ai, and the kit email while `siteUrl` is a claude.ai link |
 | `video` | The recorded demo: YouTube, Vimeo, SharePoint or Stream | the site and the kit email |
 | `siteUrl` (top level) | The address the kit email links product pages to | the kit email |
 
-**After changing `interactiveDemo`, `interactiveDemoArtifact` or `video`, run `node tools/sync-links.js`** and publish: it validates the file and writes `site/data/links.js` (those three keys only) and `mail/catalog.json` (product names for the email). `tools/check-grammar.js` fails a stale copy, so no publish ships one. The kit documents need no command: the email picks them up on the next request.
+**After changing `interactiveDemo`, `interactiveDemoArtifact` or `video`, publish the site.** The local server shows the change on the next reload, and a publish builds `data/links.js` from this file (`python3 tools/site_links.py --out .work/publish/data/links.js`, START-HERE §6). `node tools/sync-links.js` validates the file and rewrites `mail/catalog.json` (product names for the email, no links). `tools/check-grammar.js` runs the same validation. It also fails `site/data/links.js` if a copy ever appears there, and fails a link from this file found in any other file of the repo (`docs/PROVENANCE.md`, the round log, excepted). The kit documents need no command: the email picks them up on the next request.
 
 ### `interactiveDemo`
 
@@ -290,7 +292,7 @@ The interactive walkthrough — a self-contained guided demo of the product on p
 - the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
 - the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same link.
 
-Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the three products whose walkthrough ships under `site/demo/`, and `tools/sync-links.js` fails a path that is not on disk.
+Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the three products whose walkthrough ships under `site/demo/`, and `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
 
 ### `interactiveDemoArtifact`
 
@@ -397,6 +399,6 @@ node tools/sync-links.js
 node tools/check-grammar.js
 ```
 
-The first two must print nothing. A syntax error there blanks the whole site, because the page cannot read its own content — a trailing comma in the wrong place is the usual cause. `sync-links.js` names every problem in `links.json` (a missing comma, an unknown key, a path not on disk) and rewrites the two files that copy it.
+The first two must print nothing. A syntax error there blanks the whole site, because the page cannot read its own content — a trailing comma in the wrong place is the usual cause. `sync-links.js` names every problem in `links.json` (a missing comma, an unknown key, a key that is not a slug, a path not on disk) and rewrites `mail/catalog.json`.
 
-`check-grammar.js` must print `OK`. It asserts that every product still fills every slot of the component grammar (see `VISUAL-GRAMMAR.md`): hero image, problem/solution pair, 1–4 metric tiles with their note, ROI band, 6–8 short feature lines each landing in exactly one workflow step, 3–5 steps, 3–6 industry cases with keys from the fixed set, the at-a-glance side facts, in/out of scope, the four-step flow, the 4–5 layer solution stack with a Required item in every layer and both an inbound and an outbound integration, and the POV fact strip. Site-wide it also asserts the contact card, the `contacts` tab and the absence of the retired `demo` tab. It also fails on any banned string — internal vocabulary or an uncleared customer name — reaching the data layer. Since round 12 it also holds the links and the emails: `links.json` valid and complete, its two copies current, no retired link field back, the kit's domains identical in `config.js` and `mail/settings.json`, no endpoint committed, and every email rendering with no token left unfilled (`mail/README.md`). It exits non-zero and names each failure.
+`check-grammar.js` must print `OK`. It asserts that every product still fills every slot of the component grammar (see `VISUAL-GRAMMAR.md`): hero image, problem/solution pair, 1–4 metric tiles with their note, ROI band, 6–8 short feature lines each landing in exactly one workflow step, 3–5 steps, 3–6 industry cases with keys from the fixed set, the at-a-glance side facts, in/out of scope, the four-step flow, the 4–5 layer solution stack with a Required item in every layer and both an inbound and an outbound integration, and the POV fact strip. Site-wide it also asserts the contact card, the `contacts` tab and the absence of the retired `demo` tab. It also fails on any banned string — internal vocabulary or an uncleared customer name — reaching the data layer. Since round 12 it also holds the links and the emails: `links.json` valid and complete, no copy of it stored and none of its links repeated in another file (round 15), the email's catalog current, no retired link field back, the kit's domains identical in `config.js` and `mail/settings.json`, no endpoint committed, and every email rendering with no token left unfilled (`mail/README.md`). It exits non-zero and names each failure.
