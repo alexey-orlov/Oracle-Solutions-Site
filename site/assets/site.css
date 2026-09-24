@@ -148,7 +148,7 @@
 .cut,
 .ptile, .case-card, .ways, .way-mark, .pillar, .contact-card, .contact-photo,
 .panel--gate, .panel--kit, .panel--cta, .stat-tile, .stat-tile-mark,
-.bo-band, .bo-tile, .bo-tile-mark, .gtile, .modal-panel, .empty, .segmented, .fact-row,
+.bo-band, .bo-tile, .bo-tile-mark, .gtile, .gtile-window, .modal-panel, .empty, .segmented, .fact-row,
 .step-frame, .video-card, .stack-tag, .cap-tag, .case-medallion, .step-index,
 .stepper-num, .gate-mark, .form-confirm-mark, .media-figure, .case-callout,
 .light-band-media, .modal-panel--media, .way--photo, .tip::after {
@@ -162,7 +162,7 @@
 
 /* Cards and panels take the 8px cut; the big plates take 12px. */
 .ptile, .case-card, .ways, .pillar, .contact-card, .contact-photo,
-.panel--gate, .panel--kit, .panel--cta, .stat-tile, .bo-tile, .gtile, .modal-panel,
+.panel--gate, .panel--kit, .panel--cta, .stat-tile, .bo-tile, .gtile, .gtile-window, .modal-panel,
 .empty, .segmented, .fact-row, .step-frame, .video-card {
   --cut: var(--cut-8);
 }
@@ -3667,6 +3667,79 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .ladder3-step::before { top: 0; bottom: -1.75rem; left: 0; right: auto; width: 1px; height: auto; }
   .ladder3-step:last-child::before { bottom: 0; right: auto; }
   .ladder3-dot { top: .3125rem; left: -.1875rem; margin-top: 0; }
+}
+
+/* Round 16: the stacked S4. The track takes the full width, five across; the
+   reasons follow it as a list, and the button closes the screen. */
+.deliver.deliver--stacked { display: flex; flex-direction: column; gap: 0; }
+.deliver--stacked .deliver-note { margin-top: 1.5rem; }
+.deliver--stacked .deliver-why { margin-top: 4rem; gap: 1.5rem; }
+.deliver--stacked .deliver-cta { margin-top: 3rem; }
+
+.ladder3--five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+/* Five columns are ~166 px at 1024, too narrow for a step's body, so the
+   five-stage track turns vertical there rather than at 720. */
+@media (max-width: 1024px) {
+  .ladder3--five { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; column-gap: 0; row-gap: 1.75rem; }
+  .ladder3--five .ladder3-step { display: flex; flex-direction: column; grid-row: auto; padding-top: 0; padding-left: 1.25rem; }
+  .ladder3--five .ladder3-step::before { top: 0; bottom: -1.75rem; left: 0; right: auto; width: 1px; height: auto; }
+  .ladder3--five .ladder3-step:last-child::before { bottom: 0; right: auto; }
+  .ladder3--five .ladder3-dot { top: .3125rem; left: -.1875rem; margin-top: 0; }
+  .ladder3--five .ladder3-body { max-width: 44rem; }
+}
+
+/* "Why SoftServe on Oracle" as the reference's "Our Expertise" list: rows on
+   white between hairlines, no fill and no cut, so the three reasons read as an
+   argument rather than as boxes. The blue-tint well is the one decorative
+   colour the system allows, and it is the block's only colour. Wide: well ·
+   title · body; the title and the body stack in one column from 1024 down. */
+.pillars.pillars--list { display: block; }
+.pillars.pillars--list .pillar {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 2fr);
+  column-gap: 2.5rem;
+  align-items: start;
+  padding: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  background: none;
+  clip-path: none;
+}
+.pillars.pillars--list .pillar:last-child { border-bottom: 1px solid var(--border-subtle); }
+.pillars.pillars--list .pillar-mark { width: 3rem; height: 3rem; color: var(--text); }
+.pillars.pillars--list .pillar-mark .icon { width: 1.5rem; height: 1.5rem; }
+.pillars.pillars--list .pillar-copy { display: contents; }
+.pillars.pillars--list .pillar-title {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text);
+}
+.pillars.pillars--list .pillar-text {
+  max-width: 40rem;
+  font-size: var(--fs-body);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: var(--text-body);
+  text-wrap: pretty;
+}
+
+@media (max-width: 1024px) {
+  .pillars.pillars--list .pillar { grid-template-columns: 3rem minmax(0, 1fr); }
+  .pillars.pillars--list .pillar-copy { display: flex; flex-direction: column; gap: .5rem; }
+  .pillars.pillars--list .pillar-title { font-size: 1.5rem; }
+}
+
+@media (max-width: 540px) {
+  .pillars.pillars--list .pillar { grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: 1rem; padding: 1.5rem 0; }
+  .pillars.pillars--list .pillar-mark { width: 2.5rem; height: 2.5rem; }
+  .pillars.pillars--list .pillar-mark .icon { width: 1.25rem; height: 1.25rem; }
+  .pillars.pillars--list .pillar-title { font-size: 1.375rem; }
 }
 
 /* ——— S5: the engagements behind the products ——— */
