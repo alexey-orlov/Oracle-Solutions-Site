@@ -136,7 +136,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
 | Shape | radii, `9999px` pills | **octagonal `clip-path` cuts** 4/8/12 px; `border-radius: 0` but inputs (2 px) and dots |
 | Elevation | glows | **surface steps**; no shadow, no lift, no press-scale |
 | Fact vs filter pill | filled navy is a fact, outlined is a filter | filled grey is a fact, outlined is a filter, blue tint is **selected** |
-| Heading budget | H1 2-4 words, ≤ ~24 chars a line | H1 ≤ 15 chars a line × 2 (the home H1 is the exception: three short sentences, each on its own line — four lines at 375, five at 320); product name ≤ 22 × 2; **H2 ≤ 30, now enforced** — the three home H2s round 9 rewrote fail over it, the rest warn |
+| Heading budget | H1 2-4 words, ≤ ~24 chars a line | H1 ≤ 15 chars a line × 2 (the home H1 is the exception: three short sentences, each on its own line — four lines at 375, five at 320); product name ≤ 22 × 2; **H2 ≤ 30, now enforced** — the S2, S3, S4 and S5 home H2s fail over it, the rest warn |
 
 Holding for both: 1.5 px line icons and no emoji · peers are equal height · an address is
 a link, never a filled button, and a filled button is the screen's one ask · copy sits on
@@ -274,7 +274,7 @@ Exact commands are in HANDOFF §4.
   - *Oracle AI for Fusion Applications* on the stack and Services but not as a catalog filter;
   - the Services platform cards re-ordered to the canonical order;
   - two groups with no product today (Transaction & process execution · Video & image intelligence), whose tiles land on the catalog's empty state;
-  - two home H2s still over the 30-character budget (delivery, about) — warned, not failed.
+  - one home H2 still over the 30-character budget (about) — warned, not failed. The delivery H2 came inside it in round 16.
 - **Round 10 (§29.6):**
   - the same ask still has three other phrasings **outside the product pages** — Home
     S7 *Send a request* / *Send the request*, Services *Let's talk* / *Request a
@@ -307,7 +307,7 @@ Exact commands are in HANDOFF §4.
   - **the follow-up:** the kit email promises *"Someone from SoftServe will contact you shortly"*: who does it, and how fast;
   - **the manifest's extra rows** (Account insights' accelerator-pack one-pager, the two AI Lakehouse decks, the Marketplace package) have no slot in the standard kit.
 - **Round 13 (§33.4):**
-  - **publishing:** the shared link still shows the site before round 12. Rounds 12–15 go out together from HEAD when Alex says so, with `data/links.js` built by `tools/site_links.py` (§6) and never `data/endpoint.local.json` or the whole folder;
+  - **publishing:** the shared link still shows the site before round 12. Rounds 12–16 go out together from HEAD when Alex says so, with `data/links.js` built by `tools/site_links.py` (§6) and never `data/endpoint.local.json` or the whole folder;
   - **the three new faces** are matched by the directory's own name key (`ASSETS.md` §3.2), not by eye; a wrong one is fixed by blanking its `photo`;
   - **Vlad or Vladyslav:** the directory's name is *Vladyslav Butenko*, and the site prints *Vlad*, Alex's word;
   - **Home S7 and Services** still name Karsten alone.
@@ -318,6 +318,18 @@ Exact commands are in HANDOFF §4.
 - **Round 15 (§35.4):**
   - **opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, because `site/` stores no copy of the links; `tools/serve.py` and a publish are the two ways it gets them;
   - **the packaging plugin** (`oracle-packs-web`) still says `sync-links.js` writes `data/links.js`. Until its references follow round 15, a publish it drives takes `data/links.js` from the manifest's `paths.buildSiteLinks` and `paths.siteLinks`.
+- **Round 16 (§36.6):**
+  - **products or apps:** Alex's drafts said *apps* and *applications*; the site kept *products* everywhere, and a rename is site-wide;
+  - **one floor, two ways on the home page:** *from 30 days* (the hero tile, the S2 bullet) beside *From 4 weeks* (the Jumpstart stage);
+  - **ranges elsewhere:** the seven Jumpstart tabs and Services still state 4–8 weeks, 3–5 months and 3–12 months. They agree with the floors, and the floor wording can go site-wide on Alex's word;
+  - **the hero stack** shows four service tiles while the track has five stages: add a Workshop tile, or leave the stack to the paid tiers;
+  - **S2's H2** is *A head start that scales.* rather than Alex's noun list (the literal polish: *Agents, apps and services*);
+  - **two figure words:**
+    - *Same-day insight*, where *Same-day opportunity* is more precise but likely two lines;
+    - *Variances traced*, where the bolder time shape is *Hours, not weeks*;
+  - **the floors are commitments:** *From 4 weeks* and *From 3 months* want delivery's sign-off;
+  - **the Oracle-power claim** sits three times on the page (the hero lead, the S2 left body and its third bullet), as before the round;
+  - **publishing** carries the three redrawn `assets/img/groups/*.svg`; check with `list_files` that the four stage photographs are on the artifact.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
@@ -334,7 +346,7 @@ Exact commands are in HANDOFF §4.
 | `docs/SCHEMA.md` | You add, rename or retire a `content.js` key |
 | `docs/CONFIG.md` | You touch a switch in `config.js` |
 | `docs/VISUAL-GRAMMAR.md` | You change a component or a page composition |
-| `docs/PROVENANCE.md` | You need a fact's source or a round's decisions (§18 home, §20 name, §21 and §23 Services, §24 sales kit, §25 START-HERE, Internal panel and logos, §27 the SS26 theme, §28 the home page re-argued — three layers, six groups, Artifacts — §29 the product pages — one contact ask, the Use cases tab, the stepper — §30 the home page's photographs and the two "Hours" figures — §31 the move to this repository — §32 the forms' email and `links.json` — §33 the product leads on the Contacts card — §34 the footer — §35 one links file, nothing copied). At 6,000 lines, search it; don't read it top to bottom. |
+| `docs/PROVENANCE.md` | You need a fact's source or a round's decisions (§18 home, §20 name, §21 and §23 Services, §24 sales kit, §25 START-HERE, Internal panel and logos, §27 the SS26 theme, §28 the home page re-argued — three layers, six groups, Artifacts — §29 the product pages — one contact ask, the Use cases tab, the stepper — §30 the home page's photographs and the two "Hours" figures — §31 the move to this repository — §32 the forms' email and `links.json` — §33 the product leads on the Contacts card — §34 the footer — §35 one links file, nothing copied — §36 the home page re-voiced: the promise in the hero, tiles on a stage, five stages). At 6,000 lines, search it; don't read it top to bottom. |
 | `docs/SS26-THEME.md` | You touch either theme: what the current SoftServe brand is, the token map, the shape and colour rules, the fonts, and what is open |
 | `docs/ASSETS.md` | You work on images, step frames or posters, and how they were made |
 | `docs/HANDOFF-workforce-demo.md`, `docs/HANDOFF-erp-qa-demo.md` | You work on a walkthrough; each is owned by its own session |
