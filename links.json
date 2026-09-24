@@ -18,17 +18,17 @@
       "video": ""
     },
     "account-insights": {
-      "onePager": "",
-      "salesDeck": "",
-      "featureList": "",
+      "onePager": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQBmRDm6WVVKS5kFzwsO8dg_AW6Fb4yuFsrvvwke3dEn7P4?e=4bGqkF",
+      "salesDeck": "https://softserveinc-my.sharepoint.com/:f:/p/olekorlov/IgAhayxwbIf1QIcz3m3jwrWPAYKdzl0dgQm82I0Ui9kRaJ0?e=cJAJ74",
+      "featureList": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQBskCX_mH3ORosST1NhtKW4AbWikAJNwcq6yL5baDXcxvI?e=RrxH8e",
       "interactiveDemo": "",
       "interactiveDemoArtifact": "",
       "video": ""
     },
     "workforce-optimization": {
-      "onePager": "",
-      "salesDeck": "",
-      "featureList": "",
+      "onePager": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQAznOCouOSsS4nufMwfmf9vAccy3FPz93Lt4S6VaR6z2yc?e=YAN9zE",
+      "salesDeck": "https://softserveinc-my.sharepoint.com/:p:/p/olekorlov/IQClItO9rnZoSavUcqCKMKbkAW7YEybgsVcJD3scxY46nuE?e=tHDh5q",
+      "featureList": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQB64RiDmXzGQrEJQAjedXbjATwJTRaeYt8XH9yFKC-l15o?e=eVZC5Y",
       "interactiveDemo": "demo/workforce-optimization/index.html",
       "interactiveDemoArtifact": "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
       "video": ""
