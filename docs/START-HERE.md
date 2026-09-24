@@ -2,7 +2,7 @@
 
 Read this page first in every new session. It holds what the site is for, the brief and the rules it is built to, how a round of work runs, and what earlier rounds learned the hard way. Detail lives in the docs mapped in §10. Keep this page current: when a requirement, rule or procedure changes, rewrite the line — never append a dated update.
 
-Current as of 2026-09-24, after round 15: `links.json` is the only file that stores a link. The local server and a publish build the site's `data/links.js` from it, the email reads it from GitHub, and the checker fails a stored copy or a link repeated anywhere else (PROVENANCE §35). Round 14 made the footer softserveinc.com's, cut down, with no Oracle or NVIDIA marks (§34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 15 are not on the shared link yet** (§9).
+Current as of 2026-09-24, after round 16: the home page was re-voiced. The hero lead is the promise; S2 is *What we offer*; S3's tiles sit on photographic stages; S4 is five stages, Workshop to Managed services, stated as floors with no caveat, with the Why list below the track (PROVENANCE §36). Round 15 made `links.json` the only file that stores a link. The local server and a publish build the site's `data/links.js` from it, the email reads it from GitHub, and the checker fails a stored copy or a link repeated anywhere else (PROVENANCE §35). Round 14 made the footer softserveinc.com's, cut down, with no Oracle or NVIDIA marks (§34). Round 13 named each product's own lead beside Karsten on its Contacts card and cut two labels (§33). Round 12 made the forms send real email: the sales kit goes out automatically, every request reaches the practice inbox, and every kit link lives in one file, `links.json` (§32). Round 11, the home page, is §30. On 2026-09-23 the site moved out of AO-Personal-OS into its own repository (§31). **Rounds 12 to 16 are not on the shared link yet** (§9).
 
 ## 1. What it is
 
@@ -48,7 +48,12 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
   - Ready-made solutions, fast proofs of value and a dedicated practice.
   - We offer products *and* services.
 - **Commitments and disclosures:**
-  - A proof of value is stated **two ways, on purpose** (round 9): **4–8 weeks** in every piece of scope copy — the delivery ladder, the seven product Jumpstart tabs, Services — and **"from 30 days"** as the hero's one figure, the *from* set small beside it. Both are still to be agreed with delivery. `tools/check-grammar.js` fails any other duration in scope copy, and fails the hero tile if it is anything but `{ prefix: "from", value: "30 days" }`.
+  - A proof of value is stated **three ways, on purpose**:
+    - **4–8 weeks** in the scope copy of the seven product Jumpstart tabs and Services (round 9);
+    - **"from 30 days"** as the hero's one figure, the *from* set small beside it (round 9);
+    - **floors on the home track** since round 16 (Alex): *From 4 weeks* for the Jumpstart, *From 3 months* for Integration and for Scaling, with no caveat row.
+
+    All of them are still to be agreed with delivery. `tools/check-grammar.js` fails any other proof-of-value duration, a range on the home track, and a hero tile that is anything but `{ prefix: "from", value: "30 days" }`.
   - The proof-of-value price is the only price on the site. Every other package price goes in the sales materials.
   - No customer names, because no customer has confirmed we may use theirs.
   - The catalog holds both existing and planned products.

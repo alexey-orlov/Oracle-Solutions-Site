@@ -6316,3 +6316,151 @@ The list is repeated in START-HERE §9.
 - **The packaging plugin** still says `sync-links.js` writes `data/links.js`; its references should follow round 15.
 
 START-HERE §9 carries the kit items under round 12 and the rest under round 15; the preview servers need only a restart.
+
+## 36. Round 16 — the home page re-voiced: the promise in the hero, tiles on a stage, five stages, 2026-09-24
+
+**The asks** (Alex, in session, 2026-09-24). The first came alone; the rest followed mid-task under *"treat as drafts, should polish word choice, length etc. as a best brand copy writer / marketer"*.
+
+1. Hero one-liner: *"rephrase to smth like 'Leading enterprise AI practice, accelerated delivery methodoloy combined with the power of Oracle data & cloud solutions ensure company really accelerate their time-to-value with AI.', Polish and build it as a top notch brand marketer would do"*
+2. *"Products, services, one team. -> Agents, apps and packaged services to accelerate time-to-value"*
+3. *"Two ways in -> What we offer"*
+4. *"Start from the job to be done -> Applications to kick-off your AI adoption"*
+5. *"'Every group is a family of agents and human-AI workflows...' -> remove"*
+6. *"Background of product category tiles on the main page -> not to be grey; stay closer to softserveinc.com and subpages as a reference"*
+7. *"'Prove it on your data first, then take it to production.' - Delivery methodology focused on accelerating time-to-value"*
+8. *"To the stages: add 1st stage 'Workshop' where we discover use case, define the fastest path to prove value on the real data + play with the pre-built apps to understand how it fits the need."*
+9. *"Add last stage - managed service (in the description make clear that customer MAY (but not SHould) opt for it)."*
+10. *"4-8 weeks, 3-5months, 3-12 months -> say 'from 4 weeks', from 3 months."*
+11. *"'Figures are illustrative and confirmed in scoping.' -remove disclaimer"*
+12. *"Why SoftServe on Oracle blocks - make them below the timeline block, find better reference on our reference website / general approaches to make this block look not so boring/grayish/ more appealing; think as web designer."*
+13. *"Case studies: 'Same day', '+4/5%'... add a single word to each title metric, so that it reads clearly when I just look through the titles (4.5% of what? same day what?)"*
+
+**Split.** Fable: one compact pass (one agent, three messages: the hero line, then all copy, then the two design decisions), working from Opus briefs in the session scratchpad. Opus (this session): the briefs, the softserveinc.com measurements, the review of Fable's copy and spec, the build, the checker, the QA and these docs.
+
+### 36.1 What changed
+
+| Where | Before | After |
+|---|---|---|
+| Hero lead | *"One team that knows AI and Oracle's platforms to the same depth, so you get the full power of Oracle AI — proven on your own data in a fixed-scope Jumpstart, then taken to production in your tenancy."* | *"SoftServe's leading AI practice and fast-track method, combined with the full power of Oracle's data and cloud platforms, accelerate your time to value."* Three lines at 1440 (was four), four at 375 (was five) |
+| S2 eyebrow · H2 | *Two ways in* · *Products, services, one team.* | *What we offer* · *A head start that scales.* |
+| S2 left body | *"…that embody the expertise of their industry…"* | *"…that embody the know-how of their industry…"* |
+| S2 right body | *"With a large, dedicated practice of experts in both AI and Oracle, and a delivery method proven with Fortune 500 customers over decades, we accelerate your time to value with AI."* | *"With a large, dedicated practice of experts in both AI and Oracle, and a delivery method honed with Fortune 500 customers, we take your first use case into production in your tenancy, then across the business."* |
+| S3 H2 · lead | *Start from the job to be done* · *"Every group is a family…"* | *Kick off your AI adoption.* · none |
+| S3 tiles | a grey tile (`#edf0f2`) over a grey band (`#e1e7eb`) holding the UI | a white tile with a 1 px hairline (the S5 card's construction). The band is a stage: a chrome photograph under a flat `.22` veil, and the UI as a white 8 px-cut window at 14 % / 20 % that bleeds off the right and the bottom. Hover scales the photograph only |
+| S3 placeholders | `#edf0f2` ground, window outline, interior | the interior only, scaled to fill the viewBox: the tile draws the frame |
+| S4 H2 | *Prove it on your data first, then take it to production.* | *The method behind the speed.* |
+| S4 track | three steps in a 60 % column, and a footnote | five stages across the full width: **Workshop** (*Time-boxed*) · **Jumpstart proof of value** (*From 4 weeks*) · **Integration** (*From 3 months*) · **Scaling** (*From 3 months*) · **Managed services** (*For as long as you choose*). No footnote. Vertical at 1024 and below |
+| S4 Why | three `#edf0f2` cards in a right-hand column | a hairline list below the track: the icon well · the title in Replica 28/400 · the body at `--fs-body` 300. Title and body stack at 1024 and below |
+| S4 pillar 2 | *"…tested on real enterprise data, with evaluation, guardrails and governance hardening available on every engagement."* | *"…tested on real enterprise systems, with evaluation, guardrails and governance hardening on every engagement."* |
+| S4 button | *Explore the services* → `#/services` | *See the full method* → `#/services#how-we-engage` |
+| S5 figures (the home card and the product callout together) | *+4.5%* · *5–15 min* · *Same day* · *Every variance* | *+4.5% productivity* · *5–15 min a contract* · *Same-day insight* · *Variances traced*. Two labels trimmed: *"to extract 60–100 pages end to end, down from 3–5 days"* and *"each to its schedule, cost or contract source, in hours of expert time rather than weeks"* |
+| Services track | Discovery · Jumpstart proof of value · Integration · Scaling, with the managed service inside Scaling | the home track's five stages under the same names. Five across at 1440 with bodies at `--fs-sm`; vertical at body size from 1280 down. The footnote's *"Both ends are optional"* sentence is rewritten for five stages |
+| Data | — | `facets.categories[].stage { file, focal }`. Removed: `overview.catalog.lead`, `overview.delivery.footnote` |
+| Checker | — | 36.4 |
+| Manifest | contract round 15 | 16 |
+
+The six stages: *Enterprise knowledge & analytics* on `heroes/business-metrics-qa.jpg` · *Deep research & investigation* on `heroes/case-evidence-collection.jpg` · *Document processing* on `heroes/large-document-extraction.jpg` · *Transaction & process execution* on `industries/energy.jpg` · *Forecasting & optimization* on `heroes/workforce-optimization.jpg` · *Video & image intelligence* on `industries/automotive.jpg`. Each is a group's own product hero where the group has a product, and a chrome render otherwise.
+
+### 36.2 Decisions
+
+- **The hero lead is the promise, not the procedure.**
+  - Alex's draft names three assets and one outcome. The old lead walked through the delivery mechanics (a fixed-scope Jumpstart, production in your tenancy), which S4 owns.
+  - The polish keeps his order and his two verbs, *combined* and *accelerate*.
+  - Speed moves into the method (*fast-track*), so *accelerate* is said once.
+  - It drops *with AI* (the H1 above supplies it) and *enterprise* (the H1's first word).
+  - It pairs *SoftServe's* with *Oracle's*, as the eyebrow pairs *SoftServe × Oracle*.
+  - *Leading* stays as his credential, and the proof strip under the hero backs it.
+- **The promise is said once, big.** Alex's drafts put *accelerate time-to-value* in the hero and in two H2s, over an S2 bullet that already said it. No claim sits in more than two places, so the phrase belongs to the hero and the bullet; the checker counts it. Each heading carries its own facet of the speed: *A head start that scales.* (S2), *Kick off your AI adoption.* (S3), *The method behind the speed.* (S4).
+- **S2's H2 names no nouns.** The panels under it are titled *Enterprise AI agents and workflows* and *Expert services, from proof to scale*, so *"Agents, apps and services"* over them would be a third label for the same two things. *Packaged* is retired vocabulary (Alex, 2026-09-16).
+- **"Products" stays the word.** The drafts said *apps* and *applications*. The nav, the S3 eyebrow, the stack label and five links say *products*, so the S3 H2 drops the noun (the eyebrow says it) and the Workshop says *the products*. A site-wide rename is Alex's call (36.5).
+- **The right S2 body keeps Alex's round-11 shape** (*with* the practice and the method, *we* …).
+  - Only the payoff changes, because the hero owns it now. It says what the services do instead: the first use case into production, in your tenancy, then across the business.
+  - *In your tenancy* is the home page's one statement of that fact now that the hero no longer makes it.
+  - *Proven* became *honed*, because the screen already said *proof* twice (the title, the first bullet).
+- **Tiles: the colour comes from photographs.** Measured on softserveinc.com/en-us/services/artificial-intelligence at 1440 on 2026-09-24:
+  - the Solutions cards are a photograph over an `#edf0f2` body and never read grey, because the photograph carries the colour;
+  - "Artificial Intelligence in Practice" sets white cards on an `#edf0f2` band;
+  - the hero and the KPI band use chrome renders.
+
+  The tiles take the S5 card's construction and a stage. Alex's round-9 rule for the tile image (a walkthrough layout, or a placeholder) still holds, inside the window.
+- **Why SoftServe: a list, not cards.** Under a five-column track, three columns fight the grid; the reference's "Our Expertise" is a hairline list, title left and description right.
+  - No fill, no cut.
+  - The blue-tint well is the block's one colour: the one decorative tint SS26 allows.
+  - No tick: orange is spent on the H1 and blue means action.
+  - No figures: the cleared ones already sit in the hero strip.
+- **Five stages on both pages.** The Services track must equal the home track stage for stage, so *Discovery* became *Workshop* there too (one word for one thing), and the managed service left Scaling on both pages. *Managed services* matches the hero stack's fourth tile.
+- **Floors, no caveat.** *From 4 weeks* and *From 3 months* are true as stated, so nothing replaces the footnote Alex removed. The Workshop and the managed service carry no invented number: *Time-boxed*, *For as long as you choose*.
+- **One noun per figure**, Alex's single word: *productivity*, *a contract*, *insight*, *traced*. *Every variance* could not take a word inside the figure's one-line budget, so its coverage moved into the label (*"each to its schedule…"*).
+- **The S4 button.** A stage titled *Managed services* put *services* on the screen three times (the eyebrow, the stage, *Explore the services*). The button now reads *See the full method* and opens the Services page at the method (`#how-we-engage`), which is what the label promises.
+
+### 36.3 Decided differently from the Fable spec
+
+1. **The tile window sits at 14 % / 20 %, not 7 % / 11.2 %.** At 28 px the photograph read as a dark frame around the UI, the failure the spec itself names (*"enough of the photograph shows to carry the tile"*). At 56 × 50 px (in a 400 × 250 band) it reads as a stage.
+2. **The placeholder transform is `scale(1.2295) translate(-72 -56)`.** The spec's `translate(-72,-56) scale(1.2295)` scales first and leaves a 16 px gap at the top left.
+3. **The S2 right body is Alex's round-11 sentence with its payoff swapped** (36.2), not Fable's two sentences (*"You get … We take your first use case from pilot to production …"*), which dropped his shape and echoed the title's *from … to*.
+4. **The S4 button's route** moved to `#/services#how-we-engage`, so *See the full method* lands on the method.
+5. **The five-up step bodies stay at `--fs-sm`.** The spec's 18 px would lengthen them; at 16 px they run six lines at 1440 and eight at 1280.
+6. **The tiles keep their breakpoints**: three across down to 900 px, two down to 560 (the spec said 1024 and 540). At 1024 a tile is 293 px wide, and the window keeps a clear margin.
+
+### 36.4 The checker
+
+New assertions:
+- **Hero lead.** It carries *time to value*, and names no stage, scope or hosting word (*Jumpstart*, *proof of value*, *Workshop*, *Integration*, *Scaling*, *tenancy*, *fixed-scope*, *fixed price*).
+- **Home page.** *Time to value* appears at most twice.
+- **S3.** The lead is gone, and each group's `stage` is a photograph under `heroes/` or `industries/`, on disk, with a two-percentage focal point.
+- **S4 stages.** Exactly five, under the five names in order.
+- **Managed services.** The stage says the customer may choose it, and never *should*, *must*, *need to*, *recommended* or *required*.
+- **S4 durations and caveat.** No footnote. The Jumpstart's fact is *From 4 weeks*, Integration's and Scaling's are *From 3 months*, and no stage states a range.
+- **S4 order.** `delivery()` renders the track, then the Why list, then the button.
+- **Services track.** It is the home track stage for stage, and *Discovery* fails.
+- **Grey fills.** `.gtile` rests white with a 1 px hairline, and the Why rows carry no fill.
+- **The S4 H2** now fails over 30 characters instead of warning.
+
+The round-7 duration rule is narrowed: the ranges still hold on the seven Jumpstart tabs and on Services.
+
+### 36.5 Checks
+
+- `node --check` passes on the five changed scripts. The checker prints OK with the two known warnings, the About H2's length and the Internal panel.
+- **Negative test.** Two scratch copies carry 12 injected faults, and each one fails (16 failures; some faults trip two rules):
+  - a procedure word, and no promise, in the hero lead;
+  - the S3 lead back;
+  - the S4 footnote back;
+  - *should* in the managed-services body;
+  - a range on the Jumpstart;
+  - *Discovery* on Services;
+  - *time to value* three times;
+  - a tile with no stage;
+  - a grey tile;
+  - a filled Why row;
+  - the Why list out of order;
+  - a missing Workshop.
+- **In the browser**, on `tools/serve.py` at port 64654 (8765 was held by another session), at 1440, 1280, 1024, 768, 375 and 320:
+  - the hero lead runs three lines at 1440, 1024 and 768 and four at 1280 and 375, and never ends on a lone word;
+  - the three new H2s hold one line from 768 up and two balanced lines at 375;
+  - S3 is 3 × 2 above 900, 2 × 3 down to 560 and one column below, and every stage photograph and window image loads;
+  - S4 runs five across above 1024 (230 px a stage at 1440, 198 at 1280) and turns vertical at 1024 and below. The Why rows span the content width: the old column's `align-items: start` had shrunk them, and the build fixed it. The button comes last;
+  - S5's four figures hold one line at every width;
+  - the Services track runs five across at 1440 and vertical at body size at 1280;
+  - nothing overflows horizontally at any width on Home or Services, and the H1 holds five lines at 320;
+  - the console is clean and no image is broken on ten routes;
+  - the deny-list grep returns nothing.
+- **Not published.** Rounds 12 to 16 go out together from HEAD when Alex says so. That publish carries the three redrawn SVGs under `assets/img/groups/`. The stage photographs are existing files; confirm with `list_files` that `heroes/business-metrics-qa.jpg`, `heroes/case-evidence-collection.jpg`, `industries/energy.jpg` and `industries/automotive.jpg` are on the artifact.
+- **Commits.** git-autosync swept the code into `autosync:` commits (19:30–19:41). The docs are committed as `docs:`.
+
+### 36.6 Open for Alex
+
+1. **Products or apps.** Your drafts said *apps* and *applications*; the site kept *products* (the nav, the S3 eyebrow, the stack label, five links). A rename is site-wide.
+2. **One floor, said two ways on one page.** The hero tile and the S2 bullet say *from 30 days*; the Jumpstart stage says *From 4 weeks*. Say which the home page keeps.
+3. **Ranges elsewhere.** The seven Jumpstart tabs and the Services page still say 4–8 weeks, 3–5 months and 3–12 months, under your round-7 rule. They agree with the floors, and the floor wording can go site-wide if you want it.
+4. **The hero stack** shows four service tiles (Jumpstart, Integration, Scaling, Managed services), while the track now has five stages: add a Workshop tile, or leave the stack to the paid tiers.
+5. **S2's H2** is *A head start that scales.* rather than your noun list. The literal polish would be *Agents, apps and services* (25 characters).
+6. **Two figure words are judgment calls:**
+   - *Same-day insight*: *Same-day opportunity* is more precise, but it is 20 characters and likely two lines;
+   - *Variances traced*: the bolder time shape is *Hours, not weeks*.
+7. **The floors are commitments.** *From 4 weeks* and *From 3 months* want delivery's sign-off, as the 4–8 weeks did (§23.4).
+8. **The Oracle-power claim is made three times on the page**, as it was before this round:
+   - the hero lead;
+   - the S2 left body (*"the full power of Oracle's AI platforms"*);
+   - its third bullet (*"The best of Oracle's AI platforms, built in"*).
+
+The list is repeated in START-HERE §9.
