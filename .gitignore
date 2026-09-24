@@ -3,6 +3,8 @@
 .work/
 # this machine's form endpoint for local runs: a live trigger URL, never committed or published
 site/data/endpoint.local.json
+# the site's view of links.json is built when asked (tools/site_links.py), never stored
+site/data/links.js
 node_modules/
 __pycache__/
 # generated from the practice deny-list (oracle-packs shared/tools/denylist.txt); holds customer names

@@ -20,13 +20,23 @@ var sandbox = { window: {} };
 vm.createContext(sandbox);
 /* brand.js first: it defines brandAsset(), which content.js calls to resolve
    every logo path through the active theme (site/assets/brand.js). */
-["site/assets/brand.js", "site/data/content.js", "site/data/config.js", "site/data/links.js"].forEach(function (rel) {
+["site/assets/brand.js", "site/data/content.js", "site/data/config.js"].forEach(function (rel) {
   vm.runInContext(fs.readFileSync(path.join(root, rel), "utf8"), sandbox, { filename: rel });
 });
+/* Round 15: the site's view of links.json is never a file. tools/site_links.py
+   builds it when asked (tools/serve.py on every request, a publish once), so the
+   checks below evaluate exactly what the site loads as data/links.js. */
+var SITE_LINKS_ERROR = "";
+try {
+  vm.runInContext(require("child_process").execFileSync("python3", [path.join(root, "tools/site_links.py")],
+    { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }), sandbox, { filename: "data/links.js (tools/site_links.py)" });
+} catch (error) {
+  SITE_LINKS_ERROR = String((error.stderr && String(error.stderr).trim()) || error.message || error).split("\n")[0];
+}
 
 var C = sandbox.window.SITE_CONTENT;
 var CFG = sandbox.window.SITE_CONFIG;
-/* Round 12: the site's copy of links.json (tools/sync-links.js). */
+/* The site's view of links.json: the walkthrough, its artifact copy, the video. */
 var LINKS = sandbox.window.SITE_LINKS || {};
 
 var INDUSTRIES = [
@@ -1837,26 +1847,75 @@ if (/request a demo/i.test(raw)) {
   }
 })();
 
+/* ---- round 15 · a link lives in links.json and nowhere else (Alex, 2026-09-24) ----
+   "A separate config file that stores the links, and they are not saved anywhere
+   else." The site reads links.json through tools/site_links.py and the kit email
+   reads it from GitHub, so no file keeps a copy: site/data/links.js may not exist
+   (a publish writes its own under .work/), .gitignore keeps a stray one out of
+   git, and no link from links.json may appear in any other file of the repo.
+   docs/PROVENANCE.md, the round log, may quote history. */
+(function () {
+  var stored = "site/data/links.js";
+  if (fs.existsSync(path.join(root, stored))) {
+    fail(stored, "a stored copy of links.json — delete it: tools/serve.py serves data/links.js from links.json, and a publish writes it with python3 tools/site_links.py --out .work/publish/data/links.js");
+  }
+  var ignored = "";
+  try { ignored = fs.readFileSync(path.join(root, ".gitignore"), "utf8"); } catch (error) { /* an empty list fails below */ }
+  if (ignored.split(/\r?\n/).map(function (line) { return line.trim(); }).indexOf(stored) === -1) {
+    fail(".gitignore", "must ignore " + stored + ", so a copy of links.json can never be committed");
+  }
+  var links;
+  try { links = JSON.parse(fs.readFileSync(path.join(root, "links.json"), "utf8")); }
+  catch (error) { return; /* the round-12 block names the problem */ }
+  var needles = [];
+  Object.keys(links.products || {}).forEach(function (slug) {
+    Object.keys(links.products[slug] || {}).forEach(function (key) {
+      var value = links.products[slug][key];
+      if (typeof value === "string" && /^https:\/\//i.test(value)) needles.push({ where: slug + "." + key, text: value.split("?")[0] });
+    });
+  });
+  var SKIP_DIRS = [".git", ".work", "node_modules"];
+  var ALLOWED = ["links.json", "docs/PROVENANCE.md"];
+  var TEXT = /\.(js|mjs|cjs|json|md|html|css|py|sh|txt|svg|ya?ml)$/i;
+  (function walk(dir) {
+    fs.readdirSync(path.join(root, dir || "."), { withFileTypes: true }).forEach(function (entry) {
+      var rel = dir ? dir + "/" + entry.name : entry.name;
+      if (entry.isDirectory()) { if (SKIP_DIRS.indexOf(entry.name) === -1) walk(rel); return; }
+      if (!TEXT.test(entry.name) || ALLOWED.indexOf(rel) !== -1) return;
+      var text = fs.readFileSync(path.join(root, rel), "utf8");
+      needles.forEach(function (n) {
+        if (text.indexOf(n.text) !== -1) fail(rel, "repeats the link in links.json " + n.where + " — name links.json instead: a link is stored there and nowhere else");
+      });
+    });
+  })("");
+})();
+
 /* ---- round 12 · one links file, and the kit emailed automatically (Alex, 2026-09-23) ----
    Every link a product's kit uses lives in links.json at the repo root, outside
-   site/, so the kit documents are never readable in the published files.
-   tools/sync-links.js derives the site's copy (data/links.js: the walkthrough,
-   its artifact copy and the video, nothing else) and the email's product
-   catalog (mail/catalog.json). A stale copy fails here, so no publish ships one,
-   and the retired per-product link fields may not come back in either data file. */
+   site/, so the kit documents are never readable in the published files. The
+   site sees only the walkthrough, its artifact copy and the video
+   (tools/site_links.py, round 15); tools/sync-links.js validates the file and
+   derives the email's product catalog (mail/catalog.json, names only). A stale
+   catalog fails here, and the retired per-product link fields may not come back. */
 (function () {
   var sync = require("./sync-links.js");
   var built = sync.build(root);
   built.errors.forEach(function (e) { fail("links.json", e); });
   if (!built.errors.length) {
     var staleFiles = sync.stale(root, built.files);
-    if (staleFiles.length) fail(staleFiles.join(", "), "stale against links.json or content.js — run node tools/sync-links.js");
+    if (staleFiles.length) fail(staleFiles.join(", "), "stale against content.js — run node tools/sync-links.js");
   }
+  if (SITE_LINKS_ERROR) fail("tools/site_links.py", "did not build the site's links (the checker runs it with python3) — " + SITE_LINKS_ERROR);
   Object.keys(LINKS).forEach(function (slug) {
     Object.keys(LINKS[slug] || {}).forEach(function (key) {
       if (sync.PUBLIC_KEYS.indexOf(key) === -1) {
-        fail("site/data/links.js", slug + "." + key + " is not one of the site's keys — the kit documents never enter site/");
+        fail("tools/site_links.py", slug + "." + key + " is not one of the site's keys — the kit documents never reach the site");
       }
+    });
+  });
+  (sync.PUBLIC_KEYS || []).forEach(function (key) {
+    Object.keys(LINKS).forEach(function (slug) {
+      if (typeof (LINKS[slug] || {})[key] !== "string") fail("tools/site_links.py", slug + "." + key + " is missing from the site's view of links.json");
     });
   });
   ["demoUrl", "demoPreviewUrl", "videoUrl", "materials"].forEach(function (key) {
