@@ -413,13 +413,14 @@ most five elements, strokes at least 14 units apart except at the spark, nothing
 x 376 or y 200 (the right and bottom edges are air), mass in the left three quarters.
 
 **The spark** is Fable's construction (round 17 design answer, D3): a hub and three
-tips — two on the line, 60 units from the hub, and the thorn, 60 to 90 — with each side
-a cubic from tip to tip whose controls sit **0.68** of the way from their tips to the
-hub. Fable's canonical weight was 0.82; measured beside the reference at tile scale, its
-thorn read lighter than the brand's, and 0.68 matches it. The tips on the line sit on a
-straight run (or on the circle itself, at chord 60), so the arms never peel off the
-line. Five drawings use the Y form, the line turning 60° at the hub; the video drawing
-uses the T, a straight run with its back-side controls pushed 4 units off the line.
+tips — the back and forward tips 60 units from the hub, and the thorn, 60 to 90 — with
+each side a cubic from tip to tip whose controls sit **0.68** of the way from their tips
+to the hub. Fable's canonical weight was 0.82; measured beside the reference at tile
+scale, its thorn read lighter than the brand's, and 0.68 matches it. A tip that lies on
+the line sits on a straight run (or on the circle itself, at chord 60), so the arms never
+peel off the line; in deep research the forward tip is free, because the line ends at the
+hub. Five drawings use the Y form, the arms 120° apart; the video drawing uses the T, a
+straight run through the hub with its back-side controls pushed 4 units off the line.
 
 **How they were made.** The reference graphic is `offer-card-placeholder.svg`, the
 same placeholder on every Offers tile across 16 softserveinc.com service pages checked
@@ -427,8 +428,11 @@ on 2026-09-25: the brand has no per-offer drawings, so these six are its line an
 applied to a subject. Fable wrote the six compositions in canvas coordinates; three
 Opus drawers produced first versions of four of them and then stalled, and the session
 finished all six as one program, so the family shares one spark construction, one
-weight and one crop: `scratchpad/r17-draw/draw.js` (not kept in the repo; the SVGs
-are self-contained). Each was checked on its fill at 400, 343 and 300 px wide.
+weight and one crop. **That program is `tools/draw-groups.js`**, and it is the way to
+change a drawing: edit its composition there and run `node tools/draw-groups.js`, which
+rewrites all six (`--sheet` also writes the 3 × 2 grid on the real fills at 400, 343 and
+300 px to `.work/group-sheets/`, square, for `qlmanage -t -s <side>`). Hand-editing one
+SVG drifts it from the family. Each was checked on its fill at those three widths.
 
 ---
 
