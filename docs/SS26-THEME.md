@@ -126,7 +126,7 @@ footer ink    #fafaf8 · footer glyphs #e0e0e0 (#ffffff on hover)
 1. **Blue is what you act on or what is selected**: buttons, links, the active
    tab and nav item, the selected filter, focus rings, the active step. Its tint
    `#c1dff4` is the selected surface and the only decorative tint (icon wells,
-   medallions, badges).
+   medallions, badges), besides the home group tiles' surface fills (below).
 2. **Orange is the accent line of a hero H1, once per page.** Its tint is the
    one fill it may make (`.chip--accent`). Never on a control, never as text
    below 24 px. A product name gets none (`.product-title .accent { color: inherit }`).
@@ -251,7 +251,7 @@ cuts an outline drawn outside the box. `prefers-reduced-motion` drops every scal
   above — no teal, no weight 600/800/900, no `--r-pill`/`--r-lg`/`--r-md`, orange
   spent at most three times, the five font files present and declared, the
   overlay loaded after `content.js`, `data-theme="light"`, a white `theme-color`,
-  no webfont service, and every re-casing still matching `content.js`.
+  no webfont service, every re-casing still matching `content.js`, and (round 17) the group tiles: painted by their tone's fill in the pinned order, no border or grey step, one `#1a1a1a` ink, and each drawing one ink at 1.75 px with one spark.
 - **Copy:** `content.js` is shared and must not change. Strings stored in
   capitals are re-cased by `data/content-case.js`, which patches 41 paths and warns
   (rather than silently overwriting) if a value has moved. The problem/solution
