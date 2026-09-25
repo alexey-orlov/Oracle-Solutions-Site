@@ -455,15 +455,20 @@ window.SITE_CONTENT = {
     categoryLabel: "What it does",
     /* Round 9 (Alex): six groups, one per kind of job, in this order on the
        hero stack, the home tiles and the rail. `chip` equals `full` — the tag
-       on a product page is the group's exact name, not a short form of it. */
+       on a product page is the group's exact name, not a short form of it.
+       Round 17 (Alex: tiles "colored / styled like Our offers tiles" on
+       softserveinc.com, each with a drawing of the group's own idea): `tone`
+       is the home tile's flat fill, four of the brand's fills in the order
+       A B C D A B, the one order where no two touching tiles share a fill in
+       the 3 x 2, 2 x 3 or one-column grid; `image` is the group's line drawing. */
     categories: [
       {
         id: "knowledge-analytics",
         chip: "Enterprise knowledge & analytics",
         full: "Enterprise knowledge & analytics",
         line: "Plain-language answers and analysis over your governed data, from the ERP to the systems around it, with the source behind every answer.",
-        image: "assets/img/groups/knowledge-analytics.jpg",
-        stage: { file: "assets/img/heroes/business-metrics-qa.jpg", focal: "50% 52%" },
+        image: "assets/img/groups/knowledge-analytics.svg",
+        tone: "blue",
         emptyState: "Knowledge and analytics assistants are scoped per engagement. Tell us the questions your teams ask, and which systems hold the answers."
       },
       {
@@ -472,7 +477,7 @@ window.SITE_CONTENT = {
         full: "Deep research & investigation",
         line: "Agents that read across your systems and outside sources and bring back a cited answer: an account brief, a case file, a variance explained.",
         image: "assets/img/groups/deep-research.svg",
-        stage: { file: "assets/img/heroes/case-evidence-collection.jpg", focal: "50% 42%" },
+        tone: "orange",
         emptyState: "Deep research agents are scoped per engagement. Tell us the question your people spend days answering."
       },
       {
@@ -480,8 +485,8 @@ window.SITE_CONTENT = {
         chip: "Document processing",
         full: "Document processing",
         line: "Long contracts and records turned into checked, structured data, every value traced to its page and approved by a reviewer.",
-        image: "assets/img/groups/documents.jpg",
-        stage: { file: "assets/img/heroes/large-document-extraction.jpg", focal: "50% 50%" },
+        image: "assets/img/groups/documents.svg",
+        tone: "blue-light",
         emptyState: "Document processing is scoped per engagement. Tell us the document type and the system it feeds."
       },
       {
@@ -490,7 +495,7 @@ window.SITE_CONTENT = {
         full: "Transaction & process execution",
         line: "Agents that carry a process step through to completion — an order, a claim, a ticket, a posting — inside your systems, with a person approving what moves.",
         image: "assets/img/groups/transactions.svg",
-        stage: { file: "assets/img/industries/energy.jpg", focal: "50% 50%" },
+        tone: "neutral",
         emptyState: "Transaction and process agents are scoped per engagement. Tell us the process step your people complete by hand today."
       },
       {
@@ -498,8 +503,8 @@ window.SITE_CONTENT = {
         chip: "Forecasting & optimization",
         full: "Forecasting & optimization",
         line: "Forecasts and plans computed against every constraint at once — demand, routes, shifts, allocations — for the people who own them to approve.",
-        image: "assets/img/groups/forecasting-optimization.jpg",
-        stage: { file: "assets/img/heroes/workforce-optimization.jpg", focal: "50% 55%" },
+        image: "assets/img/groups/forecasting-optimization.svg",
+        tone: "blue",
         emptyState: "Forecasting and optimization is scoped per engagement. Tell us the plan your planners or dispatchers build by hand today."
       },
       {
@@ -508,7 +513,7 @@ window.SITE_CONTENT = {
         full: "Video & image intelligence",
         line: "Cameras, footage and photos read by AI: defects spotted, scenes found, events flagged, for a person to confirm.",
         image: "assets/img/groups/video-image.svg",
-        stage: { file: "assets/img/industries/automotive.jpg", focal: "50% 50%" },
+        tone: "orange",
         emptyState: "Video and image work is delivered as an engagement today, on OCI + NVIDIA NeMo. Tell us the footage or the inspection you have in mind."
       }
     ],
