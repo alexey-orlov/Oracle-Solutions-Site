@@ -1015,29 +1015,23 @@ if (!arr(C.products) || C.products.length !== 7) {
       if (lineWords > 26) fail(where, "line is " + lineWords + " words (max 26 — it sits under a tile image)");
       if (c.line.trim().slice(-1) !== ".") fail(where, "line does not end in a period — the six tiles are sentences and sit side by side");
     }
-    /* One folder, so the tile art cannot be confused with a hero or a step
-       frame, and a missing file is a warning: art ships on its own track. */
+    /* Round 17 (Alex, on round 16's screenshot-on-a-photograph tiles: "I don't
+       like current mix of screenshots with backgrounds"; each group's image
+       must be "relevant to it", drawn "like at the reference page"): the tile
+       art is the group's own line drawing, one SVG named after the group, in
+       the one ink, cropped by the tile's top and left edges, with one spark. */
     if (str(c.image)) {
-      if (!/^assets\/img\/groups\/[a-z0-9-]+\.(jpg|jpeg|png|webp|svg)$/.test(c.image)) {
-        fail(where, 'image "' + c.image + '" must be assets/img/groups/<name>.<jpg|png|webp|svg>');
+      if (c.image !== "assets/img/groups/" + id + ".svg") {
+        fail(where, 'image "' + c.image + '" must be assets/img/groups/' + id + ".svg — the group's line drawing, named after the group");
       } else {
-        checkAsset(where, "group tile image", c.image);
+        checkGroupDrawing(where, c.image);
       }
     }
-    /* Round 16 (Alex, on the grey tiles: "not to be grey; stay closer to
-       softserveinc.com"): each tile's software sits as a window on a stage, one
-       of the site's own photographs, so the colour comes from the picture. The
-       stage is a photograph (never an SVG, never a logo), on disk, with a
-       two-percentage focal point. */
-    if (!c.stage || !str(c.stage.file) || !str(c.stage.focal)) {
-      fail(where, "stage needs { file, focal } — the photograph the tile's window sits on");
-    } else {
-      if (!/^assets\/img\/(heroes|industries)\/[a-z0-9-]+\.(jpg|jpeg|png|webp)$/.test(c.stage.file)) {
-        fail(where, 'stage.file "' + c.stage.file + '" must be a photograph under assets/img/heroes/ or assets/img/industries/');
-      } else if (!fs.existsSync(path.join(root, "site", c.stage.file))) {
-        fail(where, "stage photograph not on disk: site/" + c.stage.file);
-      }
-      if (!/^\d{1,3}% \d{1,3}%$/.test(c.stage.focal)) fail(where, 'stage.focal "' + c.stage.focal + '" must be two percentages, e.g. "50% 50%"');
+    /* The round-16 stage (a chrome photograph under the software's window) is
+       what Alex rejected in round 17. */
+    if (c.stage !== undefined) fail(where, "stage is retired in round 17 — the tile is a flat fill with the group's drawing, not a photograph");
+    if (GROUP_TONES.indexOf(c.tone) === -1) {
+      fail(where, 'tone "' + c.tone + '" must be one of ' + GROUP_TONES.join(", ") + " — the tile's flat fill");
     }
     /* The empty state is a capability, never a gap: the no-"yet" rule of §18.9
        applies to it more than to any other string, because it is the one a
@@ -1045,6 +1039,26 @@ if (!arr(C.products) || C.products.length !== 7) {
     if (str(c.emptyState) && /\byet\b|\bso far\b|\bcoming\b|\bnot seeing\b/i.test(c.emptyState)) {
       fail(where, "emptyState names the gap — say what the practice does deliver and what to tell us");
     }
+  });
+  /* Round 17: the six fills run A B C D A B, the one four-fill order in which
+     no two tiles that touch share a fill in any of the three grids (3 x 2
+     above 900 px, 2 x 3 down to 560, one column below). The order is pinned,
+     and the adjacency is re-derived, so a reordered group or a new fill
+     cannot quietly stack two blues. */
+  var tones = cats.map(function (c) { return c.tone; });
+  if (tones.join(" ") !== GROUP_TONE_ORDER.join(" ")) {
+    fail("facets.categories", "tones run " + tones.join(", ") + " — the order is " + GROUP_TONE_ORDER.join(", "));
+  }
+  [3, 2, 1].forEach(function (cols) {
+    tones.forEach(function (t, i) {
+      var right = (i % cols) < cols - 1 ? i + 1 : -1;
+      var below = i + cols < tones.length ? i + cols : -1;
+      [right, below].forEach(function (j) {
+        if (j > -1 && tones[j] === t) {
+          fail("facets.categories", "tiles " + (i + 1) + " and " + (j + 1) + ' touch in the ' + cols + "-column grid and share the fill \"" + t + '"');
+        }
+      });
+    });
   });
 })();
 
