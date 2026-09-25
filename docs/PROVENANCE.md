@@ -6464,3 +6464,74 @@ The round-7 duration rule is narrowed: the ranges still hold on the seven Jumpst
    - its third bullet (*"The best of Oracle's AI platforms, built in"*).
 
 The list is repeated in START-HERE §9.
+
+## 37. Round 17 — the group tiles as Offers tiles: flat brand fills, one drawing per group, 2026-09-25
+
+**The ask** (Alex, in session, 2026-09-25):
+
+> Let's update the images for the product categories on the front page. I don't like current mix of screenshots with backgrounds; purely SoftServe's abstract backgrounds will lack category relevance (each of the categories should have the image relevant to it).
+>
+> Can we create something of this kind: https://www.softserveinc.com/en-us/services/artificial-intelligence - tiles be colored / styled like Our offers tiles on this reference page (just think about proper order / mix of color as we have 6 tiles). Maybe we can have them all different in our pallette, or order should be just right to not look too symmetrical or weird?
+>
+> Also (the tricky part) i want the graphics on the colored background to represent simply the idea of the category (it's typical flow, etc.). Still this graphics should be styled like at the reference page, if possible. Invoke relevant subagents to draw graphics if needed.
+
+**Split.** Fable: one design pass (colours, tile anatomy, the six compositions and the family rules, the rule changes), working from an Opus brief with the reference measured. Opus (this session): the brief and the measurements, the spark tests against the reference, the drawing kit, three drawing agents (Opus, two drawings each), the build, the drawings finished, the checker, the QA and these docs. The three drawers produced first versions of four drawings and all stalled on the ten-minute watchdog; the session took over from their files and finished all six as one program (`tools/draw-groups.js`).
+
+### 37.1 What changed
+
+| Where | Before (round 16) | After |
+|---|---|---|
+| S3 tile | white with a 1 px hairline; a 16:10 stage (a chrome photograph under a `.22` veil) holding the product's screenshot as a white window; the name and the line in grey below | **a flat brand fill**, no border, no photograph, an 8 px cut; **the group's line drawing** in a 400 × 220 box at the top; the name (Replica 28/1.1), the one-liner (16/1.45) and the arrow, all in `#1a1a1a` |
+| S3 fills | — | blue 75 `#459fdd` · orange 75 `#fe8d6b` · blue 50 `#c1dff4` · neutral 400 `#bdcbd7` · blue 75 · orange 75 |
+| S3 pictures | three screenshots (`knowledge-analytics.jpg`, `documents.jpg`, `forecasting-optimization.jpg`) and three UI placeholders (SVG) | six line drawings, `assets/img/groups/<id>.svg`, 587–948 bytes each; the three JPGs are deleted |
+| S3 hover | the photograph scaled 1.071, the body stepped to `#edf0f2`, the name and arrow turned blue | the drawing scales 1.04 from its top-left corner and the arrow nudges 2 px; nothing else moves |
+| S3 focus | a 2 px blue outline outside the tile (cut off by the clip) | a 2 px `#1a1a1a` outline inset 6 px |
+| S3 grid | 3 × 2 above 900, 2 × 3 to 560, one column | 3 × 2 above 1100, 2 × 3 to 561, one column; the name steps to 24 px below 1280 |
+| Data | `facets.categories[].stage { file, focal }`; `image` any of jpg/png/webp/svg | `stage` removed (it fails the build); `tone` added; `image` is exactly `assets/img/groups/<id>.svg` |
+| Tools | — | `tools/draw-groups.js`: the six drawings as one program |
+| Checker | 37.4 | |
+| Manifest | contract round 16 | 17 |
+
+### 37.2 Decisions
+
+- **The reference, measured** (softserveinc.com/en-us/services/artificial-intelligence, "Our Offers", 1440, 2026-09-25): 400 × 424 tiles with an 8 px cut, flat fills with no border, in the brand's 75 steps (blue `#459fdd`, orange `#fe8d6b`) and neutral 400 `#bdcbd7`, cycled blue → orange → grey on every one of 16 service pages checked; black Replica 400 titles at 32 px; the description revealed only on hover; one graphic, `offer-card-placeholder.svg`, identical on every Offers tile of every page: one thin black line that gathers into a filled three-armed thorn, cropped by the tile's top and left edges. The brand has no per-offer drawings, so these six are its line and spark applied to a subject.
+- **Four fills, A B C D A B** (Fable, D1). Tiles 1 to 4 touch one another pairwise across the three grids (3 × 2, 2 × 3, one column), so three fills used twice must stack two of a kind somewhere, and four fills have exactly one order that never does. The set is the reference's three plus one brand tint, blue 50: blue-led (three of six), orange twice as the warm counterpoint, the neutral once as the set's rest. On desktop the strong fills run down the diagonals and the two quiet ones sit on opposite corners. Rejected: six different fills (three pale tints beside three 75 steps read as two registers), the 100 steps (they are the action and accent colours), a black tile (a second ink and a second dark band), the reference's staggered columns (3.5 tiles tall, 600 px more page).
+- **The one neutral tile is not grey on grey.** Alex rejected white tiles on grey bands and grey cards on a white page; one neutral-400 fill among five colours on a white ground is the reference's own third fill. Open for Alex (37.6).
+- **The fills are a fourth colour use, with no role.** Blue 100 stays the action colour and orange 100 the H1's one accent; the tiles take the 75 and 50 steps through their own `--tile-fill`, so no rule of SS26 §3 moves and the accent counter is unchanged. S3 stays on white: the reference's black band would be the home page's second dark band.
+- **One ink on every fill, `#1a1a1a`**, for the name, the line, the arrow and the drawing: 6.0:1 on blue 75 (the lowest), 7.7 on orange 75, 10.5 on neutral 400, 12.5 on blue 50. `#4c5156`, the old line's grey, fails on blue 75 and orange 75.
+- **The one-liner stays visible.** The reference hides its description until hover; a rep on a call reads the tile, and touch has no hover.
+- **Six drawings, one family** (Fable, D3; `ASSETS.md` §2b): each group's typical flow as one line that gathers into the spark at its moment of value — the answer (knowledge), the brought-back finding (research), the value leaving the page (documents), the approval gate (transactions), the plan (forecasting), the flagged object (video). No text, no numerals, no UI chrome, no stock icon.
+- **The spark weight is 0.68, not Fable's 0.82.** Rendered beside the reference at its tile scale, the canonical Y was a lighter, more geometric star; 0.68 matches the brand's thorn without changing Fable's construction.
+
+### 37.3 Decided differently from the Fable spec
+
+1. **Files, not inline SVG.** The spec asked for an inline `<svg>` per tile. The site keeps each drawing as a file its tile loads (`category.image`), so the copy file carries no path data and the image guard keeps working; the checker reads the files instead of the DOM.
+2. **The name sits under the drawing, and the arrow is pinned to the foot.** The spec pinned the whole text block to the foot, which leaves the top row's names at three heights; this way the names line up across a row and the arrows still end level.
+3. **Two columns from 1100, not 900, and a 24 px name below 1280.** At 1024 three across left 261 px tiles, three-line names and seven-line one-liners.
+4. **Two compositions redrawn.** *Forecasting & optimization*: the spec's middle constraint arrived at 30° from above, so it crossed the top constraint and read as a tangle; the three now fan in (from above, level, from below) and the plan line leaves 60° up, off the top. *Video & image intelligence*: with the apex at (−80, −60) the two rays entered 150 units apart and never read as one field of view; the apex moved to (−16, −12), just off the corner, the object grew to r 18, and the thorn shortened to 60 to stop 9 units short of it.
+5. **Deep research's return leg is one straight run** from the hairpin to the hub, so the back tip lies on the line; the spec's arrival curve left the tip off it.
+
+### 37.4 The checker
+
+New assertions:
+- **Fills.** Each group's `tone` is one of the four, the six run blue · orange · blue-light · neutral · blue · orange, and a re-derivation over the 3-, 2- and 1-column grids fails any two touching tiles that share a fill.
+- **Data.** `stage` fails the build; `image` must be `assets/img/groups/<id>.svg`.
+- **Drawings** (`checkGroupDrawing`, one line per rule per file): `viewBox="0 0 400 220"` with no width or height; one ink; every line `stroke-width="1.75"` with `vector-effect="non-scaling-stroke"`; exactly one `data-spark`, filled; no text, picture, gradient, filter, mask, style, opacity, dash or marker; under 8 KB.
+- **CSS.** `.gtile` is painted by `var(--tile-fill)`, carries no border, shadow, grey step or action/accent colour, and inks in `#1a1a1a`; each `.gtile--<tone>` holds its hex; the round-16 `.gtile-stage` / `-veil` / `-window` / `-band` rules are gone.
+
+Retired: round 16's `stage` photograph checks and its "`.gtile` rests white with a 1 px hairline" rule. The Why-rows assertion stays.
+
+### 37.5 Checks
+
+- `node --check` passes on the changed scripts; the checker prints OK with the two known warnings (the About H2's length, the Internal panel).
+- **Negative test.** A scratch copy took 16 injected faults one at a time, and each one failed: the tone order swapped; an unknown tone; tile 5 on blue 50 beside tile 3; the stage back; an image not named after its group; a second colour in a drawing; two sparks; a scaling stroke; a width on the root; text in a drawing; opacity on a line; a hairline border on the tile; the orange fill changed to the accent; the stage rule back; the ink `#4c5156`; the tile painted in the action colour. The restored copy passed.
+- **In the browser**, on `tools/serve.py` at port 64654: S3 is 3 × 2 at 1440 (400 × 474 tiles), 1280 (347 × 468) and 1200 (320 × 437), 2 × 3 at 1024 (404 × 437), 900 (342 × 449) and 768 (332 × 443), and one column at 560, 375 (343 × 449) and 320 (288 × 442). Every name holds two lines or fewer, the one-liners run three to six, rows are equal height, all six drawings load, and nothing overflows horizontally at any width. Text contrast on the fills measures 6.01 to 12.54. Keyboard focus draws the inset ring, scales the drawing to 1.04 and nudges the arrow; the hover rules are the same selectors (the pane does not emulate hover). The console is clean and no image is broken on ten routes; the deny-list grep returns nothing.
+- **Not published.** Rounds 12 to 17 go out together from HEAD when Alex says so. That publish carries the six SVGs under `assets/img/groups/` and maps the three retired JPGs to `null`, so the artifact stops serving them.
+
+### 37.6 Open for Alex
+
+1. **The neutral tile.** *Transaction & process execution* is the set's one neutral-400 fill, the reference's own third colour. If you want no grey at all, the drop-in is Austin orange 50 `#ffcec0` on that tile (contrast 12.4); every other rule holds.
+2. **The drawings are abstract by design**, the brand's line and spark applied to each group's flow. The least literal is *Enterprise knowledge & analytics* (two rings, the question running in along the outer one). Any one can be redrawn in `tools/draw-groups.js` without touching the others.
+3. **Two one-liners carry em-dash pairs**, *Transaction & process execution* and *Forecasting & optimization*, which the copy rule bans in new copy. They predate the rule and were left alone because the round changed no copy.
+
+The list is repeated in START-HERE §9.
