@@ -381,62 +381,54 @@ for the record.
 
 ---
 
-## 2b. Product-group tiles — `assets/img/groups/` (round 9, 2026-09-22)
+## 2b. Product-group tiles — `assets/img/groups/` (round 17, 2026-09-25)
 
-One image per product group, for the six tiles on the home page's S3
-(`facets.categories[].image`; `VISUAL-GRAMMAR.md` §9). All six are **960 × 600
-(16:10)**; the JPGs are quality 80 (`sips -s formatOptions 80`), the SVGs are
-hand-written and self-contained. **The legibility rule of §1 applies here too, at a
-harder size:** a group tile renders about 240 CSS px wide in the 3 × 2 grid, so the
-frame has to read as *a piece of software* at that width — a clear split view or a
-map beats a dialog, and a single-pane screen of running text reads as nothing at
-all.
+One line drawing per product group, for the six tiles on the home page's S3
+(`facets.categories[].image`; `VISUAL-GRAMMAR.md` §9). Each shows **the group's own
+job as its typical flow**, on the tile's flat brand fill, in the style of
+softserveinc.com's Our Offers tiles: one thin black line, oversized and cropped by the
+tile's top and left edges, that gathers into one filled spark at the moment of value.
+They replace round 9's screenshots and placeholders, which round 16 had set as a
+window on a chrome photograph (Alex, round 17: *"I don't like current mix of
+screenshots with backgrounds"*; PROVENANCE §37).
 
-| File | Source | Crop from the source (x, y, w × h) | Bytes |
+| File | Fill | What it draws | Bytes |
 |---|---|---|---|
-| `knowledge-analytics.jpg` | `steps/cross-system-erp-qa-1.jpg` (1600 × 1000) | none — already 16:10; resampled to 960 | 98,594 |
-| `deep-research.svg` | drawn | — | 2,707 |
-| `documents.jpg` | `posters/large-document-extraction.jpg` (1600 × 900) | 470, 275, 1000 × 625 → 960 | 114,514 |
-| `transactions.svg` | drawn | — | 3,077 |
-| `forecasting-optimization.jpg` | `posters/workforce-optimization.jpg` (1600 × 900) | 0, 140, 1120 × 700 → 960 | 111,267 |
-| `video-image.svg` | drawn | — | 2,122 |
+| `knowledge-analytics.svg` | blue 75 | two rings, the governed estate; the question runs in along the outer one, the answer sparks, and its trace lands on the inner one (the source) | 587 |
+| `deep-research.svg` | orange 75 | three systems as verticals; one reading line threads them, goes past the last to the outside, turns, and brings the answer back to spark between the first two | 948 |
+| `documents.svg` | blue 50 | a long page read pass by pass (a serpentine inside its edges); the values leave through the page's edge, where the line sparks | 623 |
+| `transactions.svg` | neutral 400 | a step carried up through the system in three stages to the system's edge, where it sparks and leaves: the approval gate | 719 |
+| `forecasting-optimization.svg` | blue 75 | three constraints come in at once from the left and resolve at the spark into one plan line, which rises off the top | 799 |
+| `video-image.svg` | orange 75 | a camera's field of view from the top-left corner; the spark on its upper edge flags the one object in view | 727 |
 
-Rows are in `facets.categories` order. Every JPG is ≤ 160 KB and every SVG ≤ 12 KB.
+Rows are in `facets.categories` order.
 
-**Why these three frames.** `documents.jpg` is the only true split view in the set —
-the contract page with its rate table and one amber-flagged row beside the review
-panel with its dark table header and confidence bars — and both panes survive the
-reduction. `forecasting-optimization.jpg` is a map, which beats everything else at
-tile size, cropped from x = 0 so the dark app rail is in and the right-hand changes
-rail is out (an earlier variant clipped it and left an orphaned "10" in the
-corner). `knowledge-analytics.jpg` is the "sources feeding the lakehouse" screen: a
-3 + 2 card grid over a dark teal object bar, the crispest structure in the ERP set
-at 240 px, carrying no figures at all.
+**The family, which the checker enforces** (`checkGroupDrawing`): `viewBox="0 0 400
+220"` (the tile's drawing box, 55 % of the tile's width), no width or height, one ink
+`#1a1a1a`, every line `stroke-width="1.75"` with `vector-effect="non-scaling-stroke"`
+(so the line is 1.75 px at every tile width, 288 to 404 px), round caps and joins,
+exactly one `data-spark` path, filled and never stroked, and no text, picture, gradient,
+filter, opacity, dash or marker; under 8 KB. By the design spec, not the checker: at
+most five elements, strokes at least 14 units apart except at the spark, nothing past
+x 376 or y 200 (the right and bottom edges are air), mass in the left three quarters.
 
-**Both crops are also clearance decisions.** The document crop starts at y = 275
-because at y = 250 the metadata row still showed the walkthrough's synthetic
-counterparty name. Rejected outright: modal dialogs over a blurred map, a frame
-carrying the Oracle mark, and two frames whose USD figures sat exactly where the eye
-lands. No customer name, no real geography and no uncleared figure is in any
-shipped file — the two JPGs that do show numbers show demo data already published
-on their product pages, illegible at tile size.
+**The spark** is Fable's construction (round 17 design answer, D3): a hub and three
+tips — two on the line, 60 units from the hub, and the thorn, 60 to 90 — with each side
+a cubic from tip to tip whose controls sit **0.68** of the way from their tips to the
+hub. Fable's canonical weight was 0.82; measured beside the reference at tile scale, its
+thorn read lighter than the brand's, and 0.68 matches it. The tips on the line sit on a
+straight run (or on the circle itself, at chord 60), so the arms never peel off the
+line. Five drawings use the Y form, the line turning 60° at the hub; the video drawing
+uses the T, a straight run with its back-side controls pushed 4 units off the line.
 
-**The three placeholders are one design**, so a group with no walkthrough does not
-advertise its absence: an app-window wireframe in theme colours (`#edf0f2` ground,
-a white window with 4 px corner cuts and a 1.5 px `#bdcbd7` chrome, one `#c1dff4`
-block for "selected" per SS26 §3, content blocks in `#e1e7eb` / `#d1dae2`), no text
-and no logo, with the group's own line icon drawn large at 25 % group opacity in
-`#4c5156` right of centre. Only the content area differs — a media block with a
-scrubber and thumbnails (video), a query field over result rows (research), a
-record card over a three-step flow with a check on the last (transactions) — which
-is enough that three adjacent tiles do not read as duplicates.
-
-**Tool note — `sips --cropOffset`.** On this Mac (sips-316) `sips -c <h> <w>
---cropOffset <y> <x>` takes the crop's **top-left origin in pixels from the image's
-top-left**, not a shift from the centre — except that exactly `0 0` is read as
-"unset" and falls back to a centred crop (proven by hash), and negative offsets
-render black. So use an origin with at least one non-zero component, then
-`sips --resampleWidth 960 -s format jpeg -s formatOptions 80`.
+**How they were made.** The reference graphic is `offer-card-placeholder.svg`, the
+same placeholder on every Offers tile across 16 softserveinc.com service pages checked
+on 2026-09-25: the brand has no per-offer drawings, so these six are its line and spark
+applied to a subject. Fable wrote the six compositions in canvas coordinates; three
+Opus drawers produced first versions of four of them and then stalled, and the session
+finished all six as one program, so the family shares one spark construction, one
+weight and one crop: `scratchpad/r17-draw/draw.js` (not kept in the repo; the SVGs
+are self-contained). Each was checked on its fill at 400, 343 and 300 px wide.
 
 ---
 
