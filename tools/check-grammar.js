@@ -164,10 +164,15 @@ function checkGroupDrawing(where, rel) {
   var rootTag = (svg.match(/<svg\b[^>]*>/) || [""])[0];
   if (!/viewBox="0 0 400 220"/.test(rootTag)) fail(rel, 'the root <svg> must carry viewBox="0 0 400 220" — the tile\'s drawing box');
   if (/\s(width|height)=/.test(rootTag)) fail(rel, "the root <svg> carries a width or height — the tile sizes the drawing");
-  (svg.match(/\b(stroke|fill)="[^"]*"/g) || []).forEach(function (attr) {
+  /* one line per rule, with a count and the first offender, not one per element */
+  function each(list, test, message) {
+    var bad = list.filter(test);
+    if (bad.length) fail(rel, message + " (" + bad.length + "×, first: " + bad[0].slice(0, 70) + ")");
+  }
+  each(svg.match(/\b(stroke|fill)="[^"]*"/g) || [], function (attr) {
     var value = attr.replace(/^[a-z]+="|"$/g, "").toLowerCase();
-    if (value !== "none" && value !== GROUP_INK) fail(rel, attr + " — the drawing is one ink, " + GROUP_INK);
-  });
+    return value !== "none" && value !== GROUP_INK;
+  }, "a colour other than the one ink, " + GROUP_INK);
   if (/<(text|image|foreignObject|linearGradient|radialGradient|filter|mask|pattern|style)\b/i.test(svg)) {
     fail(rel, "carries text, a picture, a gradient, a filter, a mask or a style block — the drawing is line work only");
   }
@@ -176,16 +181,13 @@ function checkGroupDrawing(where, rel) {
   }
   var sparks = (svg.match(/\bdata-spark\b/g) || []).length;
   if (sparks !== 1) fail(rel, "has " + sparks + " spark(s) — every drawing gathers into exactly one");
-  (svg.match(/<(path|line|polyline|polygon|circle|ellipse|rect)\b[^>]*>/g) || []).forEach(function (el) {
-    if (/\bdata-spark\b/.test(el)) {
-      if (/\bstroke="(?!none)/.test(el)) fail(rel, "the spark is stroked — it is a filled shape");
-      return;
-    }
-    if (!/\bstroke="/.test(el)) fail(rel, "an element carries no stroke — every line is stroked in the ink: " + el.slice(0, 60));
-    if (!/\bstroke-width="1\.75"/.test(el) || !/\bvector-effect="non-scaling-stroke"/.test(el)) {
-      fail(rel, 'a line is not stroke-width="1.75" with vector-effect="non-scaling-stroke": ' + el.slice(0, 60));
-    }
-  });
+  var shapes = svg.match(/<(path|line|polyline|polygon|circle|ellipse|rect)\b[^>]*>/g) || [];
+  var sparkEls = shapes.filter(function (el) { return /\bdata-spark\b/.test(el); });
+  var lineEls = shapes.filter(function (el) { return !/\bdata-spark\b/.test(el); });
+  each(sparkEls, function (el) { return /\bstroke="(?!none)/.test(el); }, "the spark is stroked — it is a filled shape");
+  each(lineEls, function (el) {
+    return !/\bstroke="/.test(el) || !/\bstroke-width="1\.75"/.test(el) || !/\bvector-effect="non-scaling-stroke"/.test(el);
+  }, 'a line is not stroked at stroke-width="1.75" with vector-effect="non-scaling-stroke"');
   if (Buffer.byteLength(svg, "utf8") > 8 * 1024) fail(rel, "is " + Buffer.byteLength(svg, "utf8") + " bytes — a line drawing stays under 8 KB");
 }
 
@@ -2355,16 +2357,31 @@ if (/assets\/img\/logos\//.test(raw)) {
 
   /* Round 16 (Alex, on the home page's group tiles and "Why SoftServe on
      Oracle": "not to be grey", "not so boring/grayish"; round 11 said the same
-     of S2 and S5). No grey on grey: a home tile rests white with a hairline and
-     takes its colour from its photograph, and the Why rows are rows between
-     hairlines with no fill. #edf0f2 is their hover step, never their rest. */
+     of S2 and S5): no grey on grey, and the Why rows are rows between hairlines
+     with no fill. Round 17 (Alex: "colored / styled like Our offers tiles"):
+     a group tile is a flat brand fill, never the page's grey steps, with no
+     border, no shadow and no photograph; each tone class carries its fill; the
+     action and accent colours never paint a tile; and the round-16 stage
+     (the photograph, its veil, the window on it) is gone. */
   function cssRule(selector) {
     var at = css.indexOf("\n" + selector + " {");
     return at === -1 ? "" : css.slice(at, css.indexOf("}", at));
   }
   var tileRule = cssRule(".gtile");
-  if (!tileRule || /background:\s*var\(--bg-(raised|inset)\)/.test(tileRule) || !/border:\s*1px solid/.test(tileRule)) {
-    fail(V2_CSS, ".gtile must rest white with a 1 px hairline — a grey tile on a grey image band is the look Alex rejected");
+  if (!tileRule || !/background:\s*var\(--tile-fill\)/.test(tileRule)) {
+    fail(V2_CSS, ".gtile must be painted by its tone's fill, background: var(--tile-fill)");
+  }
+  if (/\bborder:|box-shadow:|var\(--bg-(raised|inset)\)|var\(--(action|accent)\b/.test(tileRule)) {
+    fail(V2_CSS, ".gtile carries a border, a shadow, a grey step or the action/accent colour — it is a flat brand fill");
+  }
+  GROUP_TONES.forEach(function (tone) {
+    var rule = css.match(new RegExp("\\.gtile--" + tone.replace("-", "\\-") + " \\{ --tile-fill: (#[0-9a-f]{6}); \\}", "i"));
+    if (!rule) fail(V2_CSS, "no .gtile--" + tone + " { --tile-fill: … } rule");
+    else if (rule[1].toLowerCase() !== GROUP_TONE_HEX[tone]) fail(V2_CSS, ".gtile--" + tone + " fills " + rule[1] + ", expected " + GROUP_TONE_HEX[tone]);
+  });
+  if (!/--tile-ink:\s*#1a1a1a/i.test(tileRule)) fail(V2_CSS, ".gtile's ink is not #1a1a1a — #4c5156 fails on blue 75, and the tile has one ink");
+  if (/\.gtile-(stage|veil|window|band)\b/.test(css)) {
+    fail(V2_CSS, "still styles the round-16 stage (.gtile-stage / -veil / -window / -band) — retired in round 17");
   }
   var whyRule = cssRule(".pillars.pillars--list .pillar");
   if (!whyRule || !/background:\s*none/.test(whyRule)) {
