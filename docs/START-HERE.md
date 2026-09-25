@@ -335,6 +335,7 @@ Exact commands are in HANDOFF §4.
   - **the neutral tile:** *Transaction & process execution* is the one neutral-400 fill; the no-grey drop-in is Austin orange 50 `#ffcec0` on that tile;
   - **the drawings are abstract by design**, the least literal being *Enterprise knowledge & analytics* (two rings); any one is redrawn in `tools/draw-groups.js` without touching the others;
   - **two one-liners carry em-dash pairs** (*Transaction & process execution*, *Forecasting & optimization*), left alone because the round changed no copy;
+  - **same-day follow-ups (§37.7, §37.8):** the S3 screen names one thing two ways, *accelerator apps* in the H2 and *products* in its eyebrow and link; *time to value* sits three times on the home page (the hero lead, the S2 bullet, the S4 heading), where the two-place rule would take it off the S2 bullet; *service(s)* is on S4 three times (the eyebrow, the heading, *Managed services*), where the lightest fix is the eyebrow, *How we deliver*;
   - **publishing** carries the six `assets/img/groups/<id>.svg` and maps `knowledge-analytics.jpg`, `documents.jpg` and `forecasting-optimization.jpg` to `null`; round 16's stage photographs are no longer referenced by the tiles.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
