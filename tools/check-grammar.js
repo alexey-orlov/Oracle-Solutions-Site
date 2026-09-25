@@ -1553,17 +1553,22 @@ if (!arr(C.products) || C.products.length !== 7) {
 
   /* --- H2 budget (START-HERE §4: five words or fewer, ≤ ~30 characters) ---
      The three screens round 9 rewrote are held to it; the two it did not touch
-     warn, so the debt is visible without failing a build over old copy. */
+     warn, so the debt is visible without failing a build over old copy.
+     S3's is Alex's own line (round 17: "Kick off your AI adoption with
+     accelerator apps", the noun that names the offer restored after round 16
+     had cut it), so it is held at its own 48 characters instead: it may not
+     grow, and a rewrite still fails over it. */
   [
     ["overview.twoWays.title", (o.twoWays || {}).title, true],
-    ["overview.catalog.title", (o.catalog || {}).title, true],
+    ["overview.catalog.title", (o.catalog || {}).title, true, 48],
     ["overview.caseStudiesIntro.title", (o.caseStudiesIntro || {}).title, true],
     ["overview.delivery.title", (o.delivery || {}).title, true],
     ["overview.about.title", (o.about || {}).title, false],
     ["overview.contact.heading", (o.contact || {}).heading, false]
   ].forEach(function (row) {
-    if (!str(row[1]) || row[1].length <= 30) return;
-    var message = "is " + row[1].length + " characters — an H2 is a display line (max 30); the argument goes in the lead";
+    var max = row[3] || 30;
+    if (!str(row[1]) || row[1].length <= max) return;
+    var message = "is " + row[1].length + " characters — an H2 is a display line (max " + max + "); the argument goes in the lead";
     if (row[2]) fail(row[0], message); else warn(row[0], message);
   });
 
