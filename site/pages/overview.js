@@ -209,33 +209,25 @@
   /* ————— S3: the products, one tile per group ————— */
 
   /* A reader looking for a job to fix meets six groups, not a list of product
-     names: the picture says what the software looks like, the line says what
+     names: the drawing shows the group's job as one flow, the line says what
      the group does to someone with no context, and the whole tile is the link
-     into the catalog filtered to that group. Text never sits on the image
+     into the catalog filtered to that group. Text never sits on the drawing
      (VISUAL-GRAMMAR §1.1), and the tile carries one action, which is itself.
-     Round 16 (Alex: "not to be grey"): the software sits as a window on a
-     stage, one of the site's own chrome photographs under a light veil, so the
-     colour comes from the photograph and the tile body is white. Only the
-     photograph moves on hover; the window holds still. */
+     Round 17 (Alex: "colored / styled like Our offers tiles" on
+     softserveinc.com, the graphic showing "the idea of the category"): each
+     tile is a flat brand fill (`tone`) with the group's line drawing at its
+     top left, bleeding off the tile's own edges, and the copy below it on the
+     fill. Only the drawing moves on hover. */
   function groupTiles(C) {
     var UI = window.UI;
     var block = C.overview.catalog;
 
     var tiles = (C.facets.categories || []).map(function (category) {
-      var stage = category.stage && category.stage.file
-        ? '<img class="gtile-stage" src="' + UI.esc(category.stage.file) + '" alt=""' +
-            (category.stage.focal ? ' style="object-position:' + UI.esc(category.stage.focal) + '"' : "") +
-            ' loading="lazy" decoding="async">' +
-          '<span class="gtile-veil" aria-hidden="true"></span>'
+      var art = category.image
+        ? '<img class="gtile-art" src="' + UI.esc(category.image) + '" alt="" loading="lazy" decoding="async">'
         : "";
-      var picture = category.image
-        ? '<img class="gtile-img" src="' + UI.esc(category.image) + '" alt="" loading="lazy" decoding="async">'
-        : "";
-      return '<a class="gtile reveal" href="#/products?cat=' + UI.esc(category.id) + '">' +
-        '<span class="gtile-band' + (stage ? " gtile-band--stage" : "") + '">' +
-          stage +
-          (stage ? '<span class="gtile-window">' + picture + "</span>" : picture) +
-        "</span>" +
+      return '<a class="gtile gtile--' + UI.esc(category.tone) + ' reveal" href="#/products?cat=' + UI.esc(category.id) + '">' +
+        '<span class="gtile-draw">' + art + "</span>" +
         '<span class="gtile-body">' +
           '<span class="gtile-name">' + UI.esc(category.full) + "</span>" +
           '<span class="gtile-line small">' + UI.esc(category.line) + "</span>" +
