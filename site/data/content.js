@@ -300,7 +300,7 @@ window.SITE_CONTENT = {
 
     delivery: {
       eyebrow: "Services",
-      title: "The method behind the speed.",
+      title: "Service delivery that accelerates time to value.",
       anchor: "how-we-deliver",
       steps: [
         { title: "Workshop", body: "With your team, we pin down the use case, set the fastest path to proving value on your real data, and try the products hands-on to see how they fit.", factLabel: "Duration", fact: "Time-boxed" },
@@ -311,10 +311,15 @@ window.SITE_CONTENT = {
       ],
       why: {
         title: "Why SoftServe on Oracle",
+        /* Round 17 (Alex: the same line count for each, and icons "more
+           aligned with" softserveinc.com): the three bodies sit in one length
+           band, 105-120 characters, which wraps each to the same number of
+           lines at every width from 320 to 1440; the icons are the brand's
+           feature-icon style, bold 64 px outlines with no well. */
         pillars: [
-          { icon: "network", title: "Platform depth", body: "Architects who own the Oracle reference architecture across Oracle Autonomous AI Lakehouse, Oracle AI Data Platform, Oracle AI for Fusion Applications and OCI + NVIDIA NeMo." },
-          { icon: "spark", title: "Agentic-AI experience", body: "Agents and workflows built and tested on real enterprise systems, with evaluation, guardrails and governance hardening on every engagement." },
-          { icon: "audit", title: "Fixed-scope delivery", body: "Signed success metrics up front, and every Jumpstart ends with an executive readout and a costed expansion plan." }
+          { icon: "why-platform", title: "Platform depth", body: "Architects who own the reference architecture on every Oracle AI platform, from Autonomous AI Lakehouse to OCI." },
+          { icon: "why-agentic", title: "Agentic AI expertise", body: "Agents and workflows tested on real enterprise systems, with evaluation, guardrails and governance on every engagement." },
+          { icon: "why-scope", title: "Fixed-scope delivery", body: "Signed success metrics up front, and every Jumpstart ends with an executive readout and a costed expansion plan." }
         ]
       },
       ctas: [

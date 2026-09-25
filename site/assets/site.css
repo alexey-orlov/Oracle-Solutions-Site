@@ -3684,13 +3684,15 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* "Why SoftServe on Oracle" as the reference's "Our Expertise" list: rows on
    white between hairlines, no fill and no cut, so the three reasons read as an
-   argument rather than as boxes. The blue-tint well is the one decorative
-   colour the system allows, and it is the block's only colour. Wide: well ·
-   title · body; the title and the body stack in one column from 1024 down. */
+   argument rather than as boxes. Round 17 (Alex: icons "more aligned with"
+   softserveinc.com): each row opens on the brand's feature icon, as its icons
+   grid draws them — a bold black outline at 64 px, a 3 px stroke with sharp
+   joins, on no well. Wide: icon · title · body; the title and the body stack
+   in one column from 1024 down. */
 .pillars.pillars--list { display: block; }
 .pillars.pillars--list .pillar {
   display: grid;
-  grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 2fr);
   column-gap: 2.5rem;
   align-items: start;
   padding: 2rem 0;
@@ -3700,8 +3702,14 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   clip-path: none;
 }
 .pillars.pillars--list .pillar:last-child { border-bottom: 1px solid var(--border-subtle); }
-.pillars.pillars--list .pillar-mark { width: 3rem; height: 3rem; color: var(--text); }
-.pillars.pillars--list .pillar-mark .icon { width: 1.5rem; height: 1.5rem; }
+.pillars.pillars--list .pillar-mark { width: 4rem; height: 4rem; background: none; color: var(--text); }
+.pillars.pillars--list .pillar-mark .icon {
+  width: 4rem;
+  height: 4rem;
+  stroke-width: 1.125;   /* 3 px at 64 px, the brand's feature-icon weight */
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
 .pillars.pillars--list .pillar-copy { display: contents; }
 .pillars.pillars--list .pillar-title {
   font-family: var(--font-body);

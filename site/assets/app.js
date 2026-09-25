@@ -83,6 +83,14 @@
     "pattern-knowledge-analytics": '<path d="M21 14.3a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 3.4v-3.4H5a2.5 2.5 0 0 1-2.5-2.5V6.5A2.5 2.5 0 0 1 5 4h13.5A2.5 2.5 0 0 1 21 6.5z"></path><path d="M8 13V9.5M11.7 13V7.5M15.4 13v-2"></path>',
     "pattern-deep-research": '<circle cx="10.5" cy="10.5" r="7"></circle><path d="m20.5 20.5-5-5"></path><circle cx="8.2" cy="12.4" r="1.3"></circle><circle cx="12.9" cy="12.4" r="1.3"></circle><circle cx="10.6" cy="8.1" r="1.3"></circle><path d="M9.5 11.3 10.1 9.4M11.6 11.3 11.1 9.4M9.5 12.4h2.1"></path>',
     "pattern-documents": '<path d="M6 3.5h7.5l4.5 4.5v12H6z"></path><path d="M13.5 3.5V8H18"></path><path d="M9 12h6M9 15.5h4"></path>',
+    /* Round 17: the home page's "Why SoftServe on Oracle" rows, drawn as
+       softserveinc.com's feature icons (its icons grid): bold geometric
+       outlines, sharp joins, the brand's corner cut where a box appears, and
+       the brand's own four-point spark for AI. Shown at 64 px with a 3 px
+       stroke (.pillars--list), not at the 1.5 px UI weight. */
+    "why-platform": '<path d="M12 3.5 21 8.5 12 13.5 3 8.5z"></path><path d="m3 12.5 9 5 9-5"></path><path d="m3 16.5 9 5 9-5"></path>',
+    "why-agentic": '<path d="M12 2.5C12.8 8 16 11.2 21.5 12 16 12.8 12.8 16 12 21.5 11.2 16 8 12.8 2.5 12 8 11.2 11.2 8 12 2.5z"></path>',
+    "why-scope": '<path d="M7.5 2.5h9l2.5 2.5v14l-2.5 2.5h-9L5 19V5z"></path><path d="m8.8 12.3 2.3 2.3 4.3-4.6"></path>',
     "pattern-transactions": '<rect x="2.5" y="9" width="5" height="6"></rect><rect x="9.5" y="9" width="5" height="6"></rect><rect x="16.5" y="9" width="5" height="6"></rect><path d="M7.5 12h2M14.5 12h2"></path><path d="m17.8 12.1 1.2 1.2 2-2.4"></path>',
     "pattern-forecasting-optimization": '<path d="M3 17.5 8.5 12l3.5 3.2 8-8.2"></path><path d="M15.5 7h4.5v4.5"></path><circle cx="8.5" cy="12" r="1.6"></circle><path d="M3 21h18"></path>',
     "pattern-video-image": '<rect x="2.5" y="4.5" width="19" height="15"></rect><path d="M2.5 8.5h19"></path><path d="m10.2 11 4.8 2.7-4.8 2.7z"></path>',
