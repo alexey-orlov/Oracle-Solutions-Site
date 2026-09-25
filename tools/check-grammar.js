@@ -82,6 +82,16 @@ var CASE_STATUS_CHIPS = ["Proven", "Forecast", "Estimated"];
    ids (processing-pipelines, data-analysis) may not return, here or in the icon
    registry, and the home tiles derive from this set rather than a second list. */
 var PATTERN_IDS = ["knowledge-analytics", "deep-research", "documents", "transactions", "forecasting-optimization", "video-image"];
+/* Round 17 (Alex: the home tiles "colored / styled like Our offers tiles" on
+   softserveinc.com): each group tile is one of four brand fills, and the six
+   run in this order, A B C D A B, the one four-fill order in which no two
+   touching tiles share a fill in the 3 x 2, 2 x 3 or one-column grid. Each
+   tone is a class in site.css holding its hex; the ink on every fill is
+   #1a1a1a, at least 4.5:1 on all four. */
+var GROUP_TONES = ["blue", "orange", "blue-light", "neutral"];
+var GROUP_TONE_HEX = { "blue": "#459fdd", "orange": "#fe8d6b", "blue-light": "#c1dff4", "neutral": "#bdcbd7" };
+var GROUP_TONE_ORDER = ["blue", "orange", "blue-light", "neutral", "blue", "orange"];
+var GROUP_INK = "#1a1a1a";
 /* Round 4, T3, rewritten in round 9 (Alex): ONE canonical technology set, in
    ONE order, with TWO forms of each name. The SHORT `label` is what the rail,
    the product chips, the tile band, `tags[1]` and the hero stack render; the
@@ -140,6 +150,43 @@ function checkAsset(where, what, rel) {
   if (!fs.existsSync(path.join(root, "site", rel))) {
     warn(where, what + " not on disk yet: site/" + rel);
   }
+}
+
+/* Round 17: a group tile's drawing is one ink on the tile's fill, in the
+   family's form — the tile draws the frame, so the file carries no size and
+   no ground, and every line is the same 1.75 px at every tile width. Exactly
+   one spark (the filled thorn the line gathers into), and nothing that is not
+   line work: no text, no picture, no second colour, no effect. */
+function checkGroupDrawing(where, rel) {
+  var file = path.join(root, "site", rel);
+  if (!fs.existsSync(file)) return warn(where, "group drawing not on disk yet: site/" + rel);
+  var svg = fs.readFileSync(file, "utf8");
+  var rootTag = (svg.match(/<svg\b[^>]*>/) || [""])[0];
+  if (!/viewBox="0 0 400 220"/.test(rootTag)) fail(rel, 'the root <svg> must carry viewBox="0 0 400 220" — the tile\'s drawing box');
+  if (/\s(width|height)=/.test(rootTag)) fail(rel, "the root <svg> carries a width or height — the tile sizes the drawing");
+  (svg.match(/\b(stroke|fill)="[^"]*"/g) || []).forEach(function (attr) {
+    var value = attr.replace(/^[a-z]+="|"$/g, "").toLowerCase();
+    if (value !== "none" && value !== GROUP_INK) fail(rel, attr + " — the drawing is one ink, " + GROUP_INK);
+  });
+  if (/<(text|image|foreignObject|linearGradient|radialGradient|filter|mask|pattern|style)\b/i.test(svg)) {
+    fail(rel, "carries text, a picture, a gradient, a filter, a mask or a style block — the drawing is line work only");
+  }
+  if (/\b(opacity|fill-opacity|stroke-opacity|stroke-dasharray|marker-(start|mid|end)|style)=/.test(svg)) {
+    fail(rel, "carries opacity, dashes, markers or inline styles — one solid ink, one weight");
+  }
+  var sparks = (svg.match(/\bdata-spark\b/g) || []).length;
+  if (sparks !== 1) fail(rel, "has " + sparks + " spark(s) — every drawing gathers into exactly one");
+  (svg.match(/<(path|line|polyline|polygon|circle|ellipse|rect)\b[^>]*>/g) || []).forEach(function (el) {
+    if (/\bdata-spark\b/.test(el)) {
+      if (/\bstroke="(?!none)/.test(el)) fail(rel, "the spark is stroked — it is a filled shape");
+      return;
+    }
+    if (!/\bstroke="/.test(el)) fail(rel, "an element carries no stroke — every line is stroked in the ink: " + el.slice(0, 60));
+    if (!/\bstroke-width="1\.75"/.test(el) || !/\bvector-effect="non-scaling-stroke"/.test(el)) {
+      fail(rel, 'a line is not stroke-width="1.75" with vector-effect="non-scaling-stroke": ' + el.slice(0, 60));
+    }
+  });
+  if (Buffer.byteLength(svg, "utf8") > 8 * 1024) fail(rel, "is " + Buffer.byteLength(svg, "utf8") + " bytes — a line drawing stays under 8 KB");
 }
 
 function checkHeroImage(where, image) {
