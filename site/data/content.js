@@ -294,7 +294,7 @@ window.SITE_CONTENT = {
 
     catalog: {
       eyebrow: "Products",
-      title: "Kick off your AI adoption.",
+      title: "Kick off your AI adoption with accelerator apps.",
       cta: { label: "See all products", route: "#/products" }
     },
 
