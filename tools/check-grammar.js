@@ -1554,15 +1554,17 @@ if (!arr(C.products) || C.products.length !== 7) {
   /* --- H2 budget (START-HERE §4: five words or fewer, ≤ ~30 characters) ---
      The three screens round 9 rewrote are held to it; the two it did not touch
      warn, so the debt is visible without failing a build over old copy.
-     S3's is Alex's own line (round 17: "Kick off your AI adoption with
-     accelerator apps", the noun that names the offer restored after round 16
-     had cut it), so it is held at its own 48 characters instead: it may not
-     grow, and a rewrite still fails over it. */
+     S3's and S4's are Alex's own lines (round 17: "Kick off your AI adoption
+     with accelerator apps", the noun that names the offer restored after
+     round 16 had cut it; "Service delivery that accelerates time to value",
+     the benefit restored after round 16's "The method behind the speed."), so
+     each is held at its own 48 characters instead: it may not grow, and a
+     rewrite still fails over it. */
   [
     ["overview.twoWays.title", (o.twoWays || {}).title, true],
     ["overview.catalog.title", (o.catalog || {}).title, true, 48],
     ["overview.caseStudiesIntro.title", (o.caseStudiesIntro || {}).title, true],
-    ["overview.delivery.title", (o.delivery || {}).title, true],
+    ["overview.delivery.title", (o.delivery || {}).title, true, 48],
     ["overview.about.title", (o.about || {}).title, false],
     ["overview.contact.heading", (o.contact || {}).heading, false]
   ].forEach(function (row) {
@@ -1572,15 +1574,35 @@ if (!arr(C.products) || C.products.length !== 7) {
     if (row[2]) fail(row[0], message); else warn(row[0], message);
   });
 
-  /* Round 16: the promise is said once, big. Alex's drafts put "accelerate
-     time-to-value" in the hero lead and two H2s, over an S2 bullet that
-     already says it; no claim sits in more than two places, so the phrase is
-     the hero's and the bullet's, and every other heading carries its own facet
-     of the speed. */
+  /* Round 16: the promise is the hero's, and no claim sits in more than two
+     places. Round 17: Alex put it in the S4 H2 himself ("Service delivery
+     that accelerates time to value"), so the page carries it three times —
+     the hero lead, the S2 bullet and that heading — and nothing may add a
+     fourth. The S4 H2 must still carry it: the heading is his. */
   var promiseCount = (JSON.stringify(o).match(/time[- ]to[- ]value/gi) || []).length;
-  if (promiseCount > 2) {
-    fail("overview", '"time to value" appears ' + promiseCount + " times on the home page — the promise is the hero's, and no claim sits in more than two places");
+  if (promiseCount > 3) {
+    fail("overview", '"time to value" appears ' + promiseCount + " times on the home page — the hero lead, the S2 bullet and the S4 heading carry it, and nothing adds a fourth");
   }
+  if (str((o.delivery || {}).title) && !/time to value/.test(o.delivery.title)) {
+    fail("overview.delivery.title", "Alex's S4 heading states the benefit, time to value (round 17)");
+  }
+
+  /* Round 17 (Alex, on "Why SoftServe on Oracle": "Text to be same line count
+     for each (now it's 3 lines vs 2 lines vs 2 lines)"): the three bodies sit
+     in one length band, which measured the same line count for all three at
+     every width from 320 to 1440 (two lines from 768 up, four at 375, five at
+     320). A body outside the band breaks the rows' rhythm at some width. And
+     the rows open on the brand's feature icons (the why-* glyphs), not on the
+     small UI set in a tinted well. */
+  (((d || {}).why || {}).pillars || []).forEach(function (p, i) {
+    var w = "overview.delivery.why.pillars[" + i + "]";
+    if (str(p.body) && (p.body.length < 105 || p.body.length > 120)) {
+      fail(w, "body is " + p.body.length + " characters — the three stay within 105–120, so each wraps to the same number of lines at every width");
+    }
+    if (str(p.icon) && !/^why-/.test(p.icon)) {
+      fail(w, 'icon "' + p.icon + '" is not one of the brand feature icons (why-*)');
+    }
+  });
 
   /* Round 16 (Alex): "Why SoftServe on Oracle" sits below the timeline, not
      beside it, and the screen ends on its one button. */
