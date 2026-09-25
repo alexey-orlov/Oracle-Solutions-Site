@@ -207,13 +207,16 @@ recoloured — this system has no glow.
 
 `--t-fast .15s` for colour and border, `--t-base .2s` for buttons, chips, tabs
 and links, `--t-slow .3s` for the arrow nudge and card surfaces, all on
-`cubic-bezier(.4,0,.2,1)`. Hover is a **2 px arrow nudge** or a **surface step**,
-never a lift: cards move `#edf0f2 → #e1e7eb` (a white home tile steps to `#edf0f2`)
-instead of translating, and a photograph scales to 1.071 inside `@media (hover: hover)`
-— the tile's stage photograph (round 16; the window on it holds still), and since
-round 11 the home page's S2 panel photographs (with a 2 px arrow nudge) and its case
-cards' band photographs (whose white body steps to `#edf0f2`), on focus-within as well
-as hover; `prefers-reduced-motion` drops the scale. Every
+`cubic-bezier(.4,0,.2,1)`. Hover is a **2 px arrow nudge**, a **surface step** or a
+**graphic scale**, never a lift: cards move `#edf0f2 → #e1e7eb` instead of translating;
+a photograph scales to 1.071 inside `@media (hover: hover)` — since round 11 the home
+page's S2 panel photographs (with a 2 px arrow nudge) and its case cards' band
+photographs (whose white body steps to `#edf0f2`), on focus-within as well as hover;
+and a line drawing scales to 1.04 from its top-left corner, the home group tiles since
+round 17, with a 2 px arrow nudge and no other change (the fill, the name and the
+one-liner hold still; a name turning `#1485c4` would vanish on a blue 75 tile). A
+clipped tile's focus ring is a 2 px `#1a1a1a` outline inset 6 px, because the clip
+cuts an outline drawn outside the box. `prefers-reduced-motion` drops every scale. Every
 `:active { transform: scale(.97) }` is gone — pressed is a colour. `--glow-card`,
 `--glow-frame`, `.hero-glow` and the `.stat-row::before` scrim are all retired.
 
