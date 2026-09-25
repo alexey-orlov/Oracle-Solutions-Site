@@ -2414,6 +2414,17 @@ if (/assets\/img\/logos\//.test(raw)) {
   if (!whyRule || !/background:\s*none/.test(whyRule)) {
     fail(V2_CSS, "the Why SoftServe rows must carry no fill — they are rows between hairlines, not grey cards");
   }
+  /* Round 17 (Alex: the Why icons "more aligned with" softserveinc.com): the
+     brand draws feature icons as bold 64 px outlines on no well, so the mark
+     carries no tint and the glyph is 4rem at a 3 px stroke. */
+  var whyMark = cssRule(".pillars.pillars--list .pillar-mark");
+  var whyIcon = cssRule(".pillars.pillars--list .pillar-mark .icon");
+  if (!whyMark || !/background:\s*none/.test(whyMark)) {
+    fail(V2_CSS, "the Why SoftServe icons sit on no well — the brand's feature icons carry no tint behind them");
+  }
+  if (!whyIcon || !/width:\s*4rem/.test(whyIcon) || !/stroke-width:\s*1\.125/.test(whyIcon)) {
+    fail(V2_CSS, "the Why SoftServe icons are 4rem at stroke-width 1.125 (3 px) — the brand's feature-icon size and weight");
+  }
 
   /* Shape is the corner cut; the pill and the old radii are retired. */
   ["--r-pill", "--r-lg", "--r-md"].forEach(function (t) {
