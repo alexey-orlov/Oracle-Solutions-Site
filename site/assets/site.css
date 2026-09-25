@@ -148,7 +148,7 @@
 .cut,
 .ptile, .case-card, .ways, .way-mark, .pillar, .contact-card, .contact-photo,
 .panel--gate, .panel--kit, .panel--cta, .stat-tile, .stat-tile-mark,
-.bo-band, .bo-tile, .bo-tile-mark, .gtile, .gtile-window, .modal-panel, .empty, .segmented, .fact-row,
+.bo-band, .bo-tile, .bo-tile-mark, .gtile, .modal-panel, .empty, .segmented, .fact-row,
 .step-frame, .video-card, .stack-tag, .cap-tag, .case-medallion, .step-index,
 .stepper-num, .gate-mark, .form-confirm-mark, .media-figure, .case-callout,
 .light-band-media, .modal-panel--media, .way--photo, .tip::after {
@@ -162,7 +162,7 @@
 
 /* Cards and panels take the 8px cut; the big plates take 12px. */
 .ptile, .case-card, .ways, .pillar, .contact-card, .contact-photo,
-.panel--gate, .panel--kit, .panel--cta, .stat-tile, .bo-tile, .gtile, .gtile-window, .modal-panel,
+.panel--gate, .panel--kit, .panel--cta, .stat-tile, .bo-tile, .gtile, .modal-panel,
 .empty, .segmented, .fact-row, .step-frame, .video-card {
   --cut: var(--cut-8);
 }
@@ -3059,7 +3059,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     page-break-inside: avoid;
   }
 
-  .ptile-band, .gtile-band { background: #f2f2f2 !important; }
+  .ptile-band { background: #f2f2f2 !important; }
   .chip { background: #f2f2f2 !important; color: #111 !important; border-color: #bbb !important; }
   .badge, .case-status { background: #f2f2f2 !important; color: #111 !important; border-color: #bbb !important; }
   .badge::before, .chip::before, .case-status::before, .btn::before { background: #f2f2f2 !important; }
@@ -3417,11 +3417,11 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* ——— S3: the products, one tile per group ——— */
 
-/* Six peers in two rows of three: a picture of the software, the group's name,
-   one line that says what it does to someone with no context, and an arrow. The
-   tile is the link — no second control inside it — and text never sits on the
-   image (VISUAL-GRAMMAR §1.1). Hover is a surface step and an image scale,
-   never a lift and never a shadow (SS26-THEME §6). */
+/* Six peers in two rows of three: the group's idea drawn as one line, its
+   name, one line that says what it does to someone with no context, and an
+   arrow. The tile is the link — no second control inside it — and copy never
+   sits on the drawing (VISUAL-GRAMMAR §1.1). Hover scales the drawing and
+   nudges the arrow; never a lift, never a shadow (SS26-THEME §6). */
 .gtiles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3430,131 +3430,116 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   align-items: stretch;
 }
 
-/* Round 16 (Alex: "not to be grey; stay closer to softserveinc.com"): the
-   tile is the case card's construction, white with a hairline, and its colour
-   comes from its photograph. */
+/* Round 17 (Alex: tiles "colored / styled like Our offers tiles" on
+   softserveinc.com/en-us/services/artificial-intelligence): a flat brand fill
+   with no border, hairline, shadow or photograph, and one ink for everything
+   on it. The fills are the brand's surface steps, which carry no role: Lviv
+   blue 75 and 50, Austin orange 75 and neutral 400, set per group by
+   facets.categories[].tone in the order A B C D A B, the one order in which no
+   two tiles that touch in the 3 x 2, 2 x 3 or one-column grid share a fill.
+   The 100 steps keep their roles (blue acts, orange is the H1's accent), so
+   --action and --accent never paint a tile. */
 .gtile {
+  --tile-fill: #bdcbd7;
+  --tile-ink: #1a1a1a;
   display: flex;
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg);
-  color: inherit;
-  transition: background-color var(--t-slow) var(--ease);
+  background: var(--tile-fill);
+  color: var(--tile-ink);
 }
 
-.gtile:hover, .gtile:focus-visible { background: var(--bg-raised); }
+.gtile--blue { --tile-fill: #459fdd; }        /* Lviv blue 75 */
+.gtile--orange { --tile-fill: #fe8d6b; }      /* Austin orange 75 */
+.gtile--blue-light { --tile-fill: #c1dff4; }  /* Lviv blue 50 */
+.gtile--neutral { --tile-fill: #bdcbd7; }     /* neutral 400 */
 
-.gtile-band {
+/* The drawing box: the full tile width at 400 x 220, in flow above the copy,
+   so no line of the drawing can sit under a word. The drawing is cropped by
+   the tile's own top and left edges, as the reference's is; its strokes are
+   non-scaling, so the line is 1.75 px at every tile width. */
+.gtile-draw {
   display: block;
   position: relative;
-  aspect-ratio: 16 / 10;
-  max-width: 100%;
+  aspect-ratio: 400 / 220;
   overflow: hidden;
-  background: var(--bg-inset);
   flex: none;
 }
 
-.gtile-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
-
-/* The stage: one of the site's chrome photographs under a flat veil, so six
-   different pictures read as one family, and the software on it as a white
-   window. The window keeps a 14 % / 20 % margin at the top left (56 × 50 px at
-   400 × 250) and bleeds off the right and the bottom, the product-marketing
-   crop: a UI reads as a UI from its top-left corner. The brief's 7 % / 11.2 %
-   left a 28 px strip that read as a dark frame, not a photograph. The band's
-   own ground is the dark panel, seen only if the photograph fails to load. */
-.gtile-band--stage { background: var(--surface-dark-raised); }
-
-.gtile-stage {
+.gtile-art {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   max-width: none;
-  object-fit: cover;
+  transform-origin: 0 0;
   transition: transform var(--t-slow) var(--ease);
 }
 
-.gtile-veil { position: absolute; inset: 0; background: rgba(0, 0, 0, .22); pointer-events: none; }
-
-.gtile-window {
-  position: absolute;
-  left: 14%;
-  top: 20%;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: #ffffff;
-}
-
-.gtile-window .gtile-img { object-position: left top; transition: none; }
-
-/* Only the photograph moves: the window holds still, which gives the tile
-   depth without a lift or a shadow. */
 @media (hover: hover) {
-  .gtile:hover .gtile-band:not(.gtile-band--stage) .gtile-img,
-  .gtile:focus-visible .gtile-band:not(.gtile-band--stage) .gtile-img,
-  .gtile:hover .gtile-stage, .gtile:focus-visible .gtile-stage { transform: scale(1.071); }
+  .gtile:hover .gtile-art, .gtile:focus-visible .gtile-art { transform: scale(1.04); }
 }
 
+/* The name sits under the drawing, so the names line up across a row; the
+   arrow is pinned to the foot, so six tiles of different line counts still
+   end level. */
 .gtile-body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: .5rem;
-  padding: 1.5rem;
+  padding: 1rem 2rem 2rem;
 }
 
-/* Replica 400 at 24 px, the reference's card-title weight; 20 on a phone. */
+/* Replica 400 at 28 px: the reference's card-title face, a step under its
+   32 because this tile also carries the one-liner. */
 .gtile-name {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 1.5rem;
-  line-height: 1.2;
-  color: var(--text);
-  transition: color var(--t-base) var(--ease);
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--tile-ink);
 }
 
-.gtile-line { color: var(--text-dim); }
+.gtile-line {
+  margin-top: .75rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--tile-ink);
+}
 
-/* Pinned to the foot, so six tiles of different line counts still end level. */
-.gtile-foot { margin-top: auto; padding-top: .75rem; }
+.gtile-foot { margin-top: auto; padding-top: 1.25rem; }
 
 .gtile-arrow {
-  width: 1.125rem;
-  height: 1.125rem;
-  color: var(--text-dim);
-  transition: transform var(--t-slow) var(--ease), color var(--t-base) var(--ease);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--tile-ink);
+  transition: transform var(--t-slow) var(--ease);
 }
 
-.gtile:hover .gtile-name, .gtile:focus-visible .gtile-name { color: var(--action); }
-.gtile:hover .gtile-arrow, .gtile:focus-visible .gtile-arrow { color: var(--action); transform: translateX(2px); }
+.gtile:hover .gtile-arrow, .gtile:focus-visible .gtile-arrow { transform: translateX(2px); }
 
-.gtile:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+/* The clip-path cuts an outline drawn outside the box, so the ring sits
+   inside it, in the tile's own ink. */
+.gtile:focus-visible { outline: 2px solid var(--tile-ink); outline-offset: -6px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gtile, .gtile-img, .gtile-stage, .gtile-arrow { transition: none; }
-  .gtile:hover .gtile-img, .gtile:focus-visible .gtile-img,
-  .gtile:hover .gtile-stage, .gtile:focus-visible .gtile-stage { transform: none; }
+  .gtile-art, .gtile-arrow { transition: none; }
+  .gtile:hover .gtile-art, .gtile:focus-visible .gtile-art,
   .gtile:hover .gtile-arrow, .gtile:focus-visible .gtile-arrow { transform: none; }
 }
 
-/* Three across, then two, left-aligned: the row wraps rather than stretching
-   two tiles to the width of three. */
 /* Three across down to 900, then two, then one: six tiles stay a rectangle at
    every width — 3 × 2, 2 × 3, then a single column on a phone. */
 @media (max-width: 900px) {
   .gtiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .gtile-name { font-size: 1.375rem; }
+  .gtile-name { font-size: 1.5rem; }
+  .gtile-body { padding: 1rem 1.5rem 1.5rem; }
 }
 
 @media (max-width: 560px) {
   .gtiles { grid-template-columns: minmax(0, 1fr); }
-  .gtile-name { font-size: 1.25rem; }
-  .gtile-body { padding: 1.25rem; }
 }
 
 /* ——— S4: how we deliver ——— */
