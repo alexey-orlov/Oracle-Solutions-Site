@@ -1,50 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="Abstract app window with a magnifier over linked nodes">
-  <!-- SS26 placeholder, round 16: the window's interior only. The tile draws
-       the frame (a white window on a photographic stage), so the ground and
-       the outline are gone, and the interior is scaled to fill the viewBox. -->
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
-
-  <g transform="scale(1.2295) translate(-72 -56)">
-    <!-- title bar -->
-    <polygon points="76,56 884,56 888,60 888,112 72,112 72,60" fill="#e1e7eb"/>
-    <path d="M72 112 H888" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
-    <rect x="100" y="78" width="12" height="12" fill="#bdcbd7"/>
-    <rect x="122" y="78" width="12" height="12" fill="#bdcbd7"/>
-    <rect x="144" y="78" width="12" height="12" fill="#bdcbd7"/>
-
-    <!-- left rail -->
-    <polygon points="72,112 208,112 208,544 76,544 72,540" fill="#e1e7eb"/>
-    <path d="M208 112 V544" stroke="#bdcbd7" stroke-width="1.5" fill="none"/>
-    <rect x="88" y="148" width="104" height="14" fill="#c1dff4"/>
-    <rect x="88" y="184" width="104" height="14" fill="#d1dae2"/>
-    <rect x="88" y="220" width="104" height="14" fill="#d1dae2"/>
-    <rect x="88" y="256" width="104" height="14" fill="#d1dae2"/>
-    <rect x="88" y="292" width="104" height="14" fill="#d1dae2"/>
-
-    <!-- content: a query field over three result rows -->
-    <rect x="240" y="136" width="400" height="28" fill="#e1e7eb"/>
-    <rect x="254" y="145" width="150" height="10" fill="#d1dae2"/>
-    <rect x="824" y="134" width="32" height="22" fill="#d1dae2"/>
-    <rect x="240" y="188" width="616" height="96" fill="#e1e7eb"/>
-    <rect x="264" y="212" width="220" height="12" fill="#d1dae2"/>
-    <rect x="264" y="244" width="380" height="10" fill="#d1dae2"/>
-    <rect x="240" y="300" width="616" height="96" fill="#e1e7eb"/>
-    <rect x="264" y="324" width="260" height="12" fill="#d1dae2"/>
-    <rect x="264" y="356" width="330" height="10" fill="#d1dae2"/>
-    <rect x="240" y="412" width="616" height="96" fill="#e1e7eb"/>
-    <rect x="264" y="436" width="190" height="12" fill="#d1dae2"/>
-    <rect x="264" y="468" width="400" height="10" fill="#d1dae2"/>
-
-    <!-- group icon: a magnifier over three linked nodes, 24-grid at 1.5px, scaled 11x -->
-    <g opacity="0.25" transform="translate(513.5,193.5) scale(11)" fill="none" stroke="#4c5156" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M7.55 5.99 L12.45 5.01"/>
-      <path d="M5.7 9.01 L6.8 12.99"/>
-      <path d="M13.53 6.65 L8.97 13.35"/>
-      <circle cx="5" cy="6.5" r="2.6"/>
-      <circle cx="15" cy="4.5" r="2.6"/>
-      <circle cx="7.5" cy="15.5" r="2.6"/>
-      <circle cx="14" cy="13.5" r="5.2"/>
-      <path d="M17.68 17.18 L20.4 19.9"/>
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" fill="none">
+  <path d="M80 -20V150" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M180 -20V168" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M280 -20V142" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M-20 44C20 44 44 32 80 34S140 58 180 58S240 38 280 38S316 48 338 48A28 28 0 0 1 338 104L160 112" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path data-spark="" fill="#1a1a1a" d="M219.9 109.3C179.2 111.1 151 98 132 68.2C151 98 147.6 135.9 121.3 186.6C147.6 135.9 179.2 111.1 219.9 109.3Z"/>
 </svg>

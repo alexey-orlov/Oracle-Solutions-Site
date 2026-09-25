@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" fill="none">
+  <path d="M-20 36C50 30 110 46 160 60S215 85 240 100" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M-20 100C30 90 90 100 150 100L240 100L302 -7.4" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M-20 164C50 170 110 156 160 140S215 115 240 100" stroke="#1a1a1a" stroke-width="1.75" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path data-spark="" fill="#1a1a1a" d="M180 100C220.8 100 249.6 83.4 270 48C249.6 83.4 252.8 122.2 280 169.3C252.8 122.2 220.8 100 180 100Z"/>
+</svg>
