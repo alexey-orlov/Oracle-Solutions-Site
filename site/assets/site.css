@@ -3530,12 +3530,18 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .gtile:hover .gtile-arrow, .gtile:focus-visible .gtile-arrow { transform: none; }
 }
 
-/* Three across down to 900, then two, then one: six tiles stay a rectangle at
-   every width — 3 × 2, 2 × 3, then a single column on a phone. */
-@media (max-width: 900px) {
-  .gtiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Three across down to 1100, then two, then one: six tiles stay a rectangle at
+   every width — 3 × 2, 2 × 3, then a single column on a phone. Below 1280 a
+   third of the row leaves too little measure for a 28 px name in two lines,
+   so the name steps to 24 px; at 1024 three across left 261 px tiles, three-
+   line names and seven-line one-liners, so two across takes over at 1100. */
+@media (max-width: 1279px) {
   .gtile-name { font-size: 1.5rem; }
   .gtile-body { padding: 1rem 1.5rem 1.5rem; }
+}
+
+@media (max-width: 1100px) {
+  .gtiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 560px) {
