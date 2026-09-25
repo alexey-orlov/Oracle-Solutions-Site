@@ -230,7 +230,7 @@
         '<span class="gtile-draw">' + art + "</span>" +
         '<span class="gtile-body">' +
           '<span class="gtile-name">' + UI.esc(category.full) + "</span>" +
-          '<span class="gtile-line small">' + UI.esc(category.line) + "</span>" +
+          '<span class="gtile-line">' + UI.esc(category.line) + "</span>" +
           '<span class="gtile-foot">' + UI.icon("arrow", "gtile-arrow") + "</span>" +
         "</span>" +
         "</a>";

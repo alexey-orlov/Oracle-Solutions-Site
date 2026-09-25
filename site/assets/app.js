@@ -851,7 +851,7 @@
   var YT_PLACEHOLDER_W = 120;
 
   function guardHeroImages(root) {
-    Array.prototype.forEach.call(root.querySelectorAll(".hero-bg-img, .video-card-poster, .contact-photo-img, .ptile-img, .gtile-img, .gtile-stage, .way-img, .case-card-img"), function (img) {
+    Array.prototype.forEach.call(root.querySelectorAll(".hero-bg-img, .video-card-poster, .contact-photo-img, .ptile-img, .gtile-art, .way-img, .case-card-img"), function (img) {
       var retried = false;
 
       function isYouTube() { return (img.getAttribute("src") || "").indexOf("img.youtube.com/") >= 0; }
