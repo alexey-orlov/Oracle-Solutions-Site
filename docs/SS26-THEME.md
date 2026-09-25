@@ -133,6 +133,19 @@ footer ink    #fafaf8 · footer glyphs #e0e0e0 (#ffffff on hover)
 3. **Facts are neutral.** Figures, status chips, fact chips, rules and dots are
    black and the cool greys.
 
+**Surface fills, round 17** (Alex: the home group tiles *"colored / styled like
+Our offers tiles"* on softserveinc.com). The brand's own Offers tiles are flat
+fills of its 75 steps with a black line drawing, so the palette's lighter steps
+are a fourth use, with no role: **Lviv blue 75 `#459fdd`, Austin orange 75
+`#fe8d6b`, Lviv blue 50 `#c1dff4` and neutral 400 `#bdcbd7` fill the six home
+group tiles and nothing else**, in the order blue 75 · orange 75 · blue 50 ·
+neutral 400 · blue 75 · orange 75. That is the one four-fill order in which no
+two touching tiles share a fill in the 3 × 2, 2 × 3 or one-column grid. The 100
+steps keep their roles: `#1485c4` is what you act on, `#f46a4a` the H1's accent,
+and neither paints a tile. The ink on a fill is `#1a1a1a` (6.0:1 on blue 75, the
+lowest), never `#4c5156`, which fails on blue 75 and orange 75. The tiles use
+their own `--tile-fill`, so the accent counter below is unchanged.
+
 `var(--accent)` appears in exactly **two** rules in `site.css`; the checker
 fails if it spreads past three.
 
@@ -173,11 +186,12 @@ dark band**, and the footer's black block does not count.
 
 Everything else is `#ffffff`, with `#edf0f2` for cards and the pre-footer band.
 **A photograph is not a dark band.** The home page's two photographic panels (S2, round
-11), its group tiles' stages (S3, round 16: a chrome photograph under a `.22` veil with
-the software as a white window on it) and its case cards' photo bands (S5) sit on black
-and `#1a1a1a` grounds, but those grounds only show if a photograph fails to load; what the reader sees is a photograph
+11) and its case cards' photo bands (S5) sit on black and `#1a1a1a` grounds, but those
+grounds only show if a photograph fails to load; what the reader sees is a photograph
 under a scrim or a veil, inside a panel or a card with its own cut — not a full-width
 inverted screen. They do not count, and `#about` stays the home page's one dark band.
+S3's group tiles are light fills since round 17 (§3), and S3 stays on white: the
+reference's Offers tiles sit on a black band, which here would be a second dark band.
 `.light-band` / `-media` / `-copy` now paint the dark band, which makes the class
 name a lie; it is kept rather than renamed so the renderers stay shared between
 the two themes, with a comment on the rule.
