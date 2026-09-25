@@ -113,6 +113,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
 - **A message read outside the product stands alone** (Alex, 2026-09-23, on the kit email's opener *"Thanks for requesting it."*). An email is read cold, in an inbox, by someone who may not remember the form: its first sentence says who is writing and what it is, and nothing leans on "it", "the site" or "the team" before naming them. Review email copy in `.work/mail-preview/as-read.txt` (the email as received), never field by field (`mail/README.md`).
 - **Persona first.** Every headline speaks to its reader (a rep on a live call, a buyer on Oracle) in that reader's words. Never counts, taxonomy or packaging terms ("packaged", "workflow pattern", "ready-to-run", "pods").
 - **The hero lead is the promise, not the procedure** (Alex, round 16, replacing a lead that walked through *a fixed-scope Jumpstart … in your tenancy*). It says what SoftServe and Oracle bring and what the reader gets: the time to value. The stages, the scope and where it runs belong to S4. **The promise is said once, big:** when Alex's drafts repeat it in several headings, it stays in the hero, and each other heading carries its own facet of it. The checker fails a procedure word in the lead and *time to value* more than twice on the page.
+- **A section's H2 names what it offers** (Alex, round 17, restoring *…with accelerator apps* after round 16 had polished his *Applications to kick-off your AI adoption* down to *Kick off your AI adoption.*). The noun the owner chose for the offer is positioning, not a duplicate label: the eyebrow over it is 12 px micro-type and does not carry the message. Polishing an owner's draft keeps its meaning, its key verbs and that noun; it cuts only a heading that merely lists what the elements under it already name.
 - **A label earns its words** (Alex, 2026-09-23, round 13, on *By industry* and *See all products, with filters*). Don't put a heading over controls that already name what they hold: a tab bar that says *Use cases* and a row of industry tabs need no *By industry* between them. Don't let a link describe the page it opens (*with filters*); it names where it goes. The checker enforces both instances.
 - **Structure before copy.** Work out the audience, then the positioning, then three or four messages, then one screen per message, and set the length target first. A page is an argument, not an inventory.
 - **Headings are display lines**, so the argument moves into the lead:
@@ -136,7 +137,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
 | Shape | radii, `9999px` pills | **octagonal `clip-path` cuts** 4/8/12 px; `border-radius: 0` but inputs (2 px) and dots |
 | Elevation | glows | **surface steps**; no shadow, no lift, no press-scale |
 | Fact vs filter pill | filled navy is a fact, outlined is a filter | filled grey is a fact, outlined is a filter, blue tint is **selected** |
-| Heading budget | H1 2-4 words, ≤ ~24 chars a line | H1 ≤ 15 chars a line × 2 (the home H1 is the exception: three short sentences, each on its own line — four lines at 375, five at 320); product name ≤ 22 × 2; **H2 ≤ 30, now enforced** — the S2, S3, S4 and S5 home H2s fail over it, the rest warn |
+| Heading budget | H1 2-4 words, ≤ ~24 chars a line | H1 ≤ 15 chars a line × 2 (the home H1 is the exception: three short sentences, each on its own line — four lines at 375, five at 320); product name ≤ 22 × 2; **H2 ≤ 30, now enforced** — the S2, S4 and S5 home H2s fail over it, the rest warn; S3's is Alex's own 48-character line (round 17) and fails over its own length |
 
 Holding for both: 1.5 px line icons and no emoji · peers are equal height · an address is
 a link, never a filled button, and a filled button is the screen's one ask · copy sits on
@@ -320,7 +321,7 @@ Exact commands are in HANDOFF §4.
 - **Round 15 (§35.4):**
   - **opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, because `site/` stores no copy of the links; `tools/serve.py` and a publish are the two ways it gets them.
 - **Round 16 (§36.6):**
-  - **products or apps:** Alex's drafts said *apps* and *applications*; the site kept *products* everywhere, and a rename is site-wide;
+  - **products or apps:** Alex's drafts said *apps* and *applications*, and since round 17 the S3 H2 says *accelerator apps* in his words, while its eyebrow (*Products*), its link (*See all products*), the nav and the catalog still say *products*; a rename is site-wide;
   - **one floor, two ways on the home page:** *from 30 days* (the hero tile, the S2 bullet) beside *From 4 weeks* (the Jumpstart stage);
   - **ranges elsewhere:** the seven Jumpstart tabs and Services still state 4–8 weeks, 3–5 months and 3–12 months. They agree with the floors, and the floor wording can go site-wide on Alex's word;
   - **the hero stack** shows four service tiles while the track has five stages: add a Workshop tile, or leave the stack to the paid tiers;

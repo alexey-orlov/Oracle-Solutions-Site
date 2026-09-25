@@ -6536,3 +6536,16 @@ Retired: round 16's `stage` photograph checks and its "`.gtile` rests white with
 3. **Two one-liners carry em-dash pairs**, *Transaction & process execution* and *Forecasting & optimization*, which the copy rule bans in new copy. They predate the rule and were left alone because the round changed no copy.
 
 The list is repeated in START-HERE §9.
+
+### 37.7 Same-day follow-up: the S3 heading
+
+**The ask** (Alex, 2026-09-25, after the round): *"Kick off your AI adoption -> Kick off your AI adoption with accelerator apps"*.
+
+| Where | Before | After |
+|---|---|---|
+| S3 H2 (`overview.catalog.title`) | *Kick off your AI adoption.* | *Kick off your AI adoption with accelerator apps.* |
+| Checker | S3's H2 failed over 30 characters | S3's H2 fails over its own 48; S2, S4 and S5 still fail over 30 |
+
+- **Built as written**, with the full stop every home H2 carries. It is a direct edit, not a draft to polish, and it corrects round 16: that polish had cut his *Applications to kick-off your AI adoption* down to *Kick off your AI adoption.*, on the grounds that the eyebrow already says *Products*. The noun that names the offer is the section's message, so it stays in the H2, and the rule is now START-HERE §4, *A section's H2 names what it offers*.
+- **Over the H2 budget by the owner's choice:** 48 characters and eight words against 30 and five. Measured: one line at 1440; two balanced lines at 1280, 1024 and 768 (*Kick off your AI adoption / with accelerator apps.*), with *See all products* still beside it; three at 375 and 320 (*Kick off your AI / adoption with / accelerator apps.*), no lone word, no horizontal overflow.
+- **Open:** the screen now names one thing two ways: *accelerator apps* in the H2, *Products* in the eyebrow and *See all products* in the link, which breaks the one-word-for-one-thing rule on one screen. It is round 16's open item 1 (products or apps), now live; the rename is site-wide (the nav, the catalog, the product pages), so it waits for Alex's word.
