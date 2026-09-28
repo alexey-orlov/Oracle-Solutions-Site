@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="pack-spec" content="pack-spec sha256:28be1b0fa6c7 commit:uncommitted">
+<meta name="robots" content="noindex">
+<title>Repair-or-replace decisions · interactive demo</title>
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+<header class="app-head">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <b>Repair-or-replace decisions</b>
+    <small>Review workspace</small>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button type="button" role="tab" data-tab="queue" aria-selected="true">Queue</button>
+    <button type="button" role="tab" data-tab="rules" aria-selected="false">Rules</button>
+    <button type="button" role="tab" data-tab="handoff" aria-selected="false">Handoff</button>
+  </nav>
+  <span class="spacer"></span>
+  <span class="pill" id="tour-pill" hidden>Guided walkthrough</span>
+  <button id="tour-toggle" type="button" class="ghost">Exit guide</button>
+</header>
+
+<main>
+  <!-- ============ QUEUE ============ -->
+  <section id="view-queue" class="view">
+    <div class="sources" id="sources" aria-label="Connected sources"></div>
+
+    <div class="runbar">
+      <div>
+        <h1>This week's queue</h1>
+        <p class="helper" id="queue-helper">Seven cases, each booked on the customer's description.</p>
+      </div>
+      <div class="runbar-actions">
+        <button id="btn-handoff" type="button" hidden>Send confirmed jobs</button>
+        <button id="btn-run" type="button" class="primary">Read the damage</button>
+      </div>
+    </div>
+
+    <ol class="stages" id="stages" hidden></ol>
+
+    <div class="band" id="band" hidden>
+      <div class="band-head">
+        <b>Before → after, same cases</b>
+        <span class="helper">Modelled on industry rates, not a customer result. Apply to your own volumes.</span>
+      </div>
+      <div class="kpis">
+        <button type="button" class="kpi" id="kpi-needless" data-kpi="needless">
+          <span class="k-label"></span>
+          <span class="k-vals"><s class="k-before"></s><span class="k-arrow">→</span><b class="k-after"></b><em class="k-delta"></em></span>
+          <span class="k-count"></span>
+          <span class="k-whose"></span>
+        </button>
+        <button type="button" class="kpi" id="kpi-repeat" data-kpi="repeat">
+          <span class="k-label"></span>
+          <span class="k-vals"><s class="k-before"></s><span class="k-arrow">→</span><b class="k-after"></b><em class="k-delta"></em></span>
+          <span class="k-count"></span>
+          <span class="k-whose"></span>
+        </button>
+        <button type="button" class="kpi" id="kpi-followon" data-kpi="followon">
+          <span class="k-label"></span>
+          <span class="k-vals"><s class="k-before"></s><span class="k-arrow">→</span><b class="k-after"></b><em class="k-delta"></em></span>
+          <span class="k-count"></span>
+          <span class="k-whose"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="work">
+      <div class="work-main">
+        <div class="panel" id="changes-panel" hidden>
+          <div class="panel-head">
+            <h2 id="changes-title">Calls that changed a booking</h2>
+            <span class="helper" id="changes-helper"></span>
+          </div>
+          <ul class="changes" id="changes"></ul>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Cases</h2>
+            <span class="helper" id="flag-summary"></span>
+          </div>
+          <div class="table-wrap">
+            <table class="queue" id="queue">
+              <thead>
+                <tr><th>Case</th><th>Asset</th><th>Damage</th><th>Booked</th><th>The call</th><th>Status</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel case" id="case" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <!-- ============ RULES ============ -->
+  <section id="view-rules" class="view" hidden>
+    <div class="runbar"><div><h1>Rules in force</h1><p class="helper">Example rules only, versioned per market and contract.</p></div></div>
+    <div class="compare" id="compare"></div>
+    <div class="rulesets" id="rulesets"></div>
+    <div class="two">
+      <div class="panel"><div class="panel-head"><h2>Routing</h2></div><ul class="plain" id="routing"></ul></div>
+      <div class="panel"><div class="panel-head"><h2>What is live today</h2><span class="helper">Status of each capability shown here</span></div><ul class="status" id="status"></ul></div>
+    </div>
+  </section>
+
+  <!-- ============ HANDOFF ============ -->
+  <section id="view-handoff" class="view" hidden>
+    <div class="runbar"><div><h1>Handoff</h1><p class="helper">Confirmed calls go to the booking system with the scope resolved.</p></div></div>
+    <div class="panel" id="export">
+      <div class="panel-head">
+        <h2 id="export-file">booking-import.csv</h2>
+        <span class="helper" id="export-helper"></span>
+      </div>
+      <div class="table-wrap"><table class="export" id="export-table"><thead></thead><tbody></tbody></table></div>
+      <div class="held" id="held"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">Demo data only: every case, id, site, market and rule is invented.</footer>
+
+<div class="toast" id="toast" hidden></div>
+
+<!-- welcome / end card -->
+<div class="modal" id="gate" hidden>
+  <div class="modal-card">
+    <p class="eyebrow">Interactive demo</p>
+    <h2 id="gate-title">Repair-or-replace decisions</h2>
+    <p id="gate-body">Photos of damaged windscreens, containers and airframe panels become measured calls, each citing the rule it met. See what that saves, check any call, and overrule one to watch the numbers follow.</p>
+    <p class="gate-steps" id="gate-steps">6 steps · about 3 minutes</p>
+    <div class="gate-actions">
+      <button class="primary" id="gate-start" type="button">Start the walkthrough</button>
+      <button id="gate-free" type="button">Explore freely</button>
+    </div>
+    <div id="gate-try" hidden></div>
+    <p class="gate-note">Demo data only. Figures are modelled, not a customer result.</p>
+  </div>
+</div>
+
+<!-- tour callout -->
+<div class="tour" id="tour" hidden>
+  <div class="tour-card">
+    <div class="tour-top">
+      <span class="tour-step" id="tour-step"></span>
+      <button class="tour-close" id="tour-skip" type="button" aria-label="Do this step for me">Skip</button>
+    </div>
+    <strong id="tour-title"></strong>
+    <p id="tour-body"></p>
+    <div class="tour-progress" id="tour-progress"></div>
+    <button class="primary tour-next" id="tour-next" type="button" hidden>Next</button>
+  </div>
+</div>
+
+<script src="tour-engine.js"></script>
+<script src="data.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>
