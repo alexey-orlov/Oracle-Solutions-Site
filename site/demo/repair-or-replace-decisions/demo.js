@@ -256,7 +256,7 @@
       esc(c.market) + " · " + esc(c.site) + " · " + esc(c.asset) + "</span></div>");
     h.push('<figure class="shot">' + svgFor(c) + "<figcaption>Illustration of photo " + c.frame + " of " + c.photos + " · " + esc(c.anchor.toLowerCase()) + " in view</figcaption></figure>");
     if (!S.ran) {
-      h.push('<p class="empty-note">Booked at first contact: ' + esc(bookedLabel(c)) + ", on " + esc(c.described) + ". Not read yet: read the damage to measure it against the rules.</p>");
+      h.push('<p class="empty-note">Booked at first contact: ' + esc(bookedLabel(c)) + ", on " + esc(c.described) + ". Read the damage to measure it against the rules.</p>");
       box.innerHTML = h.join("");
       return;
     }
@@ -335,7 +335,7 @@
     $("#export-table thead").innerHTML = "<tr>" + EXPORT_COLS.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr>";
     if (!S.ran) {
       $("#export-table tbody").innerHTML = "";
-      $("#export-helper").textContent = "Nothing to send: the damage has not been read yet";
+      $("#export-helper").textContent = "Read the damage first; confirmed jobs appear here";
       $("#held").innerHTML = "";
       return;
     }
@@ -348,7 +348,7 @@
         "</td><td>" + esc(sc[1]) + "</td><td>" + sc[2] + " min</td><td>" + esc(followOnFor(c) || "None") + "</td><td>" + esc(c.rule) +
         "</td><td>" + esc(c.size + " " + c.unit) + "</td><td>" + esc(by) + "</td></tr>";
     }).join("");
-    $("#export-helper").textContent = S.handed ? rows.length + " jobs sent · " + held.length + " held" : "Preview: not sent yet";
+    $("#export-helper").textContent = S.handed ? rows.length + " jobs sent · " + held.length + " held" : "Preview of the booking file";
     $("#held").innerHTML = held.map(function (c) { return "<div><b>" + c.id + "</b> · " + esc(heldReason(c)) + "</div>"; }).join("");
   }
 
