@@ -59,15 +59,15 @@ window.RRD = {
   ],
 
   ruleSets: [
-    { id: "NG", name: "Northland glazing guide", version: "v3", scope: "Vehicle glazing · Northland", rules: [
-      { id: "NG-3.1", text: "A chip up to 25 mm may be repaired, zone A included." },
-      { id: "NG-3.4", text: "A crack longer than 75 mm: replace." },
-      { id: "NG-5.2", text: "No repair within 100 mm of an earlier repair." }
+    { id: "AG", name: "Aldmere glazing guide", version: "v3", scope: "Vehicle glazing · Aldmere", rules: [
+      { id: "AG-3.1", text: "A chip up to 25 mm may be repaired, zone A included." },
+      { id: "AG-3.4", text: "A crack longer than 75 mm: replace." },
+      { id: "AG-5.2", text: "No repair within 100 mm of an earlier repair." }
     ] },
-    { id: "SG", name: "Southland glazing guide", version: "v2", scope: "Vehicle glazing · Southland", rules: [
-      { id: "SG-2.4", text: "No repair inside zone A, whatever the size." },
-      { id: "SG-2.6", text: "Outside zone A, a chip up to 20 mm may be repaired." },
-      { id: "SG-3.1", text: "A crack of any length: replace." }
+    { id: "BG", name: "Brisca glazing guide", version: "v2", scope: "Vehicle glazing · Brisca", rules: [
+      { id: "BG-2.4", text: "No repair inside zone A, whatever the size." },
+      { id: "BG-2.6", text: "Outside zone A, a chip up to 20 mm may be repaired." },
+      { id: "BG-3.1", text: "A crack of any length: replace." }
     ] },
     { id: "CT", name: "Container repair matrix", version: "v5", scope: "Shipping containers · lessor contract L-2", rules: [
       { id: "CT-07", text: "A dent up to 35 mm deep, with no crack or hole: straighten." },
@@ -101,11 +101,11 @@ window.RRD = {
 
   cases: [
     {
-      id: "RR-24811", cls: "glazing", clsLabel: "Vehicle glazing", market: "Northland", site: "Harbour Row",
+      id: "RR-24811", cls: "glazing", clsLabel: "Vehicle glazing", market: "Aldmere", site: "Harbour Row",
       asset: "Vehicle V-40219 · windscreen", photos: 5, frame: 3, anchor: "Scale tag, 50 mm",
       damage: "Chip", size: 14.2, tol: 0.8, unit: "mm", zone: "A · driver's sight-line", zoneA: true,
       described: "\"a big chip\"", booked: "Replace", bookedOnDescription: true,
-      call: "Repair", conf: 0.93, rule: "NG-3.1", ruleSet: "NG",
+      call: "Repair", conf: 0.93, rule: "AG-3.1", ruleSet: "AG",
       overruleTo: "Replace", reasons: ["Customer reports the chip is spreading", "Earlier repair nearby", "Photo does not show the full damage"],
       scope: { Repair: ["Chip repair kit", "Repair technician", 30], Replace: ["Windscreen", "Glazing technician", 120] },
       followOnOnReplace: "",
@@ -113,17 +113,17 @@ window.RRD = {
       change: {
         id: "chg-24811", caseId: "RR-24811", kind: "improves", area: "Decision & estimate",
         what: "Replace → Repair",
-        why: "Measured at 14.2 mm; Northland's example rule allows a repair up to 25 mm.",
+        why: "Measured at 14.2 mm; Aldmere's example rule allows a repair up to 25 mm.",
         effects: { needless: -0.20, repeat: 0 },
         effect: "Needless replacements −0.20 pts; follow-on work falls with it"
       }
     },
     {
-      id: "RR-24814", cls: "glazing", clsLabel: "Vehicle glazing", market: "Southland", site: "Mill Cross",
+      id: "RR-24814", cls: "glazing", clsLabel: "Vehicle glazing", market: "Brisca", site: "Mill Cross",
       asset: "Vehicle V-73105 · windscreen", photos: 4, frame: 2, anchor: "Scale tag, 50 mm",
       damage: "Chip", size: 11.0, tol: 0.7, unit: "mm", zone: "A · driver's sight-line", zoneA: true,
       described: "\"just a small chip\"", booked: "Repair", bookedOnDescription: true,
-      call: "Replace", conf: 0.96, rule: "SG-2.4", ruleSet: "SG",
+      call: "Replace", conf: 0.96, rule: "BG-2.4", ruleSet: "BG",
       overruleTo: "Repair", reasons: ["Customer declines the replacement", "Photo does not show the full damage"],
       scope: { Repair: ["Chip repair kit", "Repair technician", 30], Replace: ["Windscreen, camera bracket", "Glazing technician, calibration", 150] },
       followOnOnReplace: "Camera recalibration",
@@ -131,14 +131,14 @@ window.RRD = {
       change: {
         id: "chg-24814", caseId: "RR-24814", kind: "improves", area: "Decision & estimate",
         what: "Repair → Replace",
-        why: "Southland's example rule allows no repair inside zone A, whatever the size.",
+        why: "Brisca's example rule allows no repair inside zone A, whatever the size.",
         effects: { needless: 0, repeat: -0.15 },
         effect: "Repeat visits −0.15 pts; the recalibration is booked with the job"
       }
     },
     {
       id: "RR-24820", cls: "container", clsLabel: "Shipping container", market: "Lessor contract L-2", site: "Eastgate Depot",
-      asset: "Unit DMOU 104522 6 · side panel", photos: 4, frame: 1, anchor: "Scale tag, 100 mm",
+      asset: "Unit CNT-104522 · side panel", photos: 4, frame: 1, anchor: "Scale tag, 100 mm",
       damage: "Dent, no crack or hole", size: 28, tol: 2, unit: "mm deep", zone: "Side panel, between posts", zoneA: false,
       described: "surveyor's line: replace panel", booked: "Replace", bookedOnDescription: true,
       call: "Repair", callDetail: "straighten", conf: 0.90, rule: "CT-07", ruleSet: "CT",
@@ -156,7 +156,7 @@ window.RRD = {
     },
     {
       id: "RR-24823", cls: "container", clsLabel: "Shipping container", market: "Lessor contract L-2", site: "Eastgate Depot",
-      asset: "Unit DMOU 207731 0 · roof panel", photos: 5, frame: 4, anchor: "Scale tag, 100 mm",
+      asset: "Unit CNT-207731 · roof panel", photos: 5, frame: 4, anchor: "Scale tag, 100 mm",
       damage: "Hole", size: 45, tol: 2, unit: "mm", zone: "Roof panel", zoneA: false, hole: true,
       described: "surveyor's line: straighten", booked: "Repair", bookedDetail: "straighten", bookedOnDescription: true,
       call: "Repair", callDetail: "patch", conf: 0.95, rule: "CT-12", ruleSet: "CT",
@@ -173,11 +173,11 @@ window.RRD = {
       }
     },
     {
-      id: "RR-24826", cls: "glazing", clsLabel: "Vehicle glazing", market: "Northland", site: "Harbour Row",
+      id: "RR-24826", cls: "glazing", clsLabel: "Vehicle glazing", market: "Aldmere", site: "Harbour Row",
       asset: "Vehicle V-58342 · windscreen", photos: 5, frame: 2, anchor: "Scale tag, 50 mm",
       damage: "Chip", size: 23.6, tol: 1.4, unit: "mm", zone: "A · driver's sight-line", zoneA: true,
       described: "\"a large chip\"", booked: "Replace", bookedOnDescription: true,
-      call: "Repair", conf: 0.61, rule: "NG-3.1", ruleSet: "NG", review: true,
+      call: "Repair", conf: 0.61, rule: "AG-3.1", ruleSet: "AG", review: true,
       overruleTo: "Replace", reasons: ["Margin is inside the measurement's tolerance", "Customer reports the chip is spreading", "Earlier repair nearby"],
       scope: { Repair: ["Chip repair kit", "Repair technician", 30], Replace: ["Windscreen, camera bracket", "Glazing technician, calibration", 150] },
       followOnOnReplace: "Camera recalibration",
@@ -203,11 +203,11 @@ window.RRD = {
       draw: { x: 176, y: 96 }
     },
     {
-      id: "RR-24835", cls: "glazing", clsLabel: "Vehicle glazing", market: "Southland", site: "Mill Cross",
+      id: "RR-24835", cls: "glazing", clsLabel: "Vehicle glazing", market: "Brisca", site: "Mill Cross",
       asset: "Vehicle V-26671 · windscreen", photos: 4, frame: 1, anchor: "Scale tag, 50 mm",
       damage: "Crack", size: 180, tol: 3, unit: "mm long", zone: "B · outside the sight-line", zoneA: false, crack: true,
       described: "\"a long crack\"", booked: "Replace", bookedOnDescription: false,
-      call: "Replace", conf: 0.98, rule: "SG-3.1", ruleSet: "SG",
+      call: "Replace", conf: 0.98, rule: "BG-3.1", ruleSet: "BG",
       overruleTo: "Repair", reasons: ["Photo does not show the full damage"],
       scope: { Replace: ["Windscreen, camera bracket", "Glazing technician, calibration", 150], Repair: ["Crack repair", "Repair technician", 45] },
       followOnOnReplace: "Camera recalibration",
