@@ -25,6 +25,7 @@ window.RRD = {
       base: 3.0,
       def: "Replacements where a repair would have met the limit",
       whose: "Payer funds it · operator is measured on it",
+      per: "decisions",
       dp: 1
     },
     repeat: {
@@ -32,12 +33,14 @@ window.RRD = {
       base: 1.5,
       def: "Repairs that come back for the same damage",
       whose: "Operator absorbs the return visit",
+      per: "repairs",
       dp: 1
     },
     followon: {
       label: "Unnecessary follow-on work",
       def: "Work such as recalibration, triggered only by a needless replacement",
       whose: "Operator loses the slot · payer pays the line",
+      per: "decisions",
       dp: 2
     }
   },
@@ -211,7 +214,7 @@ window.RRD = {
       overruleTo: "Repair", reasons: ["Photo does not show the full damage"],
       scope: { Replace: ["Windscreen, camera bracket", "Glazing technician, calibration", 150], Repair: ["Crack repair", "Repair technician", 45] },
       followOnOnReplace: "Camera recalibration",
-      draw: { x: 190, y: 120 }
+      draw: { x: 198, y: 152 }
     }
   ]
 };

@@ -97,10 +97,10 @@
     if (r === 0) return "0.00 pts";
     return (r < 0 ? "−" : "+") + Math.abs(r).toFixed(2) + " pts";
   }
-  function countText(x) {
+  function countText(x, per) {
     var n = Math.abs(x - Math.round(x)) < 0.05 ? String(Math.round(x)) : x.toFixed(1);
-    if (Number(n) === 0) return "No change per 1,000 decisions";
-    return n + " fewer per 1,000 decisions";
+    if (Number(n) === 0) return "No change per 1,000 " + per;
+    return n + " fewer per 1,000 " + per;
   }
 
   /* ---- illustrations (drawn, not photographed) ---- */
@@ -115,8 +115,8 @@
       s.push('<rect x="90" y="54" width="100" height="90" fill="#FDB022" fill-opacity=".10" stroke="#FDB022" stroke-dasharray="5 4"/>');
       s.push('<text x="95" y="67" font-size="9" fill="#FEC84B" font-family="system-ui, sans-serif">Zone A · sight-line</text>');
       if (c.crack) {
-        s.push('<path d="M' + d.x + ' ' + d.y + ' l14 -6 l10 8 l16 -10 l12 4 l18 -9 l16 6" fill="none" stroke="#F8FAFC" stroke-width="1.8"/>');
-        s.push(measure(d.x, d.y + 16, d.x + 86, label));
+        s.push('<path d="M' + d.x + ' ' + d.y + ' l12 -5 l8 7 l14 -8 l10 3 l14 -7 l12 5" fill="none" stroke="#F8FAFC" stroke-width="1.8"/>');
+        s.push(measure(d.x, d.y - 26, d.x + 70, label));
       } else {
         var r = Math.max(3, Math.min(14, c.size / 25 * 11));
         s.push('<circle cx="' + d.x + '" cy="' + d.y + '" r="' + r.toFixed(1) + '" fill="#F8FAFC" fill-opacity=".75"/>');
@@ -219,7 +219,7 @@
       el.querySelector(".k-before").textContent = pct(b[id], dp);
       el.querySelector(".k-after").textContent = pct(a[id], dp);
       el.querySelector(".k-delta").textContent = (rel < 0 ? "−" : "+") + Math.abs(rel).toFixed(0) + "%";
-      el.querySelector(".k-count").textContent = countText((b[id] - a[id]) * 10);
+      el.querySelector(".k-count").textContent = countText((b[id] - a[id]) * 10, def.per);
       el.querySelector(".k-whose").textContent = def.whose;
       el.classList.toggle("is-selected", S.kpi === id);
     });
@@ -483,6 +483,12 @@
       body: "Open the Aldmere chip. The customer asked for a new windscreen; the photo measures 14.2 mm, and that market's rule allows a repair.",
       target: function () { return $('li[data-change="chg-24811"]'); },
       auto: function () { openCase("RR-24811"); tour.next(); } },
+    { id: "case", major: 4, passive: true, side: "left",
+      title: "The evidence behind one call",
+      body: "The drawing marks the scale tag and the measured chip. The example rule is cited word for word, and the trace shows each step the system took.",
+      target: function () { return $("#case"); },
+      anchor: function () { return $("#case .rulebox"); },
+      auto: function () { tour.next(); } },
     { id: "flagged", major: 5, side: "right",
       title: "Open the call flagged for review",
       body: "This chip sits 1.4 mm under the limit, inside the measurement's own margin. The system flags it rather than deciding alone.",
