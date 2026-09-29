@@ -2555,7 +2555,7 @@ if (/assets\/img\/logos\//.test(raw)) {
 
 /* The Internal review panel, a checklist of the brief's open assumptions that
    anyone with the preview link could open, ran from 2026-09-17 until Alex had
-   it removed on 2026-09-29 (PROVENANCE §46). Nothing internal ships in the
+   it removed on 2026-09-29 (PROVENANCE §44). Nothing internal ships in the
    site: the brief's record is docs/START-HERE.md §2, so the panel's files and
    their script tags stay gone, from the archived theme too. */
 ["site/data/review.js", "site/assets/review.js"].forEach(function (rel) {
