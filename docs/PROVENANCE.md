@@ -7436,6 +7436,7 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
 - **Open for Alex:** START-HERE §9, under §50.
   1. **The word order:** *SoftServe’s dedicated Oracle practice* is one phrase away, in six strings.
   2. **The confirmation cannot be seen on the shared link:** the claude.ai preview cannot send, so the link shows only the renamed line under each form and the renamed empty state; a local run with the sender shows the rest.
+- **Published** on 2026-09-29 in version 1790690733-2aa5 (version 17), by §51's session, whose publish mapped this fix's three files (`assets/forms.js`, `assets/site.css`, `data/content.js`) with its own `pages/overview.js`, on top of 1790687383-c586. This session did not publish; it read the three live files back afterwards, and each matched `main` by sha256.
 
 ## 51. The case-study rail without its reference-call link, 2026-09-29
 
