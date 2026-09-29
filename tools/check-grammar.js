@@ -1210,8 +1210,15 @@ if (!arr(C.products) || C.products.length !== 9) {
     need(contacts, ".contact-band", /var\(--bg-raised\)[\s\S]*100vw/, "the component wraps itself in a full-bleed #edf0f2 band");
     need(contacts, ".contact-plate", /background:\s*#ffffff/i, "the band holds one white plate");
     need(contacts, ".contact-plate", /--cut:\s*var\(--cut-12\)/, "the white plate takes the 12px cut");
-    need(contacts, ".contact-tile", /#459fdd/i, "the first person's portrait sits on Lviv blue 75");
-    need(contacts, ".contact-person:nth-child(even) .contact-tile", /#fe8d6b/i, "the second person's portrait sits on Austin orange 75");
+    /* 2026-09-29 (Alex, "weird blue frame"): the square brand tile behind the
+       round portrait is gone; an office photograph is not a cut-out team shot. */
+    if (/\.contact-tile\b/.test(contacts)) {
+      fail(CSS_FILE, "Round 20 · Contacts styles a .contact-tile — the portrait stands on the plate; a brand tile behind it read as a blue frame (Alex, 2026-09-29)");
+    }
+    /* The home screen is one grey band from its first pixel, and the ask fits
+       one screen under the masthead (Alex, 2026-09-29). */
+    need(contacts, ".home-contact", /padding-block:\s*0/, "the home contact's section gives up both paddings — the band is the screen's ground");
+    need(contacts, ".contact-intro", /flex-direction:\s*column/, "the section's eyebrow and H2 open the plate's left column");
     /* Q1: blue 125, the kit pane's link style (.inline-link), 7:1 on white. */
     need(contacts, ".contact-mail", /color:\s*var\(--action-pressed\)/, "the mailbox is a blue-125 link (#0e5e8b), the kit pane's own link style — #1485c4 is 4.05:1 at 18px");
     never(contacts, ".contact-mail", /background|--fill/, "the mailbox carries a fill — an address is a link, never a button");
@@ -1225,8 +1232,8 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (!/\n#app:has\(> :last-child \.contact-band\) \+ \.site-footer::before \{ display: none; \}/.test(contacts)) {
       fail(CSS_FILE, "the footer's #edf0f2 spacer is still drawn after a page that ends on the contact band — two greys back to back read as one grey mass");
     }
-    if (grouped.indexOf(".contact-plate") === -1 || grouped.indexOf(".contact-tile") === -1) {
-      fail(CSS_FILE, "the grouped cut declaration does not list .contact-plate and .contact-tile");
+    if (grouped.indexOf(".contact-plate") === -1) {
+      fail(CSS_FILE, "the grouped cut declaration does not list .contact-plate");
     }
   }
   function fnOf(src, name, next) {
@@ -1237,8 +1244,9 @@ if (!arr(C.products) || C.products.length !== 9) {
   var switchFn = fnOf(appR20, "contactSwitch", "mountContactSwitch");
   var cardFn = fnOf(appR20, "contactCard", "contactSplit");
   var photoFn = fnOf(appR20, "contactPhoto", "contactWho");
-  if (!switchFn || !cardFn || !photoFn) {
-    warn("site/assets/app.js", "contactSwitch / contactCard / contactPhoto not found — the round-20 contact checks are reading nothing");
+  var splitFn = fnOf(appR20, "contactSplit", "contactSwitch");
+  if (!switchFn || !cardFn || !photoFn || !splitFn) {
+    warn("site/assets/app.js", "contactSwitch / contactCard / contactPhoto / contactSplit not found — the round-20 contact checks are reading nothing");
   } else {
     if (switchFn.indexOf('class="contact-band"') === -1 || switchFn.indexOf('class="contact-plate"') === -1) {
       fail("site/assets/app.js contactSwitch()", "does not wrap itself in the contact band and its white plate — both surfaces take the ground from the component");
@@ -1249,8 +1257,11 @@ if (!arr(C.products) || C.products.length !== 9) {
     if ((cardFn.match(/contact-card-copy/g) || []).length !== 1 || cardFn.indexOf('<ul class="contact-people">') === -1) {
       fail("site/assets/app.js contactCard()", "one card anatomy on both surfaces: the people as rows, then the one address and the one line");
     }
-    if (photoFn.indexOf('class="contact-tile"') === -1) {
-      fail("site/assets/app.js contactPhoto()", "the round portrait sits on its square brand-fill tile");
+    if (photoFn.indexOf("contact-tile") !== -1 || photoFn.indexOf('class="contact-photo"') === -1) {
+      fail("site/assets/app.js contactPhoto()", "the round portrait stands on the plate, with no brand tile behind it (Alex, 2026-09-29: \"weird blue frame\")");
+    }
+    if (!/class="contact-split-card">' \+\s*intro \+/.test(splitFn)) {
+      fail("site/assets/app.js contactSplit()", "a surface's own eyebrow and H2 (`intro`) open the card's column inside the plate — a heading above the band reads unattached (2026-09-29)");
     }
   }
 })();
@@ -1930,6 +1941,12 @@ if (!arr(C.products) || C.products.length !== 9) {
        ask alone; the kit lives on each product's Contacts tab and on #/sellers. */
     if (/kitOptions|kitBody|salesKit/.test(home)) {
       fail("site/pages/overview.js", "hands the contact switch a sales kit — the home page carries the ask alone (Alex, 2026-09-29)");
+    }
+    /* 2026-09-29 (Alex): the form read "unattached from the heading" when the
+       H2 sat on white above the band. The heading is handed to the component,
+       which sets it inside the plate. */
+    if (closingFn && (/\bhead\(/.test(closingFn) || !/UI\.contactSwitch\(\{[^}]*intro:/.test(closingFn))) {
+      fail("site/pages/overview.js closing()", "renders its heading above the contact band — pass it to UI.contactSwitch as `intro`, so it opens the plate's left column");
     }
     var appSwitch = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
     if (!/var withKit = !!opts\.kitOptions;/.test(appSwitch) || !/var pick = !withKit \? "" :/.test(appSwitch) ||
