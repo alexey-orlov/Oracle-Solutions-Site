@@ -1707,9 +1707,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/large-document-extraction-1.jpg",
               zoom: "assets/img/steps/large-document-extraction-1-zoom.jpg",
-              region: [18, 17, 61, 30],
+              region: [17.9, 30.2, 30.2, 21.8],
               anchor: "br",
-              alt: "The upload screen: a 48-page agreement being classified, routed and extracted, two stages done and one running."
+              alt: "A 48-page agreement being processed: pages routed, fields being extracted."
             },
             features: ["Document-type gate, then page-level routing to the right extractor"]
           },
@@ -1720,9 +1720,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/large-document-extraction-2.jpg",
               zoom: "assets/img/steps/large-document-extraction-2-zoom.jpg",
-              region: [56, 41, 43, 40],
+              region: [56.4, 46.6, 29.4, 28.4],
               anchor: "bl",
-              alt: "The review screen: the source PDF beside the extracted rows of one rate group, each with a confidence chip."
+              alt: "Routine cleaning rates as rows, each with its source page cited."
             },
             features: [
               "Field schema and business rules defined per document type",
@@ -1736,9 +1736,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/large-document-extraction-3.jpg",
               zoom: "assets/img/steps/large-document-extraction-3-zoom.jpg",
-              region: [56, 60, 43, 38],
+              region: [56.8, 65.7, 29.6, 30.9],
               anchor: "bl",
-              alt: "The review screen with one flagged row open: the validator, the suggested fix, a 71% confidence and the page citation."
+              alt: "A flagged tier: the validator's finding, suggested fix 22, source page 9."
             },
             features: [
               "Per-field confidence scoring with tuned thresholds and fallback logic",
@@ -1753,9 +1753,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/large-document-extraction-4.jpg",
               zoom: "assets/img/steps/large-document-extraction-4-zoom.jpg",
-              region: [56, 13, 43, 45],
+              region: [58.6, 40.9, 29.4, 31.6],
               anchor: "bl",
-              alt: "The review screen's approval column: Approve all, the document's status and its rate groups."
+              alt: "After Approve all: the agreement and every rate group approved."
             },
             features: [
               "Split-view reviewer UI with bulk actions, auto-save and an audit trail",
@@ -2064,7 +2064,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/workforce-optimization-1.jpg",
               zoom: "assets/img/steps/workforce-optimization-1-zoom.jpg",
-              region: [31.3, 56.9, 34.1, 19.9],
+              region: [31.3, 56.9, 34.0, 19.9],
               anchor: "tr",
               alt: "The Run optimization dialog with the four-week planning file uploaded."
             },
@@ -2083,7 +2083,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/workforce-optimization-2.jpg",
               zoom: "assets/img/steps/workforce-optimization-2-zoom.jpg",
-              region: [31.3, 52.0, 34.1, 15.6],
+              region: [31.3, 52.0, 34.0, 15.6],
               anchor: "br",
               alt: "The solver mid-run: input checked, rules loaded, GPU solve running."
             },
@@ -2109,7 +2109,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/workforce-optimization-4.jpg",
               zoom: "assets/img/steps/workforce-optimization-4-zoom.jpg",
-              region: [6.6, 23.3, 34.1, 22.8],
+              region: [6.6, 23.3, 34.0, 22.8],
               anchor: "br",
               alt: "Plan v2 against today: jobs per technician +4.5%, capacity +3 pts."
             },
@@ -2417,7 +2417,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-1.jpg",
               zoom: "assets/img/steps/cross-system-erp-qa-1-zoom.jpg",
-              region: [19.2, 45.5, 34.1, 20.9],
+              region: [19.2, 45.5, 34.0, 20.9],
               anchor: "br",
               alt: "The question asked in Agent Hub; the order agent reads three ERPs."
             },
@@ -2462,7 +2462,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-4.jpg",
               zoom: "assets/img/steps/cross-system-erp-qa-4-zoom.jpg",
-              region: [18.5, 62.3, 34.1, 30.5],
+              region: [18.5, 62.3, 34.0, 30.5],
               anchor: "tr",
               alt: "The answer after the override: why lines are late, and proposed actions."
             },
@@ -3097,7 +3097,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/fleet-route-optimization-3.jpg",
               zoom: "assets/img/steps/fleet-route-optimization-3-zoom.jpg",
-              region: [27.0, 23.3, 34.1, 19.6],
+              region: [27.1, 23.3, 34.0, 19.6],
               anchor: "br",
               alt: "Cost per visit €64.41 to €56.96, visits per engineer 5.50 to 5.92."
             },
@@ -3442,9 +3442,9 @@ window.SITE_CONTENT = {
         "shot": {
           "full": "assets/img/steps/repair-or-replace-decisions-3.jpg",
           "zoom": "assets/img/steps/repair-or-replace-decisions-3-zoom.jpg",
-          "region": [2.2, 50.3, 32.1, 19.3],
-          "anchor": "br",
-          "alt": "Before and after, same cases: needless replacements 3.0% to 2.4%."
+          "region": [33.9, 50.3, 32.1, 19.3],
+          "anchor": "tr",
+          "alt": "Before and after, same cases: repeat visits 1.5% to 1.2%."
         },
         "features": [
           "Reviewer workspace with override, a captured reason and a decision record *"
