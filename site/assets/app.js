@@ -336,6 +336,15 @@
     return found || { label: id, fullLabel: id };
   }
 
+  /* The platforms a product runs on, in canonical order. `facet` is one id, or
+     an array of ids for a product whose own engine is part of more than one
+     Oracle platform (2026-09-29: the two Q&A products, on AI Lakehouse and AI
+     Data Platform). Every surface reads the list, never `facet` raw. */
+  function productFacets(product) {
+    var facet = product && product.facet;
+    return Array.isArray(facet) ? facet.slice() : (facet ? [facet] : []);
+  }
+
   function industryLabel(key) {
     var labels = (C.shared && C.shared.industryLabels) || {};
     return labels[key] || key;
@@ -610,7 +619,14 @@
      its own plate, as softserveinc.com's card chips do. */
   function productTile(product, options) {
     var opts = options || {};
-    var facet = facetLabel(product.facet);
+    /* One plate per platform. A product on two platforms carries two plates in
+       one wrapper that wraps under the badge's side, so they never collide on a
+       phone-width tile; a one-platform tile keeps its lone plate. */
+    var plates = productFacets(product).map(function (id) {
+      var facet = facetLabel(id);
+      return '<span class="ptile-facet" title="' + esc(facet.fullLabel) + '">' + esc(facet.label) + "</span>";
+    });
+    var platesHtml = plates.length > 1 ? '<span class="ptile-facets">' + plates.join("") + "</span>" : plates.join("");
     var image = product.hero && product.hero.image;
     var href = "#/products/" + product.slug;
 
@@ -627,7 +643,7 @@
           (opts.eager ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"') +
           ' decoding="async">'
         : "") +
-      '<span class="ptile-facet" title="' + esc(facet.fullLabel) + '">' + esc(facet.label) + "</span>" +
+      platesHtml +
       badgeRow(product.slug, "ptile-badges") +
       "</div>";
 
@@ -808,6 +824,7 @@
     figure: figure,
     diagram: diagram,
     facetLabel: facetLabel,
+    productFacets: productFacets,
     industryLabel: industryLabel,
     contactCard: contactCard,
     contactSplit: contactSplit,

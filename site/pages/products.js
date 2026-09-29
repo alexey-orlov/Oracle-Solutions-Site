@@ -57,8 +57,9 @@
       product.subLine || "",
       product.statusNote || "",
       product.categoryChip,
-      UI.facetLabel(product.facet).label,
-      UI.facetLabel(product.facet).fullLabel,
+      UI.productFacets(product).map(function (id) {
+        return UI.facetLabel(id).label + " " + UI.facetLabel(id).fullLabel;
+      }).join(" "),
       product.tags.join(" "),
       product.tile.outcomes.join(" "),
       /* The one-liner sells the business value and names no engine (2026-09-29),
@@ -68,7 +69,8 @@
   }
 
   function matches(product, filters) {
-    if (filters.tech && product.facet !== filters.tech) return false;
+    /* A product on two platforms answers both filters. */
+    if (filters.tech && window.UI.productFacets(product).indexOf(filters.tech) === -1) return false;
     if (filters.cat && product.category !== filters.cat) return false;
     if (filters.demo && !hasFlag(product, "demo")) return false;
     if (filters.mp && !hasFlag(product, "marketplace")) return false;
