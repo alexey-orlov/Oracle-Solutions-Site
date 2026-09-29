@@ -7878,3 +7878,7 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
   1. **The picture repeats softserveinc.com's home banner,** mirrored, as the photograph before it did. Swapping both crops keeps the layout.
   2. **The render is 900 px tall,** so a 2× screen upscales it about 1.6× at 1440 (the band is 709 px tall). Smooth metal on a gradient holds up; a larger source would come from the brand team.
   3. **The button stays the site's blue ask,** not §47's white button for a dark photograph: the ask now sits on the plain dark ground, not on a picture.
+
+## 58. Round 22: the Technology tab as the one-pager's strip and an Oracle products widget, the Jumpstart tab as Delivery, 2026-09-29
+
+(In progress in a session opened in AO-Personal-OS; this section is being written.)
