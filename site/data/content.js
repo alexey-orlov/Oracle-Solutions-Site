@@ -705,7 +705,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/account-insights-1.jpg",
               zoom: "assets/img/steps/account-insights-1-zoom.jpg",
-              region: [20.3, 39.6, 30.9, 29.6],
+              region: [20.3, 39.6, 29.7, 29.6],
               anchor: "br",
               alt: "The morning check: stories read, noise dropped, repeats merged, accounts matched."
             },
@@ -718,7 +718,7 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/account-insights-2.jpg",
               zoom: "assets/img/steps/account-insights-2-zoom.jpg",
-              region: [21.2, 7.7, 34.1, 37.0],
+              region: [21.2, 7.7, 34.1, 36.3],
               anchor: "br",
               alt: "One story reaching four accounts: named, supplier, customer and competitor."
             },
