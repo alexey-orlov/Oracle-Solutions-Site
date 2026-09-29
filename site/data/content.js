@@ -441,6 +441,25 @@ window.SITE_CONTENT = {
     }
   },
 
+  /* The alternative home page at #/alt (Alex, 2026-09-29), shown beside the
+     live one until he picks. It keeps every word of `overview` and adds only
+     what is new: the hero's photograph, which the S2 products panel carried
+     until S2 lost its photographs, and S2's umbrella heading over the whole
+     offer — products and services, packaged and bespoke, on Oracle —
+     replacing "A head start that scales.", which named the packaged path
+     only. PROVENANCE §44. */
+  overviewAlt: {
+    hero: {
+      image: {
+        file: "assets/img/heroes/overview.jpg",
+        alt: "A tall oval of light standing open in a dark wall, its reflection running out across still water"
+      }
+    },
+    offer: {
+      title: "Everything to go live with AI."
+    }
+  },
+
   productsPage: {
     title: "PRODUCTS",
     intro: "Every product runs in your own Oracle tenancy and starts with a Jumpstart on your data — at a fixed price where one is published, otherwise scoped per engagement. Filter by the Oracle platform it runs on, or search for the job you need done.",
