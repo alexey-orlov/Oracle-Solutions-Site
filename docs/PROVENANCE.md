@@ -7728,12 +7728,13 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
 - **The checker:**
   - §52's guard asking the lead for an hours, cost or revenue word is gone. His line sells the head start, not a metric, and that guard was §52's reading, not his rule. The cap is his line's 38 words.
   - New: `hero()` renders the photograph, the scrim, the spark and the four lines, and no eyebrow and no search box. The search box opens the results bar. `productsPage.image` has `{ file, alt, focal }`, and its JPEG is on disk and at least 2400 px wide. The title is one word. The axis line runs at 25deg. `site.tagline` is a retired key.
-  - A scratch copy took eight faults one at a time: the tagline back, the down line gone, an eyebrow and a search field in the hero, a 1920 px photograph, a two-word title, 24deg, a 40-word lead. Each failed, and the clean copy passed.
+  - **The photograph is no other picture on the site** (Alex's rule): no other key in `content.js` names its file, and no picture it names has its bytes. A byte check cannot see a scene, and the first cut was another file of the `#/alt` hero's scene, so START-HERE §4 keeps the rule for the eye too.
+  - A scratch copy took eleven faults one at a time: the tagline back, the down line gone, an eyebrow and a search field in the hero, a 1920 px photograph, a two-word title, 24deg, a 40-word lead; then the home panel and the `#/alt` hero moved onto the catalog's file, the same bytes under another name, and the catalog on the oval. Each failed, and the clean copy passed.
 - **Checks:**
   - `node --check` on `products.js`, `content.js` and `app.js`; `check-grammar` OK with the one known warning (`overview.about.title`).
-  - In the browser pane against `tools/serve.py`, measured at 1920, 1536, 1440, 1366, 1280, 1024, 820, 768, 721, 720, 540, 414, 375 and 320:
+  - In the browser pane against `tools/serve.py`, measured by script at 20 widths from 1920 to 320 (1920, 1536, 1440, 1366, 1280, 1025, 1024, 900, 820, 769, 768, 720, 600, 541, 540, 441, 440, 414, 375, 320), and captured in headless Chrome (`tools/step-mocks/cap.mjs`) at 12 of them:
     - no horizontal overflow;
-    - the lead 23 px or more clear of the oval;
+    - no face under the spark or on the hairline;
     - the spark 30 px or more clear of the H1, and 12 px over the lead where the lead runs under it;
     - *Products* on one line down to 320;
     - the hero 510 px at 1440, where About Us shows 486 under its header.
@@ -7741,12 +7742,12 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
   - A search typed live kept its focus, printed *1 product* and updated the hash.
   - The archive's catalog renders without the photograph. The deny-list sweep is empty.
 - **Open for Alex** (START-HERE §9, under §54):
-  - **The same picture twice.** The catalog's photograph is the home Products panel's scene, the panel his lead comes from. If `#/alt` becomes the home page, its hero carries that scene too, and the catalog should take another photograph.
+  - **The corporate site's picture:** the catalog's hero repeats softserveinc.com's About Us photograph, as the Bespoke band repeats a softserveinc.com banner.
+  - **Faces:** the man in the cap shows his face in shadow under the cap; the man in white and the woman at the window stay out of the frame. It is SoftServe's own photograph, published on softserveinc.com, while the site's industry images show no identifiable face (ASSETS §2).
   - **The claim in three places:** the home Products panel, the catalog's hero and the not-found page, where the rule is two.
   - ***AI* on the first screen:** three times in the lead (his words) and in the rail's platform names beside it.
   - **Two SoftServe marks on one screen:** the header's wordmark and the hero's spark, as softserveinc.com shows them.
-  - **Phones:** the dark side of the photograph with the oval's glow at the edge, and three of the four lines.
-  - **Rights:** the photograph is the brand template's own title image, but §11.1's note on that deck imagery stands: it is generated art, to confirm with the deck's owner before the site goes public.
+  - **Phones:** mostly the photograph's dark side, the man's lit back at the right edge, and three of the four lines.
 - **The contract round stays 20:** the packaging plugin never writes the catalog's head, and it reads no `site.tagline`.
 
 ## 55. The product hero: a frame that opens the recording or the walkthrough, on softserveinc.com's gradient, 2026-09-29

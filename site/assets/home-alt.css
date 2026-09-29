@@ -492,9 +492,15 @@
 /* Under 1024 px the photograph's 480 px floor is more than 47 % of its
    width, so the picture is cropped from the left and the oval moves in to
    meet the copy: no dark gap is left for the line, so the line and the
-   spark go. */
+   spark go. The copy column is too narrow for the ask and its link side by
+   side, so the link goes under the ask. Its line box keeps .26 em of air
+   under its letters (no descenders), which the negative margin hangs below
+   the block, so the block ends where its words end and the centre above
+   holds. */
 @media (max-width: 1023px) {
   .ahero-line, .ahero-spark { display: none; }
+  .ahero-actions { flex-direction: column; align-items: flex-start; }
+  .ahero-actions .ahero-link { margin-bottom: -.26em; }
 }
 
 /* The photograph takes its content's height and the oval moves to the right
@@ -514,8 +520,14 @@
   .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "packaged" "products" "bespoke"; }
   .amap-block--products .amap-pic,
   .amap-block--bespoke .amap-pic { margin-top: 14px; padding-top: 0; }
-  .amap-pods { grid-template-columns: repeat(3, minmax(0, 44px)); gap: 6px; }
+  .amap-pods { grid-template-columns: repeat(6, minmax(0, 40px)); gap: 6px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Up to 560 px the link is a tap target (site.css pads it by .625rem), and
+   its padding hangs below the block with its air. */
+@media (max-width: 560px) {
+  .ahero-actions .ahero-link { margin-bottom: calc(-.625rem - .26em); }
 }
 
 /* A phone: the copy takes the full width; the button spans the row, the
