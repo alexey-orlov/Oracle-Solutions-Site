@@ -123,8 +123,8 @@ var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-
 var UNPACKAGED = ["case-evidence-collection", "plan-vs-actual-investigation"];
 var RETIRED_TAGS = ["Available now", "Fixed-price offer", "In preparation"];
 var CUSTOMER_NAMES = ["Bosch", "Riyadh Air", "RiyadhAir", "Riyahd", "DHL", "SBG", "BSH", "Binladin", "Belron", "Channel 4", "KPN", "NHS", "OMV"];
-/* E: a one-liner says what the product does, for whom, with what outcome. It is
-   not the place for the packaging story — that is what the Jumpstart tab is. */
+/* E: a one-liner says what the buyer's business gets, for whom. It is not the
+   place for the packaging story — that is what the Jumpstart tab is. */
 var PACKAGING_PHRASES = [
   "packaged from proof of value",
   "from proof of value to enterprise scale",
@@ -133,6 +133,23 @@ var PACKAGING_PHRASES = [
   "quick start",
   "proof of value to enterprise"
 ];
+/* Round 19 (Alex, 2026-09-29: "focus not on the aspects of the tech
+   implementation, but on the very specific business value"). A product's
+   oneLiner, its hero line and a group's tile line sell what the buyer's business
+   gets; the platform, the engine and the data architecture live on the chips and
+   the Technology tab. Matched on word boundaries, plural allowed. */
+var IMPLEMENTATION_TERMS = [
+  "oracle", "oci", "nvidia", "cuopt", "nemo", "ai-q", "lakehouse", "autonomous",
+  "gpu", "llm", "language model", "machine learning", "neural", "rag", "vector", "embedding",
+  "gold layer", "governed layer", "semantic layer", "data layer", "answer layer", "data platform",
+  "api", "sql", "database", "schema", "confidence score", "structured data", "ocr"
+];
+function implementationTerms(s) {
+  var low = s.toLowerCase();
+  return IMPLEMENTATION_TERMS.filter(function (term) {
+    return new RegExp("(^|[^a-z0-9])" + term + "s?(?![a-z0-9])").test(low);
+  });
+}
 
 var failures = [];
 var warnings = [];
@@ -234,6 +251,12 @@ if (!arr(C.products) || C.products.length !== 8) {
       }
     });
   }
+  ["oneLiner", "heroLine", "heroCaption"].forEach(function (k) {
+    if (!str(p[k])) return;
+    implementationTerms(p[k]).forEach(function (term) {
+      fail(w, k + ' names the implementation ("' + term + '") — it sells the business value; the platform, engine and data architecture belong on the chips and the Technology tab');
+    });
+  });
   if (p.pov !== undefined) fail(w, "pov is superseded by jumpstart — nothing renders it");
   /* Round 4, T1: the three availability states became two badges driven by
      config flags. Nothing renders the chip model any more. */
@@ -1047,6 +1070,9 @@ if (!arr(C.products) || C.products.length !== 8) {
       var lineWords = words(c.line.replace(/\s[—–-]\s/g, " "));
       if (lineWords > 26) fail(where, "line is " + lineWords + " words (max 26 — it sits under a tile image)");
       if (c.line.trim().slice(-1) !== ".") fail(where, "line does not end in a period — the six tiles are sentences and sit side by side");
+      implementationTerms(c.line).forEach(function (term) {
+        fail(where, 'line names the implementation ("' + term + '") — a group tile says what the buyer gets, not how it is built');
+      });
     }
     /* Round 17 (Alex, on round 16's screenshot-on-a-photograph tiles: "I don't
        like current mix of screenshots with backgrounds"; each group's image

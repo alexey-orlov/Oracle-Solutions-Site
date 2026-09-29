@@ -512,7 +512,7 @@ window.SITE_CONTENT = {
         id: "knowledge-analytics",
         chip: "Enterprise knowledge & analytics",
         full: "Enterprise knowledge & analytics",
-        line: "Plain-language answers and analysis over your governed data, from the ERP to the systems around it, with the source behind every answer.",
+        line: "Managers get the numbers behind a decision in plain words, without a report request, and the figures agree from team to team.",
         image: "assets/img/groups/knowledge-analytics.svg",
         tone: "blue",
         emptyState: "Knowledge and analytics assistants are scoped per engagement. Tell us the questions your teams ask, and which systems hold the answers."
@@ -521,7 +521,7 @@ window.SITE_CONTENT = {
         id: "deep-research",
         chip: "Deep research & investigation",
         full: "Deep research & investigation",
-        line: "Agents that read across your systems and outside sources and bring back a cited answer: an account brief, a case file, a variance explained.",
+        line: "The research your experts spend weeks assembling, delivered ready for them to judge: an account brief, a case file, a cost overrun explained.",
         image: "assets/img/groups/deep-research.svg",
         tone: "orange",
         emptyState: "Deep research agents are scoped per engagement. Tell us the question your people spend days answering."
@@ -530,7 +530,7 @@ window.SITE_CONTENT = {
         id: "documents",
         chip: "Document processing",
         full: "Document processing",
-        line: "Long contracts and records turned into checked, structured data, every value traced to its page and approved by a reviewer.",
+        line: "Your team checks contracts, policies and reports instead of keying them in, and deals, claims and new suppliers stop waiting days for data entry.",
         image: "assets/img/groups/documents.svg",
         tone: "blue-light",
         emptyState: "Document processing is scoped per engagement. Tell us the document type and the system it feeds."
@@ -539,7 +539,7 @@ window.SITE_CONTENT = {
         id: "transactions",
         chip: "Transaction & process execution",
         full: "Transaction & process execution",
-        line: "Agents that carry a process step through to completion — an order, a claim, a ticket, a posting — inside your systems, with a person approving what moves.",
+        line: "Routine orders, claims, tickets and invoices closed without manual handoffs, so your people handle the exceptions and approve what moves.",
         image: "assets/img/groups/transactions.svg",
         tone: "neutral",
         emptyState: "Transaction and process agents are scoped per engagement. Tell us the process step your people complete by hand today."
@@ -548,7 +548,7 @@ window.SITE_CONTENT = {
         id: "forecasting-optimization",
         chip: "Forecasting & optimization",
         full: "Forecasting & optimization",
-        line: "Forecasts and plans computed against every constraint at once — demand, routes, shifts, allocations — for the people who own them to approve.",
+        line: "More work from the people and vehicles you already have, on plans your planners approve instead of building by hand.",
         image: "assets/img/groups/forecasting-optimization.svg",
         tone: "blue",
         emptyState: "Forecasting and optimization is scoped per engagement. Tell us the plan your planners or dispatchers build by hand today."
@@ -557,7 +557,7 @@ window.SITE_CONTENT = {
         id: "video-image",
         chip: "Video & image intelligence",
         full: "Video & image intelligence",
-        line: "Cameras, footage and photos read by AI: defects spotted, scenes found, events flagged, for a person to confirm.",
+        line: "Defects spotted, incidents flagged and scenes found in your footage and photos, without anyone having to watch every hour of it.",
         image: "assets/img/groups/video-image.svg",
         tone: "orange",
         emptyState: "Video and image work is delivered as an engagement today, on OCI + NVIDIA NeMo. Tell us the footage or the inspection you have in mind."
@@ -584,7 +584,7 @@ window.SITE_CONTENT = {
       category: "deep-research",
       categoryChip: "Deep research & investigation",
       facet: "oci-nvidia",
-      oneLiner: "Turns news, filings and market signals into cited, per-account opportunities and risks that sales and account teams can act on.",
+      oneLiner: "Opportunities your sellers would otherwise miss and risks caught before renewal, for every account a market event touches.",
       tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
       hero: {
         image: {
@@ -900,7 +900,7 @@ window.SITE_CONTENT = {
       category: "deep-research",
       categoryChip: "Deep research & investigation",
       facet: "oci-nvidia",
-      oneLiner: "Assembles the evidence trail for a case or complaint out of every system that holds a piece of it — cited, time-stamped, and ready for an investigator to decide on.",
+      oneLiner: "Investigators spend their hours deciding cases, not gathering evidence: every case file arrives complete and built the same way, whoever works it.",
       statusNote: "In preparation — scoping conversations are open.",
       tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
       hero: {
@@ -1204,7 +1204,7 @@ window.SITE_CONTENT = {
       category: "deep-research",
       categoryChip: "Deep research & investigation",
       facet: "oci-nvidia",
-      oneLiner: "Compares plan against actual across completed projects, orders and engagements, and assembles each variance with its candidate drivers and the source evidence behind them.",
+      oneLiner: "See which finished projects and orders went over budget or ran late, by how much and why, across the whole portfolio.",
       statusNote: "In preparation — scoping conversations are open.",
       tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
       hero: {
@@ -1524,7 +1524,7 @@ window.SITE_CONTENT = {
       category: "documents",
       categoryChip: "Document processing",
       facet: "oci-nvidia",
-      oneLiner: "Turns long, complex documents into validated, structured data — every extracted value carries a confidence score and a citation to its source page.",
+      oneLiner: "Contracts reach your systems without days of keying by hand, and a wrong rate is caught at review, not on the invoice.",
       heroCaption: "100-page contract in minutes.",
       tags: ["Document processing", "OCI + NVIDIA NeMo"],
       hero: {
@@ -1853,7 +1853,7 @@ window.SITE_CONTENT = {
       category: "forecasting-optimization",
       categoryChip: "Forecasting & optimization",
       facet: "oci-nvidia",
-      oneLiner: "Optimizes field-service work zones and schedules with NVIDIA cuOpt — a region’s four-week plan built in minutes, approved by dispatchers, exported to Oracle Field Service.",
+      oneLiner: "The same technicians complete more jobs a day, with less driving and waiting, on a four-week plan balanced across every zone.",
       heroCaption: "What if dispatchers reviewed the plan, not built it?",
       tags: ["Forecasting & optimization", "OCI + NVIDIA NeMo"],
       hero: {
@@ -2182,8 +2182,8 @@ window.SITE_CONTENT = {
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
       facet: "oracle-ai-lakehouse",
-      oneLiner: "Answers plain-language questions that span the ERP, the CRM and the systems around them, from one governed layer on Oracle Autonomous AI Lakehouse.",
-      heroLine: "Your ERP + everything around it.",
+      oneLiner: "Managers get answers across the ERP and CRM on their own, while the decision is still open, instead of weeks later in a report.",
+      heroLine: "Which delayed orders are hurting our best accounts?",
       badges: ["ERP + CRM + THE SYSTEMS AROUND THEM", "PREBUILT PIPELINES", "ANSWERS IN MINUTES"],
       tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
       hero: {
@@ -2478,8 +2478,8 @@ window.SITE_CONTENT = {
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
       facet: "oracle-ai-lakehouse",
-      oneLiner: "Answers plain-language questions about business metrics from one governed gold layer over the catalogs and databases you already run — consistent definitions, no data moved.",
-      heroLine: "Ask once, every cloud answers.",
+      oneLiner: "Every team gets the same number for the same metric, asked in plain words, wherever the data sits.",
+      heroLine: "Answers in seconds, not a week of extracts.",
       badges: ["MULTI-CLOUD", "ON-PREM TOO", "NO MIGRATION"],
       tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
       hero: {

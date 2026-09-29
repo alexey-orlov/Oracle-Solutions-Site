@@ -4,43 +4,43 @@
     {
       "slug": "large-document-extraction",
       "name": "Large docs processing and review",
-      "oneLiner": "Turns long, complex documents into validated, structured data — every extracted value carries a confidence score and a citation to its source page.",
+      "oneLiner": "Contracts reach your systems without days of keying by hand, and a wrong rate is caught at review, not on the invoice.",
       "group": "Document processing"
     },
     {
       "slug": "account-insights",
       "name": "Account insights",
-      "oneLiner": "Turns news, filings and market signals into cited, per-account opportunities and risks that sales and account teams can act on.",
+      "oneLiner": "Opportunities your sellers would otherwise miss and risks caught before renewal, for every account a market event touches.",
       "group": "Deep research & investigation"
     },
     {
       "slug": "workforce-optimization",
       "name": "Workforce optimization",
-      "oneLiner": "Optimizes field-service work zones and schedules with NVIDIA cuOpt — a region’s four-week plan built in minutes, approved by dispatchers, exported to Oracle Field Service.",
+      "oneLiner": "The same technicians complete more jobs a day, with less driving and waiting, on a four-week plan balanced across every zone.",
       "group": "Forecasting & optimization"
     },
     {
       "slug": "plan-vs-actual-investigation",
       "name": "Plan vs actual investigation",
-      "oneLiner": "Compares plan against actual across completed projects, orders and engagements, and assembles each variance with its candidate drivers and the source evidence behind them.",
+      "oneLiner": "See which finished projects and orders went over budget or ran late, by how much and why, across the whole portfolio.",
       "group": "Deep research & investigation"
     },
     {
       "slug": "case-evidence-collection",
       "name": "Case evidence collection",
-      "oneLiner": "Assembles the evidence trail for a case or complaint out of every system that holds a piece of it — cited, time-stamped, and ready for an investigator to decide on.",
+      "oneLiner": "Investigators spend their hours deciding cases, not gathering evidence: every case file arrives complete and built the same way, whoever works it.",
       "group": "Deep research & investigation"
     },
     {
       "slug": "cross-system-erp-qa",
       "name": "Cross-system ERP Q&A",
-      "oneLiner": "Answers plain-language questions that span the ERP, the CRM and the systems around them, from one governed layer on Oracle Autonomous AI Lakehouse.",
+      "oneLiner": "Managers get answers across the ERP and CRM on their own, while the decision is still open, instead of weeks later in a report.",
       "group": "Enterprise knowledge & analytics"
     },
     {
       "slug": "business-metrics-qa",
       "name": "Business metrics Q&A",
-      "oneLiner": "Answers plain-language questions about business metrics from one governed gold layer over the catalogs and databases you already run — consistent definitions, no data moved.",
+      "oneLiner": "Every team gets the same number for the same metric, asked in plain words, wherever the data sits.",
       "group": "Enterprise knowledge & analytics"
     },
     {
