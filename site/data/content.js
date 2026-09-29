@@ -81,7 +81,16 @@ window.SITE_CONTENT = {
     "business-metrics-qa": {
       diagram: "business-metrics-qa",
       alt: "Diagram: existing catalogs, linked databases and existing platforms stay where they are and connect into Oracle Autonomous AI Lakehouse as the governed gold layer, which answers across every source with no data movement"
+    },
+
+    "repair-or-replace-decisions": {
+
+      diagram: "repair-or-replace-decisions",
+
+      alt: "Media from the operator's capture channel and the asset master record flow into Oracle Cloud Infrastructure, where the SoftServe app and the NVIDIA vision and reasoning engine produce the call, and a reviewer confirms or overrules it before it reaches the booking, dispatch or claims system."
+
     }
+
   },
 
   disclaimers: {
@@ -3081,6 +3090,373 @@ window.SITE_CONTENT = {
         ],
         cta: { label: "Start a Jumpstart conversation", route: "#/products/fleet-route-optimization/contacts" }
       }
+},
+
+    {
+  "slug": "repair-or-replace-decisions",
+  "name": "Repair-or-replace decisions",
+  "contactPerson": "oleksii-orlov",
+  "headline": { "accent": "Repair-or-replace", "rest": "decisions" },
+  "category": "video-image",
+  "categoryChip": "Video & image intelligence",
+  "facet": "oci-nvidia",
+  "oneLiner": "A replacement paid for only when the rules require one, and the right job booked first time: repair-or-replace calls on damaged vehicles, containers and equipment, measured from photos.",
+  "heroCaption": "What if a wrong call were caught before it cost anything?",
+  "tags": ["Video & image intelligence", "OCI + NVIDIA NeMo"],
+  "hero": {
+    "image": {
+      "file": "assets/img/heroes/repair-or-replace-decisions.jpg",
+      "alt": "A sheet of laminated glass seen edge-on in low light, one fine crack catching the light across it",
+      "focal": "50% 50%"
+    }
+  },
+  "tile": {
+    "outcomes": [
+      "Needless replacements caught before they are funded, the price gap saved each time",
+      "The job done once, with the right part and slot on the first visit",
+      "Every call keeps its rule, measurement and reason, so disputes are answered from the record"
+    ]
+  },
+  "overview": {
+    "problemSolution": {
+      "problem": {
+        "title": "The problem",
+        "text": "Call agents, surveyors and claims handlers decide repair or replace from photos of damaged vehicles, containers and equipment, and each wrong call costs a needless replacement or a repeat visit. The insurer or lessor funds a part it did not need; the network goes back for the repair that failed.",
+        "icon": "alert"
+      },
+      "solution": {
+        "title": "The solution: check the call, don't make it",
+        "text": "The agent, surveyor or handler confirms or overrules a measured call before the job is booked, with its rule and any recalibration listed. Replacements are funded only when the rules require them, and the job is done once.",
+        "icon": "spark"
+      }
+    },
+    "metrics": [
+      {
+        "value": "about £460",
+        "label": "Saving per needless replacement avoided",
+        "qualifier": "A windscreen replacement about £500 against a £40 repair, UK industry averages",
+        "icon": "roi"
+      },
+      {
+        "value": "$300–400 and 4 days",
+        "label": "Avoidable recalibrations",
+        "qualifier": "Each camera recalibration a needless replacement would have triggered, industry figures",
+        "icon": "clock"
+      },
+      {
+        "value": "36 per 1,000",
+        "label": "Wrong calls per 1,000 cases",
+        "qualifier": "Down from 45 per 1,000 today, counting both kinds of wrong call",
+        "icon": "gauge"
+      }
+    ],
+    "metricsNote": "Modeled figures: the saving per call and the recalibration cost are published industry averages (vehicle glazing, UK 2013, about $250 in the US; collision repair estimates), and the rate follows industry assumptions. Each is applied to your own volumes, and the proof of value measures all three on your own cases.",
+    "roi": {
+      "icon": "roi",
+      "text": "The saving lands on both sides: the insurer or lessor keeps the price gap every time a repair would have met the rules, and the network makes one visit with the right part instead of two."
+    },
+    "features": [
+      "Capture requests sent from a booking or claim *",
+      "Guided capture with a scale anchor, so size can be measured *",
+      "Asset identified from its own markings",
+      "Damage located across frames and classified against your taxonomy *",
+      "Each damage measured against the limit that governs it *",
+      "Repair, replace or refer, with a confidence attached",
+      "Rule, frame and measurement cited on every call *",
+      "Reviewer workspace with override, a captured reason and a decision record *"
+    ],
+    "featuresNote": "* Partial out of the box or completed during the proof of value; the exact coverage is confirmed in scoping.",
+    "featuresDetail": [
+      { "title": "Guided capture", "body": "A capture request goes from the booking or claim to whoever holds the asset, with prompts on framing and a scale anchor so size can be measured.*" },
+      { "title": "Asset identification", "body": "The identifier is read from the media itself, and the asset's record and geometry are retrieved." },
+      { "title": "Detection and classification", "body": "Each damage is located, tracked across frames and classified against a taxonomy configured per asset class.*" },
+      { "title": "Measurement", "body": "Each damage is measured, with its basis stated, and mapped to the zone whose limit governs it.*" },
+      { "title": "The call", "body": "Repair, replace or refer, citing the rule, the frame and the measurement, with a threshold tuned to what each kind of error costs you.*" },
+      { "title": "Review and record", "body": "The reviewer sees the media, the reading and the rule, confirms or overrules with a reason, and the decision record is kept per market retention rules.*" }
+    ],
+    "industriesNote": "For the network, depot, branch or maintenance organization that makes the call and carries a wrong one, and for the insurer, lessor or fleet owner that funds the remedy.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Capture",
+        "text": "The capture request reaches whoever holds the asset. Media comes back, is checked for usability, and a retake is requested when it falls short.",
+        "image": "assets/img/steps/repair-or-replace-decisions-1.jpg",
+        "features": [
+          "Capture requests sent from a booking or claim *",
+          "Guided capture with a scale anchor, so size can be measured *"
+        ]
+      },
+      {
+        "n": 2,
+        "title": "Read the damage",
+        "text": "The asset is identified from its own markings, and each damage is located, classified and measured against the limit that governs it.",
+        "image": "assets/img/steps/repair-or-replace-decisions-2.jpg",
+        "features": [
+          "Asset identified from its own markings",
+          "Damage located across frames and classified against your taxonomy *",
+          "Each damage measured against the limit that governs it *"
+        ]
+      },
+      {
+        "n": 3,
+        "title": "The call",
+        "text": "Repair, replace or refer, with the rule it came from, the measurement it used and a confidence attached, before the job is booked.",
+        "image": "assets/img/steps/repair-or-replace-decisions-3.jpg",
+        "features": [
+          "Repair, replace or refer, with a confidence attached",
+          "Rule, frame and measurement cited on every call *"
+        ]
+      },
+      {
+        "n": 4,
+        "title": "Review and hand off",
+        "text": "The reviewer confirms the call or overrules it with a reason. The confirmed decision reaches the booking, dispatch or claims system with its scope resolved; the record is kept.",
+        "image": "assets/img/steps/repair-or-replace-decisions-4.jpg",
+        "features": [
+          "Reviewer workspace with override, a captured reason and a decision record *"
+        ]
+      }
+    ],
+    "industryCases": [
+      {
+        "industry": "automotive",
+        "label": "Automotive",
+        "image": "assets/img/industries/automotive.jpg",
+        "problem": "In vehicle glazing, call agents book a repair or a replacement before anyone sees the vehicle. A chip in the driver's viewing area is repairable under one market's rule and prohibited under another's, and a replaced windscreen can add a camera recalibration and days to the job.",
+        "solution": "The agent confirms a measured call and books the right job, kit and slot the first time. The service network leads here, while the insurer paying for the glass applies the repair-first pressure."
+      },
+      {
+        "industry": "logistics",
+        "label": "Logistics & supply chain",
+        "image": "assets/img/industries/logistics.jpg",
+        "problem": "Container depot surveyors propose repairs that the owner approves line by line. Damage and remedy come in codified pairs: a hole in a panel can only be patched or replaced.",
+        "solution": "The surveyor submits coded damage with only the permissible remedies attached, so each line can be checked against the code. The depot leads, with the container lessor approving each line."
+      },
+      {
+        "industry": "financial-services",
+        "label": "Financial services",
+        "image": "assets/img/industries/financial-services.jpg",
+        "problem": "At a rental or lease handover, branch staff decide what a returning customer is charged for damage. The charge has to tell a scratch within the fair-wear allowance from one added during the hire, in front of a customer who may dispute it.",
+        "solution": "New damage is separated from pre-existing damage, with the evidence attached to the charge so it stands up to a dispute. The lessor leads here, because the output is a bill."
+      },
+      {
+        "industry": "insurance",
+        "label": "Insurance",
+        "image": "assets/img/industries/insurance.jpg",
+        "problem": "At first notice of loss, claims handlers decide repair, replace or write-off from photos of the vehicle's body and paint. The write-off test sets repair cost against a share of the vehicle's value, and that share is set locally.",
+        "solution": "The handler reviews a costed scope with the write-off threshold already applied. The insurer leads here, as the payer funding the repair."
+      },
+      {
+        "industry": "travel-transport",
+        "label": "Travel & transport",
+        "image": "assets/img/industries/travel-transport.jpg",
+        "problem": "Aircraft engineers disposition skin damage against published structural limits. A dent inside allowable limits can be accepted and logged to the aircraft's damage chart rather than repaired.",
+        "solution": "The engineer gets the limit, the measurement and the record in one place. The airline or maintenance organization leads here, and every accepted dent stays on the aircraft's permanent record."
+      }
+    ],
+    "scope": {
+      "in": [
+        "Guided capture with a scale anchor, on one capture channel",
+        "Detection, classification and measurement on one asset class",
+        "The cited decision against one market's rule set, authored and versioned",
+        "Review and override, with a decision record and an evidence export",
+        "An accuracy evaluation against an agreed holdout set"
+      ],
+      "out": [
+        "Coverage and entitlement checks, resolved upstream",
+        "Priced scope and the write-off test, delivered after the Jumpstart",
+        "Integrity and tamper detection on submitted media, delivered after the Jumpstart",
+        "Write-back into your booking, dispatch or claims system, delivered after the Jumpstart",
+        "Rule sets for further markets, delivered after the Jumpstart"
+      ]
+    },
+    "moreDetail": [
+      { "title": "Today", "body": "Staff decide repair or replace from photos, by eye, against limits that differ between markets and contracts and are rarely written down. A wrong call is paid for twice: by the insurer or lessor that funds it and by the network that goes back." },
+      { "title": "Tomorrow", "body": "The reviewer sees the measured size, the rule that applies and the recommended call, confirms or overrules it with a reason, and the decision reaches the booking, dispatch or claims system with its scope resolved: part, skill and slot." },
+      { "title": "Needless replacements", "body": "A full replacement is paid for when a repair would have met the rules." },
+      { "title": "Repeat visits", "body": "A repair that should have been a replacement fails and comes back." },
+      { "title": "Follow-on work found late", "body": "Work a replacement triggers, such as camera recalibration, surfaces after booking and adds days." },
+      { "title": "How the measures are defined", "body": "Saving per needless replacement avoided: the replacement not made, less the repair made instead, for each call corrected from replace to repair where the repair meets the governing limit; UK industry averages put a windscreen replacement at about £500 and a repair at £40, US figures at about $350 and $99. Avoidable recalibrations: camera recalibrations booked only because a replacement was chosen where a repair would have met the limit; about 42 in 100 windscreen replacements also need one, over half of calibrations surface only after the first estimate, and each costs $300–400 and about four more days, on industry figures from collision repair estimates. Wrong calls per 1,000 cases: cases booked as a repair that needed a replacement, or as a replacement a repair would have met, over the same window before and after; the model takes 30 needless replacements and 15 failed repairs per 1,000 today, each reduced by a fifth." },
+      { "title": "Delivered after the Jumpstart", "body": "Further asset classes, markets and contracts; rules authored by your own team; integrity and tamper checks on submitted media; write-back into your booking, dispatch or claims system; priced scope with the write-off test against a local ceiling." },
+      { "title": "On the roadmap", "body": "Follow-on work such as camera recalibration flagged at the moment of decision · rule changes replayed on past cases before release · the post-repair residual predicted where rules require it · corrections fed back into training." }
+    ],
+    "caseStudy": null
+  },
+  "technology": {
+    "narrative": "Media from your capture channel and the asset's record come into Oracle Cloud Infrastructure, where NVIDIA vision and reasoning models read and measure the damage. The call reaches the booking, dispatch or claims system only after a reviewer confirms it.",
+    "stack": [
+      {
+        "key": "application",
+        "label": "Application / accelerator",
+        "summary": "The SoftServe app: guided capture, the reviewer workspace, rule authoring and the decision record.",
+        "vendors": ["softserve"],
+        "items": [
+          { "name": "Guided capture", "required": true },
+          { "name": "Reviewer workspace with override and a captured reason", "required": true },
+          { "name": "Rule authoring and versioning per market", "required": true },
+          { "name": "Decision record and evidence export", "required": true }
+        ]
+      },
+      {
+        "key": "ai-engine",
+        "label": "AI engine",
+        "summary": "NVIDIA models read and measure the damage, retrieve the rule that applies and return a structured verdict.",
+        "vendors": ["nvidia"],
+        "items": [
+          { "name": "NVIDIA AI Blueprint for Video Search and Summarization (VSS), for video and image understanding", "required": true },
+          { "name": "NVIDIA AI-Q Blueprint, for retrieval over the rule set", "required": true },
+          { "name": "OCI Vision, as an Oracle-native route for detection and classification", "required": false }
+        ]
+      },
+      {
+        "key": "data-platform",
+        "label": "Data & platform",
+        "summary": "Oracle Autonomous AI Database holds the decision record, the audit trail and the versioned rule sets; object storage holds the media.",
+        "vendors": ["oracle"],
+        "items": [
+          { "name": "Oracle Autonomous AI Database for the decision record, audit trail and rule-set versions", "required": true },
+          { "name": "OCI Object Storage for the media", "required": true },
+          { "name": "Oracle Analytics Cloud for decision mix, override rate and repeat visits", "required": false }
+        ]
+      },
+      {
+        "key": "infrastructure",
+        "label": "Infrastructure",
+        "summary": "GPU compute and Kubernetes in your own tenancy, with the API gateway, identity and observability.",
+        "vendors": ["oracle"],
+        "items": [
+          { "name": "OCI GPU instances and OCI Kubernetes Engine", "required": true },
+          { "name": "API gateway, identity and observability", "required": true },
+          { "name": "Oracle's one-click video search and summarization deployment on OCI, the platform this builds on", "required": false }
+        ]
+      },
+      {
+        "key": "custom",
+        "label": "Configuration & integrations",
+        "summary": "Your rule sets, damage taxonomy and reviewer roles, and the integrations in and out.",
+        "vendors": ["softserve"],
+        "items": [
+          { "name": "From your capture channel: customer or technician media", "required": true, "direction": "inbound" },
+          { "name": "From the asset master record: identifier, geometry, prior condition", "required": true, "direction": "inbound" },
+          { "name": "To the booking, dispatch or claims system: the confirmed decision and its resolved scope", "required": true, "direction": "outbound" },
+          { "name": "Write-back through Oracle Integration", "required": false, "direction": "outbound", "note": "After the Jumpstart" },
+          { "name": "Rule set per market and contract, damage taxonomy per asset class, reviewer roles and thresholds", "required": true }
+        ]
+      }
+    ],
+    "capabilities": [
+      {
+        "stage": "Capture",
+        "items": [
+          { "name": "Capture request from a booking or claim", "state": "partial" },
+          { "name": "Guidance on framing, distance and glare", "state": "roadmap" },
+          { "name": "Scale anchor so size can be measured", "state": "roadmap" },
+          { "name": "Both sides captured where the standard requires", "state": "roadmap" },
+          { "name": "Usability check with a reasoned retake", "state": "roadmap" },
+          { "name": "Tamper and reuse detection on submitted media", "state": "roadmap" }
+        ]
+      },
+      {
+        "stage": "Read the damage",
+        "items": [
+          { "name": "Identifier read from the media itself" },
+          { "name": "Asset record and geometry retrieval", "state": "partial" },
+          { "name": "Damage located and tracked across frames" },
+          { "name": "Damage classified against a configurable taxonomy", "state": "partial" },
+          { "name": "Each damage measured, with the basis stated", "state": "roadmap" },
+          { "name": "Position mapped to the governing zone", "state": "roadmap" },
+          { "name": "Post-repair residual predicted where rules require", "state": "roadmap" },
+          { "name": "New damage separated from earlier repairs", "state": "roadmap" }
+        ]
+      },
+      {
+        "stage": "The call",
+        "items": [
+          { "name": "Repair, replace or refer, with confidence" },
+          { "name": "Rule, frame and measurement cited on each call", "state": "partial" },
+          { "name": "Tunable threshold between the two kinds of error", "state": "partial" },
+          { "name": "Deciding rule type configurable per industry", "state": "roadmap" },
+          { "name": "Follow-on work and safety flags at decision", "state": "roadmap" },
+          { "name": "Scope priced from a parts and labour source", "state": "roadmap" },
+          { "name": "Write-off test against a configurable ceiling", "state": "roadmap" }
+        ]
+      },
+      {
+        "stage": "Review and hand off",
+        "items": [
+          { "name": "Cases routed on confidence, policy and integrity", "state": "partial" },
+          { "name": "Reviewer workspace with media, reading and rule", "state": "partial" },
+          { "name": "Override with a captured reason", "state": "partial" },
+          { "name": "Override rate tracked in aggregate only", "state": "roadmap" },
+          { "name": "Decision record kept per market retention rules", "state": "partial" },
+          { "name": "Output checked automatically before review", "state": "roadmap" },
+          { "name": "Rules authored, versioned and deployed per market", "state": "roadmap" },
+          { "name": "Rule changes replayed on past cases first", "state": "roadmap" },
+          { "name": "Decision handed on with scope resolved", "state": "partial" },
+          { "name": "Write-back to the system of record", "state": "partial" },
+          { "name": "Accuracy evaluated on an agreed holdout set", "state": "partial" },
+          { "name": "Corrections fed back into training", "state": "roadmap" }
+        ]
+      }
+    ]
+  },
+  "jumpstart": {
+    "title": "Jumpstart Proof-of-Value",
+    "promise": "Pilot measured repair-or-replace calls on one asset class and one market's rules in 4–8 weeks, and take away an accuracy readout against a holdout set you agreed, with every call it would have corrected on record with its rule.",
+    "durationShort": "4–8 weeks",
+    "pillars": [
+      { "key": "fast", "title": "Fast", "text": "4–8 weeks from kickoff to measured calls on your own photographs and an accuracy readout." },
+      { "key": "low-risk", "title": "Low-risk", "text": "Fixed scope: one asset class, one market's rules, file-based in and out, in your own tenancy. A reviewer confirms every call before it counts." },
+      { "key": "tangible", "title": "Tangible", "text": "Measured repair-or-replace calls on one asset class, each citing its rule, checked against a holdout set you agreed, so you see which calls it would have corrected." }
+    ],
+    "outcomes": [
+      "Repair-or-replace calls on your own photographs, each with its measurement and the rule it came from.",
+      "An accuracy readout against a holdout set you agreed, and the calls it would have corrected, each with its rule.",
+      "One market's rule set written down, versioned and applied the same way on every case.",
+      "A costed plan for the next step: more asset classes, more markets, write-back into your systems."
+    ],
+    "timeline": [
+      { "label": "Week 0 · Gate", "text": "Sponsor named, the asset class and market chosen, the holdout set and media access agreed in writing." },
+      { "label": "Weeks 1–4 · Build", "text": "The rule set authored and versioned; the damage taxonomy and the measured features configured on your media." },
+      { "label": "Weeks 5–7 · Review", "text": "Reviewers confirm or overrule the calls in the workspace, each override kept with its reason." },
+      { "label": "Week 8 · Decision", "text": "Accuracy readout against the holdout set, and a costed proposal for the next step." }
+    ],
+    "needs": [
+      "Photographs of one asset class, with the identifiers the assets carry",
+      "The repair limits that apply in one market, as your technical standards team uses them",
+      "A reviewer and a business owner who will judge the calls and sign off the holdout set"
+    ],
+    "investment": {
+      "price": null,
+      "duration": "4–8 weeks",
+      "includes": [
+        "One market's rule set, authored and versioned",
+        "Measured decisions on one asset class against that rule set",
+        "A reviewer workspace with override and a decision record",
+        "An accuracy evaluation against an agreed holdout set, with the measurement basis stated",
+        "Proof accepted on accuracy against the agreed holdout set, with the override rate reported in aggregate"
+      ],
+      "footnote": "Price and final scope are confirmed in scoping."
+    },
+    "next": [
+      {
+        "tier": "Integration",
+        "text": "More asset classes, markets and contracts, rules authored by your own team, integrity checking, and write-back into your system of record.",
+        "duration": "3–5 months",
+        "price": "Scoped per engagement"
+      },
+      {
+        "tier": "Scaling",
+        "text": "Every market and language, per-market taxonomies, priced scope with the write-off test, and rule changes replayed on past cases.",
+        "duration": "3–12 months",
+        "price": "Scoped per engagement"
+      }
+    ],
+    "cta": {
+      "label": "Start a Jumpstart conversation",
+      "route": "#/products/repair-or-replace-decisions/contacts"
+    }
+  }
 }
 
   ],
