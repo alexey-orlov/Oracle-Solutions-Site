@@ -441,9 +441,13 @@
       }).join("") : '<tr><td colspan="' + D.exportColumns.length + '"><span class="sub">Approve moves on the Today screen; they appear here.</span></td></tr>') + "</tbody>";
     $("#export-json").textContent = rows.length ? JSON.stringify(recordOf(rows[0]), null, 2) : "{}";
     var kept = MOVES.filter(function (m) { var st = status(m); return st === "rejected" || st === "held" || st === "open" || st === "admitted"; });
-    $("#kept").innerHTML = '<div class="card-h"><b>Kept out of the file</b><span class="helper">Only approved moves are exported</span></div><ul>' +
+    var nRej = MOVES.filter(function (m) { return status(m) === "rejected"; }).length;
+    /* Every decision is kept as input for the proof of value's evaluation:
+       the reviewers' approve and reject calls are its acceptance measure. */
+    $("#kept").innerHTML = '<div class="card-h"><b>Kept out of the file</b><span class="helper">Only approved moves are exported</span></div>' +
+      '<p class="eval">Kept for the evaluation: ' + plural(rows.length, "approval", "approvals") + ", " + plural(nRej, "rejection", "rejections") + ", each with its reason.</p><ul>" +
       (kept.length ? kept.map(function (m) {
-        var st = status(m), why = st === "rejected" ? "Rejected: " + S.decided[m.id].reason : st === "held" ? "Waiting: confirm which Keswick" : "Waiting for a decision";
+        var st = status(m), why = st === "rejected" ? "Rejected: " + decisionText(m) : st === "held" ? "Waiting: confirm which Keswick" : "Waiting for a decision";
         return "<li><b>" + esc(acc(m.account).name) + "</b><span>" + esc(why) + "</span></li>";
       }).join("") : "<li><span>Nothing: every move in front of the team was approved.</span></li>") + "</ul>";
   }
@@ -512,16 +516,17 @@
       $("#brief").scrollTop = 0;
     }
   }
-  function decide(id, state, reason) {
+  function noteText() { var n = $("#note"); return n ? n.value.trim() : ""; }
+  function decide(id, state, reason, note) {
     var m = move(id);
     if (!m || isHeld(m)) return;
-    S.decided[id] = { state: state, reason: reason || "" };
+    S.decided[id] = { state: state, reason: reason || "", note: note || "" };
     render();
-    toast(state === "approved" ? "Approved: it goes to the CRM file with its sources." : "Rejected, reason kept. The numbers are updated.");
+    toast(state === "approved" ? "Approved: it goes into the CRM file with its sources." : "Rejected, reason kept. The numbers are updated.");
   }
   function reject(id) {
     var sel = $("#reason");
-    decide(id, "rejected", sel ? sel.value : D.reasons[0]);
+    decide(id, "rejected", sel ? sel.value : D.reasons[0], noteText());
   }
   function undo(id) {
     var was = S.decided[id];
@@ -553,14 +558,14 @@
     render();
     window.scrollTo(0, 0);
     var held = MOVES.filter(function (m) { return status(m) === "held"; }).length;
-    toast(n + " approved and sent" + (held ? "; the Keswick move waits for you." : "."));
+    toast(n + " approved and exported" + (held ? "; the Keswick move waits for you." : "."));
   }
 
   /* ---- the tour ---- */
   var STEPS = [
     { id: "sources", major: 1, passive: true, side: "bottom",
-      title: "Every account, every source",
-      body: "Your 24 accounts, their owners and your 12 service lines, against newswires, filings and market news. 214 stories landed since last night; nobody has read them.",
+      title: "Nobody has read last night's news",
+      body: "Your 24 accounts, their owners and your 12 service lines, against newswires, filings and market news. 214 stories landed since 18:00, and most accounts are next reviewed weeks from now.",
       target: function () { return $("#sources"); },
       auto: function () { tour.next(); } },
     { id: "run", major: 1, waits: true, side: "bottom",
@@ -581,11 +586,11 @@
       auto: function () { selectKpi("moves"); tour.next(); } },
     { id: "open", major: 4, side: "bottom", scroll: "center",
       title: "Open a move nobody asked for",
-      body: "Meridian Grocers is not in the story. It buys from Alder Foods, and its inbound contract with you ends next year.",
+      body: "Meridian Grocers is not in the story. It buys from Alder Foods, and its inbound contract with you ends this December.",
       target: function () { return $('li[data-move="MV-03"]'); },
       auto: function () { openMove("MV-03"); tour.next(); } },
     { id: "brief", major: 4, passive: true, side: "left",
-      title: "The reasoning, with its sources",
+      title: "Every claim shows its source",
       body: "What changes, what you could sell, how big and how sure. Every claim is cited to the article, the filing or your own CRM note.",
       target: function () { return $("#brief"); },
       anchor: function () { return $("#brief .b-scores"); },
@@ -609,8 +614,8 @@
       anchor: function () { return $("#kpi-moves"); },
       auto: function () { tour.next(); } },
     { id: "send", major: 6, side: "bottom",
-      title: "Approve the rest and send",
-      body: "Only approved moves reach your CRM, one record per account. The Keswick move waits: the story's name matches two of your accounts.",
+      title: "Approve the rest and export",
+      body: "Only approved moves go into the CRM import file, one record per account. The Keswick move waits: a name in your records matches two accounts.",
       target: function () { return $("#btn-approve-rest"); },
       auto: function () { approveRest(); tour.next(); } },
     { id: "file", major: 6, passive: true, side: "top",
@@ -654,7 +659,7 @@
       return;
     }
     if ((t = e.target.closest("#btn-reject"))) { var id = S.open; reject(id); if (id === "MV-02") tour.after("reject"); return; }
-    if ((t = e.target.closest("#btn-approve"))) { decide(S.open, "approved"); return; }
+    if ((t = e.target.closest("#btn-approve"))) { decide(S.open, "approved", "", noteText()); return; }
     if ((t = e.target.closest("[data-act=undo]"))) { undo(S.open); return; }
     if ((t = e.target.closest("[data-act=confirm]"))) { confirmAccount(S.open, t.dataset.acc); return; }
     if ((t = e.target.closest("[data-act=admit]"))) { admit(S.open); return; }

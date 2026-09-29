@@ -273,6 +273,8 @@ body.ui-clean .foot, body.ui-clean #tour-toggle, body.ui-clean #tour-pill { disp
 .review select, .field input, .field select { font: inherit; font-size: 13.5px; height: 36px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; color: var(--ink); }
 .review .row { display: flex; gap: 8px; flex-wrap: wrap; }
 .review .state { font-size: 13px; color: var(--text); }
+.review textarea { font: inherit; font-size: 13.5px; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; color: var(--ink); resize: vertical; min-height: 54px; }
+.kept .eval { font-size: 13px; color: var(--text-2); margin: -4px 0 8px; }
 .review .q { font-size: 13.5px; font-weight: 600; }
 
 /* ---------- accounts ---------- */
