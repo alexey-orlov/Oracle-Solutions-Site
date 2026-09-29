@@ -308,6 +308,25 @@ dark (`#131516` to `#23272a`, sampled from it), so the image guard dropping eith
 file leaves the same colour. Swap both files together, keeping the wave on the left,
 if Alex would rather the band not repeat the corporate site's picture.
 
+## 2d. The catalog's hero — `assets/img/heroes/products.jpg` (2026-09-29, §54)
+
+The photograph behind *Products* and its lead (`productsPage.image`), the page's head
+styled after softserveinc.com's About Us hero. Alex asked for a photograph of
+*"sufficient resolution and brightness"*, so it is the full-resolution original of
+the home Products panel's picture (`heroes/overview.jpg`, the graded 1920 px copy):
+the SoftServe 2026 deck template's own title image (the template and the media file
+are named in PROVENANCE §54, not in the served `heroes.json`).
+
+| File | Source | Size |
+|---|---|---|
+| `products.jpg` | the template's title image, 2912 × 1632, its dark left 437 px cropped off with `sips` so the oval stands at 63–89 % of the frame | 2475 × 1632, JPEG quality 74, 241 KB |
+
+It is not graded: the orange rim on the oval and the beam on the water are the
+brand's own light. The dark wall right of the oval carries the spark, and the
+lead's measure stops short of the oval at every width from 721 px; up to 720 px the
+frame is widened past the hero's right edge (`VISUAL-GRAMMAR.md` §1.4). The checker
+wants it on disk and at least 2400 px wide.
+
 ---
 
 ## 3. Headshots — `assets/img/people/`
