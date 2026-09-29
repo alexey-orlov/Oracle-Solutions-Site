@@ -218,10 +218,10 @@
     box.hidden = S.ran || S.busy;
     if (box.hidden) return;
     var rows = D.accounts.slice().sort(function (a, b) { return b.unread - a.unread; }).slice(0, 10);
-    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories from your feeds since 18:00, unread. Most accounts are next reviewed weeks from now.</span></div>' +
+    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories from your feeds since 18:00, unread. Most accounts' next quarterly review is weeks away.</span></div>' +
       '<div class="book-grid">' + rows.map(function (a) {
         return '<div class="book-row"><span class="acc">' + avatar(a.owner) + "<b>" + esc(a.name) + '</b></span><span class="unread">' +
-          plural(a.unread, "mention", "mentions") + '</span><span class="due">next review in ' + a.review + " days</span></div>";
+          plural(a.unread, "mention", "mentions") + '</span><span class="due">quarterly review in ' + a.review + " days</span></div>";
       }).join("") + '</div><p class="book-foot">Showing the 10 busiest of 24 accounts.</p>';
   }
 
@@ -248,7 +248,7 @@
 
   var KPI_DEF = {
     moves: { label: "Next moves in front of your sellers", owner: "Chief commercial officer" },
-    time: { label: "From an account's news to a next move", owner: "Head of sales" },
+    time: { label: "News to a reviewed brief", owner: "Head of sales" },
     research: { label: "Time spent researching, not selling", owner: "Head of key-account management" }
   };
   function renderBand() {
@@ -260,7 +260,7 @@
       moves: { before: String(b.moves), after: String(a.moves), delta: (a.moves - b.moves >= 0 ? "+" : "−") + Math.abs(a.moves - b.moves),
         line: plural(a.missed, "move", "moves") + " on accounts the news never named · " + plural(a.protect, "account", "accounts") + " to protect" },
       time: { before: fmtDays(b.days), after: fmtDuration(a.minutes), delta: a.minutes < 24 * 60 ? "same day" : "",
-        line: "By hand: the account's next review. Here: this morning." },
+        line: "By hand: the account's next quarterly review. Here: this morning." },
       research: { before: fmtResearch(b.research), after: fmtResearch(a.research), delta: "",
         line: "Reaching the same list by hand, against reviewing it." }
     };
@@ -302,7 +302,7 @@
     var titles = { moves: "Where the moves came from", time: "How soon each move reached a seller", research: "Research each move saved" };
     var helpers = {
       moves: "Highlighted: accounts the news never named, reached through your records.",
-      time: "Each account's next review, against this morning.",
+      time: "Each account's next quarterly review, against this morning.",
       research: "Minutes to reach each move by hand, against reviewing it."
     };
     $("#moves-title").textContent = S.kpi ? titles[S.kpi] : "Next moves, by story";
@@ -395,7 +395,7 @@
         "</td><td class=\"nowrap\">" + avatar(a.owner) + "</td><td>" + esc(a.today) + (a.thin ? '<span class="sub">No relationship notes</span>' : "") +
         (a.renewal ? '<span class="sub">' + esc(a.renewal) + "</span>" : "") + '</td><td class="nowrap">in ' + a.review + " days</td><td>" + mv + "</td></tr>";
     }).join("");
-    $("#accounts-table").innerHTML = "<thead><tr><th>Account</th><th>Sector</th><th>Owner</th><th>What we do today</th><th>Next review</th><th>This morning</th></tr></thead><tbody>" + rows + "</tbody>";
+    $("#accounts-table").innerHTML = "<thead><tr><th>Account</th><th>Sector</th><th>Owner</th><th>What we do today</th><th>Quarterly review</th><th>This morning</th></tr></thead><tbody>" + rows + "</tbody>";
   }
 
   function renderSetup() {
@@ -565,7 +565,7 @@
   var STEPS = [
     { id: "sources", major: 1, passive: true, side: "bottom",
       title: "Nobody has read last night's news",
-      body: "Your 24 accounts, their owners and your 12 service lines, against newswires, filings and market news. 214 stories landed since 18:00, and most accounts are next reviewed weeks from now.",
+      body: "Your 24 accounts, their owners and your 12 service lines, against newswires, filings and market news. 214 stories landed since 18:00, and most accounts' next quarterly review is weeks away.",
       target: function () { return $("#sources"); },
       auto: function () { tour.next(); } },
     { id: "run", major: 1, waits: true, side: "bottom",
@@ -575,7 +575,7 @@
       auto: run },
     { id: "value", major: 2, passive: true, side: "bottom", scroll: "center",
       title: "Moves your team would have missed",
-      body: "Thirteen next moves instead of six: seven sit on accounts the news never named. They reach a seller the morning the news breaks, not at the next account review.",
+      body: "Thirteen next moves instead of six: seven sit on accounts the news never named. They reach a seller the morning the news breaks, not at the next quarterly review.",
       target: function () { return $("#band"); },
       anchor: function () { return $("#kpi-moves"); },
       auto: function () { tour.next(); } },
