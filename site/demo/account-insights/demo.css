@@ -383,7 +383,11 @@ body.ui-clean .foot, body.ui-clean #tour-toggle, body.ui-clean #tour-pill { disp
   .page-head .actions { width: 100%; }
 }
 @media (max-width: 420px) {
-  .sources { grid-template-columns: minmax(0, 1fr); }
+  .sources { gap: 8px; }
+  .src { padding: 9px 10px; gap: 4px; }
+  .src .src-line { display: none; }
+  .src.is-first { grid-column: 1 / -1; }
+  .src-ico { width: 24px; height: 24px; }
   .book-row { grid-template-columns: minmax(0, 1fr) auto; }
   .book-row .due { display: none; }
   .k-after { font-size: 24px; }
