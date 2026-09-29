@@ -7802,6 +7802,7 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
   - ***AI* on the first screen:** three times in the lead (his words) and in the rail's platform names beside it.
   - **Two SoftServe marks on one screen:** the header's wordmark and the hero's spark, as softserveinc.com shows them.
   - **Phones:** mostly the photograph's dark side, the man's lit back at the right edge, and three of the four lines.
+- **Published** on 2026-09-29 as version 1790703858-66ad (version 25), on top of 1790702708-a5ce, with the live page as the wrapper, `data/content.js`, `pages/products.js`, `assets/app.js`, `assets/site.css`, `assets/img/heroes/heroes.json` and the new `assets/img/heroes/products.jpg`. `content.js` went out as the live file plus this section's two hunks (the tagline and `productsPage`), not as `main`'s, which also holds `#/alt` version 4's unpublished `overviewAlt` keys; the other four differed from live by this section's hunks alone. All six read back byte-identical, and on the shared link the catalog opens on the photograph with the crossing.
 - **A QA rule, from this one:** the session checked the archive's catalog in the browser pane and left the pane on it, and Alex took the near-black page for the new design (*"that's obsolete archive, we don't use it"*). START-HERE §6 now says to leave the pane on the live page you changed, and to check the archive, if at all, by script in a hidden frame.
 - **The contract round stays 20:** the packaging plugin never writes the catalog's head, and it reads no `site.tagline`.
 
