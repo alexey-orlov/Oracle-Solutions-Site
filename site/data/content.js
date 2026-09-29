@@ -483,7 +483,11 @@ window.SITE_CONTENT = {
 
   productsPage: {
     title: "PRODUCTS",
-    intro: "Every product runs in your own Oracle tenancy and starts with a Jumpstart on your data — at a fixed price where one is published, otherwise scoped per engagement. Filter by the Oracle platform it runs on, or search for the job you need done.",
+    /* 2026-09-29 (Alex, on the lead it replaces: "looks like a justification
+       to reviewer, not a marketing copy"): the promise, not the conditions.
+       The hosting, the Jumpstart and its price live on each product's
+       Jumpstart tab; the rail and the search box name themselves. §52. */
+    intro: "Ready-made AI agents for the work your teams still do by hand, from reading contracts to planning field crews. Your people keep the decisions, and the difference shows in hours, costs and revenue.",
     searchPlaceholder: "Search products or workflows…",
     /* Round 18 (Alex): the catalog's way out is its last tile, "Looking for
        other solution? Let's talk", into the home page's contact, with a product

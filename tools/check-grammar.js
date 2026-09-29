@@ -1035,6 +1035,34 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 })();
 
+/* ---- the catalog's lead sells; it never answers a reviewer (2026-09-29) ----
+   Alex, on "Every product runs in your own Oracle tenancy and starts with a
+   Jumpstart on your data — at a fixed price where one is published, otherwise
+   scoped per engagement. Filter by the Oracle platform it runs on, or search
+   for the job you need done.": "looks like a justification to reviewer, not a
+   marketing copy". Each clause had answered a review note: where it runs, how
+   it starts, what it costs, how to use the page. Like the home hero's, this
+   lead is the promise, what the reader's business gets. The hosting, the
+   stages and the price are each product's Jumpstart tab, and the rail and the
+   search box name themselves. PROVENANCE §52. */
+(function () {
+  var intro = (C.productsPage || {}).intro;
+  if (!str(intro)) { fail("productsPage.intro", "missing"); return; }
+  var note = intro.match(/Jumpstart|proof of value|Workshop|Integration|Scaling|tenancy|fixed[- ]scope|fixed[- ]price|\bpric(e|ed|es|ing)\b|\bscop(e|ed|ing)\b|per engagement|where one is|otherwise|published/i);
+  if (note) {
+    fail("productsPage.intro", 'names "' + note[0] + '" — the lead is the promise; the hosting, the stages and the price belong to each product\'s Jumpstart tab');
+  }
+  var how = intro.match(/\b(filter|search|browse|click|tap|scroll|rail)\w*/i);
+  if (how) {
+    fail("productsPage.intro", 'says "' + how[0] + '" — the rail and the search box name themselves; the lead says what the reader gets');
+  }
+  if (!/\b(hours?|costs?|revenue|margins?|risks?)\b/i.test(intro)) {
+    fail("productsPage.intro", "names no business value (hours, cost, revenue, risk) — the lead says what the reader's business gets");
+  }
+  if (words(intro) > 35) fail("productsPage.intro", "is " + words(intro) + " words (max 35)");
+  if (sentences(intro) > 2) fail("productsPage.intro", "is " + sentences(intro) + " sentences (max 2)");
+})();
+
 /* ---- T1 · the three tag families ---- */
 (function () {
   var tf = C.shared && C.shared.tagFamilies;
