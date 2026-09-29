@@ -1756,7 +1756,7 @@ window.SITE_CONTENT = {
             text: "The reviewer signs off the rows, and only approved data leaves for the cost or ERP system, in its own import format.",
             shot: {
               full: "assets/img/steps/large-document-extraction-4.jpg",
-              alt: "After Approve all: the agreement and every rate group approved."
+              alt: "After Approve all: every rate group approved, beside the agreement's rate card."
             },
             features: [
               "Split-view reviewer UI with bulk actions, auto-save and an audit trail",
@@ -2090,7 +2090,7 @@ window.SITE_CONTENT = {
             text: "Each change carries its reason: a vacation covered, a sick day split, a postcode picked up. The dispatcher keeps or undoes it.",
             shot: {
               full: "assets/img/steps/workforce-optimization-3.jpg",
-              alt: "What the solver changed: a vacation covered, a sick day split."
+              alt: "The solver's changes beside the zone map: a vacation covered, a sick day split."
             },
             features: ["Dispatcher review UI: map and table views, approve, reject, re-run"]
           },
@@ -2441,7 +2441,7 @@ window.SITE_CONTENT = {
             text: "Each proposed action becomes a task for its owner; sensitive fields stay hidden by role, and every answer is logged.",
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-4.jpg",
-              alt: "The answer after the override: why lines are late, and proposed actions."
+              alt: "Why the lines are late, and four proposed actions, each assigned as a task."
             },
             features: [
               "Sensitive fields masked by role, enforced in the data layer",
@@ -3042,7 +3042,7 @@ window.SITE_CONTENT = {
             text: "It is planned again: every booked slot kept, every job on someone with the right skills, and the charging stop where it costs nothing.",
             shot: {
               full: "assets/img/steps/fleet-route-optimization-2.jpg",
-              alt: "The Changes tab: each re-plan change with its rule and effect."
+              alt: "The Changes tab: each change with its rule and effect, beside the re-plan rules."
             },
             features: [
               "Booked slots, engineer skills and job priorities in one GPU solve",
@@ -3407,7 +3407,7 @@ window.SITE_CONTENT = {
         "text": "The reviewer sees the photo, the measurement and the cited rule beside the recommendation, and confirms it or overrules it with a reason that is kept.",
         "shot": {
           "full": "assets/img/steps/repair-or-replace-decisions-3.jpg",
-          "alt": "Before and after, same cases: repeat visits 1.5% to 1.2%."
+          "alt": "Flagged case RR-24826: the cited rule and the call, with Overrule or Confirm."
         },
         "features": [
           "Reviewer workspace with override, a captured reason and a decision record *"

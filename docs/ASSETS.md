@@ -21,20 +21,17 @@ are committed in `tools/step-mocks/`.
 
 ## 1. Step frames — `assets/img/steps/`
 
-**Round 20** (Alex: *"screenshots are too small cuts as for their current size (ideally, screenshots be fullscreen; they should not look like skeletons and should not be overloaded with details / too hard to read … stay close to the interactive walkthrough as much as possible"*). Every product ships **four** steps, and every step **two files**:
+**Round 20** (Alex: *"screenshots are too small cuts as for their current size (ideally, screenshots be fullscreen; they should not look like skeletons and should not be overloaded with details / too hard to read … stay close to the interactive walkthrough as much as possible"*) made every frame the product's whole screen. **Round 21** (Alex, 2026-09-29: *"I don't like these blue highlights and callouts. Just have screenshots without those callouts. Maybe make sure the layout element is selected or highlighted natively (only if needed, not all screens need that), so that user can easily navigate the screenshot. This applies universally."*) took the ring and the zoom inset off, on every product and at every width. Every product ships **four** steps, and every step **one file**:
 
 | File | What it is | Where it shows |
 |---|---|---|
-| `<slug>-<n>.jpg` | **The whole screen**, 1744 × 1090 (16:10), JPEG q82 | the How it works frame, 872 × 545 at 1440 |
-| `<slug>-<n>-zoom.jpg` | **The step's region** at its capture scale, 802 px wide (or its own width if narrower), JPEG q85 | the inset over the frame, 401 px wide at 1440; on a phone, the step's only picture |
+| `<slug>-<n>.jpg` | **The whole screen**, 1744 × 1090 (16:10), JPEG q82, nothing drawn on it | the How it works frame, 800 × 500 at 1440 in the main column; a phone card at the column's width; the full-size view on click |
 
-`overview.steps[n-1].shot` in `content.js` names both files and carries the `region` (`[x, y, w, h]` in percent of the frame), the `anchor` (the inset's corner) and the `alt` (what the screen shows, about 12 words). How the page draws them is `VISUAL-GRAMMAR.md` §2.2. Nine products, 36 frames and 36 zooms; the crops and the 16 SVG illustrations of rounds 1–19 are gone (1.7).
+`overview.steps[n-1].shot` in `content.js` names the file (`full`) and carries the `alt` (what the screen shows, about 12 words). How the page draws them is `VISUAL-GRAMMAR.md` §2.2. Nine products, 36 frames. The zooms (`<slug>-<n>-zoom.jpg`) and the `region` and `anchor` that placed them were deleted in round 21, as were the crops and the 16 SVG illustrations of rounds 1–19 (1.7).
 
-### 1.1 The legibility rule — the region
+### 1.1 Leading the eye, natively and only where needed
 
-The inset shows the region at the scale **s = 401 ÷ region width in CSS px of the capture, and s ≥ 0.92**, so the UI text in the inset reads at about its real size. At a 1280 × 800 capture that bounds a region at **436 CSS px wide and 296 tall** (272, half the frame's height, ÷ 0.92). If the element the step is about is bigger, take its most telling part — the first two KPI tiles, not five; the flagged row and its chip, not the table — and never shrink the scale to fit more. The widest regions shipped are 435.5 px.
-
-**The anchor** is the frame corner — `br` first, then `bl`, `tr`, `tl` — whose inset (2.75% of the frame's width from the side and 4.4% of its height from the top or bottom, 24 px each at 1440; 401 px wide; the region's height × s tall; inside the 872 × 545 frame) does not overlap the region mapped into the frame. The inset never covers its own ring, and because its offset scales with the frame, that holds at 1280 too.
+Nothing is drawn over a frame: no ring, no inset, no arrow, no dimming or blur. **Where the step's element would be hard to find at 800 px, the screen itself singles it out, as the product would**: the row selected (the walkthrough's own selected style), its panel or drawer open, its tab active, its card in the product's focus style, or the part scrolled into the middle of the screen. Most screens need nothing, because they are a modal in front, a processing screen or a screen wholly about the step; round 21's review kept 30 of the 36 frames as they were. A frame never repeats another step's screen: without their rings, Workforce's steps 3 and 4 had become one picture, and step 3 was recaptured. Detail is read in the full-size view the frame opens, not in the frame.
 
 ### 1.2 The capture recipe
 
