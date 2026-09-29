@@ -108,7 +108,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
 - **No link-shaped control without its link** (Alex, round 18: *"No fake and placeholder links no longer allowed"*). The hero's video frame renders only when `links.json` holds the recording; the Marketplace badge only with its listing's URL; the demo badge and button open what `links.json` names. The checker fails the retired `video` switch, a Marketplace flag with no URL and the old *being prepared* panel.
 - **Every kit link lives in `links.json`**, outside `site/`, because anything under `site/` is readable in view-source and the kit documents carry prices. `config.js` holds no link to a kit artifact, and a committed `formEndpoint` fails the checker: a live trigger URL never enters git.
 - **A link is stored in `links.json` and nowhere else** (Alex, 2026-09-24). The site and the email both read that file, and no other file keeps a copy: not `site/` (the checker fails `site/data/links.js`), not a doc, not a pack spec. A doc names the key (`links.json` › `<slug>.<key>`) instead of repeating the URL, and the checker fails a link from `links.json` found in any other file (`docs/PROVENANCE.md`, the round log, excepted). A walkthrough is stored as its path, `demo/<slug>/index.html`, never as a localhost or preview address.
-- **Nothing internal ships in site copy.** The *Internal* panel is the only exception, and it is temporary (§8).
+- **Nothing internal ships in site copy**, with no exception since the *Internal* panel came off (§8).
 
 **Messaging** (from Alex's reviews)
 - **A message read outside the product stands alone** (Alex, 2026-09-23, on the kit email's opener *"Thanks for requesting it."*). An email is read cold, in an inbox, by someone who may not remember the form: its first sentence says who is writing and what it is, and nothing leans on "it", "the site" or "the team" before naming them. Review email copy in `.work/mail-preview/as-read.txt` (the email as received), never field by field (`mail/README.md`).
@@ -219,7 +219,7 @@ Exact commands are in HANDOFF §4.
 - **Publish** — each theme to its own artifact (§1); never cross them.
   - Strip the nine skeleton lines (listed in `site.manifest.json`, `publish.wrapper`) from `site/index.html` into `.work/publish/index.html` (exact-line `grep -v -x -F`, HANDOFF §4). A session opened in another folder publishes from a copy staged in its scratchpad.
   - The publish must carry `assets/fonts/*` with an explicit `contentType`, and only what the page references — nine legacy files and `assets/site-legacy.css` are deliberately absent from the artifact.
-  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9 (since round 17 the six `<id>.svg` drawings; the retired JPGs left the artifact on 2026-09-28), `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact; since round 15 it is built for each publish with `python3 tools/site_links.py --out .work/publish/data/links.js` and mapped from that file, because `site/` holds no copy), `assets/img/softserve-star-white.svg` since round 14 (the footer's spark), and since round 18 `assets/img/bands/*` (the Bespoke band's photographs) and `assets/img/groups/ask.svg` (the catalog's last tile). Files left out of the map are kept, so a new file that is not in it never reaches the artifact, and **a deleted file must be mapped to `null`**: round 18's publish carries `"pages/services.js": null`. A walkthrough folder under `site/demo/` that `links.json` does not name yet is work in progress and stays out of the map.
+  - Call the Artifact tool with `file_path` = that wrapper, `root` = `site`, and a `files` map of every changed or new file — **images included**: `assets/img/groups/*` since round 9 (since round 17 the six `<id>.svg` drawings; the retired JPGs left the artifact on 2026-09-28), `data/links.js` since round 12 (without it every *Interactive demo* button disappears from the artifact; since round 15 it is built for each publish with `python3 tools/site_links.py --out .work/publish/data/links.js` and mapped from that file, because `site/` holds no copy), `assets/img/softserve-star-white.svg` since round 14 (the footer's spark), and since round 18 `assets/img/bands/*` (the Bespoke band's photographs) and `assets/img/groups/ask.svg` (the catalog's last tile). Files left out of the map are kept, so a new file that is not in it never reaches the artifact, and **a deleted file must be mapped to `null`**: round 18's publish carries `"pages/services.js": null`, and the first publish after 2026-09-29 carries `"data/review.js": null` and `"assets/review.js": null` (§8). A walkthrough folder under `site/demo/` that `links.json` does not name yet is work in progress and stays out of the map.
   - Then run `action: list_files` to confirm that the new files are live and that nothing is published that should not be.
 - **Refused publish** ("not built on the newer version") means another session published in between:
   1. `read_file` the live copies of the files you changed.
@@ -253,25 +253,16 @@ Exact commands are in HANDOFF §4.
 - **Use the lightest storage that does the job.** "Saved" meant saved in Alex's browser, not a database. Check what a capability costs before reaching for it: `db` would have made the artifact organization-internal.
 - **Unreferenced is not unshipped.** The customer logos had sat, unreferenced, under `site/assets/img/logos/`. Whole-tree publishes carried them onto the link-shared artifact, downloadable by path, until version 36 removed them. Anything that must never ship lives outside `site/`: the logos are now in `docs/asset-candidates/logos/`, and the checker fails if that folder reappears under `site/`.
 
-## 8. The Internal review panel (temporary)
+## 8. The Internal review panel (removed 2026-09-29)
 
-- **What it is:** an *Internal · N to confirm* pill at the bottom right of every page. It opens a checklist drawer with one line per assumption, grouped as in §2, and each item has a checkbox.
-- **Where ticks are saved:** in the viewer's browser only (`localStorage` key `oracle-ai-solutions:review-ticks`), by item id. Alex chose this over a shared database: declaring the artifact `db` capability would make the artifact organization-internal and break the public preview link. Ticks never reach the repo; §2 is the record.
-- **Files:**
-  - `site/data/review.js` holds the list: groups of items, each with `id`, `text` and an optional `note`, where the note names what the site does not match yet.
-  - `site/assets/review.js` renders the button and the drawer, styles included, with no other dependency.
-  - Two `<script>` tags at the end of `site/index.html` load them.
-- **Keep it short** (Alex: "1–2 line items"): `text` ≤ 70 characters, ≤ 47 when there is a note, `note` ≤ 45. No other keys: detail belongs in the docs. The checker enforces all of this.
-- **Changing the list:**
-  - Never rename an item's id; the ticks are keyed by it.
-  - Remove an item once §2 records its outcome.
-  - Run the checker and republish.
-- **Visibility:** anyone with the preview link sees the panel. Set `enabled: false` to hide it without deleting anything.
-- **Before launch:** delete both files and both script tags. Until then the checker warns on every run.
+- **What it was:** an *Internal · N to confirm* pill at the bottom right of every page, opening a checklist of the brief's assumptions (§2), one line and a checkbox each, with the ticks kept only in the viewer's browser. It went up on 2026-09-17 (PROVENANCE §25) and came off on Alex's word on 2026-09-29 (§44).
+- **What holds its place:** §2 is the brief's only record and §9 the open items. The list's two *Before launch* lines, the site name's trademark check and backing for the *Frontier AI* claim, were already in §9.
+- **Kept out:** the checker fails if `site/data/review.js` or `site/assets/review.js` exists again, or if either index file loads a `review.js`.
+- **On the shared link** the panel stays until the next publish maps both files to `null` (§6).
 
 ## 9. Open items
 
-- **The brief (§2):** every item stays open until Alex confirms it in a session. The panel ticks are only his own progress marks.
+- **The brief (§2):** every item stays open until Alex confirms it in a session.
 - **Round 7 (PROVENANCE §23.4):**
   - delivery sign-off on *Plan vs actual investigation* in 4–8 weeks;
   - clearance for the stronger *Frontier AI* proof points.
