@@ -60,7 +60,10 @@
       UI.facetLabel(product.facet).label,
       UI.facetLabel(product.facet).fullLabel,
       product.tags.join(" "),
-      product.tile.outcomes.join(" ")
+      product.tile.outcomes.join(" "),
+      /* The one-liner sells the business value and names no engine (2026-09-29),
+         so a seller who searches "cuOpt" or "AI-Q" finds it in the narrative. */
+      (product.technology && product.technology.narrative) || ""
     ].join(" ").toLowerCase();
   }
 
