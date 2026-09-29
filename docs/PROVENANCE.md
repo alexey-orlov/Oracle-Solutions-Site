@@ -7571,3 +7571,41 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
 - **Open for Alex** (START-HERE §9, under §52): the six group empty states open on the same kind of note, *"… are scoped per engagement. Tell us …"*. One is live: *Transaction & process execution*, the one group with no product, where its home tile lands.
 - **Published** on 2026-09-29 as version 1790691408-6fa8 (version 18), on top of 1790690733-2aa5. Before it, the live `data/content.js`, `assets/site.css` and `data/links.js` each matched `main` before this change by sha256, so the publish carries this fix alone; after it, live `content.js` and `site.css` read back byte-identical to `main`, and the file list holds 176 files, none that should not ship.
 - **The NDA line's publish:** version 1790694190-6dc7 (version 19), on top of 1790691408-6fa8, with `data/content.js`, `pages/overview.js` and `assets/site.css`. `content.js` was published as the live file with this one line removed, not as `main`'s, because `main` also holds another session's unpublished `#/alt` work (`overview.twoWays.images` and `.diagram`, marked for Alex's OK). All three live files read back byte-identical to what was sent.
+
+## 53. SoftServe's logo on the About tile, 2026-09-29
+
+_A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with no Fable pass: five treatments were mocked on the real tile, and the pictures settled it. Touched: `about()` in `site/pages/overview.js`, `window.BRAND` in `site/index.html`, the new `site/assets/img/brand/softserve-logo-white.svg`, `.about-logo` and `.about-label-text` in `site.css` (and its print block), `.about-logo` in `site-legacy.css`, `tools/check-grammar.js`, SCHEMA (`about`), VISUAL-GRAMMAR §9 S6, SS26-THEME, ASSETS (the SS26 marks), START-HERE §1, §3, §6, §9 and §10, and `site.manifest.json` (`publish.fullTree`). The code landed in autosync commits 307220c, b95e5fc, 2e950c6, 013a070 and 060a558, beside another session's product-page work._
+
+- **The ask (Alex, 2026-09-29, with a screenshot of the tile):** *"on the main page, add softserve logo to the tile. decide whether it's small next to the subheading, or large on the background of the tile. or somehow else."* Then: *"this applies to both alt and current main page."* One function serves both: `#/alt` renders every screen after its S2 through `overview.js`.
+- **The brand, checked first** (softserveinc.com, 2026-09-29): the header carries the wordmark alone; the About Us hero carries the spark, 104 × 119 at a 1024 viewport, crisp white where 1 px lines run into its four tips; the footer carries the spark small. The spark at a crossing of lines is a hero device, drawn across a full-bleed photograph.
+- **Five treatments, mocked on the real tile** and captured at 1440, 1024 and 375 with `tools/step-mocks/cap.mjs`:
+
+| Treatment | Result |
+|---|---|
+| **A. The lockup as the label:** the brand kit's spark and wordmark, 32 px tall, in the eyebrow's place | **Chosen.** It reads as the logo at a glance, and nothing else on the tile moves at any width |
+| B. A large watermark: the spark at 125 % of the tile's height, 7 % white, running off the right and bottom edges | A grey haze behind the copy that reads as an airplane's silhouette; copy on a picture |
+| C. The brand's crossing: the spark about 115 px, crisp, top right, one line from the tile's top edge into its top tip and one from its right tip to the tile's edge | A hero device in a text tile. To clear it the title wraps to three lines at 1440 and five at 1024 and 375 |
+| D. A small spark: 18 px, before *About SoftServe* | Reads as a bullet, not as the logo |
+
+- **Decisions:**
+  - **In the eyebrow's place, not beside it.** Beside *About SoftServe* the logo would print the name twice on one line. The logo says who, and the H2 says what.
+  - **The lockup, not the spark alone.** The ask is the logo, and the spark alone says SoftServe only to someone who already knows the brand's symbol.
+  - **32 px tall**, 160 × 32 at every width from 320 up. The wordmark stands about 21 px, a step under the title's capitals, so the title stays the screen's headline.
+  - **The eyebrow's words stay** in the label, visually hidden, so a screen reader still hears *About SoftServe*; the image is `alt=""`.
+  - **A trimmed copy of the kit's file.** The kit's lockup (`assets/img/softserve-logo-white.svg`, §5) carries empty viewBox around the marks and an Office export's style block. `assets/img/brand/softserve-logo-white.svg` keeps its ten paths and its `#FFFFFF` fill, with the viewBox cut to the marks' own box (`20.33 19.75 283.46 56.7`), so the image's left edge is the spark's tip, flush with the copy (`ASSETS.md`). `about()` reads it through `brandAsset("ssLogoWhite")`, which `index.html` declares; the kit's file is the fallback.
+  - **The archive keeps its words.** Its About band is light, so `site-legacy.css` hides the white logo and the eyebrow prints as before.
+  - **Print** inverts the logo, as it does the footer's spark.
+- **Before → after:**
+
+| | Before | After |
+|---|---|---|
+| The tile's label | *ABOUT SOFTSERVE*, 12 px micro-type | SoftServe's lockup, white, 160 × 32 |
+| The tile at 1440 | 749 × 375 | 749 × 393 |
+| `#/alt` | the same tile | the same tile |
+| The archive | the eyebrow | unchanged |
+
+- **The checker** now fails an `about()` that does not render `brandAsset("ssLogoWhite")` in an `.about-logo` image, or that renders a second image or another SoftServe mark (one mark per company in one graphic); an `index.html` that does not declare the key; and a logo file that is missing, carries a second ink, or keeps a style block or classes. A scratch copy took seven faults one at a time (the wordmark in the logo's place, the class gone, a spark beside the logo, the key undeclared, the file missing, a second ink, the style block back). Each failed, and the restored copy passed.
+- **Checks:** `node --check` on `overview.js` and the checker; `check-grammar` OK with the one known warning (`overview.about.title`). In headless Chrome against `tools/serve.py`: no horizontal overflow on `#/` or `#/alt` at 1440, 1280, 1024, 768, 375 and 320; the logo loaded at 160 × 32, the tile's one image; the title still two lines at 1440; the archive printing *About SoftServe* with the logo hidden; the console clean on `#/`, `#/alt`, `#/products`, two product pages and `#/sellers`; the deny-list sweep empty. At 1440 × 900 with the header in view, the header's ink wordmark and the tile's white lockup read as the site's chrome and the company's card.
+- **Open for Alex** (START-HERE §9, under §53): the About screen shows two SoftServe marks, the sticky header's wordmark and the tile's logo. softserveinc.com shows its wordmark once a page and uses the spark elsewhere; if two reads as one too many, D, the spark alone by the eyebrow, is that pattern and a few lines away.
+- **Published** on 2026-09-29 as version 1790695649-2c4e (version 20), on top of 1790694190-6dc7, with the wrapper, `pages/overview.js`, `assets/site.css` and the new logo. The live `overview.js` and `index.html` differed from `main` by this change alone. `site.css` went out as the live file plus this change's two hunks, not as `main`'s: `main` also holds another session's unpublished product-page rebuild (round 21's `.kpi-widget`, `.hiw-tabs` and `.hiw-open-mark`, with the rules the live `product.js` still needs removed). The file list holds 177 files, the logo among them and none that should not ship, and on the shared link the tile opens on the logo.
+- **The contract round stays 20**, as for §50–§52: the new assertions guard the About tile, which the packaging plugin never writes.

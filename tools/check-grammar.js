@@ -479,34 +479,61 @@ if (!arr(C.products) || C.products.length !== 9) {
       var after = vz.after;
       var range = vz.range;
       if (!onScale(before.value)) fail(mw, "visual.before.value must be a number on the scale");
-      /* No figure without a printed label: each form's marks and the labels
-         row that names them. */
+      /* Round 21 (Alex, 2026-09-29: the charts were "hard to understand from
+         graphics", and "matching between number and the visual is absolutely
+         unclear"). A chart is rows named Today and After, each bar with its
+         value at its end, and the tile's figure is printed on the chart, on
+         the mark it names (product.js kpiChart). So a label is the value
+         itself, short enough for the room at a bar's end, and the figure has
+         to be one of the chart's printed values. */
+      var LABEL_MAX = 12;
+      function shortLabel(where, text) {
+        if (!str(text)) return fail(mw, where + " missing — every bar on the chart prints its value");
+        if (text.length > LABEL_MAX) fail(mw, where + ' "' + text + '" is ' + text.length + " characters (max " + LABEL_MAX + " — the value printed at a bar's end)");
+        if (/\b(before|after|today)\b/i.test(text)) fail(mw, where + ' "' + text + '" names its row — the row is named Today or After already; print the value alone');
+      }
+      function numbers(text) { return (String(text || "").match(/\d+(?:\.\d+)?/g) || []).map(Number); }
       if (vz.form === "compression" || vz.form === "dumbbell") {
-        if (!str(before.label)) fail(mw, "visual.before.label missing — a mark on the chart with no printed label");
+        shortLabel("visual.before.label", before.label);
         if (!after || !onScale(after.value)) fail(mw, "visual.after.value must be a number on the scale (" + vz.form + ")");
-        if (!after || !str(after.label)) fail(mw, "visual.after.label missing — a mark on the chart with no printed label");
+        shortLabel("visual.after.label", (after || {}).label);
         if (vz.form === "compression" && !(before.value > 0)) {
-          fail(mw, "visual.before.value must be above 0 — the after bar is drawn as its share of it");
+          fail(mw, "visual.before.value must be above 0 — the After bar is drawn as its share of Today's");
         }
       } else if (after !== undefined) {
-        fail(mw, "visual.after belongs to compression and dumbbell only — a " + vz.form + " prints no after mark");
+        fail(mw, "visual.after belongs to compression and dumbbell only — a " + vz.form + " prints no After bar");
+      }
+      if (vz.gap !== undefined) {
+        if (vz.form !== "compression") fail(mw, "visual.gap belongs to the compression form only — it names the row that draws the difference");
+        else if (!str(vz.gap) || vz.gap.length > 8) fail(mw, "visual.gap must be the difference row's name, 1–8 characters");
+        else if (!(before.value > (after || {}).value)) fail(mw, "visual.gap needs Today above After — the row draws the difference between them");
       }
       if (vz.form === "range") {
         if (!range || !onScale(range.lo) || !onScale(range.hi) || !(range.hi > range.lo)) {
           fail(mw, "visual.range needs { lo, hi } on the scale, with hi above lo");
         }
-        if (!range || !str(range.label)) fail(mw, "visual.range.label missing — the band with no printed label");
+        if (!range || range.label !== fig.text) fail(mw, "visual.range.label must equal figure.text — the After bar's span prints the figure");
       } else if (range !== undefined) {
         fail(mw, "visual.range belongs to the range form only");
       }
-      if (vz.form === "baseline" && !str(before.label)) {
-        fail(mw, "visual.before.label missing — the baseline's one printed label");
+      if (vz.form === "baseline") {
+        if (before.label !== fig.text) fail(mw, "visual.before.label must equal figure.text — a baseline's Today row prints the figure");
+        if (sc.max !== 100 && !(sc.max === 10 && before.value === Math.round(before.value))) {
+          if (sc.max === 10) fail(mw, "visual.scale 0–10 draws ten dots, so before.value must be a whole number");
+        }
       }
-      /* Q1: a baseline filled to its end draws a full bar and says nothing;
-         the scale runs past today's value (1.5 × it, by the round-20 rule). */
-      if (vz.form === "baseline" && scaled && typeof before.value === "number" &&
-          ((vz.direction === "down" && before.value >= sc.max) || (vz.direction === "up" && before.value <= sc.min))) {
-        fail(mw, "visual.scale ends at today's value — the baseline is drawn as a full bar with nowhere to go; give the scale room (e.g. max = 1.5 × before.value)");
+      /* The figure on the chart: the result on the After row, the starting
+         point on Today's (figure.prefix "from"), the difference on the gap
+         row, or both numbers of a pair on both rows. */
+      if (str(fig.text) && (vz.form === "compression" || vz.form === "dumbbell")) {
+        var printed = (after && fig.text === after.label) || (fig.prefix === "from" && fig.text === before.label) || !!vz.gap;
+        if (vz.form === "dumbbell") {
+          var fn = numbers(fig.text);
+          printed = fn.length === 2 && numbers(before.label)[0] === fn[0] && numbers((after || {}).label)[0] === fn[1];
+        }
+        if (!printed) {
+          fail(mw, 'figure "' + (fig.prefix ? fig.prefix + " " : "") + fig.text + '" is not printed on its chart — make it the After label (a result), the Today label with prefix "from" (a starting point), a gap row (a difference), or a pair whose numbers are the two labels');
+        }
       }
     });
   }
