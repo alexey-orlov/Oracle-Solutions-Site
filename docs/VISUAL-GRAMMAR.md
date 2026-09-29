@@ -225,49 +225,52 @@ The block is unchanged; only its home is. Its anatomy, its data contract and its
 rules are **§2a.1**. Nothing on the Overview renders `overview.industryCases[]` any
 more.
 
-### 2.4 What changes in your numbers — the KPI band
+### 2.4 What changes in your numbers — the widget
 
-`overview.metrics[]`, **two or three tiles** (two on every product today), under `sectionLabels.outcomes`, *What changes in your numbers*, an H2 at 48 px.
+`overview.metrics[]`, **two or three tiles** (two on eight products, three on Repair-or-replace decisions), under `sectionLabels.outcomes`, *What changes in your numbers*, the widget's heading at 20 px.
 
-Round 20 (Alex: the ROI block *"too wordy, and too boring"*; show the metric *"from X"* or *"the potential improvement range"*; *"not add footnotes and explanations of how you built metrics"*). The tile:
+Round 20 (Alex: the ROI block *"too wordy, and too boring"*; show the metric *"from X"* or *"the potential improvement range"*; *"not add footnotes and explanations of how you built metrics"*) set the tile. **Round 21** (Alex, 2026-09-29: *"ROI metrics look like widget on the right"*; the charts *"hard to understand from graphics … it should not puzzle the reader"*; *"matching between number and the visual is absolutely unclear"*) set the tiles in one widget and redrew every chart as named bars with their values printed. The tile:
 
 ```js
 { key, title, kind: "proven" | "forecast" | "estimated", owner,
   figure: { prefix?, text },
   visual: { form: "compression" | "range" | "dumbbell" | "baseline", unit, direction: "up" | "down",
-            scale: { min, max }, before: { value, label }, after?: { value, label }, range?: { lo, hi, label } },
+            scale: { min, max }, before: { value, label }, after?: { value, label },
+            range?: { lo, hi, label }, gap? },
   line }
 ```
 
 | Part | Rule |
 |---|---|
-| Band | `.kpi-band`, full-bleed on softserveinc.com's KPI ground, `linear-gradient(to top, #edf1f6, #fafaf8)`, with 64 px of padding (40 on a phone); the tiles keep the wrap. One column per tile, 48 px apart; each tile after the first stands behind a 1 px `#d1dae2` rule with 48 px of padding. The tiles share row tracks (subgrid), so every figure and every chart sits on one line across the band, whatever a title wraps to. From 768 to 1099 px: two columns, a third tile full width under a top rule. Below 768 px: one column, 1 px rules between the tiles. |
+| Widget | `.kpi-widget`: one white card on a 1 px `#d1dae2` ring with a 12 px cut, padding 28 / 28 / 32 (24 / 20 / 28 on a phone), the heading then the tiles 20 px under it. From 1240 px it is the right third, pinned while it fits (§2); below, it sits at the column's width between the plates and How it works. |
+| Tiles | From 1240 px the tiles stack, each after the first under a 1 px `#d1dae2` rule with 24 px either side. Below 1240 px they stand side by side, 48 px apart, each after the first behind a 1 px rule, and share row tracks (subgrid), so every figure and every chart sits on one line whatever a title wraps to; a third tile goes full width under a rule below 1100 px; below 768 px they stack. |
 | Dash | 32 × 4 px in orange 75, `#fe8d6b`, over every tile: the fact marker (`SS26-THEME.md` §3). |
-| Title row | `title` at 16 px Replica 400 (at most 40 characters), and at its right the **kind chip**: 12 px uppercase in ink on a 1 px `#bdcbd7` ring with a 4 px cut. Its word is `shared.metricKinds[kind].chip`, the case study's own three words (*Proven* · *Forecast* · *Estimated*), and its `tooltip` is the chip's title. |
-| Figure | `figure.prefix` (at most 6 characters, 20 px Light `#4c5156`: *from*), then `figure.text` at **56 px Replica Light**, 44 on a phone, never Azurio. At most 14 characters with three tiles and 20 with two. A long figure shrinks to its tile; a short one never does. |
-| Chart | one 40 px SVG drawn from the tile's own numbers, `aria-hidden`, in one of four forms (below). |
-| Labels | 14 px, real text in the DOM, each after a 10 px swatch in the shape of the mark it names (a bar, a tick, a dot), so no pairing rests on colour alone. **The chart carries nothing its labels do not print.** |
-| Line | `line`, 16 px Light `#26292b`, at most 14 words (two lines): what the figure counts, in the buyer's words. |
+| Title row | `title` at 16 px Replica 400 (at most 40 characters), and at its right the **kind chip**: 12 px uppercase in ink on a 1 px `#bdcbd7` ring with a 4 px cut. Its word is `shared.metricKinds[kind].chip` (*Proven* · *Forecast* · *Estimated*), and its `tooltip` is the chip's title. |
+| Figure | `figure.prefix` (at most 6 characters, 20 px Light `#4c5156`: *from*), then `figure.text` in **Replica Light: 48 px in the widget beside the column, 56 px where the tiles stand side by side, 44 on a phone**, never Azurio. At most 14 characters with three tiles and 20 with two. A long figure shrinks to its tile; a short one never does. |
+| Chart | **Named rows** (below). |
+| Line | `line`, 16 px Light `#26292b`, at most 14 words: what the figure counts, in the buyer's words. |
 | Owner | *Owner ·* (`sectionLabels.metricOwner`) and `owner`, 14 px `#4c5156`: the buyer-side role who tracks the number, at most 40 characters. |
 
-**One chart convention for all four forms** (round 20, after QA found three dumbbells labelled in the reverse order of their dots): **a value axis, low on the left**, so a metric that improves by falling improves leftward, and **every label sits under, or aligned to, the mark it names**, never in a fixed left or right slot. Each form is drawn on a 40 px canvas with its track at y 17:
+**The chart is the plainest comparison a dashboard has, and the figure is printed on it** (round 21). One row per state, named in a column of its own at 14 px `#4c5156`: **Today** (`sectionLabels.metricToday`) and **After** (`metricAfter`). Each row is a 10 px bar from the one zero line and its **value printed at the bar's end**, 14 px, in the room kept for it (92 px): no legend, no axis, no scale to decode. Today's bars are grey `#9aa8b4`, After's blue `#1485c4`, and a range's or a gap's span the lighter blue `#8ec3e6`, all validated against each other (normal-vision ΔE 17.3 and 21.1, CVD 13.6 and 19.7) and all under 3:1 on white, which is why every bar prints its value. **The value the figure names is bold**, so the big number and its bar are matched by the same words:
 
-| Form | For | Drawn |
+| Form | Rows | Where the figure is printed |
 |---|---|---|
-| `compression` | a before → after whose after is a fraction of the before (days → minutes) | two 10 px bars from the axis' origin: before in `#bdcbd7` at full width, after in `#1485c4` at its share of before and at least 8 px long. The labels (`before.label`, `after.label`) start at the bars' origin, 24 px apart, so *after* sits by the short blue bar |
-| `range` | a modeled band (*+4 to +10%*) | a 6 px `#d1dae2` track for the scale, a 10 px `#1485c4` band from `range.lo` to `range.hi`, a 2 × 20 px ink tick at today (`before.value`). **A range that improves downward is mirrored** (x = (max − v) ÷ (max − min)): today's tick at the right end and the band to its left. Each label is set under its own mark, *today* (`sectionLabels.metricToday`) under the tick and `range.label` under the band, centred on it unless that would run past an end |
-| `dumbbell` | a modeled before → after rate (*3.0 → 2.4%*) | the track, a 4 px `#459fdd` connector, a 14 px `#bdcbd7` dot at before and a `#1485c4` dot at after, both on the value axis, so a falling rate's after dot sits left of its before. **The labels print in the order of their dots** |
-| `baseline` | a sourced *from X* with no promised end | the track filled `#bdcbd7` up to X, a tick at X, and a 10 px blue chevron beside it pointing the way the number improves (`direction`). **The scale runs past X** (1.5 × X where X had been the scale's end), so the fill stops short and the chevron has room; the checker fails a baseline drawn as a full bar. One label, `before.label`; a screen reader also hears *improves toward* (`sectionLabels.metricToward`), the scale's end and the `unit` |
+| `compression` | Today at full length, After at its share of it (at least 3 px) | a result (*5–15 min*, Proven) is the After label; a starting point (*from weeks*) is Today's label, with After's beside it (*hours*); a difference (*about $250* between *$350* and *$99*) gets a third row, named by `visual.gap` (*Saving*), whose light span runs from After's end to Today's |
+| `dumbbell` | Today and After on one zero line | the pair (*3.0 → 2.4%*): its two numbers are the two labels, both bold |
+| `range` | Today indexed to 100 with no value; After solid to 100 + lo and light on to 100 + hi when the number improves up (*+4 to +10%*), solid to 100 − hi and light on to 100 − lo when it improves down (*−5 to −10%*) | the After bar's span; `range.label` equals `figure.text` |
+| `baseline` | one Today row: **a meter** (a `#edf0f2` track for the whole, today's share filled) when the scale is 0–100; **ten dots**, today's count filled, when it is 0–10 in whole units; **no chart** otherwise, and the figure alone is the tile (*up to 1 h a day*, *from ~1 month*) | Today's value; `before.label` equals `figure.text` |
 
-**A figure is never a bare unit word** (QA, round 20: *Hours* or *Minutes* is neither a *from X* nor a range). A Proven compression prints its measured after (*5–15 min*, *~30 min*); an Estimated one prints its baseline, `prefix` *from* and the before in words (*from weeks*, *from a quarter*), and its chart shows where it goes; a range prints its band, a dumbbell its before → after, and a baseline its *from X*.
+A **label is the value alone**, at most 12 characters, never with *before*, *after* or *today* in it (the row says which). The bars are `aria-hidden`; the rows are text, so a screen reader hears *Today ~2 days, After ~30 min*. An empty chart still takes its row, so where tiles stand side by side their lines stay level.
 
-**The honesty lives in the framing, never in a note** (Alex: metrics *"should not lie but should [not] apologize and disclaim their value"*; *"No justification for reviewer notes pls"*). A figure is a measured before → after, a range or a *from X* baseline, and its chip says which kind: **Proven** is measured end to end in a completed proof of value on the customer's own data; **Forecast** is modeled on the customer's own history; **Estimated** is set against published industry rates or the way the work is done today. **No footnote, no method note, no ROI paragraph and no pointer to another tab.** Where each figure comes from is recorded in `PROVENANCE.md` §41.4, never on the page: the checker fails a `sources` key in `content.js`, which ships in view-source. No status colour decorates a metric; blue is the one coloured mark in a chart.
+**A figure is never a bare unit word** (QA, round 20: *Hours* or *Minutes* is neither a *from X* nor a range). A Proven compression prints its measured after (*5–15 min*, *~30 min*); an Estimated one prints its baseline, `prefix` *from* and the before in words (*from weeks*, *from a quarter*), and its chart shows where it goes; a range prints its span, a dumbbell its before → after, and a baseline its *from X*.
 
-**A metric is a business metric** (START-HERE §4): the money, time, volume, risk or quality a named buyer-side owner already tracks and the product moves directly. Never an accept rate, a coverage figure, a calibration, a delivery duration or a feature. Two tiles on one band never share a claim shape.
+**The honesty lives in the framing, never in a note** (Alex: metrics *"should not lie but should [not] apologize and disclaim their value"*; *"No justification for reviewer notes pls"*). A figure is a measured before → after, a range or a *from X* baseline, and its chip says which kind: **Proven** is measured end to end in a completed proof of value on the customer's own data; **Forecast** is modeled on the customer's own history; **Estimated** is set against published industry rates or the way the work is done today. **No footnote, no method note, no ROI paragraph and no pointer to another tab.** Where each figure comes from is recorded in `PROVENANCE.md` §41.4, never on the page: the checker fails a `sources` key in `content.js`, which ships in view-source. No status colour decorates a metric; blue is the After bar.
 
-**The band may carry its product's case-study figure.** Large docs prints *5–15 min* on its Proven tile and in its case study: the case study is on the Use cases tab (§2a.2), so each tab states the number once. The rail's rule that a tile never repeats a case figure left with the rail.
+**A metric is a business metric** (START-HERE §4): the money, time, volume, risk or quality a named buyer-side owner already tracks and the product moves directly. Never an accept rate, a coverage figure, a calibration, a delivery duration or a feature. Two tiles in one widget never share a claim shape.
 
-The checker holds two or three tiles; a unique `key`; the title, owner, line, figure and prefix budgets; one of the three kinds and the four forms; a unit, a direction and a numeric scale; every value on its scale and every mark with a printed label; `after` only on the compression and dumbbell forms and `range` only on the range form. It fails the retired rail-tile keys (`value`, `label`, `qualifier`, `icon`) and `sources` by name.
+**The widget may carry its product's case-study figure.** Large docs prints *5–15 min* on its Proven tile and in its case study: the case study is on the Use cases tab (§2a.2), so each tab states the number once.
+
+The checker holds two or three tiles; a unique `key`; the title, owner, line, figure and prefix budgets; one of the three kinds and the four forms; a unit, a direction and a numeric scale; every value on its scale; every bar's label present, at most 12 characters and free of the row's name; `after` only on the compression and dumbbell forms, `range` only on the range form and `gap` only on the compression form; **the figure printed on its chart** (the After label, Today's label with *from*, a gap row, or a pair whose numbers are the two labels; a range's label and a baseline's Today label equal to it); and the renderer's Today and After row names and its figure-on-the-span rule. It fails the retired rail-tile keys (`value`, `label`, `qualifier`, `icon`), `sources`, `sectionLabels.metricToward` and an SVG chart by name.
 
 ### 2.5 At a glance — **removed** (round 3, H)
 
