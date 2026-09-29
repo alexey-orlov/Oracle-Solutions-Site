@@ -2312,6 +2312,9 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (!/function whyScreen\(/.test(overviewSrc) || whySrc.indexOf("pillars pillars--list") === -1) {
     fail("site/pages/overview.js", "whyScreen() must render the Why list (round 18: its own screen after the Bespoke band)");
   }
+  if (whySrc.indexOf("head({ eyebrow: why.eyebrow, title: why.title })") === -1 || /class="eyebrow[^"]*">' \+ UI\.esc\(why\.title\)/.test(whySrc)) {
+    fail("site/pages/overview.js whyScreen()", "must open on the eyebrow and its H2, as its peers do (Alex, 2026-09-29: the block \"misses the heading next to subheading\")");
+  }
   var bespokeCopy = overviewSrc.slice(overviewSrc.indexOf("function bespoke("));
   if (/class="bespoke-copy reveal/.test(bespokeCopy)) {
     fail("site/pages/overview.js bespoke()", "the band's copy reveals — it is the band's head and shows at once under the Packaged services track (round 18)");

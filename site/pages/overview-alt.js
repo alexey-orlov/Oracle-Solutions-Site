@@ -242,11 +242,15 @@
       s2.classList.add("aoffer");
       var title = s2.querySelector(".home-head .h2");
       if (title && offer.title) title.textContent = offer.title;
-      var productsImage = s2.querySelector(".way--photo .way-img");
-      if (productsImage && offer.productsImage && offer.productsImage.file) {
-        productsImage.setAttribute("src", offer.productsImage.file);
-        productsImage.style.objectPosition = offer.productsImage.focal || "";
-      }
+      /* Both tiles take this page's own pictures (products, then services),
+         the careers site's, upscaled so a 2x screen never draws them past
+         their pixels (PROVENANCE §62). */
+      var images = s2.querySelectorAll(".way--photo .way-img");
+      [offer.productsImage, offer.servicesImage].forEach(function (image, index) {
+        if (!images[index] || !image || !image.file) return;
+        images[index].setAttribute("src", image.file);
+        images[index].style.objectPosition = image.focal || "";
+      });
     }
 
     var why = root.querySelector("section#why-softserve .deliver-why");

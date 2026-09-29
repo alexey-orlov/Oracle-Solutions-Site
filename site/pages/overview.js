@@ -306,11 +306,12 @@
 
   /* ————— S4c: why SoftServe on Oracle ————— */
 
-  /* The three reasons to pick this team, as round 17 drew them — the label,
-     then three rows between hairlines, the brand's feature icons — on a screen
-     of their own since round 18, after both ways to buy the practice, where
-     each reason reads for either. The label opens the screen, so it is the
-     screen's heading and takes the accent eyebrow. */
+  /* The three reasons to pick this team, as round 17 drew them — three rows
+     between hairlines, the brand's feature icons — on a screen of their own
+     since round 18, after both ways to buy the practice, where each reason
+     reads for either. The screen opens as its peers do (Alex, 2026-09-29: it
+     "misses the heading next to subheading"): the question as the eyebrow,
+     the H2 its answer. */
   function whyScreen(C) {
     var UI = window.UI;
     var why = (C.overview.delivery || {}).why;
@@ -327,8 +328,8 @@
     }).join("");
 
     return '<section class="section home-screen home-why" id="why-softserve"><div class="wrap">' +
+      head({ eyebrow: why.eyebrow, title: why.title }) +
       '<div class="deliver-why reveal">' +
-        '<h2 class="eyebrow eyebrow--accent">' + UI.esc(why.title) + "</h2>" +
         '<div class="pillars pillars--list">' + pillars + "</div>" +
       "</div>" +
       "</div></section>";

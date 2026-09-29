@@ -485,12 +485,22 @@ window.SITE_CONTENT = {
     },
     offer: {
       title: "Everything to go live with AI on Oracle.",
-      /* S2 is the live page's two ways in; only the products panel's
-         photograph changes, because the hero now carries the oval. */
+      /* S2 is the live page's two ways in, with pictures of its own (Alex,
+         2026-09-29: "Find smth better resolution while matching the
+         content"): the careers site's about-us focus tiles, Data & Analytics
+         for the products and Research & Development for the services
+         (career.softserveinc.com, app-images/about-us/focus1 and focus3.webp,
+         800 x 452), upscaled four times with Real-ESRGAN and saved at 2400 px
+         (PROVENANCE §62). */
       productsImage: {
-        file: "assets/img/heroes/workforce-optimization.jpg",
-        focal: "50% 60%",
-        alt: "An overhead field of interlocking hexagonal plates, with loose ones still settling into the pattern from above"
+        file: "assets/img/heroes/offer-products.jpg",
+        focal: "50% 50%",
+        alt: "Two monitors, one with a line chart, and a laptop on a dark desk, crossed by a beam of warm light"
+      },
+      servicesImage: {
+        file: "assets/img/heroes/offer-services.jpg",
+        focal: "50% 30%",
+        alt: "Three engineers in black T-shirts working together over hardware in a clear case, in cool blue light"
       }
     },
     /* The portfolio diagram, on the left of "Why SoftServe on Oracle", in
