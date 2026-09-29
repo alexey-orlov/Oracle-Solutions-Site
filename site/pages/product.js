@@ -659,18 +659,26 @@
      cloud box holding the app and the engine. Where the source is also the
      destination (a write-back), the column holds one box and both pipes
      touch it. Below 720px the strip turns to run top to bottom. */
+  /* A short hyphenated name ("AI-Q") stays whole in a narrow box; a long one
+     ("Repair-or-replace") may still break at its hyphen, or it would overflow
+     the box at 1240px. Returns escaped HTML. */
+  function flowText(text) {
+    return window.UI.esc(text).split(/(\s+)/).map(function (part) {
+      return /^\S{1,6}-\S{1,6}$/.test(part) ? '<span class="compound">' + part + "</span>" : part;
+    }).join("");
+  }
+
   function flowBox(box, className) {
-    var UI = window.UI;
     if (!box || !box.name) return "";
     return '<div class="' + className + '">' +
-      '<span class="flow-name">' + UI.esc(box.name) + "</span>" +
-      (box.note ? '<span class="flow-note">' + UI.esc(box.note) + "</span>" : "") +
+      '<span class="flow-name">' + flowText(box.name) + "</span>" +
+      (box.note ? '<span class="flow-note">' + flowText(box.note) + "</span>" : "") +
       "</div>";
   }
 
   function flowPipe(text, direction) {
     return '<div class="flow-pipe flow-pipe--' + direction + '">' +
-      '<span class="flow-pipe-label">' + window.UI.esc(text) + "</span>" +
+      '<span class="flow-pipe-label">' + flowText(text) + "</span>" +
       '<span class="flow-pipe-line" aria-hidden="true"></span>' +
       "</div>";
   }
@@ -690,8 +698,8 @@
         '<div class="flow-pipes">' + flowPipe(d.toPlatform, "in") + flowPipe(d.fromPlatform, "out") + "</div>" +
         '<div class="flow-cloud">' +
           '<p class="flow-cloud-label">' +
-            '<span class="flow-cloud-name">' + UI.esc(d.platform.label) + "</span>" +
-            (d.platform.services ? '<span class="flow-cloud-services">' + UI.esc(d.platform.services) + "</span>" : "") +
+            '<span class="flow-cloud-name">' + flowText(d.platform.label) + "</span>" +
+            (d.platform.services ? '<span class="flow-cloud-services">' + flowText(d.platform.services) + "</span>" : "") +
           "</p>" +
           '<div class="flow-cloud-inner">' +
             flowBox(d.app, "flow-node") + FLOW_LINK + flowBox(d.engine, "flow-node") +

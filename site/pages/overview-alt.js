@@ -201,20 +201,19 @@
 
   /* ————— the live page, with S2 and the Why screen adjusted ————— */
 
-  /* overview.js renders the whole live page. Its hero and its proof strip
-     (both now the alt hero) come out; S2 takes the umbrella heading and the
-     products tile's new picture, and home-alt.css re-lays its two tiles; the
-     Why screen takes the diagram on its left and keeps its three reasons on
-     its right. */
+  /* overview.js renders the whole live page. Its hero comes out (the alt hero
+     takes its place) and its proof strip stays, so the figures under the
+     hero are the live page's own on both versions; S2 takes the umbrella
+     heading and the products tile's new picture, and home-alt.css re-lays
+     its two tiles; the Why screen takes the diagram on its left and keeps
+     its three reasons on its right. */
   function liveScreens(C, params) {
     var template = document.createElement("template");
     template.innerHTML = window.PAGES.overview(params);
     var root = template.content;
 
-    ["section.home-hero", "section.stat-band--home"].forEach(function (selector) {
-      var node = root.querySelector(selector);
-      if (node) node.parentNode.removeChild(node);
-    });
+    var liveHero = root.querySelector("section.home-hero");
+    if (liveHero) liveHero.parentNode.removeChild(liveHero);
 
     var offer = (C.overviewAlt || {}).offer || {};
     var s2 = root.querySelector("section#two-ways");
