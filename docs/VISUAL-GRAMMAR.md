@@ -88,7 +88,7 @@ Before round 4 the hero and the tiles carried a run of chips that all looked the
 | **Technology** | The existing **solid navy** pill | **One pill per platform the product runs on, each the facet's short `label`** — *AI Lakehouse*, *AI Data Platform*, *OCI + NVIDIA NeMo*; the two Q&A products carry *AI Lakehouse* and *AI Data Platform* since 2026-09-29 (PROVENANCE §46), every other product one pill — carrying its `fullLabel` as the `title`, with the platform glyph from `shared.tagFamilies.tech.icons[<facet id>]`: a cloud-and-GPU glyph for OCI + NVIDIA NeMo, a data cylinder for AI Data Platform, a layers glyph for AI Lakehouse, an application grid for AI for Fusion Applications | `Runs on` |
 | **Artifacts** | Compact **tinted icon pill** — a badge, not a chip | *Interactive demo* (`cursor-click` glyph) where the product's `interactiveDemo` link is non-empty; *Oracle Marketplace* (storefront icon) where `.marketplace === true` with its listing's `marketplaceUrl` (round 18). **Maximum two, and both are optional.** | `Interactive demo — a guided walkthrough you can click through` / `Available on Oracle Marketplace` |
 
-**One canonical technology set, in two forms** (round 4, T3; re-cut in round 9 on Alex's instruction). The **short `facets.technology[].label`** — *AI Lakehouse*, *AI Data Platform*, *AI for Fusion Applications*, *OCI + NVIDIA NeMo* — is what every compact surface renders verbatim and alone: the Products rail, the hero technology chip, the tile image-band label, `products[].tags[1…]` and the bottom band of the home hero's stack (which reads `facets.technology` directly, so it cannot drift). The **full `fullLabel`** — each opening on "Oracle" — is what prose and the footer's Oracle row use (round 18; the Services platform cards that carried it left with their page). A platform gets two forms and no more: a third (`stackLabel`, tried mid-round) would put a different name on the stack from the rail, which is the drift this rule exists to prevent. Until round 4 a product could append its engine to the pill — the three deep-research products and the extraction pack put `AI-Q` beside `OCI + NVIDIA`, the workforce pack put `cuOpt` and `Oracle Field Service` there, the two Q&A packs put `Select AI` beside the Lakehouse. Two chips of the same family and colour with no separator read as one name, so the hero advertised *OCI + NVIDIA AI-Q*, a platform nobody ships, while the rail one click away said *OCI + NVIDIA*. **A technology pill that is not a platform is now a build failure**; the engines are not lost, they are where a technical reader looks for them — the Technology tab's narrative, solution stack and integrations, each of which already named all four. A second *platform* is different (2026-09-29): it is a canonical facet with its own pill, allowed only where the product's own engine is part of that platform too, and only with its Technology tab saying how it runs there.
+**One canonical technology set, in two forms** (round 4, T3; re-cut in round 9 on Alex's instruction). The **short `facets.technology[].label`** — *AI Lakehouse*, *AI Data Platform*, *AI for Fusion Applications*, *OCI + NVIDIA NeMo* — is what every compact surface renders verbatim and alone: the Products rail, the hero technology chip, the tile image-band label, `products[].tags[1…]` and the bottom band of the home hero's stack (which reads `facets.technology` directly, so it cannot drift). The **full `fullLabel`** — each opening on "Oracle" — is what prose and the footer's Oracle row use (round 18; the Services platform cards that carried it left with their page). A platform gets two forms and no more: a third (`stackLabel`, tried mid-round) would put a different name on the stack from the rail, which is the drift this rule exists to prevent. Until round 4 a product could append its engine to the pill — the three deep-research products and the extraction pack put `AI-Q` beside `OCI + NVIDIA`, the workforce pack put `cuOpt` and `Oracle Field Service` there, the two Q&A packs put `Select AI` beside the Lakehouse. Two chips of the same family and colour with no separator read as one name, so the hero advertised *OCI + NVIDIA AI-Q*, a platform nobody ships, while the rail one click away said *OCI + NVIDIA*. **A technology pill that is not a platform is now a build failure**; the engines are not lost, they are where a technical reader looks for them — the Technology tab's strip, whose engine box names each one (round 22). A second *platform* is different (2026-09-29): it is a canonical facet with its own pill, allowed only where the product's own engine is part of that platform too, and only with its Technology tab's Oracle products widget listing it (round 22).
 
 **Every pill on the site belongs to one of these families, and says which on hover.** The solid navy pill means *technology*; anything else set in it dilutes that the moment a visitor leaves a product page.
 
@@ -240,7 +240,7 @@ The open step's text, 16 px, one or two lines
 
 **A description sits between the control that selects it and the thing it explains** (round 10b, START-HERE §4): the open step's text sits under the tab row and over its frame, at body weight.
 
-**The feature-coverage invariant is retired** with the tick-lists: no surface prints `steps[].features`, so nothing keeps them in step with `overview.features`. Both lists stay in the data for the Jumpstart tab.
+**The feature-coverage invariant is retired** with the tick-lists: no surface prints `steps[].features`, so nothing keeps them in step with `overview.features`. Both lists stay in the data, unrendered.
 
 The checker holds 3–5 steps numbered from 1, the title and text budgets, `shot.full` = `assets/img/steps/<slug>-<n>.jpg` (a missing file is a warning) and a non-empty `alt`; it fails the retired `image`, `zoom`, `region` and `anchor` by name, a renderer that draws a ring or an inset, and a `howItWorks()` whose text does not sit between the tab row and the frame.
 
@@ -315,7 +315,7 @@ The home page renders **one compact card per case study** — a 16:9 photo band 
 
 ### 2.7 More detail — **removed** (round 20)
 
-Alex: *"More detail block - on Overview page - to be removed."* The disclosure is gone, and `moreDetail`, `featuresDetail` and `featuresNote` with it (the checker fails each by name); `scope` and `features` stay in the data, unrendered, for the Jumpstart tab next round.
+Alex: *"More detail block - on Overview page - to be removed."* The disclosure is gone, and `moreDetail`, `featuresDetail` and `featuresNote` with it (the checker fails each by name); `scope` and `features` stay in the data, unrendered.
 
 ---
 
@@ -397,72 +397,49 @@ This block **is** the product page's industry telling. The old `overview.industr
 6. **One or two big metrics, with no eyebrow over them** — the chip above has already said what they are. **Each figure sits under its own orange-75 dash** (32 × 4 px, `#fe8d6b`) and is set in **Replica Light, white, 64 px at 1440** (it scales down to 40, and 36 at ≤ 360 px), **never Azurio** (round 20; the checker holds both), with its label under it at 16 px Light, white at 85%. Two figures stack, 32 px apart. Two is the default, and a third would make the panel a metric row in its own right, competing with the Overview's numbers widget (§2.4); **one** is correct where only one real outcome exists. A case with no published figure sets a **qualitative outcome statement** — a turnaround claim like *Same day* or a coverage claim like *Every variance* — never an invented number, and never a restatement of the mechanic: *"One signal"* and *"Evidence-backed"* were the product's own description set at 40px in a numbers slot, which is what a slot filled because it was there looks like.
 7. **The scope row** — exactly three compact facts (`scope[]`) in one column under a white 20% rule, label above value (the label 12 px uppercase `#bdcbd7`, the value 16 px white): duration, data footprint, constraint count, the human gate. Each must be a fact the rest of the card does not already carry — a slot spent restating the `area` line is a slot wasted. External-safe only: no contract value, no contract duration, no headcount, no € figure.
 
-## 3. Technology tab — exactly two blocks
+## 3. Technology tab — the strip and the Oracle products widget
 
-**Architecture** (§3.1 narrative + §3.3 the layer stack) and **Capabilities** (§3.2). Nothing else. The How-it-runs flow diagram and the Security-and-deployment list were both removed in round 3: the stack read top to bottom *is* the flow, drawn once and with the components attached, and the security lines were four restatements of facts the layer summaries, the scope lists and the Jumpstart `low-risk` pillar already carry.
+**Round 22 (Alex, 2026-09-29):** *"I don't like current Technology tabs. Remove Architecture subheading. We have beautiful diagrams in one-pagers … use or follow them for visualization; they are well organized, sized, etc. You can have some one-liner explainers etc added, but no more than that."* His wireframe is two blocks side by side, **Diagram** (wider, left) and **Oracle products** (right). That is the whole tab: no heading, no narrative, no layer stack, no capability list.
 
-### 3.1 Narrative
+| Width | Composition |
+|---|---|
+| ≥ 1240 px | `.tech-grid`: the strip in `8fr`, the widget in `5fr`, both from the top (the Overview's two-column width) |
+| 720–1239 px | stacked: the strip at full width, the widget under it with its items in two columns |
+| < 720 px | stacked, and the strip runs top to bottom (§3.1) |
 
-`technology.narrative` — **three sentences maximum**, enforced. One paragraph at the head of the Architecture block.
+### 3.1 The data-flow strip
 
-### 3.2 Capabilities — the complete feature list, by workflow stage
+`technology.diagram`, drawn as HTML by `flowStrip()` in `pages/product.js`: **the pack one-pager's composition at web scale** (Oracle-Packaging-Skills, one-pager `_flow_from_architecture`), the picture Alex called *"well organized, sized"*.
 
-`technology.capabilities` — **exactly four stage groups**, `[{ stage, items: [{ name, state? }] }]`. Heading from `sectionLabels.capabilities`.
+- **Three columns at the one-pager's proportions, 22 : 27 : 51.** Left, the systems: grey `#edf0f2` boxes with an 8 px cut, the source on top and a destination-only system under it; where the source is also the destination (a write-back) the column holds one box and both pipes touch it. Middle, **two labelled pipes**: → into the cloud with `toPlatform` over it, ← back out with `fromPlatform`, 2 px `#4a8fbc` lines with drawn heads. Right, **the cloud box**: `#f4fafe` with a 1.5 px Lviv-blue ring cut at 12 px, its platform name and services line in 12 px uppercase blue micro-type, holding the **app** and the **engine** as white boxes with a 1 px `#a9d3f1` ring, joined by a drawn double arrow.
+- **Type:** a box's name is Replica Bold 16 px, its note 14 px muted; pipe labels 13 px muted. The boxes' words are `{ name, note }`, and they wrap and balance, so no box is sized by hand.
+- **Below 720 px it runs top to bottom:** the systems side by side, then the two pipes side by side (in going down, back coming up, each label beside its line), then the cloud; below 480 px the app and the engine stack, the arrow turned upright.
+- **One line under it** (`technology.line`, a `figcaption`, 16 px body): what the picture cannot show, one sentence, never a restatement of the boxes.
+- Colours are the one-pager's; the ring technique is `.kpi-widget`'s (an `evenodd` polygon on `::before`), so the corners carry the outline.
 
-- The four `stage` names are the product's own four workflow stages — the same sequence the §2.2 stepper walks a reader through, in the product's vocabulary (`Classification & routing` · `Extraction` · `Review & export` · `Quality & integrations`). Four on every product, so two Technology tabs compare column for column.
-- Each stage is a column on desktop (a row group on mobile) holding its `items` as a list. ≥ 3 items per stage; together the four groups cover every capability the product claims anywhere on the site.
-- `state` renders as a small tag — **Supported** or **Roadmap**, labels from `sectionLabels.stateSupported` / `stateRoadmap`. It is **absent** unless a shipped capability matrix states it; today only `workforce-optimization` carries tags. An untagged item renders with no tag at all, never with a default one: a guessed tag is a claim.
+### 3.2 The Oracle products widget
 
-### 3.3 Solution stack — one accordion, organised by layer
+`technology.oracle[]` over the registry `shared.oracleProducts`, drawn by `oracleWidget()`: a white card on the Overview widget's 1 px `#d1dae2` hairline, cut at 12 px.
 
-`technology.stack[]` — `{ key, label, summary, vendors, items }`. Heading from `sectionLabels.stack`.
+- **Title** *Oracle products* (Replica 20 px), then **two groups**: *Platform* first, then *Sources & destinations*, each under a 12 px uppercase label, a hairline between them. A group with no entry does not render.
+- **A row is a glyph, a name and a role:** the glyph in the theme's icon well (44 px, `--surface-select` with the `--action-pressed` line icon, a 4 px cut, as `.gate-mark` draws it), the name in Replica Bold 16 px, the role under it in 14 px muted, **two to four words**.
+- **One name and one glyph per system on every product**, because both come from the registry; only the role is the product's. The three catalog platforms reuse their facet glyphs (`platform-oci-nvidia`, `platform-oracle-ai-data-platform`, `platform-oracle-ai-lakehouse`), and `oracle-database`, `oracle-field-service` and `oracle-cx` were drawn in the same 1.5 px line.
 
-**This one block replaces three.** The vendor-marked component columns, the four-tier solution-stack table and the integration list were three views of the same architecture, printed one under another; a technical buyer comparing two products had to reconcile them himself. They are now one thing, read top to bottom the way an architect draws it.
-
-| Order | `key` | What sits there | Mark |
-|---|---|---|---|
-| 1 | `application` | The SoftServe accelerator / business app | SoftServe |
-| 2 | `ai-engine` | NVIDIA AI-Q · cuOpt · NeMo · NIM-served models | NVIDIA |
-| 3 | `data-platform` | Oracle Autonomous AI Lakehouse · Oracle AI Data Platform · Oracle data services · the source application where it is the system of record | Oracle |
-| 4 | `infrastructure` | OCI compute, GPUs, networking, storage, tenancy | Oracle |
-| 5 | `custom` | Integrations, connectors, signal sources, tenancy specifics — everything set per engagement | SoftServe |
-
-- **A layer may be omitted, never re-ordered.** The two Lakehouse products carry no `ai-engine`: NVIDIA is not required on that route, and an empty engine row would be a worse answer than its absence. `application`, `data-platform`, `infrastructure` and `custom` are present on all seven.
-- **Row, collapsed:** layer name · one-line `summary` · vendor mark(s) from `vendors` · chevron. The marks are normalised to **one cap-height and one opacity** across the five rows (`.group-mark--oracle` / `--nvidia` / `--softserve` set only the height each mark's own box needs to land on that cap-height). The layer order is what ranks the rows; whichever wordmark happens to set widest must not. **Row, expanded:** the `items`, each tagged **Required** or **Optional** from its boolean `required`, with `note` rendered as a **second chip beside that tag** (dashed, quieter — e.g. "After the Jumpstart"), never as a caption hanging under the row and never in package-ladder words: a product page's own next step is the Jumpstart's *Integration* card, so "Roll-out scope" names nothing a reader of that page has seen. Every layer carries at least one Required item — a layer where nothing is required is not a layer of this stack.
-- **Integrations live in the `custom` layer** — labelled *Custom configuration & integrations*, the fifth band — as items carrying `direction: "inbound" | "outbound" | "both"`. Render them as two labelled lines — **Inbound** and **Outbound**, from `sectionLabels.directionInbound` / `directionOutbound` — inside the expanded layer, or as annotations down the side of the stack. `direction` is illegal anywhere but `custom`.
-- **No "not used" footnote.** The layer summaries carry which platform each layer actually uses, which is the condition for dropping the line; a muted micro-line below the accordion, present on some products and absent on others, read as an orphan rather than as honesty. `technology.notUsed[]` is deleted from the data and `check-grammar.js` fails if it reappears.
-- `technology.governance?` — the two Lakehouse products. One band, same shape as the ROI band, below the accordion.
-
-`technology.groups[]`, `technology.layers[]`, `technology.integration[]` and `technology.notUsed[]` are the superseded shapes. They are **deleted** from `content.js`; `check-grammar.js` fails if one reappears, because a key nothing renders drifts out of sync in silence.
-
-**The accordion opens on its first layer** (`application`) so the pattern is visible without a click; each row toggles independently, `aria-expanded` follows the visible state, and the panel is hidden with the `hidden` attribute rather than a class.
-
-### 3.4 Security and deployment — **removed** (round 3, B)
-
-`technology.security[]` is deleted from the data. Each product's four lines restated facts that are already on the page: the tenancy and read-only access are in the `infrastructure` and `custom` layer summaries, the human gate is in the solution panel and the `low-risk` pillar, the audit trail is a capability, and "production hardening is roll-out scope" is in `overview.scope.out` and in `jumpstart.next`. `check-grammar.js` fails if the key returns.
-
-### 3.5 The architecture figure
-
-`media[slug]` still supplies the figure, but it is no longer a mirrored 50/50 media row of its own: it sits **inside** the Architecture block, beside the narrative, above the stack (`.arch-head--media`). Two blocks means two blocks — a third full-width row between them would put a picture where the stack has to be. A product with no `media` entry renders the narrative full width and the stack beneath it, with no empty frame.
+Retired with round 22: the Architecture block (narrative and the SVG figure from `data/diagrams.js`), the five-layer solution-stack accordion with its vendor wordmarks, Required / Optional tags and Inbound / Outbound lines, and the four-stage Capabilities grid. The checker fails their data keys, their labels, a heading in `technologyTab()` and `data/diagrams.js` on disk.
 
 ---
 
-## 4. Jumpstart tab
+## 4. Delivery tab — the packages table
 
-Tab label **Jumpstart**; block title **Jumpstart Proof-of-Value** (`jumpstart.title`). Route `#/products/<slug>/jumpstart`, with `…/pov` redirecting to it. The tab sells one thing — *fast · low-risk · tangible* — and every product renders the same six pieces in the same order.
+**Round 22 (Alex, 2026-09-29):** *"Rename it to delivery. Content — should be same structure and content as we have in packaging table in our one-pager. Add approx. duration of phases (with very short footnote that it's confirmed at scoping); don't add prices. Everything else should be gone from this tab."* Tab label **Delivery**, route `#/products/<slug>/delivery`; `…/jumpstart` and `…/pov` redirect to it. The tab is one table, its legend and one footnote, drawn by `deliveryTab()`.
 
-| Order | Component | Source |
-|---|---|---|
-| 1 | **Promise line** | `jumpstart.promise`. One sentence, set as the block's lead. |
-| 2 | **Three pillars** | `jumpstart.pillars[]` — exactly three equal cards in one row, each an icon, a `title` and one short paragraph, in the fixed order `fast` → `low-risk` → `tangible`. Peers in a row are equal height. They stack on mobile. |
-| 3 | **Two columns** | LEFT: `jumpstart.outcomes[]` — 3–4 outcome lines with check icons, under `sectionLabels.jumpstartOutcomes` ("What you get"). RIGHT: `jumpstart.timeline[]` — 3–4 nodes as a compact week-by-week rail, under `sectionLabels.jumpstartTimeline` ("How it runs"). Equal height on desktop; the outcomes come first on mobile. |
-| 4 | **Needs beside the investment card** | LEFT: `jumpstart.needs[]` — exactly three short asks, under `sectionLabels.jumpstartNeeds`. RIGHT: the **investment card** — `price` and `duration` set large, `includes[]` beneath, and `footnote` as the single footnote line inside the same block as the figures. Where **neither** figure is published, the card prints `sectionLabels.jumpstartScoped` as one line instead, and no footnote: two tiles both reading the same placeholder are an unfilled template, and a footnote qualifying figures that are not there qualifies nothing. |
-| 5 | **After the Jumpstart** | `jumpstart.next[]` — exactly two compact cards, `Integration` then `Scale`, one line each plus `duration` / `price` where they exist. Heading from `sectionLabels.jumpstartNext`. This replaced the three-tier ladder. |
-| 6 | **One CTA**, then the standing blocks | `jumpstart.cta` → that product's contacts tab, then `shared.credibilityBlock` and `shared.engageLink`. |
+- **Columns:** the area names (22 %), then the three tiers (26 % each), **Jumpstart proof of value · Integration · Scaling**, each head its name in Replica 20 px with its size tag (**S**, **M**, **L**, a 1.5 px outlined box) and its scope line under it. The heads step up in blue as the scope grows, as the one-pager's do: `#e3f0f9`, `#c1dff4`, then Lviv blue with white type.
+- **Rows:** first **Duration**, marked with an asterisk, the standing *4–8 weeks · 3–5 months · 3–12 months* at 18 px, closed by a 1 px ink rule; then one row per capability area, the area in Replica Bold, each cell **a mark and a phrase** (15 px body). The marks are drawn, the one-pager's four: ◐ partial (a half-filled ring), ● included, ●● advanced, — not included, in Lviv blue with the dash in muted grey. Hairlines between rows, none around the table.
+- **Under it:** the legend at the left, only the marks the table uses, with the product's own words for ●● (`delivery.advanced`); the footnote at the right, *\* Durations are approximate and confirmed at scoping.*
+- **Below 900 px** four columns do not fit: one block per tier, its head in the tier's fill with a cut, its duration, then each area with its mark and phrase. Both forms are rendered and CSS shows one; print takes the table.
+- **No price.** The one-pager's two price rows are not drawn, and the checker fails a price in the data.
 
-**One footnote, not a stack.** The price card carries exactly one line. The packaging-internal disclaimers ("Framed scope, flexible add-ons", "…set by specific constraints", "…beyond the frame") are removed site-wide and banned by `check-grammar.js`: they describe how a quote is built, not what a customer gets, and four of them under one small table read as a hedge.
-
-**No product-specific extra sections.** `facts`, `deliverables`, `pricing`, `disclaimers[]`, `ladder`, `capabilityMatrix`, `statNotes`, `howItRuns` and `prerequisites` are all gone from the product data — the facts they held live in `promise`, `pillars`, `outcomes`, `timeline`, `needs`, `investment` and `next`, or (for the per-capability detail) in `technology.capabilities`. A seller flipping between two product tabs gets the same page shape every time.
+Retired with round 22: the promise line, the three pillars (whose `.pillar` classes the home page's Why rows still use), *What you get*, *How it runs*, *What we need from you*, the investment card with the proof-of-value price and its footnote, *After the Jumpstart*, the CTA and the engage link.
 
 ---
 
@@ -622,7 +599,7 @@ Every product object must satisfy all of the following. `tools/check-grammar.js`
 | `overview.featuresDetail`, `overview.featuresNote`, `overview.moreDetail` | **absent** — the More detail block was removed in round 20; the checker fails each if it returns |
 | `overview.industries` | **absent** — superseded by `industryCases` |
 | `overview.industriesNote` | non-empty string |
-| `overview.scope.in` / `.out` | ≥ 4 items each; kept in the data, not rendered since round 20 (it moves to the Jumpstart tab) |
+| `overview.scope.in` / `.out` | ≥ 4 items each; kept in the data, not rendered since round 20 |
 | `overview.caseStudy` | present — `null`, or `{ descriptor, area, industry, status, metrics ×1–2, scope ×3, story, ndaLine, downloadLabel }` with a caveat clause inside `story`; no `customer`, no `logo`, no `image`, and **no `metricsEyebrow`** — retired in §18.9, the status word is the chip's alone, and the key is a build failure if it returns |
 | `products[].statusNote` | present only on `case-evidence-collection` and `plan-vs-actual-investigation`, one sentence; no product carries `availability`, `availabilityChip`, `availabilityTooltip`, or an availability string in `tags` |
 | `technology.narrative` | ≤ 3 sentences |
@@ -684,7 +661,7 @@ The tab formerly labelled **Request a demo** is now **Contacts**, at `#/products
 
 **The band is the page's last grey** (round 20). The footer opens on a 152 px `#edf0f2` spacer, and a grey band directly above it would merge with it into one grey mass. So the section that hosts the band gives up its paddings — on a product tab the band meets the tab bar, and on the home page the band is the whole screen, with no hairline above it — the band runs straight into the black footer, and **the footer's spacer is not drawn after a page that ends on the band** (`#app:has(> :last-child .contact-band) + .site-footer::before { display: none }`). The band's own 48 px is the breathing room the spacer gave. It holds on a product's Contacts tab and on the home page, and the checker fails the rule's absence.
 
-**The *Bring to the call* list is retired** (round 10) from the data, the renderer and the CSS, on all three surfaces that render the card. It said the same thing three times over — the form's own message placeholder and the Jumpstart tab's *What we need from you* already ask for the workflow, the systems and the timeline. The card is a person, an address and one line, and `blurb` carries the ask.
+**The *Bring to the call* list is retired** (round 10) from the data, the renderer and the CSS, on all three surfaces that render the card. It said the same thing three times over — the form's own message placeholder and the Jumpstart tab's *What we need from you* (retired with that tab in round 22) already asked for the workflow, the systems and the timeline. The card is a person, an address and one line, and `blurb` carries the ask.
 
 **The left column is the card, and nothing else.** `forms.engagementSteps` — the three-step "what happens next" block this file used to place under the panel — is **gone from `content.js` and read by no renderer**; the copy that answered *"what happens if I write?"* now lives in `forms.demo.sub` beside the form.
 
