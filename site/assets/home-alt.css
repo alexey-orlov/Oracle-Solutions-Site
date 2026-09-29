@@ -91,21 +91,26 @@
 
 .ahero-inner { position: relative; z-index: 1; width: 100%; }
 
+/* The copy takes a share of the page's column: 58 % beside the oval, more
+   where the oval moves to the edge (768 px and under), all of it on a
+   phone. --ahero-fit is the H1 size at which its longest sentence, "ROI
+   proven in weeks." at 9.8 em, fills that share with 3 % to spare. */
 .ahero-copy {
+  --ahero-share: .58;
+  --ahero-fit: calc(min(100vw - 2 * var(--gutter), var(--container-max)) * var(--ahero-share) / 10.1);
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  width: 58%;
+  width: calc(var(--ahero-share) * 100%);
   padding-block: 28px 40px;
 }
 
-/* Four lines: the first sentence breaks after "agents" (the em cap), the
-   other two stand on their own lines. Sized as a block, not as large as the
-   photograph allows: about half its height, 65 px at 1440 x 900, 76 at most,
-   so the oval and the spark keep their room. */
+/* Three sentences, one line each, at every width (Alex, 2026-09-29). Sized
+   as a block, not as large as the photograph allows: 65 px at 1440 x 900,
+   76 at most, so the oval and the spark keep their room; and never larger
+   than the fit, so no sentence ever breaks. */
 .ahero-title {
   max-width: 11em;
-  font-size: clamp(38px, min(4.5vw, 7.4vh), 76px);
+  font-size: min(clamp(38px, min(4.5vw, 7.4vh), 76px), var(--ahero-fit));
   line-height: 1.02;
   letter-spacing: .01em;
   color: #ffffff;
@@ -113,7 +118,19 @@
 
 .ahero-sentence { display: block; text-wrap: balance; }
 
-.ahero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; }
+/* The promise, between the claim and the ask: body copy, not a second
+   headline, two even lines on a laptop or a desktop screen. */
+.ahero-lead {
+  max-width: 35em;
+  margin-top: clamp(16px, 2.4vh, 24px);
+  font-weight: 300;
+  font-size: clamp(17px, 1.35vw, 20px);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, .85);
+  text-wrap: balance;
+}
+
+.ahero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: clamp(24px, 3.6vh, 36px); }
 
 /* The brand's ask on a dark ground: white fill, ink label. */
 .ahero .btn--dark:hover { --fill: #edf0f2; }
@@ -127,11 +144,12 @@
 /* On load the words rise and the spark lands; motion is never needed to
    read the hero. */
 @media (prefers-reduced-motion: no-preference) {
-  .ahero-sentence, .ahero-actions, .ahero-band-inner { animation: ahero-rise .7s var(--ease-out) both; }
+  .ahero-sentence, .ahero-lead, .ahero-actions, .ahero-band-inner { animation: ahero-rise .7s var(--ease-out) both; }
   .ahero-sentence:nth-child(2) { animation-delay: .1s; }
   .ahero-sentence:nth-child(3) { animation-delay: .2s; }
-  .ahero-actions { animation-delay: .35s; }
-  .ahero-band-inner { animation-delay: .5s; }
+  .ahero-lead { animation-delay: .3s; }
+  .ahero-actions { animation-delay: .4s; }
+  .ahero-band-inner { animation-delay: .55s; }
   .ahero-line { animation: ahero-fade 1s var(--ease) .4s both; }
   .ahero-spark { animation: ahero-fade .8s var(--ease-out) .8s both; }
 }
@@ -139,39 +157,16 @@
 @keyframes ahero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes ahero-fade { from { opacity: 0; } to { opacity: 1; } }
 
-/* ——— S1: the promise and the proof, on the solid ground ————————————— */
+/* ——— S1: the proof, on the solid ground ————————————————————————————— */
 
-/* The band continues the hero's ground: the promise on the left, the three
-   figures on the right, in white. */
-.ahero-band-inner {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 20px 24px;
-  align-items: start;
-  padding-block: 8px clamp(36px, 5vh, 52px);
-}
+/* The band continues the hero's ground and holds the three figures alone,
+   in white, the first on the H1's left edge. */
+.ahero-band-inner { padding-block: 8px clamp(36px, 5vh, 52px); }
 
-/* Five columns for the promise, seven for the proof, and a margin on the
-   promise's right so the two groups never butt against each other. */
-.ahero-promise { grid-column: 1 / 6; min-width: 0; padding-right: clamp(16px, 2vw, 32px); }
-
-.ahero-dash { display: block; width: 62px; height: 2px; margin-bottom: 12px; background: rgba(255, 255, 255, .85); }
-
-/* The promise reads as body copy under the claim, not a second headline. */
-.ahero-lead {
-  max-width: 30rem;
-  font-weight: 300;
-  font-size: clamp(17px, 1.3vw, 19px);
-  line-height: 1.45;
-  color: rgba(255, 255, 255, .8);
-  text-wrap: pretty;
-}
-
-/* Three equal columns and a wide gap. A figure is sized with room to spare
-   in its column, never fitted to fill it, so no two figures ever run
-   together (~50 px apart at the narrowest two-column width, 1181 px). */
+/* Three equal columns across the page and a wide gap. A figure is sized
+   with room to spare in its column, never fitted to fill it, so no two
+   figures ever run together. */
 .ahero-stats {
-  grid-column: 6 / 13;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: clamp(28px, 3vw, 48px);
@@ -201,12 +196,15 @@
   color: rgba(255, 255, 255, .72);
 }
 
+/* Two even lines under each figure, whatever the column's width. */
 .ahero-stat-label {
+  max-width: 17em;
   margin-top: 8px;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.4;
   color: rgba(255, 255, 255, .64);
+  text-wrap: balance;
 }
 
 /* ——— S2: the two ways in, as dark tiles ————————————————————————————— */
@@ -245,8 +243,8 @@
   aspect-ratio: 2 / 1;
   margin: 0;
   transition: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000000 0%, #000000 55%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to bottom, #000000 0%, #000000 55%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000000 0%, #000000 65%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, #000000 0%, #000000 65%, rgba(0, 0, 0, 0) 100%);
 }
 
 .aoffer .way-scrim,

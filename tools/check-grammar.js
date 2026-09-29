@@ -1074,7 +1074,12 @@ if (!arr(C.products) || C.products.length !== 9) {
    it starts, what it costs, how to use the page. Like the home hero's, this
    lead is the promise, what the reader's business gets. The hosting, the
    stages and the price are each product's Jumpstart tab, and the rail and the
-   search box name themselves. PROVENANCE §52. */
+   search box name themselves. PROVENANCE §52.
+   The same day Alex set the lead himself, his Products panel body on the
+   home page. It sells the head start (a working product, not a blank page),
+   not a metric, so §52's guard that asked for an hours, cost or revenue word
+   went: that was the session's reading, not his rule. His line, 38 words,
+   is the cap. PROVENANCE §54. */
 (function () {
   var intro = (C.productsPage || {}).intro;
   if (!str(intro)) { fail("productsPage.intro", "missing"); return; }
@@ -1086,11 +1091,63 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (how) {
     fail("productsPage.intro", 'says "' + how[0] + '" — the rail and the search box name themselves; the lead says what the reader gets');
   }
-  if (!/\b(hours?|costs?|revenue|margins?|risks?)\b/i.test(intro)) {
-    fail("productsPage.intro", "names no business value (hours, cost, revenue, risk) — the lead says what the reader's business gets");
-  }
-  if (words(intro) > 35) fail("productsPage.intro", "is " + words(intro) + " words (max 35)");
+  if (words(intro) > 38) fail("productsPage.intro", "is " + words(intro) + " words (max 38, Alex's own line)");
   if (sentences(intro) > 2) fail("productsPage.intro", "is " + sentences(intro) + " sentences (max 2)");
+})();
+
+/* ---- the catalog's head is softserveinc.com's About Us hero (2026-09-29) ----
+   Alex: style the catalog's head "as https://www.softserveinc.com/en-us/about-us
+   hero screen", with the "Full About us crossing", on a photograph of
+   "sufficient resolution and brightness". The page's name and the lead in
+   white on a photograph, and the brand's crossing over it: four lines into
+   the spark's four tips. Nothing else: no eyebrow, and the search box sits
+   over the results it filters. The crossing is drawn from a one-line H1, so
+   the title is one word. PROVENANCE §54. */
+(function () {
+  var pp = C.productsPage || {};
+  if (str(pp.title) && /\s/.test(pp.title.trim())) {
+    fail("productsPage.title", "is more than one word — the hero's crossing is placed from a one-line H1");
+  }
+  function jpegWidth(file) {
+    var b = fs.readFileSync(file), i = 2;
+    while (i + 8 < b.length && b[i] === 0xFF) {
+      var m = b[i + 1];
+      if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) return b.readUInt16BE(i + 7);
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+    return 0;
+  }
+  var im = pp.image;
+  if (!im || !str(im.file) || !str(im.alt) || !str(im.focal)) {
+    fail("productsPage.image", "needs { file, alt, focal } — the hero's photograph");
+  } else {
+    var file = path.join(root, "site", im.file);
+    if (!fs.existsSync(file)) fail("productsPage.image.file", '"' + im.file + '" is not on disk');
+    else if (/\.jpe?g$/i.test(file) && jpegWidth(file) < 2400) {
+      fail("productsPage.image.file", "is " + jpegWidth(file) + " px wide — a full-bleed hero needs 2400 or more (Alex: \"sufficient resolution\")");
+    }
+  }
+  var src = fs.readFileSync(path.join(root, "site/pages/products.js"), "utf8");
+  var heroFn = (src.match(/function hero\(C\) \{[\s\S]*?\n  \}\n/) || [""])[0];
+  if (!heroFn) {
+    fail("site/pages/products.js", "renders no hero() — the catalog's head is a photographic hero (§54)");
+  } else {
+    ["catalog-hero-img", "catalog-hero-scrim", "catalog-hero-spark", "catalog-hero-line--left", "catalog-hero-line--right",
+      "catalog-hero-line--up", "catalog-hero-line--down"].forEach(function (cls) {
+      if (heroFn.indexOf(cls) === -1) {
+        fail("site/pages/products.js hero()", 'renders no "' + cls + '" — the About Us crossing is four lines into the spark\'s four tips, on a photograph under a scrim');
+      }
+    });
+    if (/eyebrow|tagline/.test(heroFn)) fail("site/pages/products.js hero()", "renders an eyebrow — the hero carries the page's name and the lead, nothing else");
+    if (/product-search|search-field/.test(heroFn)) fail("site/pages/products.js hero()", "renders the search box — it sits over the results it filters");
+  }
+  if (!/results-bar[\s\S]{0,300}id="product-search"/.test(src)) {
+    fail("site/pages/products.js", "the search box must open the results bar, over the grid it filters");
+  }
+  var css = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
+  if (!/\.catalog-hero-line--up,\s*\.catalog-hero-line--down\s*\{[^}]*rotate\(25deg\)/.test(css)) {
+    fail("site/assets/site.css", "the crossing's axis line runs at 25deg, the spark's own long axis");
+  }
 })();
 
 /* ---- T1 · the three tag families ---- */
@@ -1688,9 +1745,12 @@ if (!arr(C.products) || C.products.length !== 9) {
   }
 
   /* --- the shell: the name, the three-item bar and the three CTAs --- */
-  ["name", "title", "tagline", "metaDescription"].forEach(function (k) {
+  ["name", "title", "metaDescription"].forEach(function (k) {
     if (!str(s[k])) fail("site", k + " missing");
   });
+  /* The catalog's eyebrow was the tagline's one reader, and it left with the
+     About Us hero (§54): Alex's lead now says what it said. */
+  if (s.tagline !== undefined) fail("site.tagline", "retired in §54 — no surface renders it");
   /* Two items and no "Overview": the logo is the home link. Case studies left
      the header on 2026-09-17 (Alex) — the home page still carries its
      case-study screen. For sellers took the slot in round 8 and left it the
