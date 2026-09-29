@@ -429,10 +429,13 @@ window.SITE_CONTENT = {
       link: { label: "softserveinc.com", url: "https://www.softserveinc.com/en-us/about-us" }
     },
 
+    /* Round 18: the head over the contact switch, the product Contacts tab's
+       own component. No sub: the Talk pane opens with its own (forms.demo.sub),
+       and "talk" is already the switch's segment and the submit. */
     contact: {
       anchor: "request-a-demo",
-      heading: "Talk to our team",
-      sub: "One scoping conversation starts it. We come back with what a proof of value would cover, what it would cost, and what it would measure."
+      eyebrow: "Contact",
+      heading: "Start with one conversation."
     }
   },
 
