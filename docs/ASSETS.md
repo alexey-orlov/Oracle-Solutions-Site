@@ -524,8 +524,9 @@ were derived, not drawn.
 | `header-divider-ink.svg` | the white divider's path with the stroke set to the brand separator `#BDCBD7` |
 | `favicon.svg` | **softserveinc.com's own site icon** since round 18 (Alex: *"same site icon as softserveinc.com"*): its `favicon-web-32x32.svg` from `assets.softserveinc.com/favicon/`, the white SoftServe spark on a black square, read 2026-09-29 and stripped of a no-op clip path. Inlined as a data URI in `index.html`, and the checker holds the two equal. It replaced the white S on a Lviv-blue octagon |
 
-The Oracle and NVIDIA ink marks now appear only in the home hero's stack and on the
-product pages' Technology tab. The `#about` band carried them until round 18 (Alex
+The Oracle and NVIDIA ink marks now appear only in the home hero's stack. The
+product pages' Technology tab carried them on its stack rows until round 22 (the
+strip names the systems in words), the `#about` band until round 18 (Alex
 removed them), and the footer carries none since round 14; its Oracle row, since
 round 18, is text links.
 
