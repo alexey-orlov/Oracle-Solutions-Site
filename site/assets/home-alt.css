@@ -522,7 +522,7 @@
   .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "packaged" "products" "bespoke"; }
   .amap-block--products .amap-pic,
   .amap-block--bespoke .amap-pic { margin-top: 14px; padding-top: 0; }
-  .amap-pods { grid-template-columns: repeat(6, minmax(0, 40px)); gap: 6px; }
+  .amap-pods { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
