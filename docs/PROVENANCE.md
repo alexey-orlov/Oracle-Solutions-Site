@@ -8063,3 +8063,31 @@ Oracle product names follow the plugin's catalog, `Oracle-Packaging-Skills/share
 - **The packaging plugin** (Oracle-Packaging-Skills, `oracle-packs-web:listing`) still writes `technology.narrative`, `stack`, `capabilities` and `jumpstart`, all build failures now: it has to learn `technology.line`, `oracle`, `diagram` and `delivery` before its next listing. Its `diagram_to_site.py` should emit the strip (the one-pager's `_flow_from_architecture` is the model) instead of a `diagrams.js` entry.
 - **The archive theme** (`index-legacy.html`) shares the renderers but not the new CSS, so its Technology and Delivery tabs render unstyled locally. It is frozen and never published.
 - **Round numbering:** §55 bumped `contract.round` to 22 without naming a docs round; round 22 here covers both.
+
+## 59. The alternative home page as the home page, a white Contacts band, white tags on the product hero, governance over five pods, 2026-09-29
+
+_A session opened in AO-Personal-OS, on Opus alone with no Fable pass and no subagents: the four asks were specific, and the account's weekly usage stood at 92 % against Alex's 95 % cap. Touched: `site/assets/site.css` (the product hero block, Round 20 · Contacts), `site/assets/home-alt.css` (the Bespoke picture), `site/pages/overview-alt.js`, `site/pages/overview.js` (one line), `site/assets/app.js` (the home route, the `/alt` redirect), `site/data/content.js` (`overviewAlt.diagram.team`, the diagram's `ariaLabel`), `site/alt/index.html`, `tools/check-grammar.js`, `site.manifest.json` (contract round 23)._
+
+- **The asks (Alex, 2026-09-29):**
+  1. *"contacts appear on grey background, while other tabs are white - all should be white, fix."*
+  2. *"background image now blue; make sure layout is good - grey elements, tags as they are now etc. don't really look good."* Read as the product hero, whose photograph became §55's blue gradient: its platform pill (neutral 400), its outlined group chip and its grey second button sat on the blue.
+  3. *"Bespoke services: too many pods shown (looks like a swarm 🙂); keep 5 of them with 6th be the "+" option to add more; make the pods be of 3 kinds (3 kinds of human icons - aka AI pod, enablement pod, data pod) + add governance block above (see my sketch)."* His sketch: *Governance* across the top, then *Pod 1–3* and *Pod 4, Pod 5, +* in two rows, three rows of one height.
+  4. *"We are ready to move "alt" page and set it as main, do so!"*
+- **Decisions:**
+  - **Contacts:** the band loses its grey ground on both surfaces of `UI.contactSwitch` (a product's Contacts tab and the home contact), and the white plate stands on white as the numbers widget does, on the panel hairline drawn as a ring on its 12 px cut. The footer's spacer is drawn after it again, as after every other tab. The checker fails a ground on `.contact-band`, requires the ring, and fails the old spacer rule.
+  - **The product hero:** no grey on the blue. The group chip and the platform pill are white plates with ink words (their glyphs tell them apart), the badge stays white, and the second button (*Interactive demo*) is the brand's white button beside the one blue ask. The lead keeps softserveinc.com's measured neutral-700 (§55). The checker holds the three white fills.
+  - **The pods:** the Bespoke block's picture is Alex's sketch: a *Governance* block (the shield glyph and the word) across the top, then five pods three by two, AI · data · enablement · AI · data, and the dashed open one. Each kind is one person with its sign at the shoulder: the spark, a database, a mortarboard (`GLYPHS` in `overview-alt.js`). The three rows share the column's height, so at 1440 a pod is 51 × 82 px; each chip's outline is redrawn at its own size (`fitNodes()`, on mount and on resize), so the 4 px cuts stay 4 px on any proportion. On a phone the team keeps three across, 56 px rows. The kinds are drawn, not named in the picture; the diagram's one sentence for screen readers names them.
+  - **The home page:** `#/` renders `PAGES.home`, which `overview-alt.js` sets on the site and `overview.js` keeps in the archive, which does not load it. `#/alt` and every `#/alt#<screen>` land on the same screen of `#/` (`followMoved`), the plain `/alt` path lands on `#/`, and the click re-router that kept a reader on `#/alt` is gone. The light promotion, not the fold that §47 planned (hero() and diagram() into `overview.js`, `home-alt.css` into `site.css`): the fold changes no pixel and was left for a session with budget; START-HERE §9.
+- **Before → after:**
+
+| | Before | After |
+|---|---|---|
+| `#/` | round 18's page: the three-layer stack hero, photographic S2 panels, the Why list alone | the page built as `#/alt` (§47, version 5): the photographic hero, the proof strip on white, S2's dark tiles, the Why diagram |
+| `#/alt` | the alternative, beside the live page | lands on `#/`, anchor kept |
+| Contacts band (product tab, home) | full-bleed `#edf0f2`, the footer's spacer hidden after it | white; the plate on the panel hairline; the footer as on every tab |
+| Product hero tags, second button | neutral-400 pill, black-ring outline chip, `#d1dae2` button | white plates, ink words |
+| Bespoke picture | eleven pods of one kind and an open one, 3 × 4 | *Governance*, five pods of three kinds, an open one, three rows |
+
+- **Checks:** `node --check` on the five changed scripts; `check-grammar` OK with the one known warning (`overview.about.title`); the deny-list sweep empty; the console clean on `#/`, a product page and the catalog; `#/alt#why-softserve` lands on `#/#why-softserve`. In the browser pane at 1440: the Why screen, the product hero and the Contacts tab; at 375: the diagram, no horizontal overflow. Not re-checked at 1280, 1024 and 768 (the usage cap).
+- **Published** as version 26 (claude.ai), after diffing the live `site.css`, `app.js`, `overview.js` and `content.js` against the tree: only this section's hunks, §47's unpublished `#/alt` versions (now the home page, meant to ship) and one blank line. `overview-alt.js` and `home-alt.css` replaced their live first drafts whole. The images the page uses were already on the artifact, byte for byte.
+- **Open for Alex:** START-HERE §9, under §59.
