@@ -2073,7 +2073,7 @@ if (!arr(C.products) || C.products.length !== 9) {
     ["wide", "tall", "alt"].forEach(function (k) { if (!str(bim[k])) fail("overview.bespoke.image", k + " missing"); });
     ["wide", "tall"].forEach(function (k) {
       if (!str(bim[k])) return;
-      if (!/^assets\/img\/bands\/[a-z0-9-]+\.(jpg|jpeg|webp)$/.test(bim[k])) fail("overview.bespoke.image." + k, '"' + bim[k] + '" must be a photograph under assets/img/bands/');
+      if (!/^assets\/img\/bands\/[a-z0-9-]+\.(jpg|jpeg|webp)$/.test(bim[k])) fail("overview.bespoke.image." + k, '"' + bim[k] + '" must be a picture under assets/img/bands/');
       else checkAsset("overview.bespoke.image." + k, "band photograph", bim[k]);
     });
     if (bs.cta !== undefined) reqCta("overview.bespoke.cta", bs.cta);
@@ -2202,6 +2202,22 @@ if (!arr(C.products) || C.products.length !== 9) {
   }
   if (str(((o.bespoke || {}).cta || {}).label) && o.bespoke.cta.label !== (C.site.primaryCta || {}).label) {
     fail("overview.bespoke.cta.label", "must read site.primaryCta.label — one contact ask site-wide (round 10)");
+  }
+  /* 2026-09-29 (Alex, on the band: "content should be centered on the right
+     to balance the page"; "placing CTA button above 4 bullets — is it a good
+     practice?"; then, of a build that set the copy on the new picture, "very
+     poor visibility of text and button placement"): the band reads claim,
+     reasons, ask, so the button follows the four parts, and no word sits on
+     the picture, so the band draws no scrim. The column's side and the
+     picture's box are held in the stylesheet checks below. */
+  var bespokeHtml = bespokeSrc.slice(bespokeSrc.lastIndexOf("return '<section"));
+  var bespokePtsAt = bespokeHtml.indexOf("bespoke-points");
+  var bespokeCtaAt = bespokeHtml.search(/\bcta \+/);
+  if (str(((o.bespoke || {}).cta || {}).label) && (bespokePtsAt === -1 || bespokeCtaAt === -1 || bespokeCtaAt < bespokePtsAt)) {
+    fail("site/pages/overview.js bespoke()", "the band's ask must follow its four parts — claim, reasons, then Talk to us (Alex, 2026-09-29)");
+  }
+  if (/bespoke-scrim/.test(bespokeSrc)) {
+    fail("site/pages/overview.js bespoke()", "draws a scrim — no word sits on the band's picture, so it needs none (Alex, 2026-09-29: \"very poor visibility of text\")");
   }
   /* PROVENANCE §45 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
      S3 renders each name on two lines, broken before its last word, never the
@@ -3289,6 +3305,17 @@ if (/assets\/img\/logos\//.test(raw)) {
   }
   if (!whyIcon || !/width:\s*4rem/.test(whyIcon) || !/stroke-width:\s*1\.125/.test(whyIcon)) {
     fail(V2_CSS, "the Why SoftServe icons are 4rem at stroke-width 1.125 (3 px) — the brand's feature-icon size and weight");
+  }
+  /* The Bespoke band (Alex, 2026-09-29): its copy is one column on the right
+     half, and its picture is a box on the band's left half that fades out
+     before that column — never a cover under the copy, which read as "very
+     poor visibility of text" the moment the picture changed. */
+  if (!/grid-column:\s*2/.test(cssRule(".bespoke-copy, .bespoke-body"))) {
+    fail(V2_CSS, "the Bespoke band's copy and parts sit in the grid's second column — the copy stands on the right (Alex, 2026-09-29)");
+  }
+  var bespokeMedia = cssRule(".bespoke-media");
+  if (!bespokeMedia || /inset:\s*0/.test(bespokeMedia) || !/width:\s*50%/.test(bespokeMedia) || !/mask-image/.test(bespokeMedia)) {
+    fail(V2_CSS, "the Bespoke band's picture is a left-half box that fades out before the copy (width: 50% and a mask), never a cover under the copy (Alex, 2026-09-29)");
   }
 
   /* Shape is the corner cut; the pill and the old radii are retired. */
