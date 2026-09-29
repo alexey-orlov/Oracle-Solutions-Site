@@ -374,7 +374,7 @@ in `heroes.json` keeps its own.
 | Panel | File | Focal on the panel | Focal in `heroes.json` |
 |---|---|---|---|
 | Products | `heroes/overview.jpg` — the home hero's photograph until round 5, unreferenced from then until this round | **`35% 45%`** — keeps the bright oval at the panel's right edge, out from under the body copy at every two-column width (lowest body contrast 4.88:1) | `50% 45%` |
-| Practice | `heroes/services.jpg` — the Services hero, still in use there | `50% 50%` | `50% 50%` |
+| Practice | `heroes/services.jpg` — the Services hero until that page left the site in round 18; this panel is its one use now | `50% 50%` | `50% 50%` |
 
 Both render decoratively (`alt=""`); `image.alt` carries the `heroes.json` wording
 for the record.
@@ -433,6 +433,36 @@ change a drawing: edit its composition there and run `node tools/draw-groups.js`
 rewrites all six (`--sheet` also writes the 3 × 2 grid on the real fills at 400, 343 and
 300 px to `.work/group-sheets/`, square, for `qlmanage -t -s <side>`). Hand-editing one
 SVG drifts it from the family. Each was checked on its fill at those three widths.
+
+**A seventh drawing, `ask.svg` (round 18), is not a group's.** It sits in the band of
+the catalog's last tile, *Looking for another solution?* (`productsPage.askTile.image`),
+where a product tile carries its photograph, on the same Lviv blue 75 as the first group
+tile. It was added after Alex found the tile's first cut, a title and two lines on a flat
+fill, *"too empty"* beside a product tile. Three lanes, the products, run in from the edge
+and stop short; a fourth line, the reader's own workflow, runs under them, rises past
+their ends on its own route and sparks. The same program draws it (`D["ask"]`), the
+checker holds it to the family's rules, and since the tile shows the box cropped to a
+product band's 16:7, everything sits above y 170.
+
+## 2c. The Bespoke band's photographs — `assets/img/bands/` (round 18)
+
+Two crops of one photograph for the home page's *Bespoke services* band
+(`overview.bespoke.image`): three people in silhouette around a laptop by tall
+windows, dark on its left half, where the copy sits. **They are softserveinc.com's own
+*Confidence earned* banner**, the block Alex named as the reference, downloaded on
+2026-09-29 from SoftServe's CDN and recompressed for this site with `sips` (JPEG
+quality 72):
+
+| File | Source | Size |
+|---|---|---|
+| `bespoke-wide.jpg` | `assets.softserveinc.com/website/assets/banner-confidence-earned.jpg` (2880 × 932) | 2400 × 776, 137 KB — the band from 769 px up, `object-position: 72% 50%` |
+| `bespoke-tall.jpg` | the same banner's tablet crop (1536 × 1518) | 1100 × 1087, 99 KB — the phone layout, its own row between the copy and the points, `50% 100%` |
+
+SoftServe's photograph on a SoftServe property, like the fonts and the footer
+glyphs; it has not been through the heroes' grade. Swap both files together if Alex
+would rather the band not repeat the corporate site's image. The picture element
+switches them at 769 px, and the image guard drops either one to the band's black
+ground if it fails to load.
 
 ---
 
@@ -628,11 +658,12 @@ were derived, not drawn.
 | `oracle-wordmark-ink.svg` | `assets/img/oracle-wordmark-white.svg` with its single `#FFFFFF` fill (in the file's own `<style>` block) recoloured to `#1A1A1A` |
 | `nvidia-wordmark-ink.svg` | `assets/img/nvidia-wordmark.svg` with the `#D9D9D9` masked rect recoloured to `#1A1A1A`; the mark is a masked raster pattern, so only that one fill exists to change |
 | `header-divider-ink.svg` | the white divider's path with the stroke set to the brand separator `#BDCBD7` |
-| `favicon.svg` | the wordmark's first glyph (the S, path index 0) in white, centred on a Lviv-blue `#1485C4` octagon with 26-unit corner cuts. Inlined as a data URI in `index.html`. The old teal spark is retired with the teal |
+| `favicon.svg` | **softserveinc.com's own site icon** since round 18 (Alex: *"same site icon as softserveinc.com"*): its `favicon-web-32x32.svg` from `assets.softserveinc.com/favicon/`, the white SoftServe spark on a black square, read 2026-09-29 and stripped of a no-op clip path. Inlined as a data URI in `index.html`, and the checker holds the two equal. It replaced the white S on a Lviv-blue octagon |
 
-On the `#about` band, the one black ground that shows them, the Oracle and NVIDIA
-ink marks invert back with `filter: invert(1)` rather than carrying a second file
-(`.about-partner-mark`). The footer carries no partner marks since round 14.
+The Oracle and NVIDIA ink marks now appear only in the home hero's stack and on the
+product pages' Technology tab. The `#about` band carried them until round 18 (Alex
+removed them), and the footer carries none since round 14; its Oracle row, since
+round 18, is text links.
 
 **The footer's spark (round 14).** `assets/img/softserve-star-white.svg` (135×154,
 from SoftServe's brand kit, `BRAND/logos/`, PROVENANCE §5) is drawn 24 px wide at

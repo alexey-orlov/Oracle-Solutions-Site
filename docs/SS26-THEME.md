@@ -81,7 +81,7 @@ because the real faces render:
 
 | Role | Desktop | Mobile 375 | Face / weight / leading / tracking |
 |---|---|---|---|
-| H1 (`.products-head .h1`, `.services-title`) | 96 px | 48 px | Azurio 400 / 1.1 / 0 |
+| H1 (`.products-head .h1`) | 96 px | 48 px | Azurio 400 / 1.1 / 0 |
 | Product name (`.product-title`) | 64 px | 32 px | Azurio 400 / 1.05 / 0 |
 | Home H1 (`.home-title`) | **64 px** | 32 px | Azurio 400 — held at the 64 px step, see §7 |
 | H2 | 48 px | 32 px | Replica 400 / 1.2 / 0 |
@@ -173,15 +173,21 @@ Every pill is gone: buttons and chips are cut rectangles, the icon circle is a
 bare 50 × 50 button. The social glyphs are SoftServe's own filled marks, copied
 from its footer, not the 1.5 px line set (round 14).
 
-## 5. Ground plan — one dark band per page
+## 5. Ground plan — dark screens are rare and never adjacent
 
-The old rule was *at most one light band per page*. It inverts: **at most one
-dark band**, and the footer's black block does not count.
+The old rule was *at most one light band per page*. It inverted to **at most one
+dark band**, and the footer's black block does not count. **Round 18 lets the home
+page carry two**, on Alex's instruction: he asked for the new *Bespoke services*
+screen *"on the image dark background to make page not so monotonous"*, after
+softserveinc.com's *Confidence earned* banner, which runs full-bleed. The two are
+never adjacent: the case studies, a white screen, stand between them. Lightening
+About instead to keep one band (the copy pass's recommendation) was declined: it
+changes a block Alex had asked only to strip of its logos, and it leaves the last
+three screens white, the monotony he asked to break.
 
-| Page | The dark band |
+| Page | The dark screens |
 |---|---|
-| `#/` | **`#about`** (S6, "who builds it") — the screen that used to be the one light band |
-| `#/services` | **`.services-page-proof`** (the proof-of-value screen) |
+| `#/` | **`#bespoke-services`** (S4b, the AI factory, a full-bleed photograph under a scrim, round 18) and **`#about`** (S6, "who builds it") |
 | `#/products`, product pages, `#/sellers` | none — the photo heroes carry the weight |
 
 Everything else is `#ffffff`, with `#edf0f2` for cards and the pre-footer band.
@@ -199,7 +205,7 @@ the two themes, with a comment on the rule.
 **Heroes.** The home hero carries no photograph and no glow: a cool wash from the
 brand's own gradient family (`radial-gradient(70% 90% at 88% 12%, #c1dff4 …)`
 over `#f5f7f9 → #ffffff`), with the built-on stack as its graphic. The product
-and services heroes keep their photograph and **invert the veil to white** from
+heroes keep their photograph and **invert the veil to white** from
 the copy side; type goes black. The teal radial third layer is deleted, not
 recoloured — this system has no glow.
 
