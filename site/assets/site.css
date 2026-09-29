@@ -2727,7 +2727,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   line-height: 1;
   letter-spacing: .06em;
 }
-.pk-scope { margin-top: .625rem; font-size: .9375rem; line-height: 1.45; color: inherit; text-wrap: pretty; }
+.pk-scope { margin-top: .625rem; font-weight: 300; font-size: .9375rem; line-height: 1.45; color: inherit; text-wrap: pretty; }
 
 .pk-row th, .pk-row td { padding: 1rem 1.25rem; vertical-align: top; border-top: 1px solid var(--border-hairline); }
 .pk-row th { padding-left: 0; text-align: left; font-weight: 700; font-size: 1rem; line-height: 1.35; color: var(--text); }
