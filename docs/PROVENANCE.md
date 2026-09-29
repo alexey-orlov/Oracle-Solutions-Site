@@ -6938,6 +6938,7 @@ Tiers as in R4: **T1** a regulator or government statistic, or peer-reviewed or 
 | Business metrics Q&A | Time to a group-wide figure | *from a week*, to minutes | Estimated | The same *three extracts and a week* [site] | No public benchmark exists (R4 §7). *Minutes* was chosen over the retired tile's untraced *seconds* |
 | Repair-or-replace | Needless replacements | *3.0 → 2.4%* | Estimated | The pack spec's modeled rate on industry assumptions, a 20% relative cut [pub, modeled]; Alex, 2026-09-22: carry the modeled case, labeled as modeled | The pack spec. Its unit cost (about £50) is not printed: a currency beside glazing narrows the label (R2) |
 | Repair-or-replace | Repeat visits for the same damage | *1.5 → 1.2%* | Estimated | The pack spec's modeled failed-repair and repeat-visit rate [pub, modeled] | The pack spec. The first tile names the payer and the second the operator, the pack's dual-buyer rule |
+| Repair-or-replace | Saving per needless replacement avoided | *about $250* ($350 replacement against a $99 repair) | Estimated | US industry averages for vehicle glazing, the figure Alex chose on 2026-09-29 over the earlier UK one (§42) [pub] | The Repair-or-replace session's §42 record and the walkthrough's own value band; added at the merge (41.10) |
 
 **Two tiles are Proven, sixteen are Estimated, and none is Forecast.**
 
@@ -7001,7 +7002,7 @@ Two open items in START-HERE §9 closed with what they were about: round 10's cr
 |---|---|---|
 | Place | the rail's grey card, beside How it works | a full-bleed band between the plates and How it works |
 | Heading | *Metrics improved*, or *What the proof of value measures*, by data | *What changes in your numbers* |
-| Tiles | 1–4 grey tiles a product, 29 on eight products; 3 carried a value and none was an outcome (two were time to go live, one time to approve a plan) | 2 a product, 18 on nine, each a figure: 2 Proven, 16 Estimated |
+| Tiles | 1–4 grey tiles a product, 29 on eight products; 3 carried a value and none was an outcome (two were time to go live, one time to approve a plan) | 2 a product (3 on Repair-or-replace), 19 on nine, each a figure: 2 Proven, 17 Estimated |
 | Tile | an icon or a value, a label, a grey qualifier | the dash · the title and its kind chip · the figure · a 40 px chart · its labels · one line · the owner |
 | Around the tiles | an ROI paragraph (27–52 words) and a footnote (18–38 words; on Large docs a pointer to the Use cases tab) | nothing |
 | Height at 1440 | the rail card, 502–922 px | ≈ 480 px |
@@ -7098,13 +7099,14 @@ Q1 measured every product's Overview at 1440 and 1280, three products at 1024, 7
   - B2a–B2c: every frame and zoom read at display size; the anchor rule checked on a frame preview, so no inset covers its region; inset scales 0.92–0.96.
 - **Sources:** R5 re-read seven benchmark figures on their own pages (41.4).
 - **QA:** Q1's pass and the fixes it led to are 41.9.
-- **Not published.** The next publish carries `pages/product.js`, `assets/site.css`, `assets/app.js`, `data/content.js`, `data/content-case.js`, the 20 re-shot and 16 new step frames and the 36 zooms under `assets/img/steps/`, and maps the 16 deleted `assets/img/steps/*.svg` to `null`, because files left out of a publish are kept (`START-HERE.md` §6).
+- **The merge.** The branch took `main` three times (rounds 18–19 and §42–§48 from parallel sessions); the conflicts were the shared contact component's comment (`app.js`), its old CSS section (kept on the branch's side, with §48's `.contact-pane:first-child` rule carried into the Round 20 · Contacts block), one step image, and the three docs everyone writes. The last merge met Repair-or-replace's switch to US figures (§42, Alex, 2026-09-29: no UK or pound figure for this product), written into the retired `metricsNote`/`roi`/`moreDetail`; the new schema carries it as a third tile, *Saving per needless replacement avoided · about $250* (Estimated, drawn as a $350 replacement against a $99 repair, US industry averages), and the step-3 frame was re-shot from the updated walkthrough, which now prints *about $250 kept on each*. The checker printed **OK — 9 products** on the merged tree, and `main` fast-forwarded to it (`0125eb0`).
+- **Published** on 2026-09-29, 15:31, as version 1790684914-62f5, 96 map entries: `pages/product.js`, `assets/site.css`, `assets/app.js`, `data/content.js`, `data/content-case.js`, the two Repair-or-replace walkthrough files, a fresh `data/links.js`, the 36 frames and 36 zooms under `assets/img/steps/`, and the 16 retired `assets/img/steps/*.svg` mapped to `null`. Every live text file it replaced was first matched, by size and by hash where given, to `main` as it stood before the merge, so nothing live was lost. Left out: the `#/alt` home's `assets/home-alt.css`, `pages/overview-alt.js` and `alt/index.html` (§47's own, newer on `main` than live and not this round's to ship) and `demo/account-insights/` (being built, not named in `links.json`). `list_files` shows 171 files, no step SVG, nothing from the never-ship list; the name grep on `site/` was empty.
 - **Contract:** `site.manifest.json` is at round 20.
 
 ### 41.11 Open for Alex
 
 1. **The band before the screens.** The KPI band sits before How it works, value first; the reverse order is one line in `overviewTab()`.
-2. **Two tiles on every product.** The in-pack metrics with no defensible public number stay off the band rather than print without a figure: Fleet's visits per engineer and missed appointments (its Jumpstart tab names them) and Repair-or-replace's decision consistency across sites (printed nowhere).
+2. **Two tiles on eight products, three on Repair-or-replace** (its US saving per call joined at the merge, 41.10). The in-pack metrics with no defensible public number stay off the band rather than print without a figure: Fleet's visits per engineer and missed appointments (its Jumpstart tab names them) and Repair-or-replace's decision consistency across sites (printed nowhere).
 3. **Fleet's *−5 to −10%* on cost per visit** rests on the routing literature: Toth & Vigo's 5–20% of transport cost, read at second hand, and UPS ORION's miles, whose per-route figure was not found. R4 rates cost a proxy for distance.
 4. **Workforce's *Set the rules* is folded into step 1**, because its only frame shows the uncleared plan-v1 *+4.8%* behind the settings drawer.
 5. **The chips:** seven products print Estimated tiles only, and Large docs and Workforce carry one Proven tile each. No tile is Forecast: the review kept *Forecast* for figures modeled on a customer's own history, and the band holds none.
