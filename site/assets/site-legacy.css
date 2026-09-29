@@ -1259,13 +1259,19 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* ——— products marketplace ————————————————————————————— */
 
-.products-head { display: flex; flex-direction: column; gap: 1.25rem; padding-top: clamp(1.5rem, 3vw, 3rem); }
-.products-head .h1 { font-size: var(--fs-hero-sm); }
-.products-intro { max-width: 52rem; }
-.products-search { max-width: 32rem; margin-top: .75rem; }
+/* The live theme's catalog head is a photographic hero (§54). The archive
+   keeps its own head: the page's name and the lead, with no photograph and
+   no crossing. */
+.catalog-hero-media { display: none; }
+.catalog-hero-inner { display: flex; flex-direction: column; gap: 1.25rem; padding-top: clamp(4rem, 6vw, 6rem); }
+.catalog-hero-title { font-size: var(--fs-hero-sm); }
+.catalog-hero-lead { max-width: 52rem; }
+.catalog-body { padding-top: clamp(2.5rem, 4vw, 4rem); }
+.products-search { flex: 1 1 18rem; max-width: 32rem; }
 
 .results-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   padding-bottom: 1.25rem;
@@ -1273,7 +1279,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   border-bottom: 1px solid var(--border-subtle);
 }
 
-.results-count { font-size: var(--fs-sm); color: var(--text-dim); letter-spacing: .04em; text-transform: uppercase; }
+.results-count { margin-left: auto; font-size: var(--fs-sm); color: var(--text-dim); letter-spacing: .04em; text-transform: uppercase; }
 
 .rail-options { display: flex; flex-direction: column; gap: .25rem; }
 

@@ -477,9 +477,10 @@
   .ahero-spark { left: 80.56%; }
 }
 
-/* Under 641 px three columns no longer give "from 30 days" room to spare,
-   so each figure becomes a row, its label beside it. */
-@media (max-width: 640px) {
+/* Under 681 px three columns no longer give "from 30 days" room to spare
+   or a label its two lines, so each figure becomes a row, its label beside
+   it. */
+@media (max-width: 680px) {
   .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
   .ahero-stat-value { font-size: 34px; }

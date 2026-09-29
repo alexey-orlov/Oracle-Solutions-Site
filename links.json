@@ -4,7 +4,7 @@
     "Each product is keyed by its slug, the one id it has everywhere: its slug in site/data/content.js, the pack's slug: in Oracle-Packaging-Skills packs/<slug>/pack-spec.md, and its walkthrough's folder site/demo/<slug>/.",
     "onePager, salesDeck, featureList: the kit documents, emailed only, never shown on the site. Paste a link anyone at Oracle or SoftServe can open. The kit email reads this file from GitHub, so it picks a change up at once; nothing else to run.",
     "interactiveDemo, interactiveDemoArtifact, video: these also drive the site's buttons. The site reads them through tools/site_links.py: the local server (tools/serve.py) on every request, a publish once. After changing one, publish the site.",
-    "interactiveDemo is the walkthrough's path inside site/, demo/<slug>/index.html (or a full https:// URL), never a localhost or preview address: the local server, the published site and the email each resolve it against their own address. interactiveDemoArtifact is the same walkthrough published as its own claude.ai artifact, used while the site itself runs as one. video is the recorded demo: a YouTube, Vimeo, SharePoint or Stream link.",
+    "interactiveDemo is the walkthrough's path inside site/, demo/<slug>/index.html (or a full https:// URL), never a localhost or preview address: the local server, the published site and the email each resolve it against their own address. interactiveDemoArtifact is the same walkthrough published as its own claude.ai artifact, used while the site itself runs as one. video is the recorded demo: a YouTube, Vimeo, SharePoint or Stream link. The product hero's frame shows the video where one is set, else the walkthrough, else nothing; YouTube and Vimeo play in the page, and any other link opens in its own tab.",
     "Leave a value as \"\" while the artifact does not exist: the kit email leaves it out, and the practice's copy of the request names it as missing.",
     "siteUrl is the address the kit email links product pages to. This file is never published: it sits outside site/."
   ],
@@ -16,7 +16,7 @@
       "featureList": "",
       "interactiveDemo": "demo/large-document-extraction/index.html",
       "interactiveDemoArtifact": "https://claude.ai/artifact/NdxY4f1D6hxC7pjyMRs6zP",
-      "video": ""
+      "video": "https://softserveinc-my.sharepoint.com/:v:/p/olekorlov/IQDtyP7Qws5JT4nhwYEvCN-IAatwXmSqQySmaG7vEk-PukI?e=KHIOPQ"
     },
     "account-insights": {
       "onePager": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQBmRDm6WVVKS5kFzwsO8dg_AW6Fb4yuFsrvvwke3dEn7P4?e=4bGqkF",
@@ -32,7 +32,7 @@
       "featureList": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQB64RiDmXzGQrEJQAjedXbjATwJTRaeYt8XH9yFKC-l15o?e=eVZC5Y",
       "interactiveDemo": "demo/workforce-optimization/index.html",
       "interactiveDemoArtifact": "https://claude.ai/code/artifact/343ab0d5-1d99-4038-a395-6f177c3f5e2e",
-      "video": ""
+      "video": "https://softserveinc-my.sharepoint.com/:v:/p/olekorlov/IQCLl90qMQUMQKSv7htlx_K5AXxQLaUGwUe25I2dUYnmQNU?e=FZKNum"
     },
     "plan-vs-actual-investigation": {
       "onePager": "",

@@ -20,14 +20,17 @@ window.SITE_CONFIG = {
   ],
   /* Links to the walkthrough, the video and the kit documents are not here:
      they live in links.json at the repo root (round 12, docs/CONFIG.md).
-     Round 18 (Alex: "no fake and placeholder links"): the hero's video frame
-     renders only when links.json holds the recording, so the `video` switch
-     is retired, and `marketplace` may be true only with its listing URL. */
+     Round 18 (Alex: "no fake and placeholder links"): the hero's frame
+     renders only when links.json holds what it opens, so the `video` switch
+     is retired, and `marketplace` may be true only with its listing URL.
+     `videoPoster` is that frame's still, the product's own screen: it shows
+     over the recording and, with no recording, over the walkthrough
+     (2026-09-29, PROVENANCE §55). */
   products: {
     "account-insights": {
       marketplace: false,
       marketplaceUrl: "",
-      videoPoster: "",
+      videoPoster: "assets/img/posters/account-insights.jpg",
       successStoryUrl: ""
     },
     "case-evidence-collection": {
@@ -75,7 +78,7 @@ window.SITE_CONFIG = {
     "repair-or-replace-decisions": {
       marketplace: false,
       marketplaceUrl: "",
-      videoPoster: "",
+      videoPoster: "assets/img/posters/repair-or-replace-decisions.jpg",
       successStoryUrl: ""
     }
   }
