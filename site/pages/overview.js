@@ -423,10 +423,18 @@
      that stood under the figures ("Built with") are gone, so the band carries
      SoftServe's own marks only, as the footer has since round 14. The company
      address is a link and reads as one — the filled buttons on this page are
-     kept for the places that ask the reader for something. */
+     kept for the places that ask the reader for something.
+
+     The tile opens on SoftServe's logo (Alex, 2026-09-29: "add softserve logo
+     to the tile"), the brand's lockup of the spark and the wordmark, in the
+     eyebrow's place: next to an eyebrow that says "About SoftServe" it would
+     print the name twice on one line. The eyebrow's words stay in the label
+     for screen readers, and the archived theme, whose band is light, shows
+     them instead of the white logo (PROVENANCE §53). */
   function about(C) {
     var UI = window.UI;
     var block = C.overview.about;
+    var logo = window.brandAsset("ssLogoWhite", "assets/img/softserve-logo-white.svg");
 
     var stats = (block.stats || []).map(function (stat) {
       return '<div class="about-stat">' +
@@ -438,7 +446,10 @@
     return '<section class="section home-screen" id="about"><div class="wrap">' +
       '<div class="light-band reveal">' +
         '<div class="light-band-media">' +
-          '<p class="band-label">' + UI.esc(block.eyebrow) + "</p>" +
+          '<p class="band-label about-label">' +
+            '<img class="about-logo" src="' + UI.esc(logo) + '" alt="" width="160" height="32" decoding="async">' +
+            '<span class="about-label-text">' + UI.esc(block.eyebrow) + "</span>" +
+          "</p>" +
           '<h2 class="band-title">' + UI.esc(block.title) + "</h2>" +
           '<p class="band-body">' + UI.esc(block.body) + "</p>" +
           '<a class="band-link" href="' + UI.esc(block.link.url) + '" target="_blank" rel="noopener">' +
