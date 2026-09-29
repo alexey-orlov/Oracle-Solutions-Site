@@ -2655,6 +2655,54 @@ if (/request a demo/i.test(raw)) {
     fail("site/assets/forms.js", "both form kinds must answer a 429 with their errors.limited line, not the generic one");
   }
 
+  /* 2026-09-29 (Alex, on the home contact's confirmation: "make sure this
+     looks good from UI standpoint (now a bit ugly). Also, name 'SoftServe's
+     Oracle dedicated practice' to disambiguate"). A confirmation takes its
+     form's place with no surface of its own, at its column's full width, its
+     title a step under the section's H2 and its check in the icon well; on the
+     Contacts switch it takes the whole pane. And the site never names the
+     practice without its owner: "the Oracle practice" reads as Oracle's own. */
+  (function () {
+    var cssText = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
+    function ruleOf(selector) {
+      var at = cssText.indexOf("\n" + selector + " {");
+      return at === -1 ? "" : cssText.slice(at, cssText.indexOf("}", at) + 1);
+    }
+    var box = ruleOf(".form-confirm");
+    if (!box) fail("site/assets/site.css", ".form-confirm is not styled");
+    if (box && !/background:\s*none/.test(box)) {
+      fail("site/assets/site.css .form-confirm", "a confirmation has no surface of its own (background: none): the plate or panel under it is the surface, and the selected tint is never a ground");
+    }
+    if (box && !/max-width:\s*none/.test(box)) {
+      fail("site/assets/site.css .form-confirm", "a confirmation fills its column (max-width: none), so its edge is the form's edge");
+    }
+    var title = ruleOf(".form-confirm .h3");
+    if (!/font-size:/.test(title) || /var\(--fs-h[23]\)/.test(title)) {
+      fail("site/assets/site.css .form-confirm .h3", "the title sets its own size, a step under the section's H2 (at most 1.75rem), never the H3 scale");
+    }
+    if (!/background:\s*var\(--surface-select\)/.test(ruleOf(".form-confirm-mark"))) {
+      fail("site/assets/site.css .form-confirm-mark", "the check sits in the theme's icon well (var(--surface-select)), never a white square that reads as a ticked checkbox");
+    }
+    if (!/function settle\(block, done\)/.test(formsSrc)) {
+      fail("site/assets/forms.js", "settle(block, done) is missing: on the Contacts switch a confirmation takes its whole pane");
+    }
+    ["confirmation", "kitConfirmation"].forEach(function (name) {
+      var at = formsSrc.indexOf("function " + name + "(");
+      var body = at === -1 ? "" : formsSrc.slice(at, formsSrc.indexOf("\n  }\n", at));
+      if (!/settle\(block, true\)/.test(body)) {
+        fail("site/assets/forms.js " + name + "()", "must call settle(block, true): the lead that asked for the input leaves with the form");
+      }
+    });
+
+    var NAME = /SoftServe[’']s Oracle dedicated practice/;
+    (JSON.stringify(C).match(/\b(?:the|our) (?:Oracle )?practice\b|\bOracle practice\b/gi) || []).forEach(function (m) {
+      fail("content.js", 'names "' + m + '": the practice is "SoftServe’s Oracle dedicated practice" (Alex, 2026-09-29), since "the Oracle practice" reads as Oracle\'s own');
+    });
+    [["forms.confirmations.posted.body", ((formsCopy.confirmations || {}).posted || {}).body], ["forms.offline", formsCopy.offline]].forEach(function (pair) {
+      if (!NAME.test(pair[1] || "")) fail(pair[0], 'must name who replies: "SoftServe’s Oracle dedicated practice" (Alex, 2026-09-29)');
+    });
+  })();
+
   /* Sellers and partners are different readers: the kit goes to seller domains only. */
   var roles = (C.forms || {}).roles || [];
   ["oracle-seller", "oracle-partner"].forEach(function (value) {
