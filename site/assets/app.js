@@ -569,18 +569,6 @@
     select(anchor === CONTACT_ANCHORS.kit ? 1 : 0);
   }
 
-  function heroBackdrop(image, options) {
-    var opts = options || {};
-    if (!image || !image.file) return "";
-    return '<div class="hero-bg" aria-hidden="true">' +
-      '<img class="hero-bg-img" src="' + esc(image.file) + '" alt=""' +
-      (image.focal ? ' style="object-position:' + esc(image.focal) + '"' : "") +
-      ' loading="' + (opts.lazy ? "lazy" : "eager") + '" decoding="async"' +
-      (opts.lazy ? "" : ' fetchpriority="high"') + ">" +
-      '<span class="hero-bg-veil"></span>' +
-      "</div>";
-  }
-
   function media(key) {
     return (C.media && C.media[key]) || null;
   }
@@ -852,7 +840,6 @@
     contactAnchors: CONTACT_ANCHORS,
     hasListing: hasListing,
     sectionLabel: sectionLabel,
-    heroBackdrop: heroBackdrop,
     modal: { open: openModal, close: closeModal }
   };
 
@@ -1064,7 +1051,7 @@
     });
   }
 
-  /* A hero background, video poster, tile image or panel photograph that cannot
+  /* A hero frame's poster, tile image or panel photograph that cannot
      be fetched falls back to the gradient or the ground behind it alone, never
      to a broken-image glyph or a grey placeholder. The two home-page photograph
      grounds (the two ways in, the case-card bands) are dark, so their white
@@ -1075,7 +1062,7 @@
   var YT_PLACEHOLDER_W = 120;
 
   function guardHeroImages(root) {
-    Array.prototype.forEach.call(root.querySelectorAll(".hero-bg-img, .video-card-poster, .contact-photo-img, .ptile-img, .gtile-art, .way-img, .case-card-img, .bespoke-img"), function (img) {
+    Array.prototype.forEach.call(root.querySelectorAll(".video-card-poster, .contact-photo-img, .ptile-img, .gtile-art, .way-img, .case-card-img, .bespoke-img"), function (img) {
       var retried = false;
 
       function isYouTube() { return (img.getAttribute("src") || "").indexOf("img.youtube.com/") >= 0; }
@@ -1260,27 +1247,18 @@
     }, true);
   }
 
-  /* The Demo badge is an action (VISUAL-GRAMMAR §1.2). On the product page the
-     hero frame is already there, so the badge scrolls to it and opens it; on a
-     product page with no frame — round 9: a product can carry a walkthrough and
-     no video, which is how Cross-system ERP Q&A came to have a demo and no way
-     in from the badge — it opens the walkthrough itself; on a tile it goes to
-     the page that carries both. */
+  /* The Demo badge is an action (VISUAL-GRAMMAR §1.2), and it names the
+     walkthrough, so on its product page — any tab — it opens the walkthrough
+     itself, never the hero frame, which plays the recording where there is one
+     (2026-09-29, PROVENANCE §55); on a tile it goes to the product page. */
   function initDemoBadges() {
     document.addEventListener("click", function (event) {
       var badge = event.target.closest ? event.target.closest("[data-demo-badge]") : null;
       if (!badge) return;
       event.preventDefault();
       var slug = badge.getAttribute("data-demo-badge");
-      var onProductPage = parseHash().path === "/products/" + slug;
-      var frame = document.querySelector(".product-hero .video-card");
-      if (frame && onProductPage) {
-        var top = frame.getBoundingClientRect().top + window.pageYOffset - 120;
-        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        window.scrollTo({ top: Math.max(top, 0), behavior: reduce ? "instant" : "smooth" });
-        frame.click();
-        return;
-      }
+      var path = parseHash().path;
+      var onProductPage = path === "/products/" + slug || path.indexOf("/products/" + slug + "/") === 0;
       if (onProductPage) {
         /* links.json, like the hero button: config.js has held no walkthrough
            link since round 12, so reading it here opened nothing (round 18). */
