@@ -3067,6 +3067,32 @@ if (/request a demo/i.test(raw)) {
   roles.forEach(function (r) {
     if (/or partner/i.test(r.label || "")) fail("forms.roles", '"' + r.label + '" lumps sellers and partners together');
   });
+  /* A line every audience reads speaks from no one seat (Alex, 2026-09-29,
+     twice: "What are you trying to fix?" spoke to a customer, "Results on
+     customers’ own data" to a seller; START-HERE §4). */
+  (function () {
+    var o = C.overview || {};
+    var shared = [["forms.labels", (C.forms || {}).labels || {}]];
+    ["twoWays", "catalog", "delivery", "bespoke", "caseStudiesIntro", "about", "contact"].forEach(function (k) {
+      var b = o[k] || {};
+      shared.push(["overview." + k, { eyebrow: b.eyebrow, title: b.title, heading: b.heading, lead: b.lead, body: k === "caseStudiesIntro" ? b.body : undefined }]);
+    });
+    shared.push(["overview.delivery.why", { eyebrow: ((o.delivery || {}).why || {}).eyebrow, title: ((o.delivery || {}).why || {}).title }]);
+    shared.push(["overviewAlt.offer", { title: ((C.overviewAlt || {}).offer || {}).title }]);
+    shared.forEach(function (pair) {
+      Object.keys(pair[1]).forEach(function (key) {
+        var text = pair[1][key];
+        if (str(text) && /\bcustomers[’']/i.test(text)) {
+          fail(pair[0] + "." + key, '"' + text + '" speaks to a seller only ("customers’") — a line every audience reads speaks from no one seat');
+        }
+      });
+    });
+    var ask = (((C.forms || {}).labels) || {}).message || "";
+    if (/\b(fix|broken|problem)/i.test(ask)) {
+      fail("forms.labels.message", '"' + ask + '" asks the reader to name a fault — a seller brings an account; nothing of theirs is broken (Alex, 2026-09-29)');
+    }
+  })();
+
   /* Alex, 2026-09-29: "order of options … should be Oracle seller -> SoftServe
      seller -> Oracle partner -> Customer -> Other". */
   var ROLE_ORDER = ["oracle-seller", "softserve", "oracle-partner", "customer", "other"];
