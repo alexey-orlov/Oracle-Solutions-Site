@@ -58,7 +58,7 @@ Forms print it as an ordinary link in three places: the line a copy with no endp
 
 ### `formEndpoint`
 
-Where all three forms send their data: *Talk to us*, *Request a scoping call* and the sales kit. Since round 12 the destination is the n8n workflow that sends the emails (`mail/README.md`).
+Where both forms send their data: *Talk to us* and the sales kit (the Services page's *Request a scoping call* form left with it in round 18). Since round 12 the destination is the n8n workflow that sends the emails (`mail/README.md`).
 
 | Value | What happens on submit |
 |---|---|
