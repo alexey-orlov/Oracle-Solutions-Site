@@ -1046,13 +1046,11 @@
     });
   }
 
-  /* `axis` is "horizontal", "vertical" or "both". How it works takes both: its
-     rows are a vertical list, and a reader who reaches for ← → on the frame
-     beside them still moves through the steps. */
+  /* `axis` is "horizontal" or "vertical". Both tab rows on a product page, How
+     it works' steps and the industries, take horizontal. */
   var ROVING_KEYS = {
     horizontal: { forward: ["ArrowRight"], back: ["ArrowLeft"] },
-    vertical: { forward: ["ArrowDown"], back: ["ArrowUp"] },
-    both: { forward: ["ArrowRight", "ArrowDown"], back: ["ArrowLeft", "ArrowUp"] }
+    vertical: { forward: ["ArrowDown"], back: ["ArrowUp"] }
   };
 
   function roving(buttons, onSelect, axis) {
@@ -1072,31 +1070,58 @@
     });
   }
 
-  /* One step open at a time: its row carries `is-active` (which shows its text
-     and the blue rule) and its frame crossfades in over the last one (CSS,
-     200ms). The phone's cards are static and take no binding. */
+  /* One step open at a time: its tab carries the blue underline and its panel
+     shows its text at once while its frame crossfades in over the last one
+     (CSS, 200ms). ← → Home and End move along the row, as on every tab row
+     here. The phone's cards are static and take no binding. */
   function bindHowItWorks(root) {
     var block = root.querySelector("[data-hiw]");
     if (!block) return;
-    var heads = Array.prototype.slice.call(block.querySelectorAll(".hiw-head"));
-    var shots = Array.prototype.slice.call(block.querySelectorAll(".hiw-shot"));
-    if (!heads.length) return;
+    var tabs = Array.prototype.slice.call(block.querySelectorAll(".hiw-tab"));
+    var panels = Array.prototype.slice.call(block.querySelectorAll(".hiw-panel"));
+    if (!tabs.length) return;
 
     function select(index) {
-      heads.forEach(function (head, i) {
+      tabs.forEach(function (tab, i) {
         var on = i === index;
-        head.setAttribute("aria-expanded", on ? "true" : "false");
-        head.parentNode.classList.toggle("is-active", on);
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.setAttribute("tabindex", on ? "0" : "-1");
+        tab.classList.toggle("is-active", on);
       });
-      shots.forEach(function (shot, i) {
-        shot.classList.toggle("is-active", i === index);
+      panels.forEach(function (panel, i) {
+        panel.classList.toggle("is-active", i === index);
       });
     }
 
-    heads.forEach(function (head, index) {
-      head.addEventListener("click", function () { select(index); });
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener("click", function () { select(index); });
     });
-    roving(heads, select, "both");
+    roving(tabs, select, "horizontal");
+  }
+
+  /* Round 21: beside the main column the numbers widget stays in view under
+     the tab bar (site.css makes it sticky), but only while all of it fits the
+     window; a taller one (three tiles on a laptop) scrolls with the page, so
+     its foot is never cut off. Measured on mount, on resize and when the brand
+     faces arrive; one listener for the page's lifetime. */
+  var kpiWidget = null;
+
+  function measureKpiWidget() {
+    if (!kpiWidget || !kpiWidget.isConnected) return;
+    kpiWidget.classList.remove("is-tall");
+    var style = window.getComputedStyle(kpiWidget);
+    if (style.position !== "sticky") return;
+    var top = parseFloat(style.top) || 0;
+    kpiWidget.classList.toggle("is-tall", top + kpiWidget.offsetHeight + 16 > window.innerHeight);
+  }
+
+  window.addEventListener("resize", measureKpiWidget);
+
+  function bindKpiWidget(root) {
+    kpiWidget = root.querySelector("[data-kpi-widget]");
+    if (!kpiWidget) return;
+    measureKpiWidget();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureKpiWidget);
   }
 
   /* Round 20: the industry tabs are one row over one hairline, and a row too
@@ -1186,6 +1211,7 @@
 
     bindVideo(root, item);
     bindHowItWorks(root);
+    bindKpiWidget(root);
     bindIndustryTabs(root);
     bindStack(root);
 
