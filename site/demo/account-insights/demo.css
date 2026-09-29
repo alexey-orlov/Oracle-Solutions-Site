@@ -383,5 +383,4 @@ body.ui-clean .foot, body.ui-clean #tour-toggle, body.ui-clean #tour-pill { disp
   .book-row { grid-template-columns: minmax(0, 1fr) auto; }
   .book-row .due { display: none; }
   .k-after { font-size: 24px; }
-  .tour { width: calc(100vw - 16px); }
 }
