@@ -7519,6 +7519,38 @@ _A change between rounds, made in its own session while the Internal-panel remov
   - Phones: one column; the tiles three by two; the pods six across in two rows, edge to edge; the platforms two by two.
   - No overflow at any of the seven widths, the console clean, `check-grammar` OK (its one warning the About H2), and the deny-list grep clean.
 - **Open for Alex (version 5):** the services photograph and the three lines are still open from version 4.
+- **Version 5, the hero (the same evening, a third session).** Alex, on version 4's hero, *"I almost like the hero screen"*:
+  - *"Enterprise AI agents. Built on Oracle. - remove the "." after agents"*;
+  - the figures *"on a white background - same or similar to how they are placed on the current main? Hero block will have more space + it can be slightly smaller (but not for the full height of the metrics for sure), and metrics will be underneath"*;
+  - then, on a screenshot of the first cut, the copy low in the photograph: *"make sure to properly center the text"*.
+- **Version 5, the hero — what changed** (`hero()` and `liveScreens()` in `overview-alt.js`, the `.ahero-*` rules, `overviewAlt.hero.headline.lead`):
+  - **The H1's first line takes no stop:** *Enterprise AI agents / Built on Oracle. / ROI proven in weeks.* The first two lines read as one phrase; *Built* keeps its capital as the head of a display line.
+  - **The figures are the live page's proof strip.** `hero()` renders no band, and `liveScreens()` leaves `section.stat-band--home` in place, so the three figures stand under the hero exactly as on `#/`: white, three columns between hairlines. S2 follows the strip with its own hairline and spacing, as on `#/`; the `.aoffer` override that cut its top went, with the band's styles (`.ahero-band`, `.ahero-stats`, `.ahero-stat-*`).
+  - **A taller photograph in a slightly shorter hero.** The photograph's minimum height is `clamp(480px, min(100vh − 290px, 47vw), 800px)`: 610 px at 1440 × 900, where the photograph and the dark band stood 520 + 138 = 658. The hero lost 48 px, about a third of the band, and the photograph gained 90.
+  - **The 47vw cap** keeps the picture drawn at its full width, so the oval stays at 66–91 % of the width and clear of the line on every window from 1024 px up. A first cut capped it at 60vw, and a squarish window such as 1280 × 1024 cropped the picture from the left until the line crossed the oval.
+  - **The copy is centred as the eye reads it**, from the top of the H1's capitals to the foot of the ask. The photograph centres its copy (`align-items: center`), and the copy's foot padding adds back the .145 em of air the H1's first line box holds above its capitals (Azurio at 1.02 leading, measured). The two gaps come out equal to the pixel: 131 and 131 at 1440 × 900, 201 and 201 at 1920 × 1080. Version 4 set the copy at the photograph's foot.
+  - **Under 1024 px** the 480 px floor is more than 47 % of the width, the picture crops from the left and the oval meets the copy, so the line and the spark go (version 4 dropped them at 768). The ask's link stands under the ask, and its line box, with its tap padding on a phone, hangs below the block, so the gaps stay equal there too.
+- **Version 5, the hero — before and after at 1440 × 900:**
+
+| | Version 4 | Version 5 |
+|---|---|---|
+| H1 | *Enterprise AI agents.* | *Enterprise AI agents* |
+| Hero | 658 px: a 520 px photograph and a 138 px dark band carrying the figures | 610 px: the photograph alone |
+| The copy | at the photograph's foot, about 60 px above it | centred: 131 px above the capitals, 131 under the ask |
+| The figures | white on the dark band, in styles of their own | the live strip on white, figures and labels in the first screen (labels end at 877) |
+| S2's heading | in the first screen | under the fold, the strip in its place |
+
+- **Version 5, the hero — checks:**
+  - centred within a pixel, the H1 on three lines and no horizontal overflow at 1920 × 1080, 1536 × 864, 1440 × 900, 1366 × 768, 1280 × 1024, 1280 × 800, 1280 × 720, 1240 × 1000, 1239 × 800, 1200 × 900, 1024 × 1366, 1024 × 768, 1023 × 768, 900 × 700, 820 × 1180, 768 × 1024, 600 × 900, 561, 550, 414 × 896, 375 × 812 and 320 × 568;
+  - wherever they show, the line at least 64 px from every word and 32 px from the oval at its widest, and the spark at least 69 px from the copy;
+  - the strip's figures and labels in the first screen from 1366 × 768 up; at 1280 × 720 the labels end 19 px under the fold;
+  - `check-grammar` OK, with new assertions: no stop after the H1's first line; `overview-alt.js` names no figures and `home-alt.css` styles none; the photograph centres its copy, and the copy's foot adds back the capitals' air. The console is clean, and so is the deny-list grep;
+  - `contract.round` unchanged: the new assertions hold only `overviewAlt` and the alt page's own files, which the packaging plugin never writes.
+- **Open for Alex (version 5, the hero):**
+  - the first screen now ends on the figures, and S2's heading is under the fold: with the hero shrinking by less than the strip's height, both could not show;
+  - *Built* keeps its capital after *agents*;
+  - the strip is the live one to the pixel, wraps included: at 1280 its first label leaves *data* alone on a second line, on `#/` as well;
+  - from 769 to 1023 px the hero has no line and no spark.
 
 ## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
 
