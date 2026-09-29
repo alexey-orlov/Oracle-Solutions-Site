@@ -819,8 +819,8 @@ if (!arr(C.products) || C.products.length !== 7) {
   }
   var strings = [
     ["productsPage.intro", pp.intro],
-    ["productsPage.bottomBlock.body", (pp.bottomBlock || {}).body],
-    ["productsPage.bottomBlock.heading", (pp.bottomBlock || {}).heading],
+    ["productsPage.askTile.title", (pp.askTile || {}).title],
+    ["productsPage.askTile.body", (pp.askTile || {}).body],
     ["overview.twoWays.panels[0].body", (((C.overview || {}).twoWays || {}).panels || [])[0] && C.overview.twoWays.panels[0].body],
     ["overview.catalog.lead", ((C.overview || {}).catalog || {}).lead],
     ["overview.catalog.title", ((C.overview || {}).catalog || {}).title]
@@ -1012,24 +1012,10 @@ if (!arr(C.products) || C.products.length !== 7) {
     }
   });
 
-  /* The Services platform cards are the same four platforms under another
-     shape, in the same order — otherwise a reader meets one name on the
-     Products rail and a different one on Services. Round 9: a card has the room
-     for the full Oracle product name, so that is what it carries, while the
-     rail, the chips and the hero stack take the short label. The home page's
-     four platform tiles derive from `facets.technology` itself. */
-  (function () {
-    var where = "services.hero.platforms";
-    var list = ((C.services || {}).hero || {}).platforms;
-    if (!arr(list) || list.length !== FACET_IDS.length) {
-      return fail(where, "must hold one card per canonical platform (" + FACET_IDS.length + ")");
-    }
-    FACET_IDS.forEach(function (id, i) {
-      if (list[i].name !== FACET_FULL[id]) {
-        fail(where + "[" + i + "]", 'name is "' + list[i].name + '", expected the full Oracle name "' + FACET_FULL[id] + '"');
-      }
-    });
-  })();
+  /* The Services page's platform cards left with the page in round 18; the
+     full Oracle names now reach a reader through the footer's Oracle row and
+     the prose, and the home page's four platform tiles derive from
+     `facets.technology` itself. */
 })();
 
 /* ---- round 9 · the six product groups ----
