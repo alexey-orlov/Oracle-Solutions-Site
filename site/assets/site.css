@@ -1615,7 +1615,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    its dark side would show: shifting it within the frame brings the man in
    the cap back, still clear of the lead, his face short of the spark. */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .catalog-hero-img { object-position: 63% 30%; }
+  .catalog-hero { --sp-r: .75rem; }
+  .catalog-hero-img { object-position: 67% 30%; }
 }
 
 @media (max-width: 768px) {

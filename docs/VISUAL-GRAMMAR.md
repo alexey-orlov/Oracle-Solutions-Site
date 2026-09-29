@@ -39,33 +39,25 @@ asserted equal to the *Interactive demo* badge's label) and **the badge's own
 pointer is what says "a walkthrough you click", and a second glyph beside it only
 dilutes it.
 
-**Two hero layouts, chosen by data — nothing else changes.**
+**Two hero layouts, chosen by data — nothing else changes.** Alex, 2026-09-29 (§55): *"video preview on the right … It should link to the video … If no video, but product has a walkthrough, it should be opening instead of the video. Only if neither walkthrough, nor video is available, slot should be empty."*
 
-- **Single column** (default) — text over the background image. Used whenever the product has no `video` link in `links.json`.
-- **Two column** — text left, a 16:9 media frame right, **only when the product has a `video` link** (round 18, Alex: *"No fake and placeholder links no longer allowed"*). The frame has a thin border and a slight lift, shows a poster image with a circular play button overlay and the caption **"Watch the demo"**, and opens the video modal. Until round 18 a `video: true` switch put the frame up before a recording existed and answered the click with a *"The demo recording is being prepared"* panel; the switch and the panel are retired, and the checker fails both.
+- **Two column** — text left, a 16:9 frame right, when `links.json` holds a recording or a walkthrough for the product. The frame is the product's own screen (`videoPoster`) under one round blue button: a plate with the 8 px cut on the gradient, no border, no shadow. What it opens decides its glyph:
+  - **the recording**, where `video` is set (Large docs, Workforce): ▶ (`play`, solid) and the caption **Watch the demo** over a veil on the bottom 40 % only. A YouTube or Vimeo link, or a plain video file, plays in the modal; a SharePoint or Stream link opens in its own tab, because its page refuses to be framed on another site and opens only for a signed-in viewer (`playsInPage()`);
+  - **the walkthrough**, where there is no recording (Account insights, Cross-system ERP Q&A, Fleet, Repair-or-replace): the badge's `cursor-click` glyph and **no caption**, since the badge and the CTA button beside it already say *Interactive demo*; it opens in its own tab through `UI.demoHref`, so frame, button and badge open one thing.
+- **Single column** — neither exists: no frame, the copy alone on the gradient. Never an empty frame, a greyed play button or a "video coming soon" line (round 18, Alex: *"No fake and placeholder links no longer allowed"*; the retired `video: true` switch and its *being prepared* panel fail the checker).
+
+The CTA row does not change with the frame: *Talk to us*, then *Interactive demo* wherever a walkthrough exists, even beside a frame that opens it too. A recording gets no button, because it always has its frame.
 
 Poster resolution order, first non-empty wins:
 
 1. `SITE_CONFIG.products[slug].videoPoster`
 2. `https://img.youtube.com/vi/<id>/maxresdefault.jpg` — only when the `video` link is a YouTube link
 
-There is no third step. **The hero image is never the poster.** Rendering the
-hero photograph inside a frame that sits on top of that same photograph makes
-the frame read as a brighter cut-out of the wallpaper rather than as a video
-still, and it is the first thing on the page a seller demos.
-
-A recording with no poster renders without its `<img>` and carries the
-`video-card--plate` modifier: a navy-to-inset gradient ground, a lighter veil,
-the play button and the caption. The frame's veil stays light enough to keep a
-real poster a picture rather than a grey field — only the caption's corner is
-shaded. A `videoPoster` is a **distinct** treated frame — a step screenshot, a
-desaturated crop at another focal point — never the hero file.
-
-A product without a recording never renders a frame, an empty frame, a greyed play button, or a "video coming soon" line.
+There is no third step, and the checker requires the first wherever the frame renders. **A poster is a distinct capture of the product's own screen**, leading with its before → after band where the product has one (ASSETS §1.6): never the tile's photograph, and never a still from a recording that runs on a customer's data. A frame with no poster falls back to the `video-card--plate` modifier: a light plate, the button and, for a recording, the caption over a veil.
 
 ### 1.1 The same image, as a Products-page tile
 
-**Copy sits on a photograph only where the component is a photograph by design, and always under a veil or scrim that carries its legibility**: the product heroes (a veil from the copy side), the catalog's hero (a scrim from the copy side, §1.4), the home page's two ways in (a scrim, §9 S2), and the home case card's band, which carries the descriptor and the area and nothing else (a bottom-up veil, §9 S5). **A tile is never one of them** (round 3, D): every tile is **an image band over a solid body**, its copy on the body, and both halves are the same size on every tile — two per row, equal height.
+**Copy sits on a photograph only where the component is a photograph by design, and always under a veil or scrim that carries its legibility**: the catalog's hero (a scrim from the copy side, §1.4), the home page's two ways in (a scrim, §9 S2), and the home case card's band, which carries the descriptor and the area and nothing else (a bottom-up veil, §9 S5). **A tile is never one of them** (round 3, D): every tile is **an image band over a solid body**, its copy on the body, and both halves are the same size on every tile — two per row, equal height.
 
 | Part | Content |
 |---|---|
@@ -92,7 +84,7 @@ Before round 4 the hero and the tiles carried a run of chips that all looked the
 
 **Every pill on the site belongs to one of these families, and says which on hover.** The solid navy pill means *technology*; anything else set in it dilutes that the moment a visitor leaves a product page.
 
-**Badges are actions, not labels.** *Interactive demo* scrolls to the hero's demo frame and opens it where the page has one, opens the walkthrough itself where it does not, and goes to the product page from a tile. *Oracle Marketplace* opens the listing; since round 18 it renders only with its `marketplaceUrl`, never inert.
+**Badges are actions, not labels.** *Interactive demo* opens the walkthrough on its product page, from any tab, and never clicks the hero frame, which plays the recording where there is one (§55); from a tile it goes to the product page. *Oracle Marketplace* opens the listing; since round 18 it renders only with its `marketplaceUrl`, never inert.
 
 **A badge names the thing it opens, and reads the same field the filter reads** (round 9, Alex: *"ERP Q&A has an interactive demo but no Demo tag"*). Both the badge and the *Interactive demo* checkbox key off a non-empty **`interactiveDemo`** link — the walkthrough itself — where they used to key off `video`, which only decides whether the product page carries a 16:9 video frame. Reading the frame flag had let the two drift in both directions: *Account insights* carried a badge with no walkthrough behind it, and *Cross-system ERP Q&A* had a walkthrough and no way in from the chip row. The glyph changed with the meaning — `cursor-click`, a pointer with its click strokes; `play` is now reserved for a recording. `pages/product.js` delegates to the shared `UI.demoHref`, so the hero button and the badge can never open different things.
 
