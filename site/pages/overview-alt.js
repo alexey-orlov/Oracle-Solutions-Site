@@ -43,12 +43,16 @@
     return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' + GLYPHS[name] + "</svg>";
   }
 
-  /* ————— S1: the claim on a photograph, the promise and the proof under it ————— */
+  /* ————— S1: the claim, its promise and the ask on a photograph, the proof under it ————— */
 
   function hero(C) {
     var UI = window.UI;
     var block = C.overview.hero;
-    var image = ((C.overviewAlt || {}).hero || {}).image || {};
+    var alt = (C.overviewAlt || {}).hero || {};
+    var image = alt.image || {};
+    /* This page's own H1 and lead (Alex's cut), the live page's otherwise. */
+    var headline = alt.headline || block.headline;
+    var lead = alt.lead || block.lead;
     var ctas = block.ctas || [];
     var primary = ctas.filter(function (cta) { return cta.kind === "primary"; })[0] || ctas[0];
     var secondary = ctas.filter(function (cta) { return cta !== primary; })[0];
@@ -91,25 +95,22 @@
           '<img class="ahero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async">' +
         "</div>" +
         '<div class="wrap ahero-inner">' +
+          /* The claim, its promise, then the ask: the reader has the reason
+             before the button, as on softserveinc.com's own heroes. */
           '<div class="ahero-copy">' +
             '<h1 class="h1 ahero-title">' +
-              '<span class="ahero-sentence">' + UI.esc(block.headline.lead) + "</span> " +
-              '<span class="ahero-sentence accent">' + UI.esc(block.headline.accent) + "</span> " +
-              '<span class="ahero-sentence">' + UI.esc(block.headline.proof) + "</span>" +
+              '<span class="ahero-sentence">' + UI.esc(headline.lead) + "</span> " +
+              '<span class="ahero-sentence accent">' + UI.esc(headline.accent) + "</span> " +
+              '<span class="ahero-sentence">' + UI.esc(headline.proof) + "</span>" +
             "</h1>" +
+            '<p class="ahero-lead">' + UI.esc(lead) + "</p>" +
             '<div class="ahero-actions">' + actions + "</div>" +
           "</div>" +
         "</div>" +
       "</div>" +
-      '<div class="ahero-band">' +
-        '<div class="wrap ahero-band-inner">' +
-          '<div class="ahero-promise">' +
-            '<span class="ahero-dash" aria-hidden="true"></span>' +
-            '<p class="ahero-lead">' + UI.esc(block.lead) + "</p>" +
-          "</div>" +
-          (stats ? '<ul class="ahero-stats">' + stats + "</ul>" : "") +
-        "</div>" +
-      "</div>" +
+      (stats
+        ? '<div class="ahero-band"><div class="wrap ahero-band-inner"><ul class="ahero-stats">' + stats + "</ul></div></div>"
+        : "") +
       "</section>";
   }
 
