@@ -37,8 +37,7 @@
      carries a video frame. */
   function hasFlag(product, option) {
     if (option === "demo") return window.UI.hasDemo(product.slug);
-    var entry = window.SITE_CONFIG.products[product.slug] || {};
-    return entry.marketplace === true;
+    return window.UI.hasListing(product.slug);
   }
 
   /* Both availability checkboxes always render, with the faceted count beside
@@ -84,7 +83,25 @@
     });
   }
 
-  function resultsHtml() {
+  /* Round 18 (Alex): the way out of the catalog is its last tile, not a band
+     under it — "Looking for other solution? Let's talk", into the home page's
+     contact. It closes every result, the empty ones included, so whatever a
+     filter returns, the next step sits where the reader's eye already is. One
+     link, the tile itself, like the home page's group tiles. */
+  function askTile() {
+    var UI = window.UI;
+    var ask = window.SITE_CONTENT.productsPage.askTile;
+    if (!ask) return "";
+    return '<a class="ptile ptile--ask reveal" href="' + UI.esc(ask.cta.route) + '">' +
+      '<span class="ptile-ask-body">' +
+        '<span class="ptile-ask-title">' + UI.esc(ask.title) + "</span>" +
+        '<span class="ptile-ask-text">' + UI.esc(ask.body) + "</span>" +
+      "</span>" +
+      '<span class="ptile-ask-cta link-arrow"><span>' + UI.esc(ask.cta.label) + "</span>" + UI.icon("arrow") + "</span>" +
+      "</a>";
+  }
+
+  function matchesHtml() {
     var UI = window.UI;
     var C = window.SITE_CONTENT;
     var list = filtered();
@@ -106,6 +123,10 @@
       if (category && category.emptyState) return UI.empty(category.emptyState);
     }
     return UI.empty(C.facets.noResults);
+  }
+
+  function resultsHtml() {
+    return matchesHtml() + askTile();
   }
 
   /* A facet that can only ever return an empty result is a dead end on a page
@@ -250,21 +271,6 @@
               "</div>" +
               '<div class="ptile-grid" id="product-results">' + resultsHtml() + "</div>" +
             "</div>" +
-          "</div>" +
-        "</div>" +
-      "</section>" +
-      '<section class="closing">' +
-        '<div class="wrap closing-inner">' +
-          "<div>" +
-            '<h2 class="h2">' + UI.esc(page.bottomBlock.heading) + "</h2>" +
-            '<p class="lead" style="margin-top:1.25rem">' + UI.esc(page.bottomBlock.body) + "</p>" +
-          "</div>" +
-          '<div class="cta-row">' +
-            UI.button({
-              label: page.bottomBlock.cta.label.replace(/\s*→\s*$/, ""),
-              href: page.bottomBlock.cta.route, kind: "primary"
-            }) +
-            UI.button({ label: "See the services", href: "#/services", kind: "quiet" }) +
           "</div>" +
         "</div>" +
       "</section>";
