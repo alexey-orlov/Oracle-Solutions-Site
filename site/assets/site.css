@@ -1634,6 +1634,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .catalog-hero-line--down { display: none; }
 }
 
+@media (min-width: 601px) and (max-width: 720px) { .catalog-hero-img { object-position: 0 30%; } }
 @media (max-width: 440px) { .catalog-hero-img { object-position: 50% 30%; } }
 
 /* The catalog's search box sits over the results it filters, in the bar that
