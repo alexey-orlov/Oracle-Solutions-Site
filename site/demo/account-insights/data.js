@@ -152,8 +152,8 @@ window.AIX = {
   /* ---- the named changes: every move the run proposes ----
      rel: named · supplier · customer · competitor · twostep
      research: minutes to reach this move by hand (40 when the account is named
-     in the story, 60 when it is only reached through your records, 75 at two
-     steps); review: minutes to read and decide it. */
+     in the story, 60 when it is only reached through your records);
+     review: minutes to read and decide it. */
   moves: [
     { id: "MV-01", signal: "SIG-0929-014", account: "ACC-012", rel: "named", kind: "sell", line: "wh", m: 8, c: 7, research: 40, review: 3,
       relNote: "Named in the story",
@@ -261,7 +261,7 @@ window.AIX = {
       ],
       trace: ["Story about Varden Chemicals, one of your accounts", "Your supplier map: Halden Plastics buys Varden's resin", "Reasoned: a six-week gap to bridge from elsewhere", "Mapped to your line: Air freight · time-critical", "Scored: urgent, short (6); the supplier link is in your records (6)"] },
 
-    { id: "MV-10", signal: "SIG-0929-009", account: "ACC-036", rel: "twostep", kind: "protect", line: "peak", m: 4, c: 5, research: 75, review: 3,
+    { id: "MV-10", signal: "SIG-0929-009", account: "ACC-036", rel: "twostep", kind: "protect", line: "peak", m: 4, c: 5, research: 60, review: 3,
       relNote: "Buys from Halden Plastics · two steps from the story",
       what: "Artesa Home buys plastic housings from Halden [2], which buys its resin from Varden [1]. If Halden runs short, Artesa's autumn range may arrive late, and its peak-season contract with us renews in January [3].",
       offer: ["Re-plan Artesa's peak slots before the renewal"],
