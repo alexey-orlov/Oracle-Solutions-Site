@@ -40,7 +40,7 @@
     {
       "slug": "business-metrics-qa",
       "name": "Business metrics Q&A",
-      "oneLiner": "Every team gets the same number for the same metric, asked in plain words, wherever the data sits.",
+      "oneLiner": "Every team asks in plain words and gets the same number for the same metric, wherever the data sits.",
       "group": "Enterprise knowledge & analytics"
     },
     {

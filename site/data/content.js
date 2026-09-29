@@ -373,7 +373,7 @@ window.SITE_CONTENT = {
     caseStudiesIntro: {
       eyebrow: "Case studies",
       title: "Results on customers’ own data",
-      body: "Each card is one engagement: the industry, the workflow and the number it moves, marked as proven, forecast or estimated.",
+      body: "What each engagement moves for the business, in numbers its owners already track.",
       ndaLine: "Customers stay unnamed under NDA. Reference calls on request.",
       cta: { label: "Ask for a reference call", route: "#/#request-a-demo" }
     },
@@ -385,9 +385,8 @@ window.SITE_CONTENT = {
         area: "Field-service operations across three countries",
         industry: "manufacturing",
         status: "modeled",
-        metric: { value: "+4.5% productivity", label: "median gain in jobs per technician per day, against the current plan" },
-        line: "Dispatchers built the four-week field-service plan by hand, region by region; NVIDIA cuOpt on Oracle Cloud Infrastructure now builds it and a dispatcher approves it.",
-        footnote: "Simulated on the customer’s own historical operations data and scored against the plan dispatchers build today; illustrative, not contractual.",
+        metric: { value: "+4.5% productivity", label: "typical gain in jobs per technician a day over the hand-built plan, simulated on the customer’s own history" },
+        line: "Dispatchers built each region’s four-week plan by hand and workloads came out uneven; now they approve one that balances every technician’s day.",
         product: { slug: "workforce-optimization", name: "Workforce optimization" }
       },
       {
@@ -396,9 +395,8 @@ window.SITE_CONTENT = {
         area: "Ground-handling contract management",
         industry: "travel-transport",
         status: "measured",
-        metric: { value: "5–15 min a contract", label: "to extract 60–100 pages end to end, down from 3–5 days" },
-        line: "Contract rates were keyed into a cost-management system page by page; reviewers now validate AI-extracted rates beside the source PDF, every value cited to its page, and export.",
-        footnote: "Measured end to end on the customer’s own agreements during the proof of value; illustrative, not contractual.",
+        metric: { value: "5–15 min a contract", label: "60–100 pages into the cost system, down from 3–5 days of keying by hand" },
+        line: "Rates were keyed in page by page, and a wrong one surfaced only at invoice matching; now reviewers catch it before it reaches the system.",
         product: { slug: "large-document-extraction", name: "Large docs processing and review" }
       },
       {
@@ -407,9 +405,8 @@ window.SITE_CONTENT = {
         area: "Account planning across a global enterprise account base",
         industry: "logistics",
         status: "in-preparation",
-        metric: { value: "Same-day insight", label: "from a market signal to a qualified opportunity a seller can act on" },
-        line: "The first engagement will run on the customer’s own account base: every opportunity scored for magnitude and confidence, with its evidence cited.",
-        footnote: "The comparison is the customer’s own account-planning cycle today, on success metrics signed before the work starts.",
+        metric: { value: "Same-day insight", label: "from a market event to a qualified opportunity a seller can act on, not at the next quarterly review" },
+        line: "Sellers sift market news one account at a time and miss the others an event touches without naming them.",
         product: { slug: "account-insights", name: "Account insights" }
       },
       {
@@ -418,9 +415,8 @@ window.SITE_CONTENT = {
         area: "Plan versus actual across completed work packages",
         industry: "construction",
         status: "in-preparation",
-        metric: { value: "Variances traced", label: "each to its schedule, cost or contract source, in hours of expert time rather than weeks" },
-        line: "One completed project sample, with the customer’s own schedule, cost and contract exports reconstructed into a single package-level view.",
-        footnote: "Against the expert hours the same analysis takes today, on a sample the customer’s own experts validate.",
+        metric: { value: "Variances traced", label: "every cost and schedule overrun explained, in hours of expert time rather than weeks" },
+        line: "When a project finishes over budget or late, nobody can say reliably which work packages caused it, by how much or why.",
         product: { slug: "plan-vs-actual-investigation", name: "Plan vs actual investigation" }
       }
     ],
@@ -2487,7 +2483,7 @@ window.SITE_CONTENT = {
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
       facet: "oracle-ai-lakehouse",
-      oneLiner: "Every team gets the same number for the same metric, asked in plain words, wherever the data sits.",
+      oneLiner: "Every team asks in plain words and gets the same number for the same metric, wherever the data sits.",
       heroLine: "Answers in seconds, not a week of extracts.",
       badges: ["MULTI-CLOUD", "ON-PREM TOO", "NO MIGRATION"],
       tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],

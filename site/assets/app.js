@@ -664,7 +664,9 @@
 
   /* The home-page card (round 11): the industry photograph across the top with
      the customer's descriptor and area set on it in white, then a white body —
-     the status chip, one headline figure, the line, the footnote and the link.
+     the status chip, one headline figure, the line and the link. No footnote
+     (round 19, Alex: no reviewer justifications, no unnecessary disclaimers):
+     the chip is the card's one status word.
      The photograph names the industry, so the medallion stays on the product
      page's callout only. The file is derived from `industry` — the same
      assets/img/industries/<industry>.jpg the Use cases tab shows — so the card
@@ -688,7 +690,6 @@
           '<p class="case-figure-label">' + esc(item.metric.label) + "</p>" +
         "</div>" +
         '<p class="case-card-line">' + esc(item.line) + "</p>" +
-        '<p class="footnote case-card-note">' + esc(item.footnote) + "</p>" +
         (item.product
           ? '<p class="case-card-link">' + linkArrow({
               label: item.product.name, href: "#/products/" + item.product.slug

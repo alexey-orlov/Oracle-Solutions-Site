@@ -1153,7 +1153,7 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (c.metricEyebrow !== undefined) {
       fail(cw, "metricEyebrow is retired — the status chip carries the word once");
     }
-    ["id", "descriptor", "area", "industry", "status", "line", "footnote"].forEach(function (k) {
+    ["id", "descriptor", "area", "industry", "status", "line"].forEach(function (k) {
       if (!str(c[k])) fail(cw, k + " missing");
     });
     /* Round 11: the card opens on a photograph again, but it is the industry's
