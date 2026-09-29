@@ -1032,7 +1032,7 @@
     tabs.forEach(function (tab, index) {
       tab.addEventListener("click", function () { select(index); });
     });
-    roving(tabs, select, "horizontal");
+    roving(tabs, select, "both");
 
     /* A screen opens full size in the site's modal, its step named over it. */
     Array.prototype.forEach.call(block.querySelectorAll(".hiw-open"), function (button) {
