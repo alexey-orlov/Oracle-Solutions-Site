@@ -385,8 +385,8 @@ window.SITE_CONTENT = {
         area: "Field-service operations across three countries",
         industry: "manufacturing",
         status: "modeled",
-        metric: { value: "+4.5% productivity", label: "typical gain in jobs per technician a day over the hand-built plan, simulated on the customer’s own history" },
-        line: "Dispatchers built each region’s four-week plan by hand and workloads came out uneven; now they approve one that balances every technician’s day.",
+        metric: { value: "+4.5% productivity", label: "typical gain in jobs per technician a day over the current plan, simulated on the customer’s own history" },
+        line: "Dispatchers built each region’s four-week plan by hand and workloads came out uneven; now they approve one that evens them out.",
         product: { slug: "workforce-optimization", name: "Workforce optimization" }
       },
       {
