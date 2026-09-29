@@ -31,7 +31,6 @@ window.SITE_CONFIG = {
     "<slug>": {
       marketplace: false,
       marketplaceUrl: "",
-      video: false,
       videoPoster: "",
       successStoryUrl: ""
     }
@@ -41,7 +40,7 @@ window.SITE_CONFIG = {
 
 **The rule that governs every URL field, here and in `links.json`: an empty string means the control is not rendered at all.** No placeholder, no greyed-out button, no "coming soon" line in its place. The page simply does not show it. Paste a URL and the control appears on the next reload (for a `links.json` link, after `node tools/sync-links.js`).
 
-`video` is the one product field that is not a URL, and the one deliberate exception to that rule — §3 says what it does and why it exists.
+**Since round 18 the rule has no exception** (Alex: *"No fake and placeholder links no longer allowed"*). The `video` switch, which put a demo frame on the page before a recording existed, is retired and fails the build (§3); `marketplace` may be `true` only with its listing's URL.
 
 ---
 
@@ -173,55 +172,41 @@ business-metrics-qa
 
 ### `marketplace` and `marketplaceUrl`
 
-`marketplace` is the **boolean that puts Oracle Marketplace on a customer-facing surface**; `marketplaceUrl` only decides whether the badge is a link. `true` today on `workforce-optimization` and `large-document-extraction`, on the owner's statement that those two are listed; `marketplaceUrl` is still empty on both, so their badges render inert until the listing URLs land.
+`marketplace` is the **boolean that puts Oracle Marketplace on a customer-facing surface**, and `marketplaceUrl` is the listing it opens. **Since round 18 the two say one thing together: `true` requires an https `marketplaceUrl`**, because a flag with no listing rendered an inert badge, a placeholder for a link (Alex: *"No fake and placeholder links no longer allowed"*). No listing exists today, so `marketplace` is `false` on all seven; `workforce-optimization` and `large-document-extraction` carried `true` with no URL until round 18.
 
 ```js
 marketplace: true,
-marketplaceUrl: "https://cloudmarketplace.oracle.com/marketplace/en_US/listing/000000",
+marketplaceUrl: "https://cloudmarketplace.oracle.com/marketplace/en_US/listing/<id>",
 ```
 
-Set `marketplace: true` and three things appear together, on the next reload:
+Set both and three things appear together, on the next reload:
 
-- the **Oracle Marketplace** badge (storefront icon) at the right end of the product hero's chip row,
+- the **Oracle Marketplace** badge (storefront icon) at the right end of the product hero's chip row, opening the listing in a new tab,
 - the same badge top-right of that product's image band in the Products grid (the home page carries no product tiles since round 9, so no badge either),
-- the count beside the **Oracle Marketplace** checkbox in the rail's *Artifacts* group, which filters on this same boolean (`mp=1`). **Both Artifacts checkboxes always render**, with their faceted counts, whatever the flags say: the rail's shape does not move under the reader between visits, and `demo=1` / `mp=1` are always honored. A box whose count is zero renders disabled rather than absent. Since round 9 the two **radio** rails behave the same way — every platform and every group, always, a zero-count option disabled and printing no number — so this is the house style again rather than an exception (§18.9's objection to a `0` beside an Oracle product name is answered by printing no number at all).
+- the count beside the **Oracle Marketplace** checkbox in the rail's *Artifacts* group, which filters on the same fact (`mp=1`, read through `UI.hasListing`). **Both Artifacts checkboxes always render**, with their faceted counts, whatever the flags say: the rail's shape does not move under the reader between visits, and `demo=1` / `mp=1` are always honored. A box whose count is zero renders disabled rather than absent, which is how the Marketplace box reads while no listing exists. Since round 9 the two **radio** rails behave the same way — every platform and every group, always, a zero-count option disabled and printing no number.
 
-With `marketplaceUrl` set, the badge opens the listing in a new tab; without one it renders inert — the flag says the listing exists, and a link to nowhere would be worse than no link. There is **no separate hero button**: a second control pointing at the same URL as the badge is one control too many.
+There is **no separate hero button**: a second control pointing at the same URL as the badge is one control too many.
 
-**Why a boolean and a URL rather than the URL alone (round 4).** The badge and the facet checkbox are two surfaces of one fact, and inferring that fact from a URL meant the filter and the badge could disagree the moment one of them was read differently. `check-grammar.js` fails a `marketplaceUrl` set while `marketplace` is `false`, so a listing cannot appear half-wired. Turning either on is a claim about a third party: confirm the listing exists first.
+**Why a boolean and a URL rather than the URL alone (round 4).** The badge and the facet checkbox are two surfaces of one fact, read through one function (`UI.hasListing`, round 18), so they cannot disagree. `check-grammar.js` fails a `marketplaceUrl` set while `marketplace` is `false` (a listing hidden) and `marketplace: true` without an https URL (a placeholder shown). Turning it on is a claim about a third party: confirm the listing exists first. The URL is a link stored outside `links.json`, the one such field left; moving it there is a change to the links contract that the packaging plugin shares (`START-HERE.md` §9).
 
-### `video`
+### `video` — retired in round 18
 
-A boolean — the only non-URL field in a product block. **It decides whether the hero carries a demo frame at all, and nothing else** (round 9), which is also the switch between the hero's two layouts. It does not drive the demo badge or the *Interactive demo* filter: those read the walkthrough link, `interactiveDemo` in `links.json` (§3a).
+The hero's demo frame **renders only when `links.json` holds the product's `video` link**, and clicking it plays the recording in a modal (§3a). A product without a recording has the single-column hero: text over the hero background image, no frame, no poster, no play button. The `video` boolean that used to put the frame on the page before a recording existed — *"the owner's statement that a recording exists or is coming"*, answered on click by a *"The demo recording is being prepared"* panel — is retired, and `check-grammar.js` fails the key on any product (Alex, round 18: *"No fake and placeholder links no longer allowed"*). A listing written with it, for example from the packaging plugin's exemplar, fails by name until the key is deleted.
 
-```js
-video: true,
-```
-
-| `video` | `video` link in `links.json` | Product hero |
-|---|---|---|
-| `false` | `""` | Single column: text over the hero background image. No video frame, no poster, no greyed play button, no "coming soon" line. |
-| `true` | `""` — today on the three | Two columns: text left, a 16:9 media frame right — poster, play button, caption "Watch the demo". Clicking it opens a small panel: the product name, the line *"The demo recording is being prepared."*, and a **"Request a live demo"** button that goes to that product's Contacts tab and closes the panel. Escape and the close button work as on any modal. |
-| `true` or `false` | a URL | Same two-column frame; clicking it plays the video in a modal. A URL turns the frame on by itself, so a product whose video arrives before anyone edits this flag still gets its frame. |
-
-In every case where the frame renders, the frame *is* the watch affordance, so the separate secondary "Watch the demo" button drops out of the CTA row and *Talk to us* stays the only primary CTA.
-
-`true` today on `large-document-extraction`, `workforce-optimization` and `account-insights` — the interactive walkthrough on the first, and demo recordings in preparation for the other two. `false` on the other four.
-
-**Why the flag rather than the link.** The flag is **the owner's statement that a recording exists or is coming**, and the link is the wiring that arrives after it — which is why `video: true` with an empty link is a supported state, not a half-finished one: the hero frame renders its *recording in preparation* panel, which is the site's own designed answer for an asset that has not landed. Set the flag when the owner says the recording is real; paste the link when the file exists. **What the flag may not do is speak for a demo it is not** — round 4 had it driving the badge and the facet as well, and by round 9 the two had drifted apart in both directions. A claim reads the thing it claims: the badge and the filter read the walkthrough link, the frame reads `video`.
+Where the frame renders, the frame *is* the watch affordance, so no separate "Watch the demo" button joins the CTA row, and *Talk to us* stays the only primary CTA. The frame is also what the demo badge scrolls to on a product page; where there is none, the badge opens the walkthrough itself, from `links.json` like the hero button. Neither the badge nor the *Interactive demo* filter reads the video: they read the walkthrough link, `interactiveDemo`.
 
 ### `videoPoster`
 
-The still image shown inside that media frame. **Only ever used where the frame renders** — that is, where `video` is `true` or a `video` link is set in `links.json`; on a product with neither it is dead weight, which is why it is safe to leave empty everywhere.
+The still image shown inside that media frame. **Only ever used where the frame renders** — that is, where a `video` link is set in `links.json`; on a product without one it is dead weight, which is why it is safe to leave empty everywhere.
 
 ```js
 videoPoster: "assets/img/posters/workforce-optimization.jpg",
-videoPoster: "assets/img/posters/cross-system-erp-qa.jpg",   // set, but video: false today
+videoPoster: "assets/img/posters/cross-system-erp-qa.jpg",   // set; no recording linked yet
 ```
 
 A path relative to `site/index.html`, or an absolute `https://` URL. Landscape, 16:9, at least 1280×720.
 
-`cross-system-erp-qa` carries a poster with `video: false`, so nothing renders it yet: the file is captured and wired so that turning the frame on is a one-word change, not another capture round.
+Three products carry a poster with no recording linked yet (`large-document-extraction`, `workforce-optimization`, `cross-system-erp-qa`), so nothing renders them today: the files are captured and wired, so the frame shows the product the day its `video` link lands, with no capture round.
 
 The renderer resolves the poster in this order, first non-empty wins:
 
@@ -230,9 +215,9 @@ The renderer resolves the poster in this order, first non-empty wins:
 
 There is no third step, and the product's hero image is explicitly **not** one. It used to be, and the result was the hero photograph rendered inside a frame sitting on top of the same photograph — a brighter cut-out of the wallpaper with a play button on it, in the first screen of the page (`PROVENANCE.md` §14.6).
 
-So a YouTube demo needs nothing here at all, and a frame waiting for its recording (`video: true`, no link) renders with no `<img>`: the `video-card--plate` ground, the play button and the caption. That is the pending state, and it is the site's own rule for a missing asset. The backdrop behind the hero is held a stop darker on this layout so the frame still reads as a card and not as a hole cut in the background.
+So a YouTube demo needs nothing here at all. A recording with neither a poster nor a YouTube thumbnail renders with no `<img>`: the `video-card--plate` ground, the play button and the caption. The backdrop behind the hero is held a stop darker on this layout so the frame still reads as a card and not as a hole cut in the background.
 
-Set `videoPoster` when the auto-derived thumbnail is a bad frame, when the video is on Vimeo or Stream (no public thumbnail), when you want a designed still rather than a screenshot, or when you want a pending frame to carry a picture — a product screenshot, a step frame, a desaturated crop at another focal point. Never point it at the hero file. Set today on `large-document-extraction` and `workforce-optimization`: each carries a 1600 × 900 still of its own walkthrough (`ASSETS.md` §1), so the pending frame shows the product rather than the plate.
+Set `videoPoster` when the auto-derived thumbnail is a bad frame, when the video is on Vimeo or Stream (no public thumbnail), or when you want a designed still rather than a screenshot — a product screenshot, a step frame, a desaturated crop at another focal point. Never point it at the hero file. Set today on `large-document-extraction` and `workforce-optimization`: each carries a 1600 × 900 still of its own walkthrough (`ASSETS.md` §1), shown the day its recording is linked.
 
 **If the poster cannot be loaded, it is dropped rather than shown broken.** The media frame keeps its veil, play button and caption over the inset panel, which already reads as a deliberate frame. One case needs naming: YouTube has `maxresdefault.jpg` only for videos uploaded above 720p, and for the rest it answers `200` with a 120×90 grey stand-in instead of a `404`. The renderer therefore treats a 120-pixel-wide YouTube thumbnail as a miss, retries `hqdefault.jpg` (which exists for every real video), and drops the poster only if that fails too. Nothing about this reaches the console.
 
