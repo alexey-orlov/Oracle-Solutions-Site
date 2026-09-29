@@ -1851,6 +1851,83 @@ if (/request a demo/i.test(raw)) {
   }
 })();
 
+/* ---- round 18 · no fake and placeholder links (Alex, 2026-09-29) ----
+   "Make sure the minisite uses all the correct links (in emails, on pages) -as
+   per config … It applies to video links, interactive demo links + in-email
+   links. No fake and placeholder links no longer allowed." A control that
+   looks like a link renders only when the link it opens exists: the video
+   frame only with a recording in links.json, the Marketplace badge only with
+   its listing's URL, the demo badge from links.json like the hero button. */
+(function () {
+  if (((C.shared || {}).videoPending) !== undefined) {
+    fail("shared.videoPending", "retired in round 18 — a product with no recording shows no video frame, so nothing says one is coming");
+  }
+  var productSrc = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  if (/data-video-pending|videoPending/.test(productSrc)) {
+    fail("site/pages/product.js", "renders a pending video frame — the frame exists only when links.json holds the recording (round 18)");
+  }
+  var media = productSrc.slice(productSrc.indexOf("function heroMedia("), productSrc.indexOf("function demoHref("));
+  if (!/if \(!videoLink\) return "";/.test(media)) {
+    fail("site/pages/product.js heroMedia()", "must return nothing when links.json has no video — no placeholder frame (round 18)");
+  }
+  var appSrc18 = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  var badges = appSrc18.slice(appSrc18.indexOf("function availabilityBadges("), appSrc18.indexOf("function badgeRow("));
+  if (badges.indexOf("hasListing(slug)") === -1) {
+    fail("site/assets/app.js availabilityBadges()", "must render the Marketplace badge only through hasListing() — a flag with no listing URL is a placeholder (round 18)");
+  }
+  var demoBadges = appSrc18.slice(appSrc18.indexOf("function initDemoBadges("), appSrc18.indexOf("function initSkipLink("));
+  if (/demoHref\(\(CFG\.products/.test(demoBadges) || demoBadges.indexOf("demoHref(links(slug))") === -1) {
+    fail("site/assets/app.js initDemoBadges()", "must open the walkthrough from links.json (links(slug)) — config.js holds no link since round 12");
+  }
+  /* Every walkthrough and video the site shows is a link it can open: a path
+     inside site/ that exists (sync-links checks it) or an https:// address. */
+  Object.keys(LINKS).forEach(function (slug) {
+    var entry = LINKS[slug] || {};
+    if (str(entry.video) && !/^https:\/\//.test(entry.video)) fail("links.json " + slug + ".video", "must be an https:// link");
+  });
+
+  /* The catalog's way out is its last tile (Alex, round 18: "convert the Have
+     a workflow in mind? block into a last tile … Looking for other solution?
+     Let's talk -> Link to contact form on the main page"). */
+  var pp = C.productsPage || {};
+  if (pp.bottomBlock !== undefined) fail("productsPage.bottomBlock", "retired in round 18 — the catalog's way out is productsPage.askTile, its last tile");
+  var ask = pp.askTile;
+  if (!ask || !str(ask.title) || !str(ask.body) || !ask.cta || !str(ask.cta.label) || !str(ask.cta.route)) {
+    fail("productsPage.askTile", "needs { title, body, cta: { label, route } }");
+  } else if (!/^#\/#(request-a-demo|talk)$/.test(ask.cta.route)) {
+    fail("productsPage.askTile.cta.route", '"' + ask.cta.route + '" — the tile leads to the home page\'s contact form');
+  }
+  var productsSrc = fs.readFileSync(path.join(root, "site/pages/products.js"), "utf8");
+  if (!/function resultsHtml\(\) \{\s*return matchesHtml\(\) \+ askTile\(\);/.test(productsSrc)) {
+    fail("site/pages/products.js", "resultsHtml() must end every result, the empty ones included, on the ask tile");
+  }
+  if (/class="closing"/.test(productsSrc)) fail("site/pages/products.js", "renders the closing band — the catalog's way out is its last tile (round 18)");
+
+  /* Alex: product tiles "more similar to softserveinc.com reference (i.e.
+     boundary between image and block underneath should not be blured)". */
+  if (/ptile-veil/.test(appSrc18)) fail("site/assets/app.js productTile()", "renders the veil — the photograph meets the tile body on a clean edge (round 18)");
+  var css18 = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
+  if (/\.ptile-veil\b/.test(css18)) fail("site/assets/site.css", ".ptile-veil is back — the photograph meets the tile body on a clean edge (round 18)");
+
+  /* Alex: "Make sure the website has same site icon as softserveinc.com" — its
+     favicon-web-32x32.svg, the white SoftServe spark on black. */
+  var indexSrc = fs.readFileSync(path.join(root, "site/index.html"), "utf8");
+  var icon = indexSrc.match(/<link rel="icon"[^>]*href="data:image\/svg\+xml,([^"]+)"/);
+  var favicon = icon ? decodeURIComponent(icon[1]) : "";
+  if (!/<rect width="32" height="32" fill="#000000"\/>/.test(favicon) || favicon.indexOf('d="M13.9239 17.2917') === -1) {
+    fail("site/index.html", "the favicon is not softserveinc.com's (the white spark on black, favicon-web-32x32.svg) — round 18");
+  }
+  var faviconFile = path.join(root, "site/assets/img/brand/favicon.svg");
+  if (!fs.existsSync(faviconFile) || fs.readFileSync(faviconFile, "utf8").trim() !== favicon.trim()) {
+    fail("site/assets/img/brand/favicon.svg", "differs from the data URI in index.html — the file is the icon's source (ASSETS.md)");
+  }
+
+  /* Alex's two words for the delivery screen and the new band. */
+  if ((((C.overview || {}).delivery) || {}).eyebrow !== "Packaged services") {
+    fail("overview.delivery.eyebrow", 'must be "Packaged services" — Alex\'s name for the fixed-scope track, beside Bespoke services (round 18)');
+  }
+})();
+
 /* ---- round 7 · one proof-of-value duration (Alex, 2026-09-17) ----
    "Make sure that we always mention 4–8 weeks PoV, consistently across the
    site": every Jumpstart states it in its promise, its short form (which the
