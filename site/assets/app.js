@@ -912,10 +912,10 @@
   /* ————— router ————— */
 
   var ROUTES = [
-    { pattern: /^\/$/, page: "overview", params: function () { return {}; } },
-    /* The alternative home page, shown beside the live one until Alex picks
-       (pages/overview-alt.js, PROVENANCE §47). */
-    { pattern: /^\/alt$/, page: "overviewAlt", params: function () { return {}; } },
+    /* The home page is PAGES.home: pages/overview-alt.js on the site since
+       2026-09-29 (Alex: "move 'alt' page and set it as main"), overview.js
+       in the archive, which does not load it (PROVENANCE §59). */
+    { pattern: /^\/$/, page: "home", params: function () { return {}; } },
     { pattern: /^\/products$/, page: "products", params: function () { return {}; } },
     { pattern: /^\/products\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1] }; } },
     { pattern: /^\/products\/([^/]+)\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1], tab: m[2] }; } },
@@ -945,7 +945,11 @@
   function followMoved(parsed) {
     var anchors = Object.prototype.hasOwnProperty.call(MOVED, parsed.path) ? MOVED[parsed.path] : {};
     var own = function (key) { return Object.prototype.hasOwnProperty.call(anchors, key) ? anchors[key] : ""; };
-    var hash = own(parsed.anchor) || own("");
+    /* The alternative home page became the home page (2026-09-29), so a saved
+       #/alt, anchor and all, lands on the same screen of #/. */
+    var hash = parsed.path === "/alt"
+      ? "#/" + (parsed.anchor ? "#" + parsed.anchor : "")
+      : own(parsed.anchor) || own("");
     if (!hash) return parsed;
     var replaced = false;
     try {

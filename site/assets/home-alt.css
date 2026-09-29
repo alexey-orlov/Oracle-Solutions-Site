@@ -435,12 +435,28 @@
 
 .amap-arrow--dashed::before { border-top-style: dashed; }
 
-/* Bespoke services: a team three across and four down, filling the tall
-   column edge to edge with no empty band; the last pod open, the team that
-   grows. */
-.amap-pods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.amap-pod .amap-node { width: 100%; height: auto; aspect-ratio: 1; }
-.amap-pod .amap-node .icon { width: 42%; height: 42%; max-width: 22px; max-height: 22px; }
+/* Bespoke services, in Alex's sketch (2026-09-29): the governance block across
+   the top, then five pods of three kinds three by two, the last place open,
+   the team that grows. Three rows of one height fill the tall column to its
+   foot with no empty band; each chip is as tall as its row, its outline
+   redrawn at its size (overview-alt.js), so its cuts stay 4 px. */
+.amap-block--bespoke .amap-pic { flex: 1 1 auto; display: flex; flex-direction: column; }
+.amap-team {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(44px, 1fr));
+  gap: 8px;
+}
+.amap-pods { display: contents; }
+.amap-gov { grid-column: 1 / -1; display: flex; min-width: 0; }
+.amap-pod { display: flex; min-width: 0; }
+.amap-gov .amap-node,
+.amap-pod .amap-node { flex: 1; width: auto; height: auto; }
+.amap-gov .amap-node { gap: 8px; padding-inline: 8px; }
+.amap-gov .amap-node .icon { flex: none; }
+.amap-gov-label { position: relative; min-width: 0; font-family: var(--font-sans); font-weight: 400; font-size: 14px; line-height: 1.2; letter-spacing: 0; color: #000000; }
+.amap-pod .amap-node .icon { width: 26px; height: 26px; max-width: 64%; max-height: 64%; }
 
 /* Oracle: its mark over its platforms, in the diagram's order, each with
    its icon. */
@@ -516,14 +532,14 @@
   .ahero-lead { text-wrap: pretty; }
 }
 
-/* A phone: the blocks stack in reading order, the pods in one row and the
-   platforms two by two. */
+/* A phone: the blocks stack in reading order, the team three across as
+   drawn, and the platforms two by two. */
 @media (max-width: 560px) {
   .amap-layer { padding: 14px; }
   .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "packaged" "products" "bespoke"; }
   .amap-block--products .amap-pic,
   .amap-block--bespoke .amap-pic { margin-top: 14px; padding-top: 0; }
-  .amap-pods { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+  .amap-team { grid-template-rows: none; grid-auto-rows: 56px; gap: 6px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
