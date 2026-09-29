@@ -2642,4 +2642,4 @@ if (failures.length) {
   failures.forEach(function (f) { console.error("  ✗ " + f); });
   process.exit(1);
 }
-console.log("check-grammar: OK — 7 products, every grammar slot filled, and the home page's seven screens.");
+console.log("check-grammar: OK — " + C.products.length + " products, every grammar slot filled, and the home page's eight screens.");
