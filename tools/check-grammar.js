@@ -1831,7 +1831,7 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (/stat-band--home|ahero-stat|ahero-band/.test(altSrc)) {
     fail("site/pages/overview-alt.js", "touches the figures — under the #/alt hero they are the live page's proof strip, left in place, on white (§47)");
   }
-  if (/\.(?:ahero-stat|ahero-band|stat-band--home|stat-row--home)\b/.test(altCss)) {
+  if (/\.(?:ahero-stat\w*|ahero-band\w*|stat-band--home|stat-row--home)\b/.test(altCss)) {
     fail("site/assets/home-alt.css", "styles the figures — the proof strip under the #/alt hero is the live page's own, as on #/ (§47)");
   }
   if (!/\.ahero-photo\s*\{[^}]*align-items:\s*center/.test(altCss)) {
