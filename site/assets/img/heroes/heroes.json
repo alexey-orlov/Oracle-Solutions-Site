@@ -57,6 +57,13 @@
     "source": "SoftServe deck imagery",
     "credit": "SoftServe"
   },
+  "fleet-route-optimization": {
+    "file": "heroes/fleet-route-optimization.jpg",
+    "alt": "A perforated metal lattice rolling away in long waves, rows of open cells running off toward the horizon",
+    "focal": "50% 50%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
   "services": {
     "file": "heroes/services.jpg",
     "alt": "An engineer seen from behind at a wall of code on dark monitors in a low-lit workspace",

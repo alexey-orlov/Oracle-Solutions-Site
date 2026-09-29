@@ -1893,10 +1893,31 @@ if (/request a demo/i.test(raw)) {
   if (pp.bottomBlock !== undefined) fail("productsPage.bottomBlock", "retired in round 18 — the catalog's way out is productsPage.askTile, its last tile");
   var ask = pp.askTile;
   if (!ask || !str(ask.title) || !str(ask.body) || !ask.cta || !str(ask.cta.label) || !str(ask.cta.route)) {
-    fail("productsPage.askTile", "needs { title, body, cta: { label, route } }");
-  } else if (!/^#\/#(request-a-demo|talk)$/.test(ask.cta.route)) {
-    fail("productsPage.askTile.cta.route", '"' + ask.cta.route + '" — the tile leads to the home page\'s contact form');
+    fail("productsPage.askTile", "needs { title, body, outcomes, image, cta: { label, route } }");
+  } else {
+    if (!/^#\/#(request-a-demo|talk)$/.test(ask.cta.route)) {
+      fail("productsPage.askTile.cta.route", '"' + ask.cta.route + '" — the tile leads to the home page\'s contact form');
+    }
+    /* Alex, the same day, on the first cut (a title and two lines on a flat
+       fill, stretched to a ~650 px product tile): "looks too empty". A tile in
+       an equal-height grid takes its tallest peer's height, so it carries its
+       peers' anatomy: a picture where they carry one, one line, three outcome
+       lines like theirs, and the link at the foot. */
+    if (!arr(ask.outcomes) || ask.outcomes.length !== 3 || ask.outcomes.some(function (x) { return !str(x); })) {
+      fail("productsPage.askTile.outcomes", "must hold exactly 3 lines — the tile carries a product tile's anatomy, or it stands empty beside one");
+    } else ask.outcomes.forEach(function (line, i) {
+      if (line.length > 60) fail("productsPage.askTile.outcomes[" + i + "]", "is " + line.length + " characters (max 60)");
+    });
+    if (str(ask.body) && sentences(ask.body) > 1) fail("productsPage.askTile.body", "is " + sentences(ask.body) + " sentences — one line under the title");
+    if (/PROVISIONAL/.test(JSON.stringify(ask))) fail("productsPage.askTile", "still carries provisional copy");
+    if (!str(ask.image)) fail("productsPage.askTile.image", "missing — the drawing that stands where a product tile carries its photograph");
+    else checkGroupDrawing("productsPage.askTile.image", ask.image);
   }
+  var productsTile = fs.readFileSync(path.join(root, "site/pages/products.js"), "utf8");
+  var askFn = productsTile.slice(productsTile.indexOf("function askTile("), productsTile.indexOf("function matchesHtml("));
+  ["ptile-band", "ptile-title", "ptile-outcomes", "ptile-cta"].forEach(function (cls) {
+    if (askFn.indexOf(cls) === -1) fail("site/pages/products.js askTile()", 'renders no "' + cls + '" — the tile is a product tile\'s peer in anatomy, not only in size (round 18)');
+  });
   var productsSrc = fs.readFileSync(path.join(root, "site/pages/products.js"), "utf8");
   if (!/function resultsHtml\(\) \{\s*return matchesHtml\(\) \+ askTile\(\);/.test(productsSrc)) {
     fail("site/pages/products.js", "resultsHtml() must end every result, the empty ones included, on the ask tile");
