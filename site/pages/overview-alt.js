@@ -162,10 +162,22 @@
     var ssMark = window.brandAsset("ssMark", "assets/img/softserve-wordmark-white.svg");
     var oracleMark = window.brandAsset("oracleMark", "assets/img/oracle-wordmark-white.svg");
 
+    /* A group's name breaks where its home tile breaks it, before its last
+       word, so the six names read the same here as in S3; an ampersand holds
+       to the word before it, so a first line too long for a narrow tile
+       wraps as "Enterprise / knowledge &", never before the "&". */
+    function groupName(name) {
+      var cut = name.lastIndexOf(" ");
+      var lines = cut === -1 ? [name] : [name.slice(0, cut), name.slice(cut + 1)];
+      return lines.map(function (line) {
+        return UI.esc(line).replace(/ &amp;/g, " &amp;");
+      }).join("<br>");
+    }
+
     var groupTiles = (C.facets.categories || []).map(function (category, index) {
       return '<li class="atile atile--' + UI.esc(category.tone) + '" style="--i:' + index + '">' +
         '<span class="atile-mark">' + UI.icon(patternIcons[category.id]) + "</span>" +
-        '<span class="atile-name">' + UI.esc(category.full) + "</span>" +
+        '<span class="atile-name">' + groupName(category.full) + "</span>" +
         "</li>";
     }).join("");
 
