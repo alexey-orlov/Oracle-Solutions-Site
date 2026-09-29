@@ -7989,7 +7989,7 @@ Oracle product names follow the plugin's catalog, `Oracle-Packaging-Skills/share
 | Oracle systems | named inside the accordion rows, four spellings of the database | one registry, one name and glyph per system, a 2–4-word role per product |
 | Tab 4 | *Jumpstart*: promise, pillars, outcomes, a week-by-week rail, needs, an investment card with prices, two next-tier cards, a CTA | *Delivery*: the packages table with durations and a footnote |
 | Prices on the site | four proof-of-value prices, two Integration prices | none |
-| `content.js` | 3,776 lines | 3,132 |
+| `content.js` | about 3,780 lines | about 3,130 |
 
 ### 58.6 Checks
 

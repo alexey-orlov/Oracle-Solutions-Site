@@ -147,17 +147,19 @@ the grid, the bar is lifted above the rail, so the search box still comes first.
 
 Alex, 2026-09-29: *"think about styling it as https://www.softserveinc.com/en-us/about-us
 hero screen"*, then *"Full About us crossing"*. The head is one dark photograph
-(`productsPage.image`, the brand template's oval of light) carrying the page's
+(`productsPage.image`, softserveinc.com's About Us photograph, shared with no other
+page) carrying the page's
 name as the H1 and `productsPage.intro` as the lead, both white, over a scrim from
 the copy side, and nothing else: no eyebrow, no search box, no button.
 
 | Part | 1440 (About Us's own) | Up to 720 px |
 |---|---|---|
 | H1 | Azurio `--fs-hero`, .95 leading, 128 px under the header | the same size (48 px on a phone), 72 px under the header |
-| Lead | Replica Light 24/1.2, 56 px under the H1, measure min(684 px, 58vw − gutter), so it stops short of the oval | 18 px, full measure (36rem at most) |
+| Lead | Replica Light 24/1.2, 56 px under the H1, measure min(684 px, 58vw − gutter), so it stops short of the man in the cap | 18 px, full measure (36rem at most), a scrim darkening its rows |
 | The crossing | a 1 px white hairline 25 px under the H1 from the left edge into the spark's left tip and out of its right tip to the edge; one line on the spark's long axis, 25°, from the top edge into its top tip and out of its bottom tip to the foot | the hairline and the upper half of the axis line; the lower half would cross the lead |
-| Spark | 104 px wide, 40 px from the right edge, on the dark wall past the oval | 56 px wide, 20 px from the edge |
-| Photograph | the whole frame, `focal` `100% 30%` (the oval and its light strip) | widened to 160 %, its dark side, the oval's glow at the edge |
+| Spark | 104 px wide, 40 px from the right edge, on the lit wall past the man in the cap (12 px from the edge at 769–1024) | 56 px wide, 20 px from the edge |
+| Photograph | a frame a quarter wider and 50 px taller than the hero, from its left edge (`focal` `0 30%`): the dark side, the man in the cap, the lit wall, the laptop; never the man in white or the woman at the window. 769–1024 px shift it to 67 % and lift it 50 px more | its dark side, the man's lit back at the right edge, his face past it (25 %, 0 from 601 to 720, 50 % to 440) |
+| Faces | no line and no spark on a face at any width (checked by script at 20 widths) | the same |
 
 Every position follows from three numbers, the top padding, the H1's size and the
 spark's width, so **the H1 is one word** (the checker holds it). The glyph's four
