@@ -3,8 +3,10 @@
 
   window.PAGES = window.PAGES || {};
 
-  /* The alternative home page, at #/alt (Alex, 2026-09-29), kept beside the
-     live one until he picks. It is the live home page with three changes:
+  /* The home page (Alex, 2026-09-29: "We are ready to move 'alt' page and
+     set it as main"), first built as the alternative at #/alt, which now
+     lands on #/. It is round 18's home page, rendered by overview.js, with
+     three changes:
 
      S1, the hero, is one dark photograph carrying the H1, its promise and
      the two actions, after softserveinc.com/en-us/services, with one line and
@@ -24,18 +26,22 @@
      three reasons on its right: packaged services over the products, bespoke
      services beside both, all on Oracle's platforms.
 
-     Everything else is rendered by overview.js and taken whole, so the two
-     versions cannot drift while they are compared. Adopting this page moves
-     hero() and diagram() into overview.js and retires this file
-     (PROVENANCE §47). */
-
-  var BASE = "#/alt";
+     Everything else is rendered by overview.js and taken whole. Folding
+     hero() and diagram() into overview.js, and home-alt.css into site.css,
+     retires this file; until then the router's "home" is this page wherever
+     it is loaded, and overview.js alone where it is not (the archive). */
 
   /* The glyphs the diagram needs beyond the shared set, in its style: a 24
      box, a 1.5 px line. */
   var GLYPHS = {
     workshop: '<rect x="4" y="4" width="16" height="11" rx="1"></rect><path d="M12 15v5M8.5 20h7"></path>',
-    plus: '<path d="M12 5.5v13M5.5 12h13"></path>'
+    plus: '<path d="M12 5.5v13M5.5 12h13"></path>',
+    /* The three kinds of pod (Alex, 2026-09-29): one person each, with what
+       the pod brings at the shoulder: the spark for AI, a database for data,
+       a mortarboard for enablement. */
+    "pod-ai": '<circle cx="9" cy="9.5" r="3.2"></circle><path d="M3 20.5a6 6 0 0 1 12 0"></path><path d="M18 3l1.1 2.9L22 7l-2.9 1.1L18 11l-1.1-2.9L14 7l2.9-1.1z"></path>',
+    "pod-data": '<circle cx="9" cy="9.5" r="3.2"></circle><path d="M3 20.5a6 6 0 0 1 12 0"></path><ellipse cx="18.5" cy="4.6" rx="3" ry="1.2"></ellipse><path d="M15.5 4.6v5.6c0 .66 1.34 1.2 3 1.2s3-.54 3-1.2V4.6"></path><path d="M15.5 7.4c0 .66 1.34 1.2 3 1.2s3-.54 3-1.2"></path>',
+    "pod-enablement": '<circle cx="9" cy="9.5" r="3.2"></circle><path d="M3 20.5a6 6 0 0 1 12 0"></path><path d="M14.4 5.6 18.2 3.8 22 5.6l-3.8 1.8z"></path><path d="M16.2 6.5v2.6c0 .6.9 1.1 2 1.1s2-.5 2-1.1V6.5"></path>'
   };
 
   function glyph(name) {
@@ -112,14 +118,31 @@
      stroke follows the cut corners (a clipped border would lose them), and
      dashed where the thing it stands for is optional or still to come. The
      stroke keeps its width when the chip is drawn larger than its box. */
-  function node(size, dashed, inner) {
-    var s = size, c = 4, h = .75;
-    var d = "M" + c + " " + h + "H" + (s - c) + "L" + (s - h) + " " + c + "V" + (s - c) +
-      "L" + (s - c) + " " + (s - h) + "H" + c + "L" + h + " " + (s - c) + "V" + c + "Z";
-    return '<span class="amap-node' + (dashed ? " amap-node--dashed" : "") + '">' +
-      '<svg class="amap-node-shape" viewBox="0 0 ' + s + " " + s + '" aria-hidden="true"><path d="' + d + '"></path></svg>' +
+  function octagon(w, h) {
+    var c = 4, e = .75;
+    return "M" + c + " " + e + "H" + (w - c) + "L" + (w - e) + " " + c + "V" + (h - c) +
+      "L" + (w - c) + " " + (h - e) + "H" + c + "L" + e + " " + (h - c) + "V" + c + "Z";
+  }
+
+  /* A fitted chip takes its box's shape, not a square: fitNodes() redraws its
+     outline at its own size, so the cuts stay 4 px on any proportion. */
+  function node(size, dashed, inner, fit) {
+    var s = size;
+    return '<span class="amap-node' + (dashed ? " amap-node--dashed" : "") + (fit ? " amap-node--fit" : "") + '">' +
+      '<svg class="amap-node-shape" viewBox="0 0 ' + s + " " + s + '"' + (fit ? ' preserveAspectRatio="none"' : "") +
+        ' aria-hidden="true"><path d="' + octagon(s, s) + '"></path></svg>' +
       inner +
       "</span>";
+  }
+
+  function fitNodes(root) {
+    Array.prototype.forEach.call(root.querySelectorAll(".amap-node--fit"), function (el) {
+      var w = el.clientWidth, h = el.clientHeight;
+      var svg = el.querySelector(".amap-node-shape");
+      if (!w || !h || !svg) return;
+      svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+      svg.firstChild.setAttribute("d", octagon(w, h));
+    });
   }
 
   /* One block of the diagram: its name, its line of two to four words, and
@@ -165,11 +188,20 @@
         '<li class="amap-step">' + node(36, last, glyph(stageIcons[index] || "dot")) + "</li>";
     }).join("") + "</ol>";
 
-    /* Three across and four down, the column's own proportions: eleven pods
-       and the open one. */
-    var pods = '<ul class="amap-pods">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(function () {
-      return '<li class="amap-pod">' + node(48, false, glyph("users")) + "</li>";
-    }).join("") + '<li class="amap-pod">' + node(48, true, glyph("plus")) + "</li></ul>";
+    /* Alex's sketch (2026-09-29, "too many pods ... looks like a swarm"): a
+       governance block across the top, then five pods of three kinds, AI,
+       data and enablement, three by two, the last place the open one that
+       adds more. Three rows of one height, as he drew them. */
+    var team = copy.team || {};
+    var pods = '<div class="amap-team">' +
+      '<div class="amap-gov">' +
+        node(48, false, glyph(team.governanceIcon || "shield") +
+          '<span class="amap-gov-label">' + UI.esc(team.governance || "") + "</span>", true) +
+      "</div>" +
+      '<ul class="amap-pods">' + (team.pods || []).map(function (kind) {
+        return '<li class="amap-pod amap-pod--' + UI.esc(kind) + '">' + node(48, false, glyph("pod-" + kind), true) + "</li>";
+      }).join("") + '<li class="amap-pod amap-pod--open">' + node(48, true, glyph("plus"), true) + "</li></ul>" +
+      "</div>";
 
     /* The platforms in the diagram's own order, any the order does not name
        after it, so a platform added to the site still shows. */
@@ -278,8 +310,19 @@
     spark.style.setProperty("--spark-turn", (degrees - 25.5).toFixed(2) + "deg");
   }
 
+  var mapObserver = null;
+
   overviewAlt.mount = function (params, root) {
     if (typeof window.PAGES.overview.mount === "function") window.PAGES.overview.mount(params, root);
+    var map = root.querySelector(".amap");
+    if (mapObserver) mapObserver.disconnect();
+    if (map) {
+      fitNodes(map);
+      if ("ResizeObserver" in window) {
+        mapObserver = new ResizeObserver(function () { fitNodes(map); });
+        mapObserver.observe(map);
+      }
+    }
     var photo = root.querySelector(".ahero-photo");
     if (sparkObserver) sparkObserver.disconnect();
     if (!photo) return;
@@ -292,20 +335,6 @@
 
   overviewAlt.title = function () { return window.SITE_CONTENT.site.title; };
 
-  /* While this page is open, a link into a home screen ("#/#products", the
-     header's Services and Talk to us) lands on the same screen of this page
-     rather than on the live one, so the version being judged is the one
-     scrolled through. This listener is added before the router's (this file
-     loads first), so the router never sees the click it re-routes. */
-  document.addEventListener("click", function (event) {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    var link = event.target.closest ? event.target.closest('a[href^="#/#"]') : null;
-    if (!link || link.hasAttribute("target") || !window.ROUTER) return;
-    if (window.ROUTER.current().path !== "/alt") return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    window.ROUTER.go(BASE + link.getAttribute("href").slice(2));
-  }, true);
-
   window.PAGES.overviewAlt = overviewAlt;
+  window.PAGES.home = overviewAlt;
 })();

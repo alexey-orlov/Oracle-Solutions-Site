@@ -494,10 +494,14 @@ window.SITE_CONTENT = {
        facets.technology), in the platforms' order here (AI Data Platform
        first, Alex). New micro-copy, for Alex's OK: the three lines. */
     diagram: {
-      ariaLabel: "SoftServe's offer in one picture: ready-made products, packaged services that take them to production in fixed steps, and bespoke services from dedicated delivery pods, all built on Oracle's data and AI platforms",
+      ariaLabel: "SoftServe's offer in one picture: ready-made products, packaged services that take them to production in fixed steps, and bespoke services from dedicated AI, data and enablement pods under one governance, all built on Oracle's data and AI platforms",
       packaged: { name: "Packaged services", line: "Fixed-scope path to production" },
       products: { name: "Products", line: "Ready-made agents and workflows" },
       bespoke: { name: "Bespoke services", line: "Custom scope, dedicated pods" },
+      /* Alex's sketch (2026-09-29): governance over five pods of three kinds,
+         and the open one. Each pod is drawn by its kind's person glyph
+         (overview-alt.js), in this order. */
+      team: { governance: "Governance", governanceIcon: "shield", pods: ["ai", "data", "enablement", "ai", "data"] },
       stageIcons: ["workshop", "spark", "network", "scale", "managed"],
       platformOrder: ["oracle-ai-data-platform", "oracle-ai-lakehouse", "oracle-ai-fusion", "oci-nvidia"]
     }

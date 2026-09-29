@@ -509,4 +509,7 @@
   overview.title = function () { return window.SITE_CONTENT.site.title; };
 
   window.PAGES.overview = overview;
+  /* The router's home: overview-alt.js, loaded after this file, takes it over
+     on the site; the archive, which does not load it, keeps this page. */
+  window.PAGES.home = window.PAGES.home || overview;
 })();
