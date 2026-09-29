@@ -6789,7 +6789,7 @@ The big figure is unchanged on every card (Alex: *"short metric is good"*). The 
 ### 40.6 Parallel sessions
 
 - **Fleet route optimization (Sky):** dropped *NVIDIA cuOpt* from its one-liner, its source entry and its pack spec before the checker landed, so no gate went red. Its bullet 1 now carries the drivers.
-- **Repair-or-replace (Belron):** re-voiced its one-liner value-first before listing, and takes the next free section and round.
+- **Repair-or-replace decisions:** re-voiced its one-liner value-first before listing, and takes the next free section and round.
 - **Product pages (UI/layout, on a branch):** keeps `overview.*`, applies the rule to its problem/solution copy, and takes §41 and round 20 at merge.
 - **Not published.** The shared artifact still shows the last publish, and the working tree carries other sessions' in-flight work, so a publish from here would ship theirs too.
 
