@@ -337,6 +337,27 @@ window.SITE_CONTENT = {
       ]
     },
 
+    /* Round 18 (Alex): the second way to buy the practice, under the packaged
+       track: a team built around the customer's roadmap, on a dark photograph.
+       PROVISIONAL COPY — replaced by the round's copy pass. */
+    bespoke: {
+      anchor: "bespoke-services",
+      eyebrow: "Bespoke services",
+      title: "Your AI factory on Oracle.",
+      lead: "PROVISIONAL",
+      points: [
+        { title: "Oracle experts", body: "PROVISIONAL" },
+        { title: "Decades in AI and data", body: "PROVISIONAL" },
+        { title: "Governed pod delivery", body: "PROVISIONAL" },
+        { title: "AI-enabled engineering", body: "PROVISIONAL" }
+      ],
+      image: {
+        wide: "assets/img/bands/bespoke-wide.jpg",
+        tall: "assets/img/bands/bespoke-tall.jpg",
+        alt: "Three people in silhouette around a laptop by tall windows in a dark room, the light behind them"
+      }
+    },
+
     caseStudiesIntro: {
       eyebrow: "Case studies",
       title: "Results on customers’ own data",

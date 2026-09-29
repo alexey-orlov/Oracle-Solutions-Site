@@ -16,7 +16,7 @@
   function head(opts) {
     var UI = window.UI;
     return '<div class="home-head' + (opts.link ? " home-head--split" : "") + '">' +
-      '<p class="eyebrow eyebrow--accent">' + UI.esc(opts.eyebrow) + "</p>" +
+      (opts.eyebrow ? '<p class="eyebrow eyebrow--accent">' + UI.esc(opts.eyebrow) + "</p>" : "") +
       '<h2 class="h2">' + UI.esc(opts.title) + "</h2>" +
       (opts.lead ? '<p class="lead home-head-lead">' + UI.esc(opts.lead) + "</p>" : "") +
       (opts.link ? '<p class="home-head-link">' + UI.linkArrow(opts.link) + "</p>" : "") +
@@ -308,6 +308,53 @@
           '<div class="pillars pillars--list">' + pillars + "</div>" +
         "</div>" +
         '<div class="cta-row deliver-cta">' + ctas + "</div>" +
+      "</div>" +
+      "</div></section>";
+  }
+
+  /* ————— S4b: bespoke services, the AI factory ————— */
+
+  /* Round 18 (Alex): under the packaged track, the other way to buy the
+     practice — a team built around the customer's own roadmap — on a dark
+     photograph so the page changes pace, after softserveinc.com's "Confidence
+     earned" banner: the copy on the photograph's dark left half, the people at
+     work on its right. It keeps the home screens' head (eyebrow, H2, lead) and
+     adds four points, the factory's parts, in a row along the band's foot. The
+     wide photograph carries the band from 769 px up; below that the tall crop
+     takes over, dark at the top where the copy sits, as softserveinc.com's own
+     banner does on a phone. The image is decorative (alt=""): the copy says
+     what the band offers, and `image.alt` describes the picture for the docs. */
+  function bespoke(C) {
+    var UI = window.UI;
+    var block = C.overview.bespoke;
+    if (!block) return "";
+    var image = block.image || {};
+
+    var points = (block.points || []).map(function (point) {
+      return '<li class="bespoke-point">' +
+        '<h3 class="bespoke-point-title">' + UI.esc(point.title) + "</h3>" +
+        '<p class="bespoke-point-body">' + UI.esc(point.body) + "</p>" +
+        "</li>";
+    }).join("");
+
+    var cta = block.cta && block.cta.label
+      ? '<p class="bespoke-cta">' + UI.linkArrow({ label: block.cta.label, href: block.cta.route }) + "</p>"
+      : "";
+
+    return '<section class="section home-screen home-bespoke" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
+      '<div class="bespoke reveal">' +
+        '<picture class="bespoke-media" aria-hidden="true">' +
+          '<source media="(min-width: 769px)" srcset="' + UI.esc(image.wide) + '">' +
+          '<img class="bespoke-img" src="' + UI.esc(image.tall) + '" alt="" loading="lazy" decoding="async">' +
+        "</picture>" +
+        '<span class="bespoke-scrim" aria-hidden="true"></span>' +
+        '<div class="bespoke-copy">' +
+          '<p class="eyebrow bespoke-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
+          '<h2 class="h2 bespoke-title">' + UI.esc(block.title) + "</h2>" +
+          (block.lead ? '<p class="lead bespoke-lead">' + UI.esc(block.lead) + "</p>" : "") +
+          cta +
+        "</div>" +
+        '<ul class="bespoke-points">' + points + "</ul>" +
       "</div>" +
       "</div></section>";
   }
