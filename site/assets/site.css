@@ -3771,13 +3771,18 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(3rem, 7vw, 6.5rem);
+  min-height: clamp(34rem, 44vw, 40rem);
   border-top: 0;
   background: #000000;
   color: #ffffff;
 }
 
 .bespoke-media { position: absolute; inset: 0; z-index: -2; display: block; }
-.bespoke-img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 72% 50%; }
+.bespoke-img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 72% 50%; }
 
 .bespoke-scrim {
   position: absolute;
@@ -3787,14 +3792,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   background:
     linear-gradient(90deg, rgba(0, 0, 0, .72) 0%, rgba(0, 0, 0, .46) 38%, rgba(0, 0, 0, 0) 64%),
     linear-gradient(0deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .4) 30%, rgba(0, 0, 0, 0) 52%);
-}
-
-.bespoke {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(3rem, 7vw, 6.5rem);
-  min-height: clamp(34rem, 44vw, 40rem);
 }
 
 .bespoke-copy { display: flex; flex-direction: column; gap: .875rem; max-width: 36rem; }
@@ -3832,20 +3829,17 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    photograph leaves the band's ground and takes its own row, square, its
    people at the foot as the brand crops it. */
 @media (max-width: 768px) {
-  .home-bespoke { padding-bottom: clamp(3.5rem, 6vw, 5.5rem); }
-  .bespoke { min-height: 0; gap: 0; }
+  .home-bespoke { min-height: 0; gap: 0; }
   .bespoke-media {
     position: relative;
     inset: auto;
     z-index: auto;
-    order: 2;
-    margin: 2rem calc(var(--gutter) * -1) 2.5rem;
+    margin-block: 2rem 2.5rem;
     aspect-ratio: 1100 / 1087;
   }
   .bespoke-img { object-position: 50% 100%; }
   .bespoke-scrim { display: none; }
-  .bespoke-copy { order: 1; }
-  .bespoke-points { order: 3; grid-template-columns: minmax(0, 1fr); }
+  .bespoke-points { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media print {

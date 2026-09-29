@@ -341,20 +341,26 @@
       ? '<p class="bespoke-cta">' + UI.linkArrow({ label: block.cta.label, href: block.cta.route }) + "</p>"
       : "";
 
+    /* Two rows around the picture, so a phone can stack copy, photograph and
+       parts in that order; from 769 px the picture leaves the flow and covers
+       the band. The rows reveal, never the band: a transform on an ancestor
+       would pin the covering picture to it mid-animation. */
     return '<section class="home-screen home-bespoke" id="' + UI.esc(block.anchor) + '">' +
-      '<picture class="bespoke-media" aria-hidden="true">' +
-        '<source media="(min-width: 769px)" srcset="' + UI.esc(image.wide) + '">' +
-        '<img class="bespoke-img" src="' + UI.esc(image.tall) + '" alt="" loading="lazy" decoding="async">' +
-      "</picture>" +
-      '<span class="bespoke-scrim" aria-hidden="true"></span>' +
-      '<div class="wrap bespoke reveal">' +
-        '<div class="bespoke-copy">' +
+      '<div class="wrap bespoke-row">' +
+        '<div class="bespoke-copy reveal">' +
           '<p class="eyebrow bespoke-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
           '<h2 class="h2 bespoke-title">' + UI.esc(block.title) + "</h2>" +
           (block.lead ? '<p class="lead bespoke-lead">' + UI.esc(block.lead) + "</p>" : "") +
           cta +
         "</div>" +
-        '<ul class="bespoke-points">' + points + "</ul>" +
+      "</div>" +
+      '<picture class="bespoke-media" aria-hidden="true">' +
+        '<source media="(min-width: 769px)" srcset="' + UI.esc(image.wide) + '">' +
+        '<img class="bespoke-img" src="' + UI.esc(image.tall) + '" alt="" loading="lazy" decoding="async">' +
+      "</picture>" +
+      '<span class="bespoke-scrim" aria-hidden="true"></span>' +
+      '<div class="wrap bespoke-row">' +
+        '<ul class="bespoke-points reveal">' + points + "</ul>" +
       "</div>" +
       "</section>";
   }
