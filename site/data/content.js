@@ -381,8 +381,11 @@ window.SITE_CONTENT = {
 
     caseStudiesIntro: {
       eyebrow: "Case studies",
-      title: "Results on customers’ own data",
-      body: "What each engagement moves, in numbers the business already tracks."
+      /* Alex, 2026-09-29: the old pair ("Results on customers’ own data",
+         "What each engagement moves …") "speaks only to sellers, not to
+         customers". This one reads the same from either seat. */
+      title: "What changes, in numbers.",
+      body: "The work as it ran before, and the result in a metric the business already tracks."
     },
 
     caseStudies: [

@@ -58,20 +58,20 @@
   ],
   "roles": [
     {
-      "value": "customer",
-      "label": "An Oracle customer"
-    },
-    {
       "value": "oracle-seller",
-      "label": "An Oracle seller"
-    },
-    {
-      "value": "oracle-partner",
-      "label": "An Oracle partner"
+      "label": "Oracle seller"
     },
     {
       "value": "softserve",
-      "label": "SoftServe"
+      "label": "SoftServe seller"
+    },
+    {
+      "value": "oracle-partner",
+      "label": "Oracle partner"
+    },
+    {
+      "value": "customer",
+      "label": "Customer"
     },
     {
       "value": "other",
