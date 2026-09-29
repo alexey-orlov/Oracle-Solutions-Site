@@ -208,9 +208,8 @@ function checkHeroImage(where, image) {
 /* ---- shared heroes ----
    Round 5: the home page carries no hero photograph — the built-on stack visual
    is its only illustration — so `overview.hero.image` is retired, and the
-   home-page block below fails if it returns. Services keeps its hero image, and
-   so do all seven products. */
-checkHeroImage("services", C.services.hero && C.services.hero.image);
+   home-page block below fails if it returns. All seven products keep theirs
+   (the Services page, which had one, left in round 18). */
 
 /* ---- products ---- */
 if (!arr(C.products) || C.products.length !== 7) {
@@ -1718,113 +1717,84 @@ if (/request a demo/i.test(raw)) {
   fail("content.js", 'still says "request a demo" — the one contact ask is site.primaryCta.label (round 10)');
 }
 
-/* ---- rounds 6–7 · the Services page (2026-09-16, 2026-09-17) ----
-   Three screens and the contact block, one message each (round 7, Alex): AI
-   depth with Oracle expertise — the practice (hero and band); it's all about
-   ROI — every step ends in a number (the step track); a fast proof of value,
-   no hassle (the light band and two panels). The steps the page shares with
-   the home track carry the home page's names, Discovery may lead them, and the
-   anchors other pages link to are asserted against the routes that point at
-   them (PROVENANCE §21, §23). */
+/* ---- round 18 · the Services page is gone (Alex, 2026-09-29) ----
+   "Services link at the header - to not link to a separate page, but scroll
+   down to the Packaged services block on the main page. Services page to be
+   fully removed." Its copy, its renderer and its form left with it; the nav's
+   "Services" lands on the home page's Packaged services screen, and a saved
+   link to the old page lands on the home screen that took over its section
+   (assets/app.js MOVED). Every route another surface uses must land on an id
+   the home page renders. */
 (function () {
-  var s = C.services || {};
   var site = C.site || {};
   var shared = C.shared || {};
+  var formsCopy = C.forms || {};
 
-  ["whatWeDo", "whySoftServe"].forEach(function (k) {
-    if (s[k] !== undefined) fail("services." + k, "retired in round 6 — its substance moved into the hero or left the page (PROVENANCE §21)");
-  });
-  ["afterGoLive", "proof"].forEach(function (k) {
-    if (s[k] !== undefined) fail("services." + k, "retired in round 7 — after go-live folds into the Scale step, the measurement into the step track, the proof into proofOfValue (PROVENANCE §23)");
-  });
+  if (C.services !== undefined) fail("services", "retired in round 18 — the Services page is gone; its story is the home page's Packaged services and Bespoke services screens");
   if (site.dividerLabels !== undefined) fail("site.dividerLabels", "retired in round 6 — nothing renders the rule–label–rule divider");
-  if (shared.ladderColumns !== undefined) fail("shared.ladderColumns", "retired in round 6 — Services renders the home step track, not a ladder table");
-
-  var h = s.hero || {};
-  ["lead", "secondParagraph", "platformsTitle"].forEach(function (k) {
-    if (!str(h[k])) fail("services.hero", k + " missing");
+  if (shared.ladderColumns !== undefined) fail("shared.ladderColumns", "retired in round 6 — nothing renders a ladder table");
+  if (formsCopy.contact !== undefined) fail("forms.contact", "retired in round 18 — the scoping-call form left with the Services page; the one ask is forms.demo");
+  ["submitContact", "submitRequest"].forEach(function (k) {
+    if ((formsCopy.labels || {})[k] !== undefined) fail("forms.labels." + k, "retired in round 18 — every contact form submits with site.primaryCta.label");
   });
-  if (!h.headline || !str(h.headline.accent) || !str(h.headline.rest)) fail("services.hero.headline", "needs { accent, rest }");
-  if (!arr(h.stats) || !h.stats.length) fail("services.hero.stats", "missing");
-  (h.platforms || []).forEach(function (platform, i) {
-    if (platform.short !== undefined || platform.long !== undefined) {
-      fail("services.hero.platforms[" + i + "]", "short/long retired in round 6 — the platforms render as chips");
+  if ((formsCopy.demo || {}).secondaryHeading !== undefined) {
+    fail("forms.demo.secondaryHeading", "retired in round 18 — the home contact is the product Contacts switch, whose selected segment is the heading");
+  }
+  if ((formsCopy.confirmations || {}).contactPosted !== undefined) {
+    fail("forms.confirmations.contactPosted", "retired in round 18 — no form asks for a scoping call any more");
+  }
+
+  if (fs.existsSync(path.join(root, "site/pages/services.js"))) {
+    fail("site/pages/services.js", "the Services page is gone (round 18) — delete its renderer");
+  }
+  ["site/index.html", "site/index-legacy.html"].forEach(function (rel) {
+    if (fs.readFileSync(path.join(root, rel), "utf8").indexOf("pages/services.js") !== -1) {
+      fail(rel, "loads pages/services.js — the renderer is gone and the request 404s");
     }
   });
-  if (!h.cta || !str(h.cta.label) || !str(h.cta.route)) fail("services.hero.cta", "needs { label, route }");
-
-  var e = s.howWeEngage || {};
-  ["anchor", "eyebrow", "title", "lead", "footnote"].forEach(function (k) {
-    if (!str(e[k])) fail("services.howWeEngage", k + " missing");
-  });
-  ["ladder", "ladderRules", "ladderFootnote", "howAPovRuns"].forEach(function (k) {
-    if (e[k] !== undefined) fail("services.howWeEngage." + k, "retired in round 6 — the step track replaces the ladder");
-  });
-  /* Round 16: the Services track is the home track, stage for stage. The
-     Discovery step it used to lead with is the home page's Workshop now (one
-     word for one thing), and the managed service left Scaling for a step of
-     its own on both pages. */
-  var homeSteps = ((C.overview || {}).delivery || {}).steps || [];
-  var steps = arr(e.steps) ? e.steps : [];
-  if (steps.length !== homeSteps.length) {
-    fail("services.howWeEngage.steps", "must be the home delivery stages (" + homeSteps.length + "), in the same order, got " + steps.length);
-  } else steps.forEach(function (step, i) {
-    var where = "services.howWeEngage.steps[" + i + "]";
-    ["title", "body", "factLabel", "fact"].forEach(function (k) {
-      if (!str(step[k])) fail(where, k + " missing");
-    });
-    /* One word for one thing: the stages both pages show carry the same names. */
-    var home = homeSteps[i];
-    if (home && step.title !== home.title) {
-      fail(where, 'title is "' + step.title + '", but the home stage is "' + home.title + '"');
+  if (/#\/services\b/.test(raw)) {
+    fail("content.js", 'routes to "#/services" — the page is gone; link the home screen that took over its section');
+  }
+  ["site/pages/overview.js", "site/pages/products.js", "site/pages/product.js", "site/pages/sellers.js", "site/assets/forms.js"].forEach(function (rel) {
+    if (/#\/services\b/.test(fs.readFileSync(path.join(root, rel), "utf8"))) {
+      fail(rel, 'routes to "#/services" — the page is gone');
     }
   });
-  if (steps.some(function (step) { return (step || {}).title === "Discovery"; })) {
-    fail("services.howWeEngage.steps", '"Discovery" is retired in round 16 — the first stage is the Workshop on both pages');
-  }
 
-  var pov = s.proofOfValue || {};
-  ["anchor", "eyebrow", "title", "lead", "footnote"].forEach(function (k) {
-    if (!str(pov[k])) fail("services.proofOfValue", k + " missing");
-  });
-  if (!pov.stat || !str(pov.stat.value) || !str(pov.stat.label)) {
-    fail("services.proofOfValue", "stat needs { value, label } — the duration, set as the band's figure");
-  }
-  if (!pov.cta || !str(pov.cta.label) || !str(pov.cta.route)) {
-    fail("services.proofOfValue", "cta needs { label, route } — the link to the case studies that carry the figures");
-  }
-  if (!arr(pov.panels) || pov.panels.length !== 2) {
-    fail("services.proofOfValue.panels", "must hold two panels — what the customer brings, and what they leave with");
-  } else pov.panels.forEach(function (panel, i) {
-    var where = "services.proofOfValue.panels[" + i + "]";
-    ["id", "icon", "title", "body"].forEach(function (k) {
-      if (!str(panel[k])) fail(where, k + " missing");
-    });
-    if (!arr(panel.bullets) || !panel.bullets.length) fail(where, "bullets missing");
-    if (panel.cta !== undefined) fail(where, "carries a cta — the contact block is the page's one ask");
-  });
-
-  /* The routes other pages use to land here must keep resolving. */
-  var anchors = [e.anchor, pov.anchor, ((C.forms || {}).contact || {}).anchor];
-  [
+  /* The ids the home page renders, and so the only anchors a "#/#…" route may
+     name. `talk` and `kit` are the contact switch's two panes. */
+  var HOME_IDS = ["top", "two-ways", "products", "how-we-deliver", ((C.overview || {}).bespoke || {}).anchor,
+    "case-studies", "about", ((C.overview || {}).contact || {}).anchor, "talk", "kit"];
+  var routes = [
+    ["site.navCta.route", (site.navCta || {}).route],
+    ["site.primaryCta.route", (site.primaryCta || {}).route],
     ["shared.engageLink.route", (shared.engageLink || {}).route],
     ["overview.caseStudiesIntro.cta.route", (((C.overview || {}).caseStudiesIntro || {}).cta || {}).route],
-    ["site.navCta.route", (site.navCta || {}).route]
-  ].forEach(function (pair) {
-    var m = /^#\/services#([a-z0-9-]+)$/.exec(pair[1] || "");
-    if (m && anchors.indexOf(m[1]) === -1) fail(pair[0], '"' + pair[1] + '" points at an anchor the Services page no longer has');
+    ["overview.bespoke.cta.route", (((C.overview || {}).bespoke || {}).cta || {}).route],
+    ["productsPage.askTile.cta.route", (((C.productsPage || {}).askTile || {}).cta || {}).route],
+    ["salesKit.page.routeLink.route", (((C.salesKit || {}).page || {}).routeLink || {}).route]
+  ];
+  (site.nav || []).forEach(function (item, i) { routes.push(["site.nav[" + i + "].route", item.route]); });
+  ((((C.overview || {}).delivery || {}).ctas) || []).forEach(function (c, i) { routes.push(["overview.delivery.ctas[" + i + "].route", c.route]); });
+  routes.forEach(function (pair) {
+    var m = /^#\/#([a-z0-9-]+)$/.exec(pair[1] || "");
+    if (m && HOME_IDS.indexOf(m[1]) === -1) fail(pair[0], '"' + pair[1] + '" names an anchor the home page does not render');
   });
   if (/\bpackages?\b/i.test((shared.engageLink || {}).label || "")) {
-    fail("shared.engageLink.label", "says package — packaging vocabulary stays internal");
+    fail("shared.engageLink.label", "says package — the link names the screen it opens");
+  }
+  var appSrcMoved = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  if (!/"\/services":\s*\{/.test(appSrcMoved)) {
+    fail("site/assets/app.js", "MOVED has no \"/services\" entry — a saved link to the old page would land on Page not found");
   }
 })();
 
 /* ---- round 7 · one proof-of-value duration (Alex, 2026-09-17) ----
    "Make sure that we always mention 4–8 weeks PoV, consistently across the
    site": every Jumpstart states it in its promise, its short form (which the
-   seller CTA interpolates) and its investment figure; the Services page
-   carries it; and no other proof-of-value duration survives anywhere in the
-   data (PROVENANCE §23). Since round 16 the home track states floors instead
+   seller CTA interpolates) and its investment figure, and no other
+   proof-of-value duration survives anywhere in the data (PROVENANCE §23; the
+   Services page that also carried it left in round 18). Since round 16 the home track states floors instead
    ("From 4 weeks"), and the hero tile has said "from 30 days" since round 9. */
 (function () {
   var POV = "4–8 weeks";
@@ -1841,7 +1811,7 @@ if (/request a demo/i.test(raw)) {
   /* Round 16 (Alex: "4-8 weeks, 3-5 months, 3-12 months -> say 'from 4
      weeks', from 3 months"): the home track states each stage's floor. The
      Jumpstart is its second stage now, after the Workshop. Scope copy on the
-     product pages and Services keeps the ranges; that question is open. */
+     product pages keeps the ranges; that question is open. */
   var homeTrack = (o.delivery || {}).steps || [];
   var jump = homeTrack[1];
   if (!jump || jump.fact !== "From 4 weeks") {
@@ -1866,9 +1836,6 @@ if (/request a demo/i.test(raw)) {
   if (((o.hero || {}).stats || []).some(function (s) { return s.value === POV; })) {
     fail("overview.hero.stats", 'states "' + POV + '" as a figure — the hero tile is "from 30 days"; 4–8 weeks is scope copy');
   }
-  if (JSON.stringify(C.services || {}).indexOf(POV) === -1) fail("services", 'never states the "' + POV + '" proof of value');
-  var povStat = ((C.services || {}).proofOfValue || {}).stat;
-  if (povStat && povStat.value !== POV) fail("services.proofOfValue.stat.value", 'must be "' + POV + '"');
   var other = raw.match(/30[–-]45 days|about two months|in 2 months|Two months from kickoff|\b12 weeks\b|two-week acceptance|duration is set at scoping/);
   if (other) fail("content.js", 'carries another proof-of-value duration ("' + other[0] + '") — it is "' + POV + '" across the site');
 })();
