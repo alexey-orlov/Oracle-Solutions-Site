@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="pack-spec" content="pack-spec sha256:d2f185253fa4 commit:a3da314">
+<meta name="robots" content="noindex">
+<title>Account insights · interactive demo</title>
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><path d="M8.2 15.8a5.4 5.4 0 0 1 0-7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.3 18.7a9.5 9.5 0 0 1 0-13.4M18.7 5.3a9.5 9.5 0 0 1 0 13.4"/></svg></span>
+      <div class="brand-text"><strong>Account insights</strong><span>news to next moves</span></div>
+    </div>
+    <nav class="nav" role="tablist" aria-label="Views">
+      <button type="button" role="tab" class="nav-item" data-view="today" aria-selected="true">
+        <svg class="i" viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2"/></svg>Today<span class="nav-count" id="count-today" hidden></span></button>
+      <button type="button" role="tab" class="nav-item" data-view="accounts" aria-selected="false">
+        <svg class="i" viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>Accounts<span class="nav-count">24</span></button>
+      <button type="button" role="tab" class="nav-item" data-view="setup" aria-selected="false">
+        <svg class="i" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Setup</button>
+      <button type="button" role="tab" class="nav-item" data-view="export" aria-selected="false">
+        <svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Export<span class="nav-count" id="count-export" hidden></span></button>
+    </nav>
+    <div class="side-foot">
+      <div class="user"><span class="avatar avatar--rh">RH</span><div><strong>Robin Hale</strong><span>Account manager</span></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="topbar-right">
+        <span class="topbar-note" id="check-note"></span>
+        <span class="chip chip--grey chip--synth">Synthetic data</span>
+        <span class="pill" id="tour-pill" hidden>Guided walkthrough</span>
+        <button id="tour-toggle" type="button" class="btn btn--ghost btn--sm">Exit guide</button>
+      </div>
+    </header>
+
+    <!-- ============ TODAY ============ -->
+    <section class="screen" id="view-today">
+      <div class="page-head">
+        <div>
+          <h1>This morning</h1>
+          <p id="today-helper"></p>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" id="btn-submit">
+            <svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Submit a story</button>
+          <button type="button" class="btn btn--primary" id="btn-approve-rest" hidden>Approve the rest and send</button>
+          <button type="button" class="btn btn--primary" id="btn-run">Check the news now</button>
+        </div>
+      </div>
+
+      <div class="sources" id="sources" aria-label="Sources"></div>
+
+      <div class="run card" id="run" hidden>
+        <div class="run-col">
+          <div class="card-h"><b>The check</b><span class="helper" id="run-state"></span></div>
+          <ol class="stages" id="stages"></ol>
+        </div>
+        <div class="run-col feed-col">
+          <div class="card-h"><b>What it is doing</b><span class="helper">One line per decision</span></div>
+          <ul class="feed" id="feed"></ul>
+        </div>
+      </div>
+      <button type="button" class="run-sum" id="run-sum" hidden></button>
+
+      <div class="band" id="band" hidden>
+        <div class="band-head">
+          <b>By hand → with Account insights, same list</b>
+          <span class="helper">Open a number to see the moves behind it.</span>
+        </div>
+        <div class="kpis">
+          <button type="button" class="kpi" id="kpi-moves" data-kpi="moves"></button>
+          <button type="button" class="kpi" id="kpi-time" data-kpi="time"></button>
+          <button type="button" class="kpi" id="kpi-research" data-kpi="research"></button>
+        </div>
+      </div>
+
+      <div class="card book" id="book"></div>
+
+      <div class="work" id="work" hidden>
+        <div class="card moves-panel">
+          <div class="card-h">
+            <b id="moves-title">Next moves, by story</b>
+            <span class="helper" id="moves-helper"></span>
+          </div>
+          <div id="groups"></div>
+          <div class="filtered" id="filtered"></div>
+        </div>
+        <aside class="card brief" id="brief" aria-live="polite"></aside>
+      </div>
+    </section>
+
+    <!-- ============ ACCOUNTS ============ -->
+    <section class="screen" id="view-accounts" hidden>
+      <div class="page-head">
+        <div><h1>Your book</h1><p>24 accounts from your CRM, with what we do for each today.</p></div>
+      </div>
+      <div class="card flush">
+        <div class="table-wrap"><table class="tbl" id="accounts-table"></table></div>
+      </div>
+    </section>
+
+    <!-- ============ SETUP ============ -->
+    <section class="screen" id="view-setup" hidden>
+      <div class="page-head">
+        <div><h1>Setup</h1><p>What it watches, what you sell, and the rules it follows.</p></div>
+      </div>
+      <div class="setup-grid">
+        <div class="card"><div class="card-h"><b>Sources</b><span class="helper">Licensed feeds and your own records</span></div><ul class="src-list" id="setup-sources"></ul></div>
+        <div class="card"><div class="card-h"><b>Your service lines</b><span class="helper">Every move names one of these</span></div><ul class="lines" id="setup-lines"></ul></div>
+        <div class="card"><div class="card-h"><b>Rules in force</b><span class="helper">Set per client at the start</span></div><ul class="rules" id="setup-rules"></ul></div>
+        <div class="card"><div class="card-h"><b>When each part arrives</b><span class="helper">By delivery stage</span></div><ul class="tiers" id="setup-tiers"></ul></div>
+      </div>
+    </section>
+
+    <!-- ============ EXPORT ============ -->
+    <section class="screen" id="view-export" hidden>
+      <div class="page-head">
+        <div><h1>Export</h1><p>Approved moves, one record per account, ready for your CRM.</p></div>
+        <div class="actions">
+          <div class="seg" role="group" aria-label="Format">
+            <button type="button" class="seg-btn" data-mode="table" aria-pressed="true">Table</button>
+            <button type="button" class="seg-btn" data-mode="json" aria-pressed="false">One record</button>
+          </div>
+          <button type="button" class="btn" id="btn-download">
+            <svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Download</button>
+        </div>
+      </div>
+      <div class="card flush" id="export-panel">
+        <div class="card-h pad"><b id="export-file">crm-import.csv</b><span class="helper" id="export-helper"></span></div>
+        <div class="table-wrap" id="export-table-wrap"><table class="tbl tbl--dense" id="export-table"></table></div>
+        <pre class="json" id="export-json" hidden></pre>
+      </div>
+      <div class="card kept" id="kept"></div>
+    </section>
+
+    <footer class="foot">Demo data only: every company, person, story and figure is invented.</footer>
+  </main>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<!-- submit a story (mocked) -->
+<div class="modal" id="submit" hidden>
+  <div class="modal-card">
+    <p class="eyebrow">Submit a story</p>
+    <h2>Send one story to the next check</h2>
+    <p>It goes through the same filter: matched to your accounts, or set aside if none fit.</p>
+    <label class="field">Link to the story<input type="text" id="submit-url" value="https://example.com/trade-press/story" spellcheck="false"></label>
+    <label class="field">Only for one account (optional)<select id="submit-acc"></select></label>
+    <div class="gate-actions">
+      <button type="button" class="btn" id="submit-cancel">Cancel</button>
+      <button type="button" class="btn btn--primary" id="submit-send">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- welcome / end card -->
+<div class="modal" id="gate" hidden>
+  <div class="modal-card">
+    <p class="eyebrow">Interactive demo</p>
+    <h2 id="gate-title">Account insights</h2>
+    <p id="gate-body">Overnight news on your accounts becomes a short list of next moves, each scored, cited and waiting for your call. See what it finds, check the evidence, and overrule one to watch the numbers follow.</p>
+    <p class="gate-steps" id="gate-steps">6 steps · about 3 minutes</p>
+    <div class="gate-actions">
+      <button class="btn btn--primary" id="gate-start" type="button">Start the walkthrough</button>
+      <button class="btn" id="gate-free" type="button">Explore freely</button>
+    </div>
+    <div id="gate-try" hidden></div>
+    <p class="gate-note">Demo data only. Every company, story and figure is invented.</p>
+  </div>
+</div>
+
+<!-- tour callout -->
+<div class="tour" id="tour" hidden>
+  <div class="tour-card">
+    <div class="tour-top">
+      <span class="tour-step" id="tour-step"></span>
+      <button class="tour-close" id="tour-skip" type="button" aria-label="Do this step for me">Skip</button>
+    </div>
+    <strong id="tour-title"></strong>
+    <p id="tour-body"></p>
+    <div class="tour-progress" id="tour-progress"></div>
+    <button class="btn btn--primary tour-next" id="tour-next" type="button" hidden>Next</button>
+  </div>
+</div>
+
+<script src="tour-engine.js"></script>
+<script src="data.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>
