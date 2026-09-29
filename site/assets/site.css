@@ -976,34 +976,42 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 /* Round 18 (Alex): the catalog's last tile is its way out, "Looking for
-   another solution?", into the home page's contact. A tile of the grid, the
-   product tiles' footprint and cut, in the home page's group-tile language:
-   a flat brand fill with one ink, no photograph, the whole tile one link,
-   the arrow nudging on hover. Lviv blue 75, the fill that opens the group
-   tiles, so the ask reads as the site's own and not as another product. */
-.ptile--ask {
-  --tile-ink: #1a1a1a;
-  justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 18rem;
-  padding: clamp(1.5rem, 2.6vw, 2.25rem);
-  background: #459fdd;
-  color: var(--tile-ink);
+   another solution?", into the home page's contact. The product tile's
+   anatomy, band over body, so it holds its row: a flat Lviv blue 75 fill (the
+   fill that opens the home group tiles, so the ask reads as the site's own and
+   not as another product) with one ink, #1a1a1a, over everything on it, and
+   the family's line drawing in the band where a product carries its
+   photograph, cropped by the band's top and left edges. Only the drawing
+   moves on hover, as on the group tiles. */
+.ptile--ask { --tile-ink: #1a1a1a; background: #459fdd; }
+.ptile--ask:hover, .ptile--ask:focus-within { background: #459fdd; }
+.ptile-band--draw { background: none; }
+
+.ptile-draw {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 0 0;
+  transform-origin: 0 0;
+  transition: transform var(--t-slow) var(--ease);
 }
 
-.ptile--ask:hover, .ptile--ask:focus-visible { background: #459fdd; }
-.ptile-ask-body { display: flex; flex-direction: column; gap: .875rem; }
-.ptile-ask-title { font-family: var(--font-body); font-weight: 400; font-size: 1.75rem; line-height: 1.15; color: var(--tile-ink); }
-.ptile-ask-text { max-width: 30rem; font-size: 1rem; line-height: 1.45; color: var(--tile-ink); }
-.ptile--ask .ptile-ask-cta { align-self: flex-start; color: var(--tile-ink); }
-.ptile--ask .ptile-ask-cta .icon { transition: transform var(--t-slow) var(--ease); }
-.ptile--ask:hover .ptile-ask-cta .icon, .ptile--ask:focus-visible .ptile-ask-cta .icon { transform: translateX(2px); }
-.ptile--ask:focus-visible { outline: 2px solid var(--tile-ink); outline-offset: -6px; }
+@media (hover: hover) {
+  .ptile--ask:hover .ptile-draw, .ptile--ask:focus-within .ptile-draw { transform: scale(1.04); }
+}
 
-@media (max-width: 1279px) { .ptile-ask-title { font-size: 1.5rem; } }
+.ptile--ask .ptile-title, .ptile--ask .ptile-title a, .ptile--ask .ptile-desc,
+.ptile--ask .outcome-list li, .ptile--ask .outcome-list .icon, .ptile--ask .link-arrow { color: var(--tile-ink); }
+.ptile--ask .ptile-title a:hover, .ptile--ask .link-arrow:hover { color: var(--tile-ink); text-decoration: underline; text-underline-offset: .2em; }
+.ptile--ask .chip--tag { --fill: transparent; color: var(--tile-ink); border-color: var(--tile-ink); }
+.ptile--ask :focus-visible { outline-color: var(--tile-ink); }
+
 @media (prefers-reduced-motion: reduce) {
-  .ptile--ask .ptile-ask-cta .icon { transition: none; }
-  .ptile--ask:hover .ptile-ask-cta .icon, .ptile--ask:focus-visible .ptile-ask-cta .icon { transform: none; }
+  .ptile-draw { transition: none; }
+  .ptile--ask:hover .ptile-draw, .ptile--ask:focus-within .ptile-draw { transform: none; }
 }
 
 /* ——— proof rows ——————————————————————————————————————— */

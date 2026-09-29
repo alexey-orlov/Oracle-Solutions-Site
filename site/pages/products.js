@@ -86,19 +86,35 @@
   /* Round 18 (Alex): the way out of the catalog is its last tile, not a band
      under it — "Looking for other solution? Let's talk", into the home page's
      contact. It closes every result, the empty ones included, so whatever a
-     filter returns, the next step sits where the reader's eye already is. One
-     link, the tile itself, like the home page's group tiles. */
+     filter returns, the next step sits where the reader's eye already is.
+     It is a product tile's peer in anatomy, not only in size (Alex, the same
+     day: the first cut, a title and two lines stretched to its neighbour's
+     height, "looks too empty"): a drawing where the photograph sits, the chip
+     row, the title, one line, three outcomes and the link at the foot, on a
+     flat brand fill so it reads as the site's own tile, not another product.
+     The chip names the offer that answers the question, the home page's
+     Bespoke services; the drawing is tools/draw-groups.js's "ask". */
   function askTile() {
     var UI = window.UI;
-    var ask = window.SITE_CONTENT.productsPage.askTile;
+    var C = window.SITE_CONTENT;
+    var ask = C.productsPage.askTile;
     if (!ask) return "";
-    return '<a class="ptile ptile--ask reveal" href="' + UI.esc(ask.cta.route) + '">' +
-      '<span class="ptile-ask-body">' +
-        '<span class="ptile-ask-title">' + UI.esc(ask.title) + "</span>" +
-        '<span class="ptile-ask-text">' + UI.esc(ask.body) + "</span>" +
-      "</span>" +
-      '<span class="ptile-ask-cta link-arrow"><span>' + UI.esc(ask.cta.label) + "</span>" + UI.icon("arrow") + "</span>" +
-      "</a>";
+    var offer = (C.overview.bespoke || {}).eyebrow;
+    var outcomes = (ask.outcomes || []).map(function (line) {
+      return "<li>" + UI.icon("check") + "<span>" + UI.esc(line) + "</span></li>";
+    }).join("");
+    return '<article class="ptile ptile--ask reveal">' +
+      '<div class="ptile-band ptile-band--draw">' +
+        '<img class="ptile-draw" src="' + UI.esc(ask.image) + '" alt="" loading="lazy" decoding="async">' +
+      "</div>" +
+      '<div class="ptile-body">' +
+        (offer ? '<div class="chip-row ptile-chips">' + UI.chip({ label: offer, kind: "outline", className: "chip--tag" }) + "</div>" : "") +
+        '<h3 class="ptile-title"><a href="' + UI.esc(ask.cta.route) + '">' + UI.esc(ask.title) + "</a></h3>" +
+        '<p class="ptile-desc">' + UI.esc(ask.body) + "</p>" +
+        (outcomes ? '<ul class="outcome-list ptile-outcomes">' + outcomes + "</ul>" : "") +
+        '<p class="ptile-cta">' + UI.linkArrow({ label: ask.cta.label, href: ask.cta.route }) + "</p>" +
+      "</div>" +
+      "</article>";
   }
 
   function matchesHtml() {

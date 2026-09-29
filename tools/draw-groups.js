@@ -129,13 +129,29 @@ D["video-image"] = (function () {
   ];
 })();
 
+/* The catalog's last tile (round 18, Alex: the tile looked "too empty"): the
+   way out when no product fits. Three lanes, the products, run in from the
+   edge and stop short; a fourth line, the reader's own workflow, runs under
+   them, rises past their ends on a route of its own, and sparks where a
+   solution is built for it. The tile shows the box cropped to a product
+   tile's 16:7 band, so everything sits above y 170. */
+D["ask"] = (function () {
+  var hub = [300, 70], lastCtrl = [236, 112];
+  var inDir = heading(lastCtrl, hub);
+  return [
+    pathEl("M-20 34H196"), pathEl("M-20 70H156"), pathEl("M-20 106H118"),
+    pathEl("M-20 148H150C200 148 " + P(lastCtrl) + " " + P(hub)),
+    sparkEl(hub, at(hub, inDir + 180, 60), at(hub, inDir, 60), at(hub, inDir + 90, 84))
+  ];
+})();
+
 var ORDER = ["knowledge-analytics", "deep-research", "documents", "transactions", "forecasting-optimization", "video-image"];
 
-ORDER.forEach(function (id) {
+ORDER.concat(["ask"]).forEach(function (id) {
   var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" fill="none">\n  ' + D[id].join("\n  ") + "\n</svg>\n";
   fs.writeFileSync(path.join(OUT, id + ".svg"), svg);
 });
-console.log("draw-groups: wrote " + ORDER.length + " drawings to site/assets/img/groups/");
+console.log("draw-groups: wrote " + ORDER.length + " group drawings and the catalog's ask tile to site/assets/img/groups/");
 
 if (process.argv.indexOf("--sheet") > -1) {
   /* the fills, read from the site so the sheet cannot drift from it */
