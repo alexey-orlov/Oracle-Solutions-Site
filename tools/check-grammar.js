@@ -2801,6 +2801,17 @@ if (/request a demo/i.test(raw)) {
   if (!/\.product-hero\.has-hero-bg \{[^}]*background: linear-gradient\(0deg, #ffffff -24\.5%, #c1dff4 39\.38%, #458fdd 99\.67%\);/.test(cssSrc)) {
     fail("site/assets/site.css .product-hero.has-hero-bg", "must carry softserveinc.com's detail-page hero gradient, linear-gradient(0deg, #ffffff -24.5%, #c1dff4 39.38%, #458fdd 99.67%) (§55)");
   }
+  /* No grey on the blue (Alex, 2026-09-29: "grey elements, tags as they are
+     now etc. don't really look good"): the hero's tags and its second button
+     are white plates with ink words. */
+  [[".product-hero .chip--meta", /--fill:\s*#ffffff/], [".product-hero .chip--outline", /--fill:\s*#ffffff[\s\S]*--ring:\s*none/],
+    [".product-hero .btn--secondary", /--fill:\s*#ffffff/]].forEach(function (pair) {
+    var esc = pair[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    var hit = cssSrc.match(new RegExp("(?:^|\\n|,\\s*)" + esc + "\\s*(?:,[^{]*)?\\{([^}]*)\\}"));
+    if (!hit || !pair[1].test(hit[1])) {
+      fail("site/assets/site.css " + pair[0], "must be a white plate on the product hero's blue — no grey pill or grey button on the gradient (Alex, 2026-09-29)");
+    }
+  });
   /* Every frame that renders shows the product's own screen: a still on disk,
      never the tile's photograph. */
   (C.products || []).forEach(function (p) {
