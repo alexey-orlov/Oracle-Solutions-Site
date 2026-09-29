@@ -144,6 +144,12 @@ var IMPLEMENTATION_TERMS = [
   "gold layer", "governed layer", "semantic layer", "data layer", "answer layer", "data platform",
   "api", "sql", "database", "schema", "confidence score", "structured data", "ocr"
 ];
+/* Round 19: phrases that turn a home case card into a note to its reviewer —
+   legal hedges, the measurement protocol, the engagement's own mechanics. */
+var CASE_HEDGES = [
+  "illustrative", "not contractual", "success metrics", "signed before",
+  "first engagement", "will run", "proof of value", "scored against"
+];
 function implementationTerms(s) {
   var low = s.toLowerCase();
   return IMPLEMENTATION_TERMS.filter(function (term) {
@@ -1167,9 +1173,31 @@ if (!arr(C.products) || C.products.length !== 9) {
     else checkAsset(cw, "industry photograph", "assets/img/industries/" + c.industry + ".jpg");
     if (!c.metric || !str(c.metric.value) || !str(c.metric.label)) fail(cw, "metric needs { value, label }");
     else if (c.metric.value.length > 20) fail(cw, 'metric.value "' + c.metric.value + '" is too long to set large');
-    /* A card whose headline value is words disclaims figures it never shows. */
-    if (c.metric && str(c.metric.value) && !/\d/.test(c.metric.value) && /figures are illustrative/i.test(c.footnote || "")) {
-      fail(cw, "footnote disclaims figures, but metric.value carries no number — trim the figures clause");
+    /* Round 19 (Alex, 2026-09-29: the home case studies focus "on business value,
+       not on technical details + no justifications for reviewer and unnecessary
+       disclaimers"). The chip is the card's one status word, so the footnote row
+       is retired; the card speaks the customer's problem and what changes, never
+       the engine or the engagement's mechanics. */
+    if (c.footnote !== undefined) {
+      fail(cw, "footnote is retired in round 19 — no reviewer justification or disclaimer on a home card; the chip carries the status");
+    }
+    [["line", c.line], ["metric.label", (c.metric || {}).label]].forEach(function (pair) {
+      if (!str(pair[1])) return;
+      implementationTerms(pair[1]).forEach(function (term) {
+        fail(cw, pair[0] + ' names the implementation ("' + term + '") — a case card says what changed for the business, not how it is built');
+      });
+      CASE_HEDGES.forEach(function (h) {
+        if (pair[1].toLowerCase().indexOf(h) !== -1) {
+          fail(cw, pair[0] + ' carries "' + h + '" — a reviewer justification or engagement mechanics, not what changed for the customer');
+        }
+      });
+    });
+    /* PROVENANCE §4 keeps two facts load-bearing on a forecast: it was
+       simulated, on the customer's own history. With the footnote gone they ride
+       in the figure's own line, said positively. */
+    if (c.status === "modeled" && c.metric && str(c.metric.label) &&
+        !(/simulat/i.test(c.metric.label) && /own (history|historical|past)/i.test(c.metric.label))) {
+      fail(cw, "a Forecast card's metric.label must say the figure was simulated on the customer's own history (PROVENANCE §4)");
     }
     if (!c.product || !str(c.product.slug) || !str(c.product.name)) fail(cw, "product needs { slug, name }");
     else {
