@@ -412,6 +412,7 @@
   letter-spacing: 0;
   color: #1a1a1a;
   overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 /* The connectors: one short line per tile column, down to the foundation. */
