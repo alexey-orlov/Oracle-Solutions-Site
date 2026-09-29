@@ -853,17 +853,28 @@
   /* softserveinc.com's footer, cut down (Alex, 2026-09-24): a link row — text
      links on the left, the social glyphs on the right, no frame — over a
      copyright row with the SoftServe spark. No hot links, no office address,
-     no partner marks. The dash separators are the brand's own. */
+     no partner marks. The dash separators are the brand's own. Round 18
+     (Alex): a second row of text links to Oracle's own pages — the three
+     platforms the practice builds on, in the site's canonical order, then
+     Oracle's home page — set exactly like the first. Words, never marks. */
+  function footerRow(items) {
+    return items.map(function (link, i) {
+      return "<li>" + link + (i < items.length - 1 ? '<span class="footer-sep" aria-hidden="true">&nbsp;-&nbsp;</span>' : "") + "</li>";
+    }).join("");
+  }
+
+  function outLink(item) {
+    return '<a href="' + esc(item.url) + '" target="_blank" rel="noopener">' + esc(item.label) + "</a>";
+  }
+
   function renderFooter() {
     var f = C.site.footer;
     var links = [];
     if (f.sellersLink) links.push('<a href="' + esc(f.sellersLink.route) + '">' + esc(f.sellersLink.label) + "</a>");
     f.legalLinks.concat(f.siteLink ? [f.siteLink] : []).forEach(function (item) {
-      links.push('<a href="' + esc(item.url) + '" target="_blank" rel="noopener">' + esc(item.label) + "</a>");
+      links.push(outLink(item));
     });
-    var linkRow = links.map(function (link, i) {
-      return "<li>" + link + (i < links.length - 1 ? '<span class="footer-sep" aria-hidden="true">&nbsp;-&nbsp;</span>' : "") + "</li>";
-    }).join("");
+    var oracle = (f.oracleLinks || []).map(outLink);
     var social = f.social.map(function (item) {
       return '<li><a class="social-link" href="' + esc(item.url) + '" target="_blank" rel="noopener" aria-label="' +
         esc(item.label) + '">' + socialGlyph(item.label) + "</a></li>";
@@ -872,7 +883,13 @@
     document.getElementById("site-footer").innerHTML =
       '<div class="wrap">' +
         '<div class="footer-bar">' +
-          '<ul class="footer-links">' + linkRow + "</ul>" +
+          '<div class="footer-rows">' +
+            '<ul class="footer-links">' + footerRow(links) + "</ul>" +
+            (oracle.length
+              ? '<ul class="footer-links footer-links--oracle" aria-label="' + esc(f.oracleLabel) + '">' +
+                  footerRow(oracle) + "</ul>"
+              : "") +
+          "</div>" +
           '<ul class="social-row" aria-label="' + esc(f.socialLabel) + '">' + social + "</ul>" +
         "</div>" +
         '<div class="footer-copy">' +
@@ -890,9 +907,35 @@
     { pattern: /^\/products$/, page: "products", params: function () { return {}; } },
     { pattern: /^\/products\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1] }; } },
     { pattern: /^\/products\/([^/]+)\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1], tab: m[2] }; } },
-    { pattern: /^\/services$/, page: "services", params: function () { return {}; } },
     { pattern: /^\/sellers$/, page: "sellers", params: function () { return {}; } }
   ];
+
+  /* Round 18 (Alex): the Services page is gone and its story lives on the home
+     page, where the nav's "Services" lands on the Packaged services screen. A
+     link that still points at the old page — a seller's saved URL, an old email
+     — lands on the home screen that took over its section, and the address bar
+     is rewritten in place, so Back does not bounce through the redirect. */
+  var MOVED = {
+    "/services": {
+      "": "how-we-deliver",
+      "how-we-engage": "how-we-deliver",
+      "proof-of-value": "how-we-deliver",
+      "contact": "request-a-demo"
+    }
+  };
+
+  function followMoved(parsed) {
+    var anchors = MOVED[parsed.path];
+    if (!anchors) return parsed;
+    var hash = "#/#" + (anchors[parsed.anchor] || anchors[""]);
+    var replaced = false;
+    try {
+      window.history.replaceState(null, "", hash);
+      replaced = window.location.hash === hash;
+    } catch (error) { /* a sandboxed frame: the forced hash below carries it */ }
+    forcedHash = replaced ? null : hash;
+    return parseHash();
+  }
 
   function decodePart(value) {
     try { return decodeURIComponent(String(value).replace(/\+/g, " ")); }
@@ -1038,7 +1081,7 @@
   }
 
   function renderInner() {
-    var parsed = parseHash();
+    var parsed = followMoved(parseHash());
     var matched = matchRoute(parsed.path);
     var app = document.getElementById("app");
     closeModal();
