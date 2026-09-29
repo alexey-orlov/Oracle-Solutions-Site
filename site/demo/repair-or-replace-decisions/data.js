@@ -11,8 +11,8 @@
  * 20% relative reduction), and avoidable recalibrations computed as the
  * needless-replacement rate x the modelled 42% share of assets whose
  * replacement triggers one. `each` carries the spec's value per unit: about
- * £460 per needless replacement avoided, $300-400 and 4 days per avoidable
- * recalibration.
+ * $250 per needless replacement avoided (US averages; no UK or pound figure,
+ * owner decision 2026-09-29), $300-400 and 4 days per avoidable recalibration.
  *
  * Data model (references/demo-data-model.md): current state (the calls booked
  * at first contact) + named changes with additive KPI effects in rate points +
@@ -29,7 +29,7 @@ window.RRD = {
       def: "Replacements where a repair would have met the limit",
       whose: "Payer funds it · operator is measured on it",
       per: "decisions",
-      each: "about £460 kept on each",
+      each: "about $250 kept on each",
       dp: 1
     },
     repeat: {

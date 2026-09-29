@@ -477,7 +477,7 @@
       auto: run },
     { id: "value", major: 2, passive: true, side: "bottom", scroll: "center",
       title: "Fewer needless replacements, fewer returns",
-      body: "Before and after on the same cases, modelled on industry figures. Each needless replacement caught keeps about £460 with the payer, and each recalibration avoided saves $300–400 and 4 days.",
+      body: "Before and after on the same cases, modelled on industry figures. Each needless replacement caught keeps about $250 with the payer, and each recalibration avoided saves $300–400 and 4 days.",
       target: function () { return $("#band"); },
       anchor: function () { return $("#kpi-needless"); },
       auto: function () { tour.next(); } },

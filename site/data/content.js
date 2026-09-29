@@ -3409,6 +3409,22 @@ window.SITE_CONTENT = {
           "after": { "value": 1.2, "label": "1.2% after" }
         },
         "line": "Repairs that fail and come back, absorbed by the operator."
+      },
+      {
+        "key": "saving-per-call",
+        "title": "Saving per needless replacement avoided",
+        "kind": "estimated",
+        "owner": "Head of claims, on the payer's side",
+        "figure": { "text": "about $250" },
+        "visual": {
+          "form": "compression",
+          "unit": "cost of one windscreen call",
+          "direction": "down",
+          "scale": { "min": 0, "max": 350 },
+          "before": { "value": 350, "label": "$350 replacement" },
+          "after": { "value": 99, "label": "$99 repair" }
+        },
+        "line": "A windscreen replaced where a repair would have met the limit."
       }
     ],
     "features": [

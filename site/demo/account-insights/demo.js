@@ -163,7 +163,7 @@
     if (S.view === "today" && S.open) c += '<span class="sep">›</span><b>' + esc(acc(move(S.open).account).name) + "</b>";
     $("#crumbs").innerHTML = c;
     $("#check-note").innerHTML = icon("clock") + (S.ran ? "Checked " + D.lastCheck.after + " · next " + D.lastCheck.next
-      : "Last check " + D.lastCheck.before + " · every 30 minutes");
+      : "Last check " + D.lastCheck.before + " · next " + D.lastCheck.beforeNext);
   }
 
   function renderNav() {
@@ -197,9 +197,9 @@
   function renderHead() {
     var k = kpis(appliedIds());
     var helper;
-    if (!S.ran && !S.busy) helper = "214 stories on your 24 accounts since 18:00, unread.";
+    if (!S.ran && !S.busy) helper = "214 stories from your feeds since 18:00, unread.";
     else if (S.busy) helper = "Reading 214 stories against your 24 accounts…";
-    else if (S.sent) helper = "Sent: " + plural(MOVES.filter(function (m) { return status(m) === "approved"; }).length, "record", "records") + " for the CRM, one per account.";
+    else if (S.sent) helper = "In the CRM file: " + plural(MOVES.filter(function (m) { return status(m) === "approved"; }).length, "record", "records") + ", one per account.";
     else helper = plural(k.after.moves, "next move", "next moves") + " from 5 signals, waiting for your call.";
     $("#today-helper").textContent = helper;
     var run = $("#btn-run");
@@ -210,7 +210,7 @@
     var n = MOVES.filter(function (m) { var st = status(m); return st === "open" || st === "admitted"; }).length;
     rest.hidden = !S.ran;
     rest.disabled = !n;
-    rest.textContent = n ? "Approve the rest (" + n + ") and send" : (S.sent ? "Sent to the CRM file" : "Nothing left to approve");
+    rest.textContent = n ? "Approve the rest (" + n + ") and export" : (S.sent ? "Exported to the CRM file" : "Nothing left to approve");
   }
 
   function renderBook() {
@@ -218,10 +218,10 @@
     box.hidden = S.ran || S.busy;
     if (box.hidden) return;
     var rows = D.accounts.slice().sort(function (a, b) { return b.unread - a.unread; }).slice(0, 10);
-    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories since 18:00 on your book, unread. Most accounts are next reviewed weeks from now.</span></div>' +
+    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories from your feeds since 18:00, unread. Most accounts are next reviewed weeks from now.</span></div>' +
       '<div class="book-grid">' + rows.map(function (a) {
         return '<div class="book-row"><span class="acc">' + avatar(a.owner) + "<b>" + esc(a.name) + '</b></span><span class="unread">' +
-          plural(a.unread, "story", "stories") + '</span><span class="due">next review in ' + a.review + " days</span></div>";
+          plural(a.unread, "mention", "mentions") + '</span><span class="due">next review in ' + a.review + " days</span></div>";
       }).join("") + '</div><p class="book-foot">Showing the 10 busiest of 24 accounts.</p>';
   }
 
@@ -258,11 +258,10 @@
     var k = kpis(appliedIds()), b = k.before, a = k.after;
     var tiles = {
       moves: { before: String(b.moves), after: String(a.moves), delta: (a.moves - b.moves >= 0 ? "+" : "−") + Math.abs(a.moves - b.moves),
-        line: plural(a.missed, "move", "moves") + " on accounts the news never named · " + plural(a.protect, "renewal", "renewals") + " to protect" },
+        line: plural(a.missed, "move", "moves") + " on accounts the news never named · " + plural(a.protect, "account", "accounts") + " to protect" },
       time: { before: fmtDays(b.days), after: fmtDuration(a.minutes), delta: a.minutes < 24 * 60 ? "same day" : "",
         line: "By hand: the account's next review. Here: this morning." },
-      research: { before: fmtResearch(b.research), after: fmtResearch(a.research),
-        delta: b.research ? "−" + Math.round((1 - a.research / b.research) * 100) + "%" : "",
+      research: { before: fmtResearch(b.research), after: fmtResearch(a.research), delta: "",
         line: "Reaching the same list by hand, against reviewing it." }
     };
     ["moves", "time", "research"].forEach(function (id) {
@@ -288,7 +287,7 @@
     if (st === "rejected") cls.push("is-rejected");
     if (S.kpi === "moves") cls.push(m.rel === "named" ? "is-dim" : "is-hit");
     var note = "";
-    if (st === "rejected") note = '<span class="r-note">Rejected: ' + esc(S.decided[m.id].reason) + "</span>";
+    if (st === "rejected") note = '<span class="r-note">Rejected: ' + esc(decisionText(m)) + "</span>";
     /* The status sits beside the name, so the row's left part (what a zoomed
        product-page frame shows) carries the whole decision. An open move
        needs no chip: the list is the review queue. */
@@ -335,7 +334,7 @@
     if (!S.ran) { box.innerHTML = ""; return; }
     var m = S.open && move(S.open);
     if (!m) {
-      box.innerHTML = '<div class="empty">Open a move to see what changes, what to offer, both scores and every source behind it.</div>';
+      box.innerHTML = '<div class="empty">Open a move: what changes, what to offer, both scores, every source.</div>';
       return;
     }
     var a = acc(m.account), s = sig(m.signal), st = status(m);
@@ -358,9 +357,15 @@
     h.push('<div class="b-sec review" id="review">' + reviewControls(m, st) + "</div>");
     box.innerHTML = h.join("");
   }
+  /* The reviewer's reason, and their own words when they add any. */
+  function decisionText(m) {
+    var d = S.decided[m.id];
+    if (!d) return "";
+    return (d.reason || "") + (d.note ? (d.reason ? " · " : "") + "“" + d.note + "”" : "");
+  }
   function reviewControls(m, st) {
     if (st === "filtered") {
-      return '<p class="state">Below the confidence line, so it was kept off the list. Admit it if you know better.</p>' +
+      return '<p class="state">Kept off the list: below the confidence line. Admit it if you know better.</p>' +
         '<div class="row"><button type="button" class="btn" data-act="admit">Admit it to the list</button></div>';
     }
     if (st === "held") {
@@ -369,13 +374,16 @@
       }).join("") + "</div>";
     }
     if (st === "approved") {
-      return '<p class="state">Approved. It goes to the CRM file with its sources.</p><div class="row"><button type="button" class="btn" data-act="undo">Undo</button></div>';
+      var an = S.decided[m.id].note;
+      return '<p class="state">Approved. It goes into the CRM file with its sources.' + (an ? " Note: “" + esc(an) + "”" : "") +
+        '</p><div class="row"><button type="button" class="btn" data-act="undo">Undo</button></div>';
     }
     if (st === "rejected") {
-      return '<p class="state">Rejected: ' + esc(S.decided[m.id].reason) + '. The reason is kept with the decision.</p><div class="row"><button type="button" class="btn" data-act="undo">Restore it</button></div>';
+      return '<p class="state">Rejected: ' + esc(decisionText(m)) + '. Kept with the decision.</p><div class="row"><button type="button" class="btn" data-act="undo">Restore it</button></div>';
     }
     return '<label>Reason, if you reject<select id="reason">' + D.reasons.map(function (r) { return "<option>" + esc(r) + "</option>"; }).join("") +
-      '</select></label><div class="row"><button type="button" class="btn btn--danger" id="btn-reject">Reject</button>' +
+      '</select></label><label>Note, kept with the decision<textarea id="note" rows="2" placeholder="Optional"></textarea></label>' +
+      '<div class="row"><button type="button" class="btn btn--danger" id="btn-reject">Reject</button>' +
       '<button type="button" class="btn btn--ok is-filled" id="btn-approve">' + icon("check") + "Approve</button></div>";
   }
 
@@ -433,9 +441,13 @@
       }).join("") : '<tr><td colspan="' + D.exportColumns.length + '"><span class="sub">Approve moves on the Today screen; they appear here.</span></td></tr>') + "</tbody>";
     $("#export-json").textContent = rows.length ? JSON.stringify(recordOf(rows[0]), null, 2) : "{}";
     var kept = MOVES.filter(function (m) { var st = status(m); return st === "rejected" || st === "held" || st === "open" || st === "admitted"; });
-    $("#kept").innerHTML = '<div class="card-h"><b>Kept out of the file</b><span class="helper">Only approved moves are exported</span></div><ul>' +
+    var nRej = MOVES.filter(function (m) { return status(m) === "rejected"; }).length;
+    /* Every decision is kept as input for the proof of value's evaluation:
+       the reviewers' approve and reject calls are its acceptance measure. */
+    $("#kept").innerHTML = '<div class="card-h"><b>Kept out of the file</b><span class="helper">Only approved moves are exported</span></div>' +
+      '<p class="eval">Kept for the evaluation: ' + plural(rows.length, "approval", "approvals") + ", " + plural(nRej, "rejection", "rejections") + ", each with its reason.</p><ul>" +
       (kept.length ? kept.map(function (m) {
-        var st = status(m), why = st === "rejected" ? "Rejected: " + S.decided[m.id].reason : st === "held" ? "Waiting: confirm which Keswick" : "Waiting for a decision";
+        var st = status(m), why = st === "rejected" ? "Rejected: " + decisionText(m) : st === "held" ? "Waiting: confirm which Keswick" : "Waiting for a decision";
         return "<li><b>" + esc(acc(m.account).name) + "</b><span>" + esc(why) + "</span></li>";
       }).join("") : "<li><span>Nothing: every move in front of the team was approved.</span></li>") + "</ul>";
   }
@@ -504,16 +516,17 @@
       $("#brief").scrollTop = 0;
     }
   }
-  function decide(id, state, reason) {
+  function noteText() { var n = $("#note"); return n ? n.value.trim() : ""; }
+  function decide(id, state, reason, note) {
     var m = move(id);
     if (!m || isHeld(m)) return;
-    S.decided[id] = { state: state, reason: reason || "" };
+    S.decided[id] = { state: state, reason: reason || "", note: note || "" };
     render();
-    toast(state === "approved" ? "Approved: it goes to the CRM file with its sources." : "Rejected, reason kept. The numbers are updated.");
+    toast(state === "approved" ? "Approved: it goes into the CRM file with its sources." : "Rejected, reason kept. The numbers are updated.");
   }
   function reject(id) {
     var sel = $("#reason");
-    decide(id, "rejected", sel ? sel.value : D.reasons[0]);
+    decide(id, "rejected", sel ? sel.value : D.reasons[0], noteText());
   }
   function undo(id) {
     var was = S.decided[id];
@@ -545,14 +558,14 @@
     render();
     window.scrollTo(0, 0);
     var held = MOVES.filter(function (m) { return status(m) === "held"; }).length;
-    toast(n + " approved and sent" + (held ? "; the Keswick move waits for you." : "."));
+    toast(n + " approved and exported" + (held ? "; the Keswick move waits for you." : "."));
   }
 
   /* ---- the tour ---- */
   var STEPS = [
     { id: "sources", major: 1, passive: true, side: "bottom",
-      title: "Every account, every source",
-      body: "Your 24 accounts, their owners and your 12 service lines, against newswires, filings and market news. 214 stories landed since last night; nobody has read them.",
+      title: "Nobody has read last night's news",
+      body: "Your 24 accounts, their owners and your 12 service lines, against newswires, filings and market news. 214 stories landed since 18:00, and most accounts are next reviewed weeks from now.",
       target: function () { return $("#sources"); },
       auto: function () { tour.next(); } },
     { id: "run", major: 1, waits: true, side: "bottom",
@@ -573,11 +586,11 @@
       auto: function () { selectKpi("moves"); tour.next(); } },
     { id: "open", major: 4, side: "bottom", scroll: "center",
       title: "Open a move nobody asked for",
-      body: "Meridian Grocers is not in the story. It buys from Alder Foods, and its inbound contract with you ends next year.",
+      body: "Meridian Grocers is not in the story. It buys from Alder Foods, and its inbound contract with you ends this December.",
       target: function () { return $('li[data-move="MV-03"]'); },
       auto: function () { openMove("MV-03"); tour.next(); } },
     { id: "brief", major: 4, passive: true, side: "left",
-      title: "The reasoning, with its sources",
+      title: "Every claim shows its source",
       body: "What changes, what you could sell, how big and how sure. Every claim is cited to the article, the filing or your own CRM note.",
       target: function () { return $("#brief"); },
       anchor: function () { return $("#brief .b-scores"); },
@@ -585,7 +598,7 @@
       auto: function () { tour.next(); } },
     { id: "flagged", major: 5, side: "bottom", scroll: "center",
       title: "Open the move already in hand",
-      body: "Baltic Packaging's new lane is already in the Poland team's plan. The system cannot see your pipeline; you can.",
+      body: "Baltic Packaging's new lane is already in the Lindmark team's plan. The system cannot see your pipeline; you can.",
       target: function () { return $('li[data-move="MV-02"]'); },
       auto: function () { openMove("MV-02"); tour.next(); } },
     { id: "reject", major: 5, side: "left",
@@ -601,8 +614,8 @@
       anchor: function () { return $("#kpi-moves"); },
       auto: function () { tour.next(); } },
     { id: "send", major: 6, side: "bottom",
-      title: "Approve the rest and send",
-      body: "Only approved moves reach your CRM, one record per account. The Keswick move waits: the story's name matches two of your accounts.",
+      title: "Approve the rest and export",
+      body: "Only approved moves go into the CRM import file, one record per account. The Keswick move waits: a name in your records matches two accounts.",
       target: function () { return $("#btn-approve-rest"); },
       auto: function () { approveRest(); tour.next(); } },
     { id: "file", major: 6, passive: true, side: "top",
@@ -646,7 +659,7 @@
       return;
     }
     if ((t = e.target.closest("#btn-reject"))) { var id = S.open; reject(id); if (id === "MV-02") tour.after("reject"); return; }
-    if ((t = e.target.closest("#btn-approve"))) { decide(S.open, "approved"); return; }
+    if ((t = e.target.closest("#btn-approve"))) { decide(S.open, "approved", "", noteText()); return; }
     if ((t = e.target.closest("[data-act=undo]"))) { undo(S.open); return; }
     if ((t = e.target.closest("[data-act=confirm]"))) { confirmAccount(S.open, t.dataset.acc); return; }
     if ((t = e.target.closest("[data-act=admit]"))) { admit(S.open); return; }
