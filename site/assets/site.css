@@ -2639,7 +2639,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .flow-pipe { flex: 1 1 0; flex-direction: row; align-items: center; gap: .625rem; }
   .flow-pipe-label { text-align: left; }
   .flow-pipe-line { flex: none; order: -1; width: 2px; height: 3rem; }
-  .flow-pipe-line::before, .flow-pipe-line::after { top: auto; right: auto; bottom: auto; left: 50%; transform: translateX(-50%); border: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; }
+  .flow-pipe--in .flow-pipe-line::after,
+  .flow-pipe--out .flow-pipe-line::before { top: auto; right: auto; bottom: auto; left: 50%; transform: translateX(-50%); border: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; }
   .flow-pipe--in .flow-pipe-line::after { bottom: -1px; border-top: 10px solid var(--flow-pipe); }
   .flow-pipe--out .flow-pipe-line::before { top: -1px; border-bottom: 10px solid var(--flow-pipe); }
 }
