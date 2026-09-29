@@ -400,14 +400,16 @@
       "</section>";
   }
 
-  /* ————— the KPI band (round 20) —————
+  /* ————— the numbers widget (round 20 tiles, round 21 widget) —————
      What changes in your numbers (Alex: the ROI block was "too wordy, and too
      boring"; show the metric, "from X" or the potential range, and never a
-     footnote, a method or a note to the reviewer). One full-bleed band of two
-     or three tiles; each is the fact dash, the metric and its kind, one figure,
-     one small chart drawn from the metric's own numbers, the chart's labels as
-     real text, one line and the owner. The chart is aria-hidden and carries
-     nothing its labels row does not print. */
+     footnote, a method or a note to the reviewer). Two or three tiles; each is
+     the fact dash, the metric and its kind, one figure, one small chart drawn
+     from the metric's own numbers, the chart's labels as real text, one line
+     and the owner. The chart is aria-hidden and carries nothing its labels row
+     does not print. Round 21 (Alex, 2026-09-29: "ROI metrics look like widget
+     on the right") set the tiles in one white card beside the main column,
+     where round 20 had a full-bleed band between the plates and the screens. */
 
   var KPI_FORMS = { compression: true, range: true, dumbbell: true, baseline: true };
 
@@ -578,8 +580,8 @@
     var metrics = product.overview.metrics;
     if (!metrics || !metrics.length) return "";
     var id = "kpi-" + product.slug;
-    return '<section class="kpi-band reveal" aria-labelledby="' + id + '">' +
-      '<h2 class="h2 ov-h2" id="' + id + '">' + UI.esc(label("outcomes")) + "</h2>" +
+    return '<section class="kpi-widget reveal" aria-labelledby="' + id + '" data-kpi-widget>' +
+      '<h2 class="kpi-widget-title" id="' + id + '">' + UI.esc(label("outcomes")) + "</h2>" +
       '<div class="kpi-grid kpi-grid--' + metrics.length + '">' +
         metrics.map(function (metric) { return kpiTile(metric); }).join("") +
       "</div>" +
@@ -650,12 +652,17 @@
       "</div></section>";
   }
 
-  /* Round 20 — one column at the wrap's width and no rail, in the order of the
-     argument: the problem and what changes, what changes in the numbers, then
-     how it works. The number is the reason to look at the screens. The More
-     detail disclosure is gone (Alex); `scope`, `features` and each step's
-     `features` stay in the data, unrendered, for the Jumpstart tab next round.
-     The industry cases and the case study are the Use cases tab's (round 10). */
+  /* Round 21 (Alex, 2026-09-29, option b: "Problem solution and the How it
+     works taking the central space (left; 4/7 to 2/3 of width); and ROI
+     metrics look like widget on the right"): from 1240px the tab is a 2fr
+     main column, the problem and what changes over How it works, beside the
+     numbers widget in a 1fr column (site.css). The markup keeps round 20's
+     order of the argument (the problem and what changes, the numbers, the
+     screens), which is the one-column order below 1240px and the order a
+     screen reader reads. The More detail disclosure is gone (round 20);
+     `scope`, `features` and each step's `features` stay in the data,
+     unrendered, for the Jumpstart tab. The industry cases and the case study
+     are the Use cases tab's (round 10). */
   function overviewTab(product) {
     return problemSolution(product.overview.problemSolution) +
       outcomesBlock(product) +

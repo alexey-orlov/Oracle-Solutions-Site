@@ -20,14 +20,15 @@
    left edge), so the picture dissolves into it without a seam. */
 .ahero { background: #040d16; color: #ffffff; }
 
-/* The photograph carries the H1 and the two actions. It is held to the
-   window's height less the band under it and the next screen's heading, so
-   S2's heading shows at 1280 x 800 and 1366 x 768. */
+/* The photograph carries the H1 and the two actions, set low in it, so the
+   claim leads straight into the promise and the figures under it. It is
+   held to the window's height less the band and the next screen's heading,
+   so S2's heading shows at 1280 x 800 and 1366 x 768. */
 .ahero-photo {
   position: relative;
   isolation: isolate;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   height: clamp(400px, calc(100vh - 380px), 700px);
 }
 
@@ -94,7 +95,7 @@
   flex-direction: column;
   gap: 28px;
   width: 58%;
-  padding-block: 28px;
+  padding-block: 28px 40px;
 }
 
 /* Four lines: the first sentence breaks after "agents" (the em cap), the
