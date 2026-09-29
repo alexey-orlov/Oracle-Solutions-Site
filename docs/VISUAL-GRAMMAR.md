@@ -186,41 +186,38 @@ Round 20 (Alex: *"too much text, heading indistinguishable from text, not sexy -
 
 **The copy** (Alex: *"preserve sharpness and focus around ROI, business value and clarity for the audience outside the specific industry"*). The problem headline names the role and what the situation costs them, in the nouns on their desk; the headline opposite says what changes in that person's work, and how much faster. Neither names a platform or an engine (round 19's rule: the checker fails `IMPLEMENTATION_TERMS` in both fields), and neither repeats the product's one-liner. The checker also holds the two budgets, and fails a plate's `title` or `icon` by name.
 
-### 2.2 How it works — the step list beside one frame
+### 2.2 How it works — a row of step tabs, the open step's text, one frame
 
-`overview.steps[]` — **3–5 steps** (four on every product today), `{ n, title, text, shot: { full, zoom, region, anchor, alt }, features }`. Heading `sectionLabels.howItWorks`, an H2 at 48 px.
+`overview.steps[]` — **3–5 steps** (four on every product today), `{ n, title, text, shot: { full, alt }, features }`. Heading `sectionLabels.howItWorks`, an H2 at 48 px (40 on a window 820 px tall or less, from 1240 px).
 
-Round 20 (Alex: *"Can't fit the entire block to a single screen, which is bad + step headings are poorly lined up + too many fonts in a single place; screenshots are too small cuts … ideally, screenshots be fullscreen"*). The steps are one vertical list, and the screen is one frame beside it:
+Round 20 (Alex: *"Can't fit the entire block to a single screen, which is bad + step headings are poorly lined up + too many fonts in a single place; screenshots are too small cuts … ideally, screenshots be fullscreen"*) gave the block one frame and a list of steps beside it. **Round 21** moved it into the main column (§2), where a list beside the frame left the frame too small to read, so **the steps are a row of tabs over the frame**, and (Alex, 2026-09-29: *"I don't like these blue highlights and callouts. Just have screenshots without those callouts"*) **the frame is the screen and nothing drawn over it**:
 
 ```
 H2  How it works
-1  Drop the document in             [ the frame, 872 × 545 at 1440:            ]
-   the open step's text, 16 px      [ the whole screen, the step's region      ]
-2  The rates come out as rows       [ ringed in blue, and the zoom of that     ]
-3  Doubts are flagged               [ region inset at a free corner, 401 px    ]
-4  Approve and export
+1 Drop the document in | 2 The rates come out as rows | 3 Doubts are flagged | 4 Approve and export
+═══════════════════════
+The open step's text, 16 px, one or two lines
+[ the frame, 800 × 500 at 1440: the whole screen, nothing over it ]
 ```
 
 | Part | Rule |
 |---|---|
-| Grid | `.hiw-body`: the list at 344 px and the frame, 32 px apart, from 1400 px up; 320 px and 24 below. The frame sets the block's height; the list is shorter. |
-| Step row | `ol.hiw-list`, one row per step, its head a `<button>` (`aria-expanded`; `aria-controls` names its text and its frame). The number and the title **on one line, both 20 px Replica 400**: the number `#1485c4` on the open step, `#4c5156` otherwise. Padding 16 / 0 / 16 / 20, a 1 px `#d1dae2` rule under every row. The open row carries a **2 px blue left rule** and shows its `text` under the title at **16 px Light** in `#4c5156`, wrapped to avoid a lone last word; a closed row is its title alone. **Two sizes, 20 and 16, and no tick-lists.** A `title` is at most 26 characters, so none wraps; a `text` at most 30 words. |
-| Frame | `.hiw-shot`, 16:10: **872 × 545 at 1440**, 744 × 465 at 1280. `shot.full`, the whole screen, in a 12 px cut with a 1 px `#bdcbd7` hairline. Its `alt` is `shot.alt`, what the screen shows. |
-| Region ring | `shot.region`, `[x, y, w, h]` in percent of the frame: the one thing the step is about, outlined 2 px `#1485c4` with a 4 px cut. |
-| Zoom inset | `shot.zoom`, the region at its capture scale, in the corner `shot.anchor` names (`tl`, `tr`, `bl` or `br`), **2.75% of the frame's width from its side and 4.4% of its height from its top or bottom** (24 px each at 1440), so the offset scales with the frame and an inset clears its ring at 1280 as at 1440 (the checker holds the four offsets). **The zoom image is 46% of the frame wide (401 px at 1440)**, or narrower where its own aspect would take it past half the frame's height, with a 2 px blue outline outside it and an 8 px cut. The anchor is the corner whose inset leaves the region clear: an inset never hides its own ring. |
-| Switching | A click on a row, or ←/→/↑/↓, Home and End: one step open at a time, its frame and inset crossfading in over 200 ms with no dip (instant under reduced motion). Step 1 is open on load. |
-| 768–1099 px | One column: the frame at the wrap's width, then the same list under it. |
-| Below 768 px | No frame. Four static cards, each the number and the title (20 px), the text (16 px), then **the zoom alone** at the column's width (about 343 px at 375), because the zoom is the part of the screen that reads at that width. |
+| Tab row | `.hiw-tabs`, a `role="tablist"` named by the H2: one column per step, 24 px apart, over one 1 px `#d1dae2` hairline. Each step is a `role="tab"` button with `aria-selected` and `aria-controls` its panel: the number and the title **both 18 px Replica 400**, the title wrapping under itself clear of its number; the number `#1485c4` on the selected step and `#4c5156` otherwise; **the selected step on a 2 px blue underline**, the site's tab language; a hover turns an unselected title blue. A `title` is at most 26 characters, so it takes one or two lines. |
+| Text | the open step's `text` in its `role="tabpanel"`, **between the tab row and the frame**, at **16 px Light** in `#26292b`, at most 30 words, a 736 px measure, wrapped to avoid a lone last word. **Two sizes, 18 and 16.** |
+| Frame | `.hiw-shot`, 16:10: **800 × 500 at 1440** (the main column), 693 × 433 at 1280, 901 × 563 at 1920. `shot.full`, the whole screen, in a 12 px cut with a 1 px `#bdcbd7` hairline, and **no ring, no inset and no mark over it**. Its `alt` is `shot.alt`, what the screen shows. |
+| Full size | The frame is a button (`zoom-in` cursor, aria-label `sectionLabels.shotOpen` and the step's title) that opens the screen in the site's modal at up to 1,440 px wide, the step's number and title over it; on a phone the screen keeps its 1,280 px and the reader pans across it. The one mark on the frame, an expand glyph in a white 36 px square at its top right, shows on hover or focus only. |
+| Switching | A click on a step, or ←/→/↑/↓, Home and End: one step selected at a time; its text shows at once and its frame crossfades in over 200 ms with no dip (instant under reduced motion). Every step's text and frame share the panels' two row tracks (subgrid), so the frame sits at one height whatever a text wraps to. Step 1 is selected on load. |
+| 1100–1239 px | One column is wide enough for the steps to stand as a list beside the frame: the tabs 288 px wide, one per row on a hairline, the selected one on a 2 px blue left rule; the text and the frame to their right. The block stays on one screen (595 px at 1239 × 800), where a frame at the column's full 1,047 px would not. |
+| 768–1099 px | The tab row over the text and a frame at the column's width. |
+| Below 768 px | No tabs. Static cards, each the number and the title (20 px), the text (16 px), then **the whole screen** at the column's width, which opens full size to pan. |
 
-**The legibility rule.** The inset shows its region at the scale s = inset width ÷ region width in CSS px of the capture, and **s ≥ 0.92**, so the UI text in the inset reads at about its real size. At the 401 px inset that bounds a region at **436 × 296 CSS px** of the capture (401 ÷ 0.92, and 272 ÷ 0.92 for half the frame's height): an element bigger than that gives its most telling part (two KPI tiles, not five; the flagged row, not the table). The zoom file is 802 px wide, the inset's width at DPR 2. The capture recipe is `ASSETS.md` §1.
+**A frame is a real screen, never a crop or a skeleton** (Alex: *"they should not look like skeletons and should not be overloaded with details"*): the whole screen of the product's walkthrough, or of its HTML mock where it has none, on synthetic data. **Where the reader's eye needs leading, the screen itself does it**, as the product would: the row the step is about selected, its panel open, its tab active, its card in the product's own focus style, or the part scrolled into view (Alex: *"make sure the layout element is selected or highlighted natively (only if needed, not all screens need that)"*). Most screens need nothing: a modal in the foreground, or a screen that is wholly about the step. How each frame was chosen is `ASSETS.md` §1.
 
-**A frame is a real screen, never a crop or a skeleton** (Alex: *"they should not look like skeletons and should not be overloaded with details"*): the whole screen of the product's walkthrough, or of its HTML mock where it has none, on synthetic data, with the ring and the inset carrying the step.
-
-**A description sits between the control that selects it and the thing it explains** (round 10b, START-HERE §4): the open step's text sits under its own title, beside its frame, at body weight.
+**A description sits between the control that selects it and the thing it explains** (round 10b, START-HERE §4): the open step's text sits under the tab row and over its frame, at body weight.
 
 **The feature-coverage invariant is retired** with the tick-lists: no surface prints `steps[].features`, so nothing keeps them in step with `overview.features`. Both lists stay in the data for the Jumpstart tab.
 
-The checker holds 3–5 steps numbered from 1, the title and text budgets, `shot.full` = `assets/img/steps/<slug>-<n>.jpg` and `shot.zoom` = `assets/img/steps/<slug>-<n>-zoom.jpg` (a missing file is a warning), a region of four numbers inside the frame, one of the four anchors and a non-empty `alt`, and fails the retired `image` by name. The legibility rule is checked at capture, not by the checker.
+The checker holds 3–5 steps numbered from 1, the title and text budgets, `shot.full` = `assets/img/steps/<slug>-<n>.jpg` (a missing file is a warning) and a non-empty `alt`; it fails the retired `image`, `zoom`, `region` and `anchor` by name, a renderer that draws a ring or an inset, and a `howItWorks()` whose text does not sit between the tab row and the frame.
 
 ### 2.3 Industry use cases — **moved to the Use cases tab** (round 10)
 
