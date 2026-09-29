@@ -282,25 +282,31 @@ their ends on its own route and sparks. The same program draws it (`D["ask"]`), 
 checker holds it to the family's rules, and since the tile shows the box cropped to a
 product band's 16:7, everything sits above y 170.
 
-## 2c. The Bespoke band's photographs — `assets/img/bands/` (round 18)
+## 2c. The Bespoke band's picture — `assets/img/bands/` (round 18; replaced 2026-09-29)
 
-Two crops of one photograph for the home page's *Bespoke services* band
-(`overview.bespoke.image`): three people in silhouette around a laptop by tall
-windows, dark on its left half, where the copy sits. **They are softserveinc.com's own
-*Confidence earned* banner**, the block Alex named as the reference, downloaded on
-2026-09-29 from SoftServe's CDN and recompressed for this site with `sips` (JPEG
-quality 72):
+Two crops of one render for the home page's *Bespoke services* band
+(`overview.bespoke.image`): **parallel chrome ribbons in one long wave on a dark grey
+ground, softserveinc.com's own *Agentic AI* home-page banner.** Alex asked for a
+picture of *"parallelism and infinity"*, like the *Moore’s Law of LLMs* tile on
+softserveinc.com's AI services page (PROVENANCE §57). That tile's file is 800 × 412 at
+most; this banner is the same family of renders at band size. Downloaded on
+2026-09-29 from SoftServe's CDN, which serves it as WebP; each crop had the 32 px
+carrying the source's corner cuts taken off its left edge, was mirrored so the wave
+runs in from the band's left, and was saved as JPEG quality 82 with `sips`:
 
 | File | Source | Size |
 |---|---|---|
-| `bespoke-wide.jpg` | `assets.softserveinc.com/website/assets/banner-confidence-earned.jpg` (2880 × 932) | 2400 × 776, 137 KB — the band from 769 px up, `object-position: 72% 50%` |
-| `bespoke-tall.jpg` | the same banner's tablet crop (1536 × 1518) | 1100 × 1087, 99 KB — the phone layout, its own row between the copy and the points, `50% 100%` |
+| `bespoke-wide.jpg` | `assets.softserveinc.com/images/assets/agentic-ai-banner-home-image.jpg/…` (3400 × 900) | 3368 × 900, 279 KB — from 1025 px, a box on the band's left half at full height, `object-position: 55% 50%`, fading out before the copy |
+| `bespoke-tall.jpg` | the same banner's tablet crop, `agentic-ai-banner-tablet.jpg` (1376 × 1412) | 1344 × 1412, 150 KB — up to 1024 px, its own row between the head and the points (12 : 5, 16 : 10 from 768 down), `50% 100%`, the wave along its foot |
 
-SoftServe's photograph on a SoftServe property, like the fonts and the footer
-glyphs; it has not been through the heroes' grade. Swap both files together if Alex
-would rather the band not repeat the corporate site's image. The picture element
-switches them at 769 px, and the image guard drops either one to the band's black
-ground if it fails to load.
+It keeps the full 900 px of height, since the band is 691–709 px tall on a laptop:
+a 2× screen still upscales it about 1.6×, which smooth metal on a gradient holds.
+SoftServe's render on a SoftServe property, like the photograph it replaced (the
+*Confidence earned* banner, three people at a laptop by tall windows) and the fonts;
+it has not been through the heroes' grade. The band's ground is the render's own
+dark (`#131516` to `#23272a`, sampled from it), so the image guard dropping either
+file leaves the same colour. Swap both files together, keeping the wave on the left,
+if Alex would rather the band not repeat the corporate site's picture.
 
 ---
 

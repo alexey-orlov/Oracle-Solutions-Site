@@ -768,45 +768,13 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* ——— hero ———————————————————————————————————————————— */
 
-/* ——— hero background image (top block only) ——————————— */
+/* ——— hero ground (top block only) ———————————————————— */
 
+/* No hero carries a photograph behind its copy since 2026-09-29: the home
+   hero has its wash, a product hero softserveinc.com's gradient (both
+   below). This is the shared positioning context. */
 .has-hero-bg { position: relative; isolation: isolate; background-color: var(--bg); }
 .has-hero-bg > .wrap { position: relative; z-index: 1; width: 100%; }
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.hero-bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
-  opacity: 1;
-  filter: saturate(.92) brightness(1.06);
-}
-
-.hero-bg-veil {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, .97) 34%, rgba(255, 255, 255, .88) 50%, rgba(255, 255, 255, .55) 66%, rgba(255, 255, 255, .12) 84%, rgba(255, 255, 255, 0) 100%),
-    linear-gradient(to bottom, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, .35) 78%, #ffffff 100%);
-}
-
-/* The media frame usually falls back to the product's own hero image, so the
-   same photograph sits inside the card and behind it. The backdrop is held
-   well under the card's exposure on this variant — otherwise the frame reads
-   as a cut-out of the background rather than a thing you can press. */
-.product-hero--media .hero-bg-veil {
-  background:
-    linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, .97) 40%, rgba(255, 255, 255, .92) 62%, rgba(255, 255, 255, .88) 82%, rgba(255, 255, 255, .86) 100%),
-    linear-gradient(to bottom, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, .35) 78%, #ffffff 100%);
-}
 
 /* Retired: this system has no glow — emphasis and elevation are surface
    steps. The element still renders, so the rule empties it. */
