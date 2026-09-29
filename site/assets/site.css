@@ -1720,14 +1720,23 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   background: linear-gradient(0deg, #ffffff -24.5%, #c1dff4 39.38%, #458fdd 99.67%);
 }
 
-/* Three marks drawn for a white ground, restated on the blue: the breadcrumb
-   in full ink, the outlined chip's hairline darker, and the badge on white,
-   because its blue tint is the gradient's own middle stop. */
+/* The marks drawn for a white ground, restated on the blue (Alex,
+   2026-09-29: "grey elements, tags as they are now etc. don't really look
+   good"): no grey on the gradient. The breadcrumb is in full ink; the tags,
+   the group's and the platform's, are white plates with ink words, a fact on
+   the blue as the grey pill is on white, their glyphs telling the two
+   apart; the badge is on white too, its blue words saying it acts; and the
+   second button is the brand's white button, beside the one blue ask. */
 .product-hero .crumbs, .product-hero .crumbs a { color: var(--text); }
 .product-hero .crumbs a:hover { color: var(--text); border-bottom-color: currentColor; }
-.product-hero .chip--outline { --ring: inset 0 0 0 1px rgba(0, 0, 0, .42); }
+.product-hero .chip--meta,
+.product-hero .chip--outline { --fill: #ffffff; --ring: none; color: var(--text); }
+.product-hero .chip--outline .chip-icon { color: var(--text); }
 .product-hero .badge { --fill: #ffffff; }
 .product-hero .badge--action:hover { --fill: var(--surface-select); }
+.product-hero .btn--secondary { --fill: #ffffff; color: var(--text); }
+.product-hero .btn--secondary:hover { --fill: var(--secondary-hover); }
+.product-hero .btn--secondary:active { --fill: var(--secondary-pressed); }
 
 .product-hero-inner {
   position: relative;
