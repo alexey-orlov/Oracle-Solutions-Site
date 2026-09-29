@@ -7419,6 +7419,40 @@ _A change between rounds, made in its own session while the Internal-panel remov
   - reusing Workforce optimization's hero photograph on the products tile;
   - the third figure's label, *Fortune 500 clients in the data and analytics practice*, which wraps to three lines under 1920;
   - adopting `#/alt` as the home page: `hero()` and `offer()` move into `overview.js`, `home-alt.css` folds into `site.css`, and the checker learns the two screens.
+- **Version 4, the Why diagram and S2's tiles (the same evening).** Alex, on version 3:
+  - on the diagram: *"diagram is overloaded with text; consider replacing specific product category tiles with just colored tiles (fewer of them) + oneliner (2-4 words) … packaged services to be visualized as a workflow without detailing each step's name … same for bespoke services"*; no footnote in the bespoke block; the layout of his wireframe, with Packaged services over Products on the left, Bespoke services beside both, and Oracle platforms under all three;
+  - on S2: *"find better reference on softserveinc.com where you have dark background tile with text on it to rework these 2 tiles … Currently text is hard to read, images are bad resolution"*.
+- **Version 4 — the diagram** (`diagram()` in `overview-alt.js`, the `.amap-*` rules):
+  - Four blocks in his grid, columns 1.7 : 1, one column below 561 px. Each block has a name, a line of two to four words and a picture:
+    - *Packaged services* · *Fixed-scope path to production* · five outlined steps with arrows between them, the last step and its arrow dashed;
+    - *Products* · *Ready-made agents and workflows* · the groups' four fills, once each, with no names;
+    - *Bespoke services* · *Custom scope, dedicated pods* · five pods and an open one, at the block's foot, level with the tiles;
+    - Oracle's mark over its four platforms, names only, AI Data Platform first.
+  - One SoftServe mark sits over the three SoftServe blocks.
+  - Removed:
+    - the six group names and the five step names;
+    - *(optional)*, *Built on* and the three captions;
+    - the platforms label and the chip icons.
+  - The hairlines are rings (polygon evenodd, as on the KPI widget), so the cut corners carry them; a border stopped short at every corner.
+  - At 1440 the diagram is 694 × 472 beside reasons of 496 × 481.
+- **Version 4 — S2's tiles** (`.aoffer .way--photo`):
+  - **The reference** is softserveinc.com's Solutions tile on `services/agentic-business-process`: the words on a flat dark field, the picture where the words are not. Its home page's TrendTracker tile works the same way.
+  - **Before:** the live panel set its copy on the photograph behind a scrim. It stretched the 1920 × 900 file over a 612 × 646 panel, which a retina screen drew at 1.4 screen pixels per file pixel, and the hover zoom added more.
+  - **Now the picture** takes the tile's top at 2 : 1 (612 × 306 at 1440), 1.47 file pixels per screen pixel on a 2× screen. It dissolves into the tile's black from 65 % down, and the heading starts on the last of the fade.
+  - **The words** sit on black: the body at 18 px, 1.5 leading, 80 % white; then the ticks and the link.
+  - The icon badge, the scrim and the hover zoom are gone. Titles and links line up across the two tiles.
+- **Version 4 — the services photograph is still the weak one.** `heroes/services.jpg` is itself an upscale of a small deck image, with blocks visible at 100 %, so no layout makes it sharp.
+  - A replacement was found in SoftServe's SS26 template imagery: a hand setting a glowing cube among blocks, cropped 1572 × 786 at 2 : 1 from a template slide in *SoftServe AI Repeatable IP-Based Customer Stories.pptx* (`image8.png`).
+  - Copying it into the repo was stopped by the session's permission check, because an internal deck's image would go into a pushed repo. It waits for Alex's word.
+  - Ribbons and waves were ruled out, since the bespoke band now carries the ribbons.
+- **Version 4 — checks:**
+  - no overflow at 1440, 1280, 1024, 390 and 320;
+  - the console clean;
+  - `check-grammar` OK, its one warning the About H2;
+  - the deny-list grep clean.
+- **Open for Alex (version 4):**
+  - the three lines;
+  - the services photograph: the cube, or another.
 
 ## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
 
