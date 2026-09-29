@@ -2820,7 +2820,7 @@ window.SITE_CONTENT = {
           "Electric and combustion vans planned together",
           "Charging stops placed where they cost no visit, every route battery-checked",
           "Visits that cannot be served returned with the reason",
-          "The day as it ran beside the re-plan, down to each engineer’s route",
+          "The day as it ran beside the re-plan, route by route",
           "Approved routes and charging stops sent to Oracle Fusion Field Service *"
         ],
         featuresNote: "* Write-back to Oracle Fusion Field Service comes with the Integration package; the Jumpstart works on files.",
@@ -2861,7 +2861,7 @@ window.SITE_CONTENT = {
             title: "See what it saves",
             text: "Operations see the day as it ran beside the re-plan: cost per visit, visits per engineer and missed appointments, down to each engineer’s route.",
             image: "assets/img/steps/fleet-route-optimization-3.jpg",
-            features: ["The day as it ran beside the re-plan, down to each engineer’s route"]
+            features: ["The day as it ran beside the re-plan, route by route"]
           },
           {
             n: 4,
@@ -2877,28 +2877,28 @@ window.SITE_CONTENT = {
             label: "Telecom & cable",
             image: "assets/img/industries/telecom.jpg",
             problem: "Engineers installing and repairing broadband and TV lose hours between booked slots. A late arrival means a customer who took the day off, and often a second visit.",
-            solution: "Each engineer’s day is ordered around booked slots and the skills each job needs, with charging fitted where it costs no visit: fewer miles and fewer second visits per engineer."
+            solution: "Each engineer’s day is ordered around booked slots and the skills each job needs, with charging fitted where it costs no visit. Fewer miles and fewer second visits leave room for more booked work per engineer."
           },
           {
             industry: "utilities",
             label: "Utilities",
             image: "assets/img/industries/utilities.jpg",
-            problem: "Meter fitters and repair crews work to booked or regulated windows, and gas or electrical work can only go to an engineer holding the right certificate.",
-            solution: "Jobs go to certified engineers inside their windows, and depot and home charging for electric vans is planned in, so crews spend the day on jobs rather than on the road."
+            problem: "Meter fitters and repair crews work to booked or regulated windows. Gas or electrical work can only go to an engineer holding the right certificate, and a wrong match is a wasted trip.",
+            solution: "Jobs go to certified engineers inside their windows. Depot and home charging for electric vans is planned in, so crews spend the day on jobs rather than on the road."
           },
           {
             industry: "construction",
-            label: "Facilities maintenance",
+            label: "Construction",
             image: "assets/img/industries/construction.jpg",
-            problem: "Technicians covering lifts, heating and fire systems across many sites juggle contract response times with planned maintenance.",
-            solution: "Call-outs and planned visits are routed together, weighted by each contract’s response time, so urgent work lands first without breaking the day’s plan."
+            problem: "Technicians covering lifts, heating and fire systems across many sites juggle contract response times with planned maintenance. A missed response time can cost a penalty under the contract.",
+            solution: "Call-outs and planned visits are routed together, weighted by each contract’s response time. Urgent work lands first without breaking the day’s plan."
           },
           {
             industry: "logistics",
-            label: "Last-mile delivery",
+            label: "Logistics & supply chain",
             image: "assets/img/industries/logistics.jpg",
-            problem: "Drivers run electric vans against promised delivery windows, and a route that misjudges range ends at a charger instead of a doorstep.",
-            solution: "Routes carry the delivery windows and a battery check on every leg, so each van finishes its drops with the reserve intact."
+            problem: "Drivers run electric vans against promised delivery windows. A route that misjudges range ends at a charger instead of a doorstep.",
+            solution: "Routes carry the delivery windows and a battery check on every leg. Each van finishes its drops with the reserve intact, and fewer drops roll over to the next day."
           }
         ],
         scope: {
@@ -2911,6 +2911,7 @@ window.SITE_CONTENT = {
           ],
           out: [
             "Write-back to Oracle Fusion Field Service — delivered after the Jumpstart",
+            "Live traffic and charger data — delivered after the Jumpstart",
             "Re-planning during the day as jobs overrun — delivered at Scaling",
             "Queueing at shared chargers — on the roadmap"
           ]
@@ -2925,24 +2926,7 @@ window.SITE_CONTENT = {
           { title: "Delivered after the Jumpstart", body: "Live read from Oracle Fusion Field Service, dispatcher review and write-back of approved routes and charging stops, live traffic and charger data, several charging stops per shift, and sign-in, roles and audit for production use." },
           { title: "On the roadmap", body: "Queueing and contention at shared chargers · van load capacity · the saving worked out in money and carbon inside the product." }
         ],
-        caseStudy: {
-          descriptor: "A large home-services operator",
-          area: "Home-service engineers on a fleet going electric",
-          industry: "telecom",
-          status: "in-preparation",
-          metrics: [
-            { value: "Own past days", label: "replayed and re-planned before any live schedule changes" },
-            { value: "Cost per visit", label: "priced by the operator’s own finance team, with visits per engineer and missed appointments" }
-          ],
-          story: "A first engagement is starting on the operator’s own history: Oracle Fusion Field Service bookings, telematics and charging records, with NVIDIA cuOpt on Oracle Cloud Infrastructure. Real days are replayed, checked against what happened and re-planned around slots, skills and charging, then the day as it ran and the re-plan are compared on the operator’s own business measures.",
-          scope: [
-            { label: "Stage", value: "Proof of value starting" },
-            { label: "Data footprint", value: "Field Service bookings, telematics, charging records" },
-            { label: "Human gate", value: "A dispatcher approves every change" }
-          ],
-          ndaLine: "Customer under NDA · results follow at the end of the proof of value",
-          downloadLabel: "Download the case summary"
-        }
+        caseStudy: null
       },
       technology: {
         narrative: "Oracle Fusion Field Service is the source and, after the Jumpstart, the destination. NVIDIA cuOpt re-plans the routes on an OCI GPU instance, and nothing reaches the field until a dispatcher approves it.",
@@ -3056,17 +3040,17 @@ window.SITE_CONTENT = {
       },
       jumpstart: {
         title: "Jumpstart Proof-of-Value",
-        promise: "See what a GPU-planned day saves on your own past days in 6–8 weeks, and take away cost per visit, visits per engineer and missed appointments measured against your own actuals.",
-        durationShort: "6–8 weeks",
+        promise: "See what a GPU-planned day saves on your own past days in 4–8 weeks, and take away cost per visit, visits per engineer and missed appointments measured against your own actuals.",
+        durationShort: "4–8 weeks",
         pillars: [
-          { key: "fast", title: "Fast", text: "6–8 weeks from kickoff to a before/after readout on real past days of one region." },
+          { key: "fast", title: "Fast", text: "4–8 weeks from kickoff to a before/after readout on real past days of one region." },
           { key: "low-risk", title: "Low-risk", text: "Past days only, on files, in a sandbox on your own tenancy. No live schedule changes, and a dispatcher approves every change." },
           { key: "tangible", title: "Tangible", text: "Cost per visit, visits per engineer and missed appointments for the day as it ran and the re-plan, priced at your own unit costs." }
         ],
         outcomes: [
           "Your own past days replayed from Oracle Fusion Field Service and telematics exports, checked against what actually happened.",
           "The same days re-planned on GPU with your slots, skills, priorities and charging stops.",
-          "The day as it ran beside the re-plan, down to each engineer’s route, with the three business measures.",
+          "The day as it ran beside the re-plan, route by route, with the three business measures.",
           "A costed plan for the next step: integration scope, regions, timeline."
         ],
         timeline: [
@@ -3082,7 +3066,7 @@ window.SITE_CONTENT = {
         ],
         investment: {
           price: "Scoped per engagement",
-          duration: "6–8 weeks",
+          duration: "4–8 weeks",
           includes: [
             "Replay and calibration of real past days in one region",
             "Route planning with slots, skills, priorities and one charging stop per shift",
