@@ -16,7 +16,7 @@
  */
 window.AIX = {
   now: { label: "09:40", min: 9 * 60 + 40 },
-  lastCheck: { before: "06:00", after: "09:40", next: "10:10" },
+  lastCheck: { before: "yesterday 18:00", beforeNext: "10:00", after: "09:40", next: "18:00" },
   threshold: 5,
 
   people: {
@@ -39,11 +39,11 @@ window.AIX = {
   /* ---- the run: what the viewer watches happen ---- */
   stages: [
     { label: "Read every source", detail: "214 stories since 18:00 · 1 feed unreachable, logged" },
-    { label: "Drop the noise", detail: "176 not about your accounts, or not news" },
-    { label: "Merge repeats", detail: "33 repeats merged into 5 signals" },
+    { label: "Drop the noise", detail: "190 not about your accounts, or not news" },
+    { label: "Merge repeats", detail: "19 repeats merged into 5 signals" },
     { label: "Match to your accounts", detail: "15 account reads · 9 reached through your records" },
     { label: "Work out each move", detail: "13 next moves: 9 to sell, 4 to protect" },
-    { label: "Score and check", detail: "2 below the confidence line, filtered and counted" }
+    { label: "Score and filter", detail: "2 below the confidence line, filtered and counted" }
   ],
   /* One line per decision, shown as it is made. `at` = the stage it belongs to. */
   feed: [
@@ -80,21 +80,22 @@ window.AIX = {
     "One story, one signal: repeats across outlets are merged.",
     "Only your 24 accounts get a move; anyone else is context.",
     "Knock-on effects are followed up to two steps, through your own records.",
-    "Every move names one of your 12 service lines.",
+    "Every move names one of your 12 service lines; what fits none is set aside, never forced.",
     "Confidence line at 5: below it, moves are filtered and counted.",
-    "Checked every 30 minutes; your team can submit a story by hand.",
-    "Nothing reaches the CRM without a reviewer's approval."
+    "Checked twice a day or on demand; your team can submit a story by hand.",
+    "Nothing leaves for the CRM without a reviewer's approval."
   ],
 
   /* Where each capability arrives, in the pack's own delivery tiers. */
   tiers: [
+    { what: "One team's accounts, one agreed set of sources", tier: "Proof of value", cls: "pov" },
     { what: "Checks on a schedule, or a story submitted by hand", tier: "Proof of value", cls: "pov" },
     { what: "One signal per story, matched to your accounts", tier: "Proof of value", cls: "pov" },
     { what: "Opportunities and risks mapped to your service lines", tier: "Proof of value", cls: "pov" },
     { what: "Knock-on effects, up to two steps", tier: "Proof of value", cls: "pov" },
     { what: "Scores, cited sources, approve or reject", tier: "Proof of value", cls: "pov" },
     { what: "Approved moves exported as a file for your CRM", tier: "Proof of value", cls: "pov" },
-    { what: "Your own licensed feeds; moves straight into the CRM", tier: "Integration", cls: "int" },
+    { what: "Your own licensed feeds; moves sent to the CRM by API", tier: "Integration", cls: "int" },
     { what: "Each move routed to its account owner", tier: "Integration", cls: "int" },
     { what: "What became of each move, fed back into the scores", tier: "Scaling", cls: "scale" }
   ],
@@ -130,19 +131,19 @@ window.AIX = {
   /* ---- this morning's five signals (214 stories in, 5 kept) ---- */
   signals: [
     { id: "SIG-0929-014", day: 0, time: "08:12", min: 8 * 60 + 12, source: "Newswire", icon: "wire", merged: 6, type: "Plant opening",
-      title: "Alder Foods to open a second plant in Poland",
-      summary: "Construction starts early 2027; the plant will supply retailers across Central Europe." },
+      title: "Alder Foods to open a second plant in Lindmark",
+      summary: "Construction starts early 2027; the plant will supply retailers across its eastern markets." },
     { id: "SIG-0929-011", day: 0, time: "07:41", min: 7 * 60 + 41, source: "Company filing", icon: "filing", merged: 4, type: "Acquisition",
       title: "Norhaven Retail agrees to buy Coastline Markets",
       summary: "The deal adds 140 stores and two distribution centres; closing needs approval." },
     { id: "SIG-0929-009", day: 0, time: "06:58", min: 6 * 60 + 58, source: "Market news", icon: "market", merged: 11, type: "Disruption",
-      title: "Varden Chemicals pauses its Antwerp line",
+      title: "Varden Chemicals pauses its North Quay line",
       summary: "Six weeks of maintenance from mid-October, brought forward after an audit." },
     { id: "SIG-0928-032", day: -1, time: "17:20", min: 17 * 60 + 20, source: "Press release", icon: "filing", merged: 2, type: "New leadership",
       title: "Orla Beverages names a new supply-chain head",
       summary: "Appointed after a review of its European distribution." },
     { id: "SIG-0928-027", day: -1, time: "16:05", min: 16 * 60 + 5, source: "Submitted by hand", icon: "hand", merged: 1, by: "NB", type: "Site move",
-      title: "Brenmoor Motors moves its parts hub to Rotterdam",
+      title: "Brenmoor Motors moves its parts hub to Port Selden",
       summary: "Added by Nadia Brandt from a trade-press article." }
   ],
 
@@ -157,15 +158,15 @@ window.AIX = {
   moves: [
     { id: "MV-01", signal: "SIG-0929-014", account: "ACC-012", rel: "named", kind: "sell", line: "wh", m: 8, c: 7, research: 40, review: 3,
       relNote: "Named in the story",
-      what: "Alder Foods is building a second plant in Poland, first lines in 2028 [1]. It plans to grow Central European volumes by half by 2030 [2] and has not said who will store the new output. Our warehousing contract covers the first plant only [3].",
+      what: "Alder Foods is building a second plant in Lindmark, first lines in 2028 [1]. It plans to grow its eastern volumes by half by 2030 [2] and has not said who will store the new output. Our warehousing contract covers the first plant only [3].",
       offer: ["Outbound warehousing within reach of the new plant, from 2028", "One contract for both plants at the 2027 renewal"],
       next: "Ask the head of supply chain for a site-planning meeting before the tender opens.",
       sources: [
-        { kind: "Article", meta: "Newswire, today 08:12", quote: "…will build a second production plant in Poland." },
-        { kind: "Annual report 2025", meta: "p. 14", quote: "Central European volumes to grow by half by 2030." },
+        { kind: "Article", meta: "Newswire, today 08:12", quote: "…a second production plant in Lindmark; first lines run in 2028." },
+        { kind: "Annual report 2025", meta: "p. 14", quote: "Eastern volumes to grow by half by 2030." },
         { kind: "CRM note", meta: "Robin Hale, 12 Aug", quote: "Warehousing for the first plant renews in 2027." }
       ],
-      trace: ["Story matched by name: Alder Foods, in your book", "Read its annual report: the volume plan for Central Europe", "Read your CRM: what we do for them today, renewal 2027", "Reasoned: new output needs storage near the plant; none named", "Mapped to your line: Contract logistics · warehousing", "Scored: a second site (8); two sources agree on timing (7)"] },
+      trace: ["Story matched by name: Alder Foods, in your book", "Read its annual report: the volume plan for its eastern markets", "Read your CRM: what we do for them today, renewal 2027", "Reasoned: new output needs storage near the plant; none named", "Mapped to your line: Contract logistics · warehousing", "Scored: a second site (8); two sources agree on timing (7)"] },
 
     { id: "MV-02", signal: "SIG-0929-014", account: "ACC-027", rel: "supplier", kind: "sell", line: "inbound", m: 6, c: 7, research: 60, review: 3,
       relNote: "Supplies Alder Foods · your supplier map",
@@ -173,7 +174,7 @@ window.AIX = {
       offer: ["A dedicated lane from both mills into the new plant", "Timed to the plant's first deliveries in 2028"],
       next: "Send Baltic a lane proposal timed to the new plant's first deliveries.",
       sources: [
-        { kind: "Article", meta: "Newswire, today 08:12", quote: "…will build a second production plant in Poland." },
+        { kind: "Article", meta: "Newswire, today 08:12", quote: "…will build a second production plant in Lindmark." },
         { kind: "Supplier map", meta: "Alder Foods", quote: "Primary packaging: Baltic Packaging, two mills." },
         { kind: "CRM", meta: "What we do today", quote: "Two inbound lanes from its mills." }
       ],
@@ -181,11 +182,11 @@ window.AIX = {
 
     { id: "MV-03", signal: "SIG-0929-014", account: "ACC-003", rel: "customer", kind: "sell", line: "dc", m: 6, c: 6, research: 60, review: 3,
       relNote: "Buys from Alder Foods · your CRM links",
-      what: "From 2028, Meridian's Central European stores can be supplied from Alder's new plant rather than by long haul [1]. Deliveries into its distribution centres change shape, and its inbound contract with us ends in 2026 [2].",
+      what: "From 2028, Meridian's eastern stores can be supplied from Alder's new plant rather than by long haul [1]. Deliveries into its distribution centres change shape, and its inbound contract with us ends in 2026 [2].",
       offer: ["Re-plan DC inbound for the shorter supply route", "Price the change into the 2026 renewal"],
       next: "Raise the new supply route at next week's account review with Meridian.",
       sources: [
-        { kind: "Article", meta: "Newswire, today 08:12", quote: "…to supply retailers across Central Europe." },
+        { kind: "Article", meta: "Newswire, today 08:12", quote: "…to supply retailers across its eastern markets." },
         { kind: "CRM note", meta: "Nadia Brandt, 3 Sep", quote: "Inbound contract ends December 2026." },
         { kind: "CRM links", meta: "Meridian Grocers", quote: "Buys from Alder Foods: chilled and ambient." }
       ],
@@ -197,7 +198,7 @@ window.AIX = {
       offer: ["Open the renewal early, with room for growth"],
       next: "Propose an early renewal with growth capacity before Torvik re-tenders.",
       sources: [
-        { kind: "Article", meta: "Newswire, today 08:12", quote: "…will build a second production plant in Poland." },
+        { kind: "Article", meta: "Newswire, today 08:12", quote: "…will build a second production plant in Lindmark." },
         { kind: "CRM", meta: "Contract", quote: "Frozen warehousing, renews spring 2027." },
         { kind: "Market map", meta: "Frozen foods", quote: "Alder Foods and Torvik Foods: direct competitors." }
       ],
@@ -241,7 +242,7 @@ window.AIX = {
 
     { id: "MV-08", signal: "SIG-0929-009", account: "ACC-015", rel: "named", kind: "sell", line: "adr", m: 5, c: 6, research: 40, review: 3,
       relNote: "Named in the story",
-      what: "Varden pauses its Antwerp line for six weeks from mid-October [1]. Customers will be served from stock and from its second plant [2], and that stock needs certified storage near them.",
+      what: "Varden pauses its North Quay line for six weeks from mid-October [1]. Customers will be served from stock and from its second plant [2], and that stock needs certified storage near them.",
       offer: ["Six weeks of certified buffer storage near its customers"],
       next: "Offer Varden short-term ADR storage before the pause starts.",
       sources: [
@@ -288,11 +289,11 @@ window.AIX = {
 
     { id: "MV-12", signal: "SIG-0928-027", account: "ACC-005", rel: "named", kind: "protect", line: "parts", m: 8, c: 7, research: 40, review: 3,
       relNote: "Named in the story",
-      what: "Brenmoor is moving its parts hub to Rotterdam [1]. Our spare-parts contract runs from the current hub and renews in seven months [2]; the move reopens where, and by whom, its parts are handled.",
+      what: "Brenmoor is moving its parts hub to Port Selden [1]. Our spare-parts contract runs from the current hub and renews in seven months [2]; the move reopens where, and by whom, its parts are handled.",
       offer: ["A proposal for the new hub before the renewal"],
       next: "Ask for the hub move timetable and bid for the new hub this month.",
       sources: [
-        { kind: "Trade press", meta: "Submitted by Nadia Brandt, yesterday", quote: "Brenmoor will consolidate parts distribution in Rotterdam." },
+        { kind: "Trade press", meta: "Submitted by Nadia Brandt, yesterday", quote: "Brenmoor will consolidate parts distribution in Port Selden." },
         { kind: "CRM", meta: "Contract", quote: "Spare-parts logistics, renews in 7 months." },
         { kind: "Annual report 2025", meta: "p. 22", quote: "Parts and service sales up 12%." }
       ],
@@ -301,11 +302,11 @@ window.AIX = {
     { id: "MV-13", signal: "SIG-0928-027", account: "ACC-029", rel: "supplier", kind: "sell", line: "inbound", m: 5, c: 6, research: 60, review: 3,
       relNote: "Supplies Brenmoor Motors · your supplier map",
       what: "Keswick Components ships brake parts into Brenmoor's parts hub [2]. The hub move [1] re-routes those deliveries, and a new inbound lane has to be set up.",
-      offer: ["The new inbound lane into the Rotterdam hub"],
-      next: "Offer Keswick the new inbound lane into the Rotterdam hub.",
+      offer: ["The new inbound lane into the Port Selden hub"],
+      next: "Offer Keswick the new inbound lane into the Port Selden hub.",
       sources: [
-        { kind: "Trade press", meta: "Submitted by Nadia Brandt, yesterday", quote: "Brenmoor will consolidate parts distribution in Rotterdam." },
-        { kind: "Supplier map", meta: "Brenmoor Motors", quote: "Brake parts: Keswick Components." }
+        { kind: "Trade press", meta: "Submitted by Nadia Brandt, yesterday", quote: "Brenmoor will consolidate parts distribution in Port Selden." },
+        { kind: "Supplier map", meta: "Brenmoor Motors", quote: "Brake parts: Keswick." }
       ],
       trace: ["Story about Brenmoor Motors, one of your accounts", "Your supplier map names “Keswick”: two of your accounts match", "Held for a person to confirm which one", "Mapped to your line: Road freight · inbound lanes", "Scored: one new lane (5); once the account is confirmed (6)"],
       held: { question: "Which Keswick does the story mean?", options: ["ACC-029", "ACC-044"], answer: "ACC-029" } },

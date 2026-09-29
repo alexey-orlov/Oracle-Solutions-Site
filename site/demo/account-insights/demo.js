@@ -163,7 +163,7 @@
     if (S.view === "today" && S.open) c += '<span class="sep">›</span><b>' + esc(acc(move(S.open).account).name) + "</b>";
     $("#crumbs").innerHTML = c;
     $("#check-note").innerHTML = icon("clock") + (S.ran ? "Checked " + D.lastCheck.after + " · next " + D.lastCheck.next
-      : "Last check " + D.lastCheck.before + " · every 30 minutes");
+      : "Last check " + D.lastCheck.before + " · next " + D.lastCheck.beforeNext);
   }
 
   function renderNav() {
@@ -585,7 +585,7 @@
       auto: function () { tour.next(); } },
     { id: "flagged", major: 5, side: "bottom", scroll: "center",
       title: "Open the move already in hand",
-      body: "Baltic Packaging's new lane is already in the Poland team's plan. The system cannot see your pipeline; you can.",
+      body: "Baltic Packaging's new lane is already in the Lindmark team's plan. The system cannot see your pipeline; you can.",
       target: function () { return $('li[data-move="MV-02"]'); },
       auto: function () { openMove("MV-02"); tour.next(); } },
     { id: "reject", major: 5, side: "left",
