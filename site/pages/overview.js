@@ -353,11 +353,15 @@
 
     /* Two rows around the picture, so a phone can stack copy, photograph and
        parts in that order; from 769 px the picture leaves the flow and covers
-       the band. The rows reveal, never the band: a transform on an ancestor
-       would pin the covering picture to it mid-animation. */
+       the band. Only the points reveal, never the band — a transform on an
+       ancestor would pin the covering picture to it mid-animation — and never
+       the copy either, which is this screen's head: a reader landing on
+       Packaged services sees the band's eyebrow and heading under the track at
+       once, where a reveal would hold them back until they cleared the
+       observer's bottom margin (round 18). */
     return '<section class="home-screen home-bespoke" id="' + UI.esc(block.anchor) + '">' +
       '<div class="wrap bespoke-row">' +
-        '<div class="bespoke-copy reveal">' +
+        '<div class="bespoke-copy">' +
           '<p class="eyebrow bespoke-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
           '<h2 class="h2 bespoke-title">' + UI.esc(block.title) + "</h2>" +
           (block.lead ? '<p class="lead bespoke-lead">' + UI.esc(block.lead) + "</p>" : "") +
