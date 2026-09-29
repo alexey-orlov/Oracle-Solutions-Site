@@ -8,7 +8,7 @@
  {
   "sleep": 500 },
  {
-  "eval": "(()=>{ var li=document.querySelectorAll('#stages li'), a=li[0].getBoundingClientRect(), b=li[3].getBoundingClientRect(), s=document.querySelector('#stages').getBoundingClientRect(); var c=document.querySelector('#run').getBoundingClientRect(); window.__R={n:1, alt:'The morning check: stories read, noise dropped, repeats merged, accounts matched.', x:c.left, y:a.top-8, w:Math.min(436, Math.floor(656-c.left)), h:b.bottom-a.top+16}; return {region: window.__R, scrollY: scrollY}; })()" },
+  "eval": "(()=>{ var li=document.querySelectorAll('#stages li'), a=li[0].getBoundingClientRect(), b=li[3].getBoundingClientRect(), s=document.querySelector('#stages').getBoundingClientRect(); var c=document.querySelector('#run').getBoundingClientRect(); window.__R={n:1, alt:'The morning check: stories read, noise dropped, repeats merged, accounts matched.', x:c.left, y:a.top-8, w:Math.min(436, Math.floor(656-c.left-16)), h:b.bottom-a.top+16}; return {region: window.__R, scrollY: scrollY}; })()" },
  {
   "shot": "step-1-full" },
  {
@@ -22,7 +22,7 @@
  {
   "sleep": 600 },
  {
-  "eval": "(()=>{ var g=document.querySelector('.grp[data-signal=\"SIG-0929-014\"]').getBoundingClientRect(); window.__R={n:2, alt:'One story reaching four accounts: named, supplier, customer and competitor.', x:g.left-6, y:g.top-4, w:436, h:Math.min(296, g.height+8)}; return {region: window.__R, scrollY: scrollY}; })()" },
+  "eval": "(()=>{ var g=document.querySelector('.grp[data-signal=\"SIG-0929-014\"]').getBoundingClientRect(); window.__R={n:2, alt:'One story reaching four accounts: named, supplier, customer and competitor.', x:g.left-6, y:g.top-4, w:436, h:Math.min(290, g.height+4)}; return {region: window.__R, scrollY: scrollY}; })()" },
  {
   "shot": "step-2-full" },
  {

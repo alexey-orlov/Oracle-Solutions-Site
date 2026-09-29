@@ -27,6 +27,8 @@ mkdirSync(OUT, { recursive: true });
 const W = 1280, H = 800;               // the capture, CSS px
 const FW = 872, FH = 545;              // the page's frame at 1440, CSS px
 const IW = 401, IMAXH = 272, PAD = 24; // the zoom inset and its offset from the corner
+const GAP = 6;                         // clear space between the inset and the ring, frame px: a
+                                       // flush edge reads as one shape (Account insights, 2026-09-29)
 const r1 = (v) => Math.round(v * 10) / 10;
 
 const steps = [];
@@ -44,9 +46,9 @@ for (const line of readFileSync(RUNLOG, "utf8").split("\n")) {
   };
   const anchor = ["br", "bl", "tr", "tl"].find((k) => {
     const b = box[k];
-    return b.x + IW <= rb.x || b.x >= rb.x + rb.w || b.y + insetH <= rb.y || b.y >= rb.y + rb.h;
+    return b.x + IW + GAP <= rb.x || b.x >= rb.x + rb.w + GAP || b.y + insetH + GAP <= rb.y || b.y >= rb.y + rb.h + GAP;
   });
-  if (!anchor) throw new Error(`step ${R.n}: every corner's inset covers the region; move or shorten it`);
+  if (!anchor) throw new Error(`step ${R.n}: no corner's inset clears the region by ${GAP} px; move or shorten it`);
   steps.push({ n: R.n, region: [r1(R.x / W * 100), r1(R.y / H * 100), r1(R.w / W * 100), r1(R.h / H * 100)], anchor, alt: R.alt || "", scale: s, insetH });
 }
 if (!steps.length) throw new Error("no `eval {\"region\": …}` lines in " + RUNLOG);
