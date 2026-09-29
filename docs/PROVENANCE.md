@@ -8153,3 +8153,16 @@ _One session, opened in AO-Personal-OS, under the account's 93 % weekly usage ca
 - **Open for Alex:** START-HERE §9, under §62.
 
 ---
+
+## 63. The whole catalog tile is its link, 2026-09-29
+
+_The same session as §62, on Opus. Touched: `site/assets/site.css` (the tile block), `tools/check-grammar.js`, START-HERE §3, VISUAL-GRAMMAR (the catalog tile)._
+
+- **The ask (Alex):** *"on prduct list page, make images on the tiles (or entire tiles? what's intiuitive?) clickable, not just the heading and learn more links"*.
+- **The call: the whole tile.** The tile already answered a hover as one object (its ground deepening, its picture easing in), yet only the title and *Learn more* answered a click, so the picture, the most clickable-looking part, did nothing. A catalog card that opens its product from anywhere is what readers expect; making only the picture a link would have added a third link to the same page and left the words dead.
+- **How:** the title's link stretches over the tile (`.ptile-title a::after { position: absolute; inset: 0; z-index: 1 }`, the tile now `position: relative`). It stays one real link: a modifier-click opens a tab, the address shows on hover, and a screen reader hears the product's name once. The *Interactive demo* badge, the tile's one other action, stands above the stretch (`.ptile-badges { z-index: 2 }`) and still opens the walkthrough. *Learn more* lies under it at the same address, and the tile's hover now moves its arrow and turns the title blue. The ask tile opens the contact from anywhere in the same way. **One loss:** the tooltips on the platform label and the group chip (the full Oracle name, the group's hint) no longer show, since the stretch covers them; both names are on the product page.
+- **Checks:** `check-grammar` OK (it now holds the three rules); the console clean; in the pane, hit-tested at 1440 on the first tile, the picture, the platform label, the chip, the one-liner, the outcomes, *Learn more* and the body's empty corner all resolve to `#/products/large-document-extraction`; the badge to its own button; the ask tile's picture and words to `#/#request-a-demo`; at 375 the picture opens the product and nothing overflows.
+- **Published** as version 32 (`assets/site.css` alone, the only site file changed since version 31).
+- **Open for Alex:** none.
+
+---
