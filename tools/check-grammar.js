@@ -424,12 +424,13 @@ if (!arr(C.products) || C.products.length !== 9) {
     });
   });
 
-  /* 2.2 metrics — the KPI band (round 20, Alex: the ROI block was "too wordy,
-     and too boring"; a visual per metric that "could either point to number X
-     and say that it's improvement 'from X', or show the potential improvement
-     range"; no footnotes, no method, no reviewer notes). Two or three tiles.
+  /* 2.2 metrics — the numbers widget (round 20, Alex: the ROI block was "too
+     wordy, and too boring"; a visual per metric that "could either point to
+     number X and say that it's improvement 'from X', or show the potential
+     improvement range"; no footnotes, no method, no reviewer notes; round 21:
+     a chart a reader matches to its number at a glance). Two or three tiles.
      Each names its kind in one chip word, prints one figure, draws one chart
-     from its own numbers, and every mark on the chart has a printed label.
+     from its own numbers, and every bar on the chart prints its value.
      Where each figure comes from is recorded in docs/PROVENANCE.md (§41), never
      in content.js: the data file ships in view-source, and nothing internal
      ships (START-HERE §4), so a `sources` key fails. */
@@ -518,8 +519,10 @@ if (!arr(C.products) || C.products.length !== 9) {
       }
       if (vz.form === "baseline") {
         if (before.label !== fig.text) fail(mw, "visual.before.label must equal figure.text — a baseline's Today row prints the figure");
-        if (sc.max !== 100 && !(sc.max === 10 && before.value === Math.round(before.value))) {
-          if (sc.max === 10) fail(mw, "visual.scale 0–10 draws ten dots, so before.value must be a whole number");
+        /* 0–100 is a share (a meter), 0–10 a count in ten (ten dots); any other
+           scale draws no chart and the figure is the tile. */
+        if (sc.max === 10 && before.value !== Math.round(before.value)) {
+          fail(mw, "visual.scale 0–10 draws ten dots, so before.value must be a whole number");
         }
       }
       /* The figure on the chart: the result on the After row, the starting
