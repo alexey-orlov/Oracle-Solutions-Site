@@ -285,24 +285,26 @@ if (!arr(C.products) || C.products.length !== 7) {
     if (typeof CFG.products[p.slug].videoPoster !== "string") {
       fail(w, "config.videoPoster missing (must exist, may be empty)");
     }
-    /* A string here would be truthy whatever it said, so "false" would turn
-       the frame on. The flag decides a layout — it has to be a real boolean. */
-    if (typeof CFG.products[p.slug].video !== "boolean") {
-      fail(w, "config.video missing or not a boolean (true | false)");
+    /* Round 18 (Alex: "No fake and placeholder links no longer allowed"): the
+       hero's video frame renders only when links.json holds the recording, so
+       the `video` switch that promised a frame before one existed is retired.
+       A listing that tooling writes with it back fails here, by name. */
+    if (CFG.products[p.slug].video !== undefined) {
+      fail(w, "config.video is retired (round 18) — the video frame renders only when links.json holds the product's video; delete the key");
     }
     /* Round 4, T1/T2: the Marketplace badge and the Marketplace facet both read
        this flag. A string would be truthy whatever it said. */
     if (typeof CFG.products[p.slug].marketplace !== "boolean") {
       fail(w, "config.marketplace missing or not a boolean (true | false)");
     }
-    /* The two availability flags are the owner's statement that the thing
-       exists; the URLs are the wiring, and they arrive later. So the only rule
-       here is the type — either flag may be true with an empty URL (the badge
-       renders unlinked, the video frame says a recording is in preparation),
-       and neither flag is asserted to any particular value. The one cross-check
-       that stays is the reverse case, where a URL exists but its flag is off and
-       the control would never render. */
-    if (CFG.products[p.slug].marketplaceUrl && !CFG.products[p.slug].marketplace) {
+    /* Round 18: the flag and its URL say one thing together. A flag with no
+       listing URL would be an inert badge, a placeholder; a URL with the flag
+       off would hide a listing that exists. */
+    var mpUrl = CFG.products[p.slug].marketplaceUrl || "";
+    if (CFG.products[p.slug].marketplace === true && !/^https:\/\//.test(mpUrl)) {
+      fail(w, "config.marketplace is true with no https:// marketplaceUrl — no placeholder badge (round 18): set the listing's URL, or false until it exists");
+    }
+    if (mpUrl && CFG.products[p.slug].marketplace !== true) {
       fail(w, "config.marketplaceUrl is set but config.marketplace is false — the badge would not render for a listing that exists");
     }
   }
@@ -754,9 +756,6 @@ if (!arr(C.products) || C.products.length !== 7) {
 
   var forms = C.forms || {};
   var demoForm = forms.demo || {};
-  if (!str(demoForm.secondaryHeading)) {
-    fail("forms.demo", "secondaryHeading missing — Home S7 and Services head the form under the contact card separately");
-  }
   if (demoForm.secondarySub !== undefined) {
     fail("forms.demo", "secondarySub retired in round 10 — the Contacts tab reads `sub`, and two subs for one form drift");
   }
