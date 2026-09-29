@@ -238,8 +238,8 @@ window.SITE_CONTENT = {
       problemEyebrow: "The problem",
       solutionEyebrow: "The solution",
       metricOwner: "Owner",
-      metricToday: "today",
-      metricToward: "improves toward",
+      metricToday: "Today",
+      metricAfter: "After",
       caseStudy: "Case study",
       layerRequired: "Required",
       layerOptional: "Optional",
@@ -695,8 +695,8 @@ window.SITE_CONTENT = {
               unit: "elapsed time",
               direction: "down",
               scale: { min: 0, max: 2184 },
-              before: { value: 2184, label: "the next quarterly review before" },
-              after: { value: 24, label: "hours after" }
+              before: { value: 2184, label: "a quarter" },
+              after: { value: 24, label: "hours" }
             },
             line: "Reviewed by a seller and ready to act on, the day the news lands."
           },
@@ -711,7 +711,7 @@ window.SITE_CONTENT = {
               unit: "percent of the working week",
               direction: "down",
               scale: { min: 0, max: 100 },
-              before: { value: 72, label: "72% of the week today" }
+              before: { value: 72, label: "72%" }
             },
             line: "Research and briefing time handed back, customer by customer."
           }
@@ -1042,8 +1042,8 @@ window.SITE_CONTENT = {
               unit: "time to a complete, cited case file",
               direction: "down",
               scale: { min: 0, max: 21 },
-              before: { value: 21, label: "weeks of gathering before" },
-              after: { value: 1, label: "day one after" }
+              before: { value: 21, label: "weeks" },
+              after: { value: 1, label: "day one" }
             },
             line: "Summary, timeline and draft response ready as the clock starts."
           },
@@ -1057,8 +1057,8 @@ window.SITE_CONTENT = {
               form: "baseline",
               unit: "share of complaints",
               direction: "down",
-              scale: { min: 0, max: 10 },
-              before: { value: 5.6, label: "answered late today" }
+              scale: { min: 0, max: 100 },
+              before: { value: 5.6, label: "5.6%" }
             },
             line: "Complaints answered after the regulator's deadline, across the industry."
           }
@@ -1370,8 +1370,8 @@ window.SITE_CONTENT = {
               unit: "expert time per completed project",
               direction: "down",
               scale: { min: 0, max: 480 },
-              before: { value: 480, label: "weeks before" },
-              after: { value: 8, label: "hours after" }
+              before: { value: 480, label: "weeks" },
+              after: { value: 8, label: "hours" }
             },
             line: "Every variance, with its cause and the document behind it."
           },
@@ -1386,7 +1386,7 @@ window.SITE_CONTENT = {
               unit: "organizations",
               direction: "up",
               scale: { min: 0, max: 10 },
-              before: { value: 1, label: "about 1 organization in 10 does it today" }
+              before: { value: 1, label: "1 in 10" }
             },
             line: "Every one reviewed against its plan, not the one somebody had time for."
           }
@@ -1716,8 +1716,8 @@ window.SITE_CONTENT = {
               unit: "minutes per 60 to 100-page agreement",
               direction: "down",
               scale: { min: 0, max: 5760 },
-              before: { value: 5760, label: "3–5 days before" },
-              after: { value: 10, label: "5–15 min after" }
+              before: { value: 5760, label: "3–5 days" },
+              after: { value: 10, label: "5–15 min" }
             },
             line: "60 to 100 pages, end to end, the reviewer's check included."
           },
@@ -1732,7 +1732,7 @@ window.SITE_CONTENT = {
               unit: "days",
               direction: "down",
               scale: { min: 0, max: 45 },
-              before: { value: 30, label: "about a month today" }
+              before: { value: 30, label: "~1 month" }
             },
             line: "A new partner or site, from signature to first invoice."
           }
@@ -2071,8 +2071,8 @@ window.SITE_CONTENT = {
               unit: "elapsed time",
               direction: "down",
               scale: { min: 0, max: 2880 },
-              before: { value: 2880, label: "~2 days before" },
-              after: { value: 30, label: "~30 min after" }
+              before: { value: 2880, label: "~2 days" },
+              after: { value: 30, label: "~30 min" }
             },
             line: "Optimized and approved by the dispatcher, end to end."
           },
@@ -2088,7 +2088,7 @@ window.SITE_CONTENT = {
               direction: "up",
               scale: { min: 0, max: 15 },
               before: { value: 0, label: "today" },
-              range: { lo: 4, hi: 10, label: "+4% to +10%" }
+              range: { lo: 4, hi: 10, label: "+4 to +10%" }
             },
             line: "Visits completed per working day, on today's headcount."
           }
@@ -2427,8 +2427,8 @@ window.SITE_CONTENT = {
               unit: "elapsed time",
               direction: "down",
               scale: { min: 0, max: 336 },
-              before: { value: 336, label: "weeks before" },
-              after: { value: 0.1, label: "minutes after" }
+              before: { value: 336, label: "weeks" },
+              after: { value: 0.1, label: "minutes" }
             },
             line: "From asking to a ranked list the team can act on."
           },
@@ -2443,7 +2443,7 @@ window.SITE_CONTENT = {
               unit: "percent of a data team's week",
               direction: "down",
               scale: { min: 0, max: 100 },
-              before: { value: 40, label: "about 40% of the week today" }
+              before: { value: 40, label: "~40%" }
             },
             line: "Pulling and cleaning extracts before anyone gets an answer."
           }
@@ -2752,8 +2752,8 @@ window.SITE_CONTENT = {
               unit: "extracts per question",
               direction: "down",
               scale: { min: 0, max: 3 },
-              before: { value: 3, label: "3 extracts today" },
-              after: { value: 0, label: "0 after" }
+              before: { value: 3, label: "3" },
+              after: { value: 0, label: "0" }
             },
             line: "A data team's pulls and copies, replaced by one query run in place."
           },
@@ -2768,8 +2768,8 @@ window.SITE_CONTENT = {
               unit: "elapsed time",
               direction: "down",
               scale: { min: 0, max: 168 },
-              before: { value: 168, label: "about a week before" },
-              after: { value: 0.1, label: "minutes after" }
+              before: { value: 168, label: "a week" },
+              after: { value: 0.1, label: "minutes" }
             },
             line: "Revenue, churn or inventory, all regions, on one agreed definition."
           }
@@ -3075,7 +3075,7 @@ window.SITE_CONTENT = {
               direction: "down",
               scale: { min: 0, max: 15 },
               before: { value: 0, label: "today" },
-              range: { lo: 5, hi: 10, label: "−5% to −10%" }
+              range: { lo: 5, hi: 10, label: "−5 to −10%" }
             },
             line: "Driving, charging time and overtime, at your own rates."
           },
@@ -3090,7 +3090,7 @@ window.SITE_CONTENT = {
               unit: "minutes per engineer per day",
               direction: "down",
               scale: { min: 0, max: 90 },
-              before: { value: 60, label: "up to an hour a day today" }
+              before: { value: 60, label: "up to 1 h a day" }
             },
             line: "Hours at the wheel that produce no billable work."
           }
@@ -3418,8 +3418,8 @@ window.SITE_CONTENT = {
           "unit": "share of remediation decisions",
           "direction": "down",
           "scale": { "min": 0, "max": 4 },
-          "before": { "value": 3, "label": "3.0% today" },
-          "after": { "value": 2.4, "label": "2.4% after" }
+          "before": { "value": 3, "label": "3.0%" },
+          "after": { "value": 2.4, "label": "2.4%" }
         },
         "line": "Parts swapped where a repair would have held; the payer funds them."
       },
@@ -3434,8 +3434,8 @@ window.SITE_CONTENT = {
           "unit": "share of repairs",
           "direction": "down",
           "scale": { "min": 0, "max": 2 },
-          "before": { "value": 1.5, "label": "1.5% today" },
-          "after": { "value": 1.2, "label": "1.2% after" }
+          "before": { "value": 1.5, "label": "1.5%" },
+          "after": { "value": 1.2, "label": "1.2%" }
         },
         "line": "Repairs that fail and come back, absorbed by the operator."
       },
@@ -3450,8 +3450,9 @@ window.SITE_CONTENT = {
           "unit": "cost of one windscreen call",
           "direction": "down",
           "scale": { "min": 0, "max": 350 },
-          "before": { "value": 350, "label": "$350 replacement" },
-          "after": { "value": 99, "label": "$99 repair" }
+          "before": { "value": 350, "label": "$350" },
+          "after": { "value": 99, "label": "$99" },
+          "gap": "Saving"
         },
         "line": "A windscreen replaced where a repair would have met the limit."
       }
