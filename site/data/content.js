@@ -519,7 +519,7 @@ window.SITE_CONTENT = {
     image: {
       file: "assets/img/heroes/products.jpg",
       alt: "A tall oval of light open in a dark wall, an orange rim along its edge, its light running out across still water",
-      focal: "100% 46%"
+      focal: "100% 30%"
     },
     searchPlaceholder: "Search products or workflows…",
     /* Round 18 (Alex): the catalog's way out is its last tile, "Looking for

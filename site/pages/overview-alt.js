@@ -115,56 +115,65 @@
 
   /* An outlined chip: an octagon with 4 px cuts drawn as a path, so the
      stroke follows the cut corners (a clipped border would lose them), and
-     dashed where the thing it stands for is optional or still to come. */
+     dashed where the thing it stands for is optional or still to come. The
+     stroke keeps its width when the chip is drawn larger than its box. */
   function node(size, dashed, inner) {
     var s = size, c = 4, h = .75;
     var d = "M" + c + " " + h + "H" + (s - c) + "L" + (s - h) + " " + c + "V" + (s - c) +
       "L" + (s - c) + " " + (s - h) + "H" + c + "L" + h + " " + (s - c) + "V" + c + "Z";
-    return '<span class="amap-node amap-node--' + s + (dashed ? " amap-node--dashed" : "") + '">' +
+    return '<span class="amap-node' + (dashed ? " amap-node--dashed" : "") + '">' +
       '<svg class="amap-node-shape" viewBox="0 0 ' + s + " " + s + '" aria-hidden="true"><path d="' + d + '"></path></svg>' +
       inner +
       "</span>";
   }
 
-  /* The whole offer in one picture. One SoftServe mark heads the two things
-     SoftServe sells, side by side: the products (the six groups in their
-     home-tile fills) and the services, split in two, the packaged track (five
-     outlined steps on a line, the managed one dashed) over the bespoke team
-     (three pods and an open one, the team that grows). Under both, "Built
-     on" and the Oracle card with Oracle's mark and its four platforms, AI
-     Data Platform first (Alex). Light grounds only; nothing in it is a
+  /* One block of the diagram: its name, its line of two to four words, and
+     its picture. */
+  function block(key, words, picture) {
+    var UI = window.UI;
+    return '<div class="amap-block amap-block--' + key + '">' +
+      '<p class="amap-name">' + UI.esc(words.name) + "</p>" +
+      '<p class="amap-line">' + UI.esc(words.line) + "</p>" +
+      '<div class="amap-pic">' + picture + "</div>" +
+      "</div>";
+  }
+
+  /* The whole offer in one picture, in Alex's layout: the packaged services
+     over the products on the left, the bespoke services beside both on the
+     right, Oracle's platforms under all three, the stack read bottom up. Each
+     block says what it is in a name and one short line and shows the rest:
+     the products are the groups' four fills, the packaged services a run of
+     steps (the last dashed: managed services are optional), the bespoke
+     services a team of pods with an open one (it grows). What the pictures
+     stand for is listed on the screens around this one, so the diagram names
+     none of it (Alex: "overloaded with text"). One SoftServe mark over its
+     three blocks, Oracle's mark in its own. Light grounds; nothing in it is a
      control. It is hidden from assistive technology, and one sentence says
      the same. */
   function diagram(C) {
     var UI = window.UI;
     var copy = (C.overviewAlt || {}).diagram || {};
-    var families = (C.shared && C.shared.tagFamilies) || {};
-    var patternIcons = (families.pattern && families.pattern.icons) || {};
-    var techIcons = (families.tech && families.tech.icons) || {};
     var steps = (C.overview.delivery || {}).steps || [];
     var stageIcons = copy.stageIcons || [];
-    var stack = C.overview.hero.stack;
 
-    var groups = (C.facets.categories || []).map(function (category) {
-      return '<li class="amap-bar amap-bar--' + UI.esc(category.tone) + '">' +
-        UI.icon(patternIcons[category.id]) +
-        '<span class="amap-bar-name">' + UI.esc(category.full) + "</span>" +
-        "</li>";
-    }).join("");
+    /* Each group fill once, in the groups' own order. */
+    var tones = [];
+    (C.facets.categories || []).forEach(function (category) {
+      if (category.tone && tones.indexOf(category.tone) === -1) tones.push(category.tone);
+    });
+    var tiles = '<ul class="amap-tiles">' + tones.map(function (tone) {
+      return '<li class="amap-tile amap-tile--' + UI.esc(tone) + '"></li>';
+    }).join("") + "</ul>";
 
-    var stages = steps.map(function (step, index) {
+    var flow = '<ol class="amap-flow">' + steps.map(function (step, index) {
       var last = index === steps.length - 1;
-      return '<li class="amap-step">' +
-        node(28, last, glyph(stageIcons[index] || "dot")) +
-        '<span class="amap-step-name">' + UI.esc(step.title) +
-          (last && copy.optionalNote ? ' <span class="amap-optional">' + UI.esc(copy.optionalNote) + "</span>" : "") +
-        "</span>" +
-        "</li>";
-    }).join("");
+      return (index ? '<li class="amap-arrow' + (last ? " amap-arrow--dashed" : "") + '"></li>' : "") +
+        '<li class="amap-step">' + node(36, last, glyph(stageIcons[index] || "dot")) + "</li>";
+    }).join("") + "</ol>";
 
-    var pods = [0, 1, 2].map(function () {
-      return "<li>" + node(36, false, glyph("users")) + "</li>";
-    }).join("") + "<li>" + node(36, true, glyph("plus")) + "</li>";
+    var pods = '<ul class="amap-pods">' + [0, 1, 2, 3, 4].map(function () {
+      return '<li class="amap-pod">' + node(48, false, glyph("users")) + "</li>";
+    }).join("") + '<li class="amap-pod">' + node(48, true, glyph("plus")) + "</li></ul>";
 
     /* The platforms in the diagram's own order, any the order does not name
        after it, so a platform added to the site still shows. */
@@ -174,10 +183,7 @@
       return (ia === -1 ? order.length : ia) - (ib === -1 ? order.length : ib);
     });
     var platforms = technology.map(function (facet) {
-      return '<li class="amap-chip">' +
-        UI.icon(techIcons[facet.id]) +
-        '<span class="amap-chip-name">' + UI.esc(facet.label) + "</span>" +
-        "</li>";
+      return '<li class="amap-chip">' + UI.esc(facet.label) + "</li>";
     }).join("");
 
     var ssMark = window.brandAsset("ssMark", "assets/img/softserve-wordmark-white.svg");
@@ -185,38 +191,15 @@
 
     return '<p class="sr-only">' + UI.esc(copy.ariaLabel) + "</p>" +
       '<div class="amap" aria-hidden="true">' +
-        '<div class="amap-head">' +
-          '<img class="amap-mark amap-mark--softserve" src="' + UI.esc(ssMark) + '" alt="" width="96" height="16" decoding="async">' +
-          '<p class="amap-caption">' + UI.esc(copy.softserveCaption) + "</p>" +
-        "</div>" +
-        '<div class="amap-split">' +
-          '<div class="amap-panel amap-panel--products">' +
-            '<p class="amap-label">' + UI.esc(copy.productsLabel) + "</p>" +
-            '<ul class="amap-bars">' + groups + "</ul>" +
-          "</div>" +
-          '<div class="amap-panel amap-panel--services">' +
-            '<p class="amap-label">' + UI.esc(copy.servicesLabel) + "</p>" +
-            '<div class="amap-sub amap-sub--packaged">' +
-              '<p class="amap-sublabel">' + UI.esc(copy.packagedLabel) + "</p>" +
-              '<ol class="amap-steps">' + stages + "</ol>" +
-            "</div>" +
-            '<div class="amap-sub amap-sub--bespoke">' +
-              '<p class="amap-sublabel">' + UI.esc(copy.bespokeLabel) + "</p>" +
-              '<div class="amap-pods-row">' +
-                '<ul class="amap-pods">' + pods + "</ul>" +
-                '<p class="amap-pods-caption">' + UI.esc(copy.bespokeCaption) + "</p>" +
-              "</div>" +
-            "</div>" +
-          "</div>" +
-        "</div>" +
-        '<p class="amap-builton">' + UI.icon("arrowDown") + "<span>" + UI.esc(copy.builtOn) + "</span>" + UI.icon("arrowDown") + "</p>" +
-        '<div class="amap-oracle">' +
-          '<div class="amap-head">' +
+        '<img class="amap-mark amap-mark--softserve" src="' + UI.esc(ssMark) + '" alt="" width="96" height="16" decoding="async">' +
+        '<div class="amap-grid">' +
+          block("packaged", copy.packaged || {}, flow) +
+          block("products", copy.products || {}, tiles) +
+          block("bespoke", copy.bespoke || {}, pods) +
+          '<div class="amap-block amap-block--oracle">' +
             '<img class="amap-mark amap-mark--oracle" src="' + UI.esc(oracleMark) + '" alt="" width="84" height="11" decoding="async">' +
-            '<p class="amap-caption">' + UI.esc(copy.oracleCaption) + "</p>" +
+            '<ul class="amap-chips">' + platforms + "</ul>" +
           "</div>" +
-          '<p class="amap-label">' + UI.esc(stack.platformsLabel) + "</p>" +
-          '<ul class="amap-chips">' + platforms + "</ul>" +
         "</div>" +
       "</div>";
   }

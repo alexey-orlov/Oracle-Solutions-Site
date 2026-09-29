@@ -1589,7 +1589,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   height: 100%;
   max-width: none;
   object-fit: cover;
-  object-position: var(--focal, 100% 46%);
+  object-position: var(--focal, 100% 30%);
 }
 
 .catalog-hero-scrim {
@@ -2040,7 +2040,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   color: var(--text);
 }
 .kpi-prefix { flex: none; font-weight: 300; font-size: 1.25rem; line-height: 1.05; color: var(--text-muted); }
-.kpi-value { font-weight: 300; font-size: min(3.5rem, calc(100cqi / var(--fig-em, 4))); line-height: 1.05; letter-spacing: -.01em; color: var(--text); }
+/* --fig-em-max is the widget's longest figure (product.js outcomesBlock), so
+   every figure in one widget takes one size. */
+.kpi-value { font-weight: 300; font-size: min(3.5rem, calc(100cqi / var(--fig-em-max, var(--fig-em, 4)))); line-height: 1.05; letter-spacing: -.01em; color: var(--text); }
 
 /* The chart (product.js kpiChart): a row per state, its name in a column of
    its own, then its bar from the one zero line and its value at the bar's
@@ -2073,9 +2075,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   color: var(--text-body);
 }
 .kpi-row-value.is-figure { font-weight: 700; color: var(--text); }
-/* A share of a whole: the whole as a track, today's share filled. */
-.kpi-meter { flex: none; display: flex; width: calc(100% - var(--room)); height: .625rem; background: var(--bg-raised); }
-.kpi-meter .kpi-bar { width: calc(100% * var(--v)); min-width: 2px; margin: 0; }
+/* A Today row with no bar (a baseline with no whole) is its value alone. */
+.kpi-row-value:first-child { margin-left: 0; }
+/* A share of a whole: the whole as a white track on a #bdcbd7 hairline,
+   today's share filled in the Today grey. */
+.kpi-meter { flex: none; display: flex; width: calc(100% - var(--room)); height: .625rem; border: 1px solid var(--border); background: #ffffff; }
+.kpi-meter .kpi-bar { width: calc(100% * var(--v)); min-width: 2px; height: 100%; margin: 0; }
 /* A count in ten: ten dots, today's filled. */
 .kpi-dots { flex: none; display: flex; gap: .375rem; }
 .kpi-dot { width: .625rem; height: .625rem; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--kpi-today); }
@@ -2084,11 +2089,19 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .kpi-line { margin-top: .75rem; font-weight: 300; font-size: 1rem; line-height: 1.3; color: var(--text-body); }
 .kpi-owner { margin-top: .5rem; font-size: .875rem; font-weight: 400; line-height: 1.3; letter-spacing: 0; color: var(--text-muted); }
 
-/* Beside the main column the tiles stack and the figure steps down to 48px. */
+/* Two columns, one hierarchy: the problem and what changes lead (Alex:
+   "problem solution should be central"), so beside the widget their
+   headlines grow to 32px while the widget's figures step down to 40px and
+   How it works' H2 to 40px, and nothing on the screen outsizes the plates'
+   claims but a plate. The widget's tiles stack, and its text starts 40px down,
+   level with the plates' eyebrows. */
 @media (min-width: 1240px) {
+  .tab-body--overview:has(> .kpi-widget) .ps-headline { font-size: 2rem; }
+  .tab-body--overview:has(> .kpi-widget) .hiw .ov-h2 { font-size: 2.5rem; }
+  .kpi-widget { padding: 2.5rem 2rem 2rem; }
   .kpi-widget .kpi-grid { grid-template-columns: minmax(0, 1fr); }
   .kpi-widget .kpi + .kpi { margin-top: 1.5rem; padding: 1.5rem 0 0; border-left: 0; border-top: 1px solid var(--border-panel); }
-  .kpi-widget .kpi-value { font-size: min(3rem, calc(100cqi / var(--fig-em, 4))); }
+  .kpi-widget .kpi-value { font-size: min(2.5rem, calc(100cqi / var(--fig-em-max, var(--fig-em, 4)))); }
 }
 
 /* — 3 · how it works: a row of step tabs, the open step's text, one frame — */
@@ -2105,13 +2118,15 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   column-gap: 1.5rem;
   box-shadow: inset 0 -1px 0 var(--border-hairline);
 }
-/* Two sizes and no more: 18 for a tab, 16 for the text. A title wraps under
-   itself, clear of its number; the selected step is ink on a 2px blue
-   underline, the site's tab language. */
+/* Two sizes and no more: 18 for a tab, 16 for the text. A label sits on its
+   underline, whether it takes one line or two, and a title wraps under
+   itself, clear of its number, in balanced lines. The site's tab language:
+   an unselected step in #4c5156, turning ink on hover; the selected one ink,
+   its number blue, on a 2px blue underline. */
 .hiw-tab {
   display: flex;
-  align-items: baseline;
-  gap: .5rem;
+  flex-direction: column;
+  justify-content: flex-end;
   min-width: 0;
   padding: .75rem 0 1rem;
   border: 0;
@@ -2123,16 +2138,17 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   font-size: 1.125rem;
   line-height: 1.25;
   letter-spacing: 0;
-  color: var(--text);
+  color: var(--text-muted);
   box-shadow: inset 0 -2px 0 transparent;
-  transition: box-shadow var(--t-base) var(--ease);
+  transition: color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
 }
+.hiw-tab:hover, .hiw-tab.is-active { color: var(--text); }
 .hiw-tab.is-active { box-shadow: inset 0 -2px 0 var(--action); cursor: default; }
 .hiw-tab:focus-visible { outline: 2px solid var(--action); outline-offset: -2px; }
-.hiw-num { flex: none; color: var(--text-muted); transition: color var(--t-base) var(--ease); }
+.hiw-tab-label { display: flex; align-items: baseline; gap: .5rem; min-width: 0; }
+.hiw-num { flex: none; transition: color var(--t-base) var(--ease); }
 .hiw-tab.is-active .hiw-num { color: var(--action); }
-.hiw-title { min-width: 0; transition: color var(--t-base) var(--ease); }
-.hiw-tab:not(.is-active):hover .hiw-title { color: var(--action); }
+.hiw-title { min-width: 0; text-wrap: balance; }
 
 /* Every step's text and frame share the panels' two row tracks, so the frame
    sits at one height whatever a text wraps to and never moves. The open
@@ -2232,7 +2248,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     border-left: 0;
     border-top: 1px solid var(--border-panel);
   }
-  .kpi-value { font-size: min(2.75rem, calc(100cqi / var(--fig-em, 4))); }
+  .kpi-value { font-size: min(2.75rem, calc(100cqi / var(--fig-em-max, var(--fig-em, 4)))); }
   /* The steps as cards, each ending on its whole screen. */
   .hiw-body { display: none; }
   .hiw-cards { display: flex; flex-direction: column; gap: 2rem; }
