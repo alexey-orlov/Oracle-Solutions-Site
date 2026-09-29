@@ -2285,21 +2285,59 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 })();
 
-/* ---- round 20 · the Overview (Alex, 2026-09-29) ----
-   One column and no rail: the problem and what changes, the KPI band, then
-   How it works — the number is the reason to look at the screens. The
-   renderer builds none of what the round retired (the More detail
-   disclosure, the rail, its grey tiles, the ROI paragraph, the footnote), and
-   reads no metric `sources` (the data carries none; 2.2). The words the new
-   blocks print are shared: the section labels, and the three kind chips,
-   which are the case study's own vocabulary. */
+/* ---- rounds 20 and 21 · the Overview (Alex, 2026-09-29) ----
+   Round 21 (Alex: option b, "Problem solution and the How it works taking
+   the central space (left; 4/7 to 2/3 of width); and ROI metrics look like
+   widget on the right"; the charts "hard to understand"; the screenshots
+   "without those callouts"): from 1240px a main column of two thirds and
+   the numbers widget beside it; charts a reader matches to their number;
+   screenshots with nothing drawn over them. The markup keeps round 20's order
+   of the argument, the problem and what changes, the numbers, then How it
+   works, which is the one-column order and a screen reader's. The renderer
+   builds none of what the rounds retired (the More detail disclosure, the
+   rail, its grey tiles, the ROI paragraph, the footnote, the full-bleed band,
+   the ring and the zoom inset), and reads no metric `sources` (2.2). The
+   words the blocks print are shared: the section labels, and the three kind
+   chips, which are the case study's own vocabulary. */
 (function () {
   var src = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
   var overviewFn = (src.split("function overviewTab(")[1] || "").split("\n  function ")[0];
   if (!overviewFn) warn("site/pages/product.js", "overviewTab() not found — the Overview order check is reading nothing");
   else if (!/problemSolution\([^)]*\)\s*\+\s*outcomesBlock\([^)]*\)\s*\+\s*howItWorks\(/.test(overviewFn)) {
-    fail("site/pages/product.js overviewTab()", "must render problemSolution(), then outcomesBlock() (the KPI band), then howItWorks() — D-design §2's order");
+    fail("site/pages/product.js overviewTab()", "must render problemSolution(), then outcomesBlock() (the numbers widget), then howItWorks() — the argument's order, which the one column and a screen reader follow");
   }
+  /* Round 21: the widget and the steps. */
+  var outcomesFn = (src.split("function outcomesBlock(")[1] || "").split("\n  function ")[0];
+  if (!/class="kpi-widget/.test(outcomesFn) || !/data-kpi-widget/.test(outcomesFn)) {
+    fail("site/pages/product.js outcomesBlock()", "must render the numbers widget (.kpi-widget, data-kpi-widget), not a full-bleed band (round 21)");
+  }
+  var hiwFn = (src.split("function howItWorks(")[1] || "").split("\n  function ")[0];
+  var atTabs = hiwFn.indexOf('role="tablist"'), atText = hiwFn.indexOf('class="hiw-text"'), atFrame = hiwFn.indexOf("frame(step, index, \"hiw-shot\")");
+  if (atTabs === -1 || atText === -1 || atFrame === -1 || !(atTabs < hiwFn.indexOf('class="hiw-panels"')) || !(atText < atFrame)) {
+    fail("site/pages/product.js howItWorks()", "the steps are a tab row, then the open step's text, then its frame — the description sits between the control and the screen (START-HERE §4)");
+  }
+  if (!/role="tab"/.test(hiwFn) || !/aria-selected/.test(hiwFn) || !/role="tabpanel"/.test(hiwFn)) {
+    fail("site/pages/product.js howItWorks()", "the step row is a tablist: each step a role=\"tab\" with aria-selected, each panel a role=\"tabpanel\"");
+  }
+  /* Alex, 2026-09-29: "Just have screenshots without those callouts" — no
+     ring, no zoom inset, on any product or width. Where a step needs the eye
+     led, the screenshot itself shows the element selected, as the product
+     would (docs/ASSETS.md §1). */
+  if (/hiw-region|hiw-zoom|shot\.zoom|shot\.region/.test(src)) {
+    fail("site/pages/product.js", "draws a callout over a screenshot (the ring or the zoom inset) — retired in round 21: a frame is the screen alone");
+  }
+  var measureFn = (src.split("function measureKpiWidget(")[1] || "").split("\n  function ")[0];
+  if (!/is-tall/.test(measureFn) || !/innerHeight/.test(measureFn)) {
+    fail("site/pages/product.js measureKpiWidget()", "the widget is pinned only while all of it fits the window — a taller one scrolls, so its foot is never cut off (is-tall)");
+  }
+  var chartFn = (src.split("function kpiChart(")[1] || "").split("\n  function ")[0];
+  if (!/label\("metricToday"\)/.test(chartFn) || !/label\("metricAfter"\)/.test(chartFn)) {
+    fail("site/pages/product.js kpiChart()", "the chart's rows are named Today and After, from sectionLabels.metricToday / metricAfter");
+  }
+  if (!/kpiRow\(then, kpiBar\("after", solid \/ end\) \+ kpiBar\("span", \(hi - lo\) \/ end\), text, true\)/.test(chartFn) || !/viz\.gap/.test(chartFn)) {
+    fail("site/pages/product.js kpiChart()", "a range prints the figure on the After bar's span, and a gap row prints a difference — the figure is always on the chart (Alex: \"matching between number and the visual\")");
+  }
+  if (/<svg/.test(chartFn)) fail("site/pages/product.js kpiChart()", "draws an SVG chart — round 21's charts are named rows of bars with their values printed");
   [
     ["disclosure--detail", "the More detail disclosure"],
     ["moreDetail", "the More detail disclosure"],
@@ -2320,25 +2358,30 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (css.indexOf("/* ===== Round 20 · Overview ===== */") === -1) {
     fail("site/assets/site.css", 'has no "===== Round 20 · Overview =====" block — the Overview\'s components live in one block');
   }
-  /* Q1: the inset's offset scales with the frame (2.75% of its width, 4.4% of
-     its height: 24px at 1440), so it never meets the ring at 1280. */
-  ["tl", "tr", "bl", "br"].forEach(function (corner) {
-    var m = css.match(new RegExp("\\n\\.hiw-zoom--" + corner + " \\{([^}]*)\\}"));
-    var v = corner.charAt(0) === "t" ? "top" : "bottom";
-    var h = corner.charAt(1) === "l" ? "left" : "right";
-    if (!m || !new RegExp(v + ":\\s*4\\.4%").test(m[1]) || !new RegExp(h + ":\\s*2\\.75%").test(m[1])) {
-      fail("site/assets/site.css", ".hiw-zoom--" + corner + " must sit " + v + " 4.4% / " + h + " 2.75% of the frame — a fixed offset lets the inset meet the ring at 1280");
+  /* Round 21 · the page: two columns from 1240px, the main one between 4/7
+     and 2/3 of the width (Alex's range), the widget in the other, pinned
+     unless it is taller than the window. */
+  var ovBlock = css.slice(css.indexOf("/* ===== Round 20 · Overview ===== */"), css.indexOf("/* ===== end Round 20 · Overview ===== */"));
+  var cols = ovBlock.match(/\.tab-body--overview:has\(> \.kpi-widget\) \{[^}]*grid-template-columns:\s*minmax\(0,\s*(\d+(?:\.\d+)?)fr\)\s+minmax\(0,\s*(\d+(?:\.\d+)?)fr\)/);
+  if (!cols) {
+    fail("site/assets/site.css", "the Overview's two columns are missing: .tab-body--overview:has(> .kpi-widget) { grid-template-columns: minmax(0, Nfr) minmax(0, Mfr) } (round 21)");
+  } else {
+    var mainShare = Number(cols[1]) / (Number(cols[1]) + Number(cols[2]));
+    if (mainShare < 4 / 7 - 1e-9 || mainShare > 2 / 3 + 1e-9) {
+      fail("site/assets/site.css", "the Overview's main column is " + Math.round(mainShare * 1000) / 10 + "% of the width — Alex's range is 4/7 to 2/3");
     }
+  }
+  if (!/grid-template-areas:\s*"ps kpi"\s*"hiw kpi"/.test(ovBlock)) {
+    fail("site/assets/site.css", 'the Overview grid must be "ps kpi" "hiw kpi": the problem and What changes over How it works, the widget beside both (round 21)');
+  }
+  if (!/@media \(min-width: 1240px\)/.test(ovBlock)) fail("site/assets/site.css", "the two columns start at 1240px (round 21)");
+  if (!/\.kpi-widget \{[^}]*position:\s*sticky/.test(ovBlock) || !/\.kpi-widget\.is-tall \{[^}]*position:\s*relative/.test(ovBlock)) {
+    fail("site/assets/site.css", "the widget is sticky beside the column and scrolls when .is-tall (round 21)");
+  }
+  /* No callout over a screenshot, and none of round 20's inset machinery. */
+  [".hiw-zoom", ".hiw-region", ".kpi-band", ".kv-", ".kpi-svg", ".kpi-labels", ".hiw-list", ".hiw-step", ".hiw-head", ".hiw-frame"].forEach(function (sel) {
+    if (css.indexOf(sel) !== -1) fail("site/assets/site.css", 'still styles "' + sel + '…" — retired in round 21 (no callouts over a screenshot; charts as named bars; the widget, not a band)');
   });
-  /* Q1: one chart convention — a range that improves downward is drawn
-     mirrored, and a dumbbell prints its labels in the order of its dots. */
-  var visualFn = (src.split("function kpiVisual(")[1] || "").split("\n  function ")[0];
-  if (!/down \? 100 - p : p/.test(visualFn)) {
-    fail("site/pages/product.js kpiVisual()", "a range that improves downward is no longer mirrored (today's tick at the right end, the band to its left)");
-  }
-  if (!/pa < pb \? afterLabel \+ beforeLabel : beforeLabel \+ afterLabel/.test(visualFn)) {
-    fail("site/pages/product.js kpiVisual()", "a dumbbell no longer prints its labels in the order of its dots");
-  }
   /* Each is a prefix: `.stepper` stands for `.stepper-head` and the rest. */
   [".ps-strip", ".ps-panel", ".ps-mark", ".ps-arrow", ".ov-layout", ".ov-main", ".ov-rail", ".rail-card", ".stat-tile",
    ".roi-band", ".disclosure--detail", ".detail-wrap", ".detail-entry", ".stepper", ".step-frame"].forEach(function (sel) {
@@ -2346,18 +2389,26 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 
   var labels = (C.shared || {}).sectionLabels || {};
-  ["outcomes", "howItWorks", "problemEyebrow", "solutionEyebrow", "metricOwner", "metricToday", "metricToward"].forEach(function (k) {
+  ["outcomes", "howItWorks", "problemEyebrow", "solutionEyebrow", "metricOwner", "metricToday", "metricAfter", "shotOpen"].forEach(function (k) {
     if (!str(labels[k])) fail("shared.sectionLabels", k + " missing — the Overview prints it");
   });
-  /* Both are H2s, set at 48px (START-HERE §4: ≤ ~30 characters). */
+  /* The chart's two row names sit in a column of their own beside the bars. */
+  ["metricToday", "metricAfter"].forEach(function (k) {
+    if (str(labels[k]) && labels[k].length > 6) fail("shared.sectionLabels." + k, "is " + labels[k].length + " characters — a chart row's name (max 6)");
+  });
+  /* How it works is an H2 at 48px, and `outcomes` heads the widget; both are
+     display lines (START-HERE §4: ≤ ~30 characters). */
   ["outcomes", "howItWorks"].forEach(function (k) {
-    if (str(labels[k]) && labels[k].length > 30) fail("shared.sectionLabels." + k, "is " + labels[k].length + " characters — an H2 is a display line (max 30)");
+    if (str(labels[k]) && labels[k].length > 30) fail("shared.sectionLabels." + k, "is " + labels[k].length + " characters — a display line (max 30)");
   });
   ["metrics", "metricsPlanned", "roi", "moreDetail", "moreDetailFeatures"].forEach(function (k) {
     if (labels[k] !== undefined) {
-      fail("shared.sectionLabels." + k, "is retired in round 20 — the band has one heading, `outcomes`, and More detail is gone");
+      fail("shared.sectionLabels." + k, "is retired in round 20 — the widget has one heading, `outcomes`, and More detail is gone");
     }
   });
+  if (labels.metricToward !== undefined) {
+    fail("shared.sectionLabels.metricToward", "is retired in round 21 — a baseline is a Today row with its value; nothing reads the chevron's words");
+  }
 
   var kinds = (C.shared || {}).metricKinds;
   if (!kinds) return fail("shared.metricKinds", "missing — the KPI tiles' kind chips read their word and tooltip here");
