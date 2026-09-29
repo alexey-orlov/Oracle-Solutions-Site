@@ -252,8 +252,6 @@ cuts an outline drawn outside the box. `prefers-reduced-motion` drops every scal
 - **The three `site/demo/*` walkthroughs are still dark-themed.** They are out of
   scope for this pass and have their own CSS and their own sessions. A near-black
   demo now opens from a white page. Next round's item.
-- **The Internal review panel** styles itself (`assets/review.js`) and is
-  off-brand amber. It comes off before launch anyway (START-HERE §8).
 - **No Cyrillic.** Azurio and Replica have none; SoftServe forces Roboto under
   `body.uk-ua`. This site is English-only, so no fallback is declared. If a
   UA/RU variant is ever added, copy their rule and self-host Roboto — do not let

@@ -72,7 +72,6 @@ oracle-solutions-site/
     │   ├── site.css          all styling — design tokens in :root, then components
     │   ├── app.js            UI helpers (window.UI), header, footer, router, modal
     │   ├── forms.js          the demo, contact and sales-kit forms (window.FORMS)
-    │   ├── review.js         TEMPORARY: the Internal checklist panel, prototype only (START-HERE §8)
     │   └── img/              wordmarks, heroes, step frames, industries, posters, headshots (people/)
     │       ├── heroes/       per-page hero background images + heroes.json
     │       └── groups/       the six product-group tile images for the home page (docs/ASSETS.md §2b)
@@ -81,7 +80,6 @@ oracle-solutions-site/
     │   ├── endpoint.local.json  this machine's form endpoint for local runs — git-ignored, never published
     │   ├── (links.js)        window.SITE_LINKS — not a file: built from links.json on request (tools/site_links.py)
     │   ├── content.js        window.SITE_CONTENT — every word on the site
-    │   ├── review.js         TEMPORARY: window.SITE_REVIEW — the list the Internal panel shows
     │   └── diagrams.js       window.SITE_DIAGRAMS — the per-product architecture diagrams, drawn as inline SVG
     ├── pages/
     │   ├── overview.js       window.PAGES.overview   →  #/   (the home page, nine screens)
@@ -94,7 +92,7 @@ oracle-solutions-site/
         └── cross-system-erp-qa/         the Cross-system ERP Q&A walkthrough — same four files, three product surfaces
 ```
 
-Script order in `index.html` matters: `data/*` → `assets/forms.js` → `pages/*` → `assets/app.js`, which renders on load. A new page script goes before `assets/app.js`. The two `review.js` tags come last and are removed together before launch.
+Script order in `index.html` matters: `data/*` → `assets/forms.js` → `pages/*` → `assets/app.js`, which renders on load. A new page script goes before `assets/app.js`, which is the last tag.
 
 ### Routes
 
@@ -173,16 +171,6 @@ node tools/check-grammar.js
 ```
 
 `check-grammar.js` fails if a product stops filling a grammar slot, if a metric row loses its disclaimer, if an industry key is not in the fixed set, or if an internal string reaches the data layer.
-
----
-
-## The Internal review panel (prototype only)
-
-While the site is a prototype, an **Internal · N to confirm** button sits at the bottom right of every page. It opens a checklist of the working assumptions still to be confirmed (audience, positioning, commitments and disclosures, communication flow), one line per item, each with a checkbox. **Ticks are saved in the viewer's browser only** (`localStorage`), so they never reach the repo or other viewers: `docs/START-HERE.md` §2 is the record of what Alex has confirmed. Anyone with the preview link sees the panel.
-
-- **The list** is in `site/data/review.js`: `id`, `text` (≤ 70 characters, ≤ 47 beside a note) and an optional `note` (≤ 45) naming what the site does not match yet. Never rename an id, because the ticks are keyed by it.
-- **The panel** is `site/assets/review.js`, self-contained (it injects its own styles). Setting `enabled: false` in the data file hides it.
-- **Before launch**, delete both files and their two `<script>` tags. Until then, `check-grammar.js` validates the list and its lengths, and warns on every run.
 
 ---
 
