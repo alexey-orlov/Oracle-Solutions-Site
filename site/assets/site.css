@@ -4119,8 +4119,11 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* D-design §4, after Alex's "all blocks are too greyish" (2026-09-29): the one
    contact component, UI.contactSwitch, on both of its surfaces (a product's
    Contacts tab and the home page's closing screen), set as softserveinc.com
-   sets a contact form (R1 §5): a full-bleed #edf0f2 band holding one white
-   plate, 12px cut. The card at the left: on the home page the section's own
+   sets a contact form (R1 §5): a band holding one white plate, 12px cut.
+   The band is white since 2026-09-29, as every other tab is (Alex:
+   "contacts appear on grey background, while other tabs are white - all
+   should be white"), so the plate stands on it as the numbers widget does,
+   white on the panel hairline. The card at the left: on the home page the section's own
    eyebrow and H2 first, as softserveinc.com sets "Let's talk" inside its
    plate, then the people as rows, each a round portrait on the plate, then the
    one mailbox as a blue link, never a filled button, and the one line. At the
@@ -4133,29 +4136,34 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    sticky tab bar too, so the paddings are 48/40px, the message box opens four
    lines tall and the field rows sit 16px apart; on a screen 880px tall or
    less the paddings are 32px and the box opens three lines tall.
-   Grey on grey: the footer opens on the same #edf0f2 spacer, and a grey band
-   right above it would merge with it into one grey mass. So the band is the
-   page's last grey: the section that hosts it gives up its paddings (on a
-   product tab the band meets the tab bar, on the home page the band is the
-   whole screen), the band runs into the black footer, and the footer's spacer
-   is not drawn after a page that ends on it; the band's own 48px is the
-   breathing room the spacer gave. Every field rule is scoped to
-   .contact-tabs, so #/sellers keeps its own form. */
+   The section that hosts the band gives up its paddings (on a product tab
+   the band meets the tab bar, on the home page the band is the whole
+   screen), and the footer follows it as it follows every other tab. Every
+   field rule is scoped to .contact-tabs, so #/sellers keeps its own form. */
 
-/* Full-bleed without leaving the wrap: the ground is a border-image painted
-   100vw past each side, ink overflow, so the page never scrolls sideways. */
-.contact-band {
-  padding-block: 3rem;
-  border-image: linear-gradient(var(--bg-raised), var(--bg-raised)) fill 0 / 0 / 0 100vw;
+.contact-band { padding-block: 3rem; }
+
+.contact-plate { --cut: var(--cut-12); position: relative; padding: 2.5rem 3rem; background: #ffffff; }
+
+/* The plate's hairline, a ring as on the numbers widget, so the cut corners
+   carry it; a border would stop short of them. */
+.contact-plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--border-panel);
+  clip-path: polygon(evenodd,
+    12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px),
+    calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px, 12px 0,
+    12.41px 1px, 1px 12.41px, 1px calc(100% - 12.41px), 12.41px calc(100% - 1px),
+    calc(100% - 12.41px) calc(100% - 1px), calc(100% - 1px) calc(100% - 12.41px),
+    calc(100% - 1px) 12.41px, calc(100% - 12.41px) 1px, 12.41px 1px);
 }
 
-.contact-plate { --cut: var(--cut-12); padding: 2.5rem 3rem; background: #ffffff; }
-
 .section--tabs:has(.contact-band) { padding-block: 0; }
-/* The band is the home screen's ground from its first pixel: no white strip
-   and no hairline above it. */
+/* The band opens the home screen: no hairline above it. */
 .home-contact { padding-block: 0; border-top: 0; }
-#app:has(> :last-child .contact-band) + .site-footer::before { display: none; }
 
 /* The columns start level and each ends where its own content ends. The left
    one is 384px, so the home page's H2 sets on two lines at 48px and the
@@ -4322,7 +4330,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 @media print {
-  .contact-band { padding-block: 0; border-image: none; }
+  .contact-band { padding-block: 0; }
   .contact-plate { padding: 0; }
+  .contact-plate::before { display: none; }
 }
 /* ===== end Round 20 · Contacts ===== */
