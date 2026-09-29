@@ -778,9 +778,7 @@
   /* The tab's own anchor: every kit link points at the form itself rather than
      at this route, because a same-route ROUTER.go re-renders the page and wipes
      whatever the reader has typed. */
-  var TALK_ANCHOR = "talk";
-  var KIT_ANCHOR = "kit";
-  function talkHref(slug) { return contactsRoute(slug) + "#" + TALK_ANCHOR; }
+  function talkHref(slug) { return contactsRoute(slug) + "#" + window.UI.contactAnchors.talk; }
 
   /* The product's sales-kit request (round 8), which round 10 moved off its own
      tab and onto the Contacts tab, and round 10b made the second tab of the
@@ -802,66 +800,26 @@
     };
   }
 
-  /* One row, and one form on the screen (round 10b). The contact card on the
-     left, and on the right a two-tab switch on the theme's own segmented
-     control: the ask first, the seller's kit behind the second tab. Alex's
-     correction: the kit has to be reachable without scrolling, and two live
-     input forms on one screen make the reader choose between two asks. The
-     selected segment is the column's heading, so neither panel repeats it, and
-     the card needs no "Contacts" H3 either — the tab already says it. Both
-     forms are mounted whether their panel is open or not, so a switch never
-     lands on an unbound field. Round 13 (Alex): the card names two people,
-     the partnership contact and the product's own lead from `shared.people`,
-     over the one practice address. */
+  /* One row, and one form on the screen (round 10b): the contact switch, which
+     the home page's last screen renders from the same function (UI.contactSwitch,
+     round 18). Alex's correction behind it: the kit has to be reachable without
+     scrolling, and two live input forms on one screen make the reader choose
+     between two asks. The card needs no "Contacts" H3 — the tab already says
+     it. Round 13 (Alex): the card names two people, the partnership contact and
+     the product's own lead from `shared.people`, over the one practice address.
+     What is this product's own: its lead, the ask preselected on it, and the
+     kit fixed to it. */
   function contactsTab(product) {
     var UI = window.UI;
-    var demo = C().forms.demo;
-    var ask = C().site.primaryCta.label;
-    var kit = C().salesKit;
     var lead = product.contactPerson && (C().shared.people || {})[product.contactPerson];
-    var base = "contact-" + product.slug;
-    var talkTab = base + "-tab-talk";
-    var kitTab = base + "-tab-kit";
-    var talkPane = base + "-pane-talk";
-    var form = window.FORMS
-      ? '<div id="product-demo-form">' + window.FORMS.render("demo", {
-          product: product.slug, heading: false, submitLabel: ask
-        }) + "</div>"
-      : "";
-
-    if (!form && !UI.contactCard()) return UI.empty(demo.sub);
-
-    function segment(id, controls, text, on) {
-      return '<button class="segment" type="button" role="tab" id="' + id + '"' +
-        ' aria-controls="' + controls + '" aria-selected="' + (on ? "true" : "false") + '"' +
-        ' tabindex="' + (on ? "0" : "-1") + '">' + UI.esc(text) + "</button>";
-    }
-
-    var pick = '<div class="segmented contact-segmented" role="tablist" aria-label="' +
-      UI.esc(label("contacts")) + '">' +
-        segment(talkTab, talkPane, ask, true) +
-        segment(kitTab, KIT_ANCHOR, kit.tab.title, false) +
-      "</div>";
-
-    var talkPanel = '<div class="contact-pane" role="tabpanel" id="' + talkPane + '"' +
-      ' aria-labelledby="' + talkTab + '">' +
-        '<p class="body-text contact-split-sub">' + UI.esc(demo.sub) + "</p>" +
-        form +
-      "</div>";
-
-    var kitPanel = '<div class="contact-pane" role="tabpanel" id="' + KIT_ANCHOR + '"' +
-      ' aria-labelledby="' + kitTab + '" hidden>' +
-        '<p class="eyebrow eyebrow--accent">' + UI.esc(kit.page.eyebrow) + "</p>" +
-        '<p class="body-text">' + UI.esc(kit.tab.body.replace("{product}", product.name)) + "</p>" +
-        (window.FORMS && window.FORMS.renderKit ? window.FORMS.renderKit(kitOptions(product)) : "") +
-      "</div>";
-
+    if (!window.FORMS && !UI.contactCard()) return UI.empty(C().forms.demo.sub);
     return '<section class="panel reveal">' +
-        UI.contactSplit({
-          formId: TALK_ANCHOR,
+        UI.contactSwitch({
+          key: product.slug,
+          product: product.slug,
           people: lead ? [lead] : [],
-          form: '<div class="contact-tabs" data-contact-tabs="' + UI.esc(product.slug) + '">' +
-            pick + talkPanel + kitPanel + "</div>"
+          kitBody: C().salesKit.tab.body.replace("{product}", product.name),
+          kitOptions: kitOptions(product)
         }) +
       "</section>";
   }
@@ -1003,33 +961,6 @@
     roving(tabs, select, "horizontal");
   }
 
-  /* The Contacts switch. The anchor decides which tab opens, and it decides it
-     here — mount runs before the router scrolls to the anchor (app.js), so a
-     kit link from anywhere lands on an open kit panel, and every other entry,
-     `#talk` included, lands on the ask. */
-  function bindContactTabs(root, anchor) {
-    var block = root.querySelector("[data-contact-tabs]");
-    if (!block) return;
-    var tabs = Array.prototype.slice.call(block.querySelectorAll(".segment"));
-    if (!tabs.length) return;
-
-    function select(index) {
-      tabs.forEach(function (tab, i) {
-        var on = i === index;
-        tab.setAttribute("aria-selected", on ? "true" : "false");
-        tab.setAttribute("tabindex", on ? "0" : "-1");
-        var pane = document.getElementById(tab.getAttribute("aria-controls"));
-        if (pane) pane.hidden = !on;
-      });
-    }
-
-    tabs.forEach(function (tab, index) {
-      tab.addEventListener("click", function () { select(index); });
-    });
-    roving(tabs, select, "horizontal");
-    select(anchor === KIT_ANCHOR ? 1 : 0);
-  }
-
   function bindStack(root) {
     var block = root.querySelector("[data-stack]");
     if (!block) return;
@@ -1076,18 +1007,11 @@
     bindIndustryTabs(root);
     bindStack(root);
 
-    /* The Contacts tab carries both forms, one per tab of the switch. Both are
-       mounted at render, open or hidden, and the switch is bound after them so
-       the tab it opens is already live. */
+    /* The Contacts tab carries both forms, one per tab of the switch; the
+       shared mount binds both and then the switch (assets/app.js). */
     if (active === "contacts") {
-      if (window.FORMS) {
-        var slot = root.querySelector("#product-demo-form");
-        if (slot) window.FORMS.mount(slot, "demo", { product: item.slug });
-        if (window.FORMS.mountKit) {
-          window.FORMS.mountKit(root.querySelector("#" + KIT_ANCHOR), kitOptions(item));
-        }
-      }
-      bindContactTabs(root, params && params.anchor);
+      window.UI.mountContactSwitch(root, { product: item.slug, kitOptions: kitOptions(item) },
+        params && params.anchor);
     }
 
     centerActiveTab(root);
