@@ -22,10 +22,12 @@
    left edge), so the picture dissolves into it without a seam. */
 .ahero { background: #040d16; color: #ffffff; }
 
-/* The photograph carries the H1, its promise and the two actions, set low
-   in it, so the claim leads straight into the figures on white under it.
-   It is held to the window's height less the header and the proof strip's
-   figures, so the strip's figures show under it from 1366 x 768 up: at
+/* The photograph carries the H1, its promise and the two actions, centred
+   in its height (Alex, 2026-09-29: "make sure to properly center the
+   text"; .ahero-copy sets the optical centre), with the figures on white
+   under it. It is held to the window's height less the header and the
+   proof strip's figures, so the strip's figures show under it from
+   1366 x 768 up: at
    1440 x 900 it is 610 px, where the version with the figures on a dark
    band under it stood 658 tall (Alex, 2026-09-29: the hero "can be
    slightly smaller (but not for the full height of the metrics")). The
@@ -36,7 +38,7 @@
   position: relative;
   isolation: isolate;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   height: clamp(480px, min(calc(100vh - 290px), 60vw), 800px);
 }
 
@@ -105,12 +107,19 @@
 .ahero-copy {
   --ahero-share: .58;
   --ahero-fit: calc(min(100vw - 2 * var(--gutter), var(--container-max)) * var(--ahero-share) / 10.1);
+  /* The H1's size, set here so the padding below can read it. */
+  --ahero-h1: min(clamp(38px, min(4.5vw, 7.4vh), 76px), var(--ahero-fit));
+  --ahero-pad: clamp(40px, 6vh, 64px);
   display: flex;
   flex-direction: column;
   width: calc(var(--ahero-share) * 100%);
-  /* The hero's foot: a band of its dark ground under the ask, so the ask
-     does not sit on the white strip's edge. */
-  padding-block: 20px clamp(48px, 8vh, 80px);
+  /* Centred as the eye reads the block: from the top of the H1's capitals
+     to the foot of the ask. The H1's first line box holds .145 em of air
+     above its capitals (Azurio at 1.02 leading, measured), so the foot's
+     padding adds it back, and the two gaps come out equal. The padding is
+     also the least room either side, which sets the gaps on a phone,
+     where the copy sets the photograph's height. */
+  padding-block: var(--ahero-pad) calc(var(--ahero-pad) + .145 * var(--ahero-h1));
 }
 
 /* Three sentences, one line each, at every width (Alex, 2026-09-29). Sized
@@ -119,7 +128,7 @@
    than the fit, so no sentence ever breaks. */
 .ahero-title {
   max-width: 11em;
-  font-size: min(clamp(38px, min(4.5vw, 7.4vh), 76px), var(--ahero-fit));
+  font-size: var(--ahero-h1);
   line-height: 1.02;
   letter-spacing: .01em;
   color: #ffffff;
