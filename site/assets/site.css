@@ -3639,6 +3639,18 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .bespoke-points { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* Short desktop windows (a 1366 × 768 or 1280 × 720 laptop, ~620-800 px of
+   page): every home screen tightens its padding and its head, so a screen that
+   ends above another still shows the next one's top. Measured for the case
+   that asked for it (Alex, round 18): landing on Packaged services from the
+   header, the Bespoke band's eyebrow is in view down to 1280 × 620; above 800
+   px of height the standard rhythm already shows its eyebrow and heading. */
+@media (min-width: 1025px) and (max-height: 800px) {
+  .home-screen { padding-block: 2.5rem; }
+  .home-head { margin-bottom: 1.5rem; }
+  .home-bespoke { padding-top: 2rem; }
+}
+
 @media print {
   .bespoke-media, .bespoke-scrim { display: none !important; }
   .home-bespoke { background: #ffffff !important; color: #111111 !important; }
