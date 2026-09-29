@@ -705,9 +705,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/account-insights-1.jpg",
               zoom: "assets/img/steps/account-insights-1-zoom.jpg",
-              region: [20.4, 29.1, 33.0, 12.4],
+              region: [20.3, 39.6, 30.9, 29.6],
               anchor: "br",
-              alt: "Signals inbox: five news items, each with source, time and accounts affected."
+              alt: "The morning check: stories read, noise dropped, repeats merged, accounts matched."
             },
             features: ["Signal ingestion grounded in CRM context, service catalog and public filings"]
           },
@@ -718,9 +718,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/account-insights-2.jpg",
               zoom: "assets/img/steps/account-insights-2-zoom.jpg",
-              region: [64.4, 43.8, 33.8, 16.0],
+              region: [21.2, 7.7, 34.1, 37.0],
               anchor: "br",
-              alt: "One signal fanned out to four accounts, each with its service line."
+              alt: "One story reaching four accounts: named, supplier, customer and competitor."
             },
             features: [
               "Relevance filter and de-duplication: one story becomes one signal",
@@ -734,9 +734,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/account-insights-3.jpg",
               zoom: "assets/img/steps/account-insights-3-zoom.jpg",
-              region: [64.4, 18.8, 33.8, 36.5],
+              region: [67.0, 29.0, 31.1, 28.4],
               anchor: "bl",
-              alt: "Opportunity brief for Alder Foods: magnitude 8/10, confidence 7/10, three cited sources."
+              alt: "A move for Meridian Grocers: both scores and what changes, with citations."
             },
             features: [
               "Opportunity and risk reasoning, mapped to a real service line",
@@ -750,9 +750,9 @@ window.SITE_CONTENT = {
             shot: {
               full: "assets/img/steps/account-insights-4.jpg",
               zoom: "assets/img/steps/account-insights-4-zoom.jpg",
-              region: [20.4, 24.3, 33.6, 12.0],
+              region: [21.2, 12.7, 34.1, 26.5],
               anchor: "br",
-              alt: "Reviewer queue: one brief approved and exported to the CRM, one rejected."
+              alt: "The review: moves approved, one rejected with its reason kept."
             },
             features: [
               "Magnitude and confidence scored 0–10, with a configurable threshold",
