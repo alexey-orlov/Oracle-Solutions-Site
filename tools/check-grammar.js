@@ -3048,7 +3048,7 @@ if (/request a demo/i.test(raw)) {
   if ((((C.site || {}).footer) || {}).sellersLink !== undefined) {
     fail("site.footer.sellersLink", "retired on 2026-09-29 with the #/sellers page (Alex: \"remove that link and page where it leads to\", §61)");
   }
-  if (/#\/sellers\b/.test(raw)) {
+  if (/#\/sellers\b/.test(fs.readFileSync(path.join(root, "site/data/content.js"), "utf8"))) {
     fail("content.js", 'routes to "#/sellers" — the page is gone; a kit is on its product\'s Contacts tab');
   }
   /* Round 14 (Alex, 2026-09-24): softserveinc.com's footer, cut down. A link
