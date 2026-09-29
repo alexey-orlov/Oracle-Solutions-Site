@@ -7,15 +7,19 @@
      live one until he picks. Its first two screens are re-cut; everything
      after them is the live home page's own.
 
-     S1 is a photographic hero after softserveinc.com/en-us/services: the
-     claim set large in white on a dark photograph, crossed by the brand's
-     hairline and spark, with the proof strip at its foot. It is held short of
-     the viewport, so the next screen shows under it.
+     Version 2, after Alex's review of the first cut, designed afresh:
 
-     S2 is the whole offer on one screen. The built-on diagram leaves the hero
-     and joins the two ways in: the products and the services stand side by
-     side, each block over its own layer, and both stand on the Oracle
-     foundation that spans the two.
+     S1 is a photograph that carries only the H1 and the two actions, after
+     softserveinc.com/en-us/services, with one line and the spark in the dark
+     gap between the copy and the oval of light. Under it, a light band holds
+     the promise and the three figures, after the stats band under the
+     brand's AI-page hero. Photograph and band stop short of the viewport, so
+     S2's heading shows under them.
+
+     S2 is the whole offer: the two ways in as photographic tiles, stacked on
+     the left, beside a compact diagram of the portfolio on the right, its
+     lanes in the tiles' order: the SoftServe card (products, then the
+     packaged and bespoke services), then the Oracle card they are built on.
 
      The screens after S2 are rendered by overview.js and taken whole, so the
      two versions cannot drift while they are compared. Adopting this page
@@ -24,36 +28,45 @@
 
   var BASE = "#/alt";
 
+  /* The glyphs the diagram needs beyond the shared set, in its style: a 24
+     box, a 1.5 px line. */
+  var GLYPHS = {
+    workshop: '<rect x="4" y="4" width="16" height="11" rx="1"></rect><path d="M12 15v5M8.5 20h7"></path>',
+    upDown: '<path d="M12 3.5v17M8 7.5l4-4 4 4M8 16.5l4 4 4-4"></path>',
+    plus: '<path d="M12 5.5v13M5.5 12h13"></path>'
+  };
+
+  function glyph(name) {
+    var UI = window.UI;
+    if (!GLYPHS[name]) return UI.icon(name);
+    return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' + GLYPHS[name] + "</svg>";
+  }
+
   /* The home page's screen head, as overview.js draws it. */
   function head(opts) {
     var UI = window.UI;
     return '<div class="home-head">' +
       (opts.eyebrow ? '<p class="eyebrow eyebrow--accent">' + UI.esc(opts.eyebrow) + "</p>" : "") +
       '<h2 class="h2">' + UI.esc(opts.title) + "</h2>" +
-      (opts.lead ? '<p class="lead home-head-lead">' + UI.esc(opts.lead) + "</p>" : "") +
       "</div>";
   }
 
-  /* ————— S1: the claim, on a photograph ————— */
+  /* ————— S1: the claim on a photograph, the promise and the proof under it ————— */
 
-  /* The live hero's words, unchanged: its eyebrow, three-sentence H1, lead,
-     two buttons and three figures. What changes is the setting. The hairline
-     runs edge to edge under the H1 and the spark sits on it where a second
-     line crosses at the brand's own angle, the long axis of the spark's
-     glyph, so the two read as one mark (softserveinc.com draws the same
-     crossing into its hero photographs). The figures sit under the hairline,
-     beside the lead, so the proof is still read before the first scroll. */
   function hero(C) {
     var UI = window.UI;
     var block = C.overview.hero;
     var image = ((C.overviewAlt || {}).hero || {}).image || {};
+    var ctas = block.ctas || [];
+    var primary = ctas.filter(function (cta) { return cta.kind === "primary"; })[0] || ctas[0];
+    var secondary = ctas.filter(function (cta) { return cta !== primary; })[0];
 
-    var ctas = (block.ctas || []).map(function (cta) {
-      return UI.button({
-        label: cta.label, href: cta.route,
-        kind: cta.kind === "primary" ? "primary" : "secondary"
-      });
-    }).join("");
+    /* The one ask is the brand's ask on a dark ground, a white button; the
+       second route is an arrow link beside it. */
+    var actions = (primary
+      ? UI.button({ label: primary.label, href: primary.route, kind: "dark", iconAfter: "arrow", className: "ahero-primary" })
+      : "") +
+      (secondary ? UI.linkArrow({ label: secondary.label, href: secondary.route, className: "ahero-link" }) : "");
 
     var stats = (block.stats || []).map(function (stat) {
       var prefix = stat.prefix
@@ -68,27 +81,33 @@
     var spark = window.brandAsset("ssSparkWhite", "assets/img/softserve-star-white.svg");
 
     return '<section class="ahero" id="top">' +
-      (image.file
-        ? '<img class="ahero-img" src="' + UI.esc(image.file) + '" alt="" decoding="async" fetchpriority="high">'
-        : "") +
-      '<span class="ahero-scrim" aria-hidden="true"></span>' +
-      '<div class="wrap ahero-inner">' +
-        '<p class="eyebrow ahero-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
-        '<h1 class="h1 ahero-title">' +
-          '<span class="ahero-line">' + UI.esc(block.headline.lead) + "</span> " +
-          '<span class="ahero-line accent">' + UI.esc(block.headline.accent) + "</span> " +
-          '<span class="ahero-line">' + UI.esc(block.headline.proof) + "</span>" +
-        "</h1>" +
-        '<div class="ahero-rule" aria-hidden="true">' +
-          '<span class="ahero-cross">' +
-            '<span class="ahero-diag"></span>' +
-            '<img class="ahero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async">' +
-          "</span>" +
-        "</div>" +
-        '<div class="ahero-foot">' +
+      '<div class="ahero-photo">' +
+        (image.file
+          ? '<img class="ahero-img" src="' + UI.esc(image.file) + '" alt="" decoding="async" fetchpriority="high">'
+          : "") +
+        '<span class="ahero-scrim" aria-hidden="true"></span>' +
+        /* One line in the dark gap between the copy and the oval, the spark
+           on it, turned to the line's angle in mount(). */
+        '<svg class="ahero-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+          '<line x1="54" y1="100" x2="66" y2="0"></line>' +
+        "</svg>" +
+        '<img class="ahero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async" aria-hidden="true">' +
+        '<div class="wrap ahero-inner">' +
           '<div class="ahero-copy">' +
-            '<p class="lead ahero-lead">' + UI.esc(block.lead) + "</p>" +
-            '<div class="cta-row ahero-cta">' + ctas + "</div>" +
+            '<h1 class="h1 ahero-title">' +
+              '<span class="ahero-sentence">' + UI.esc(block.headline.lead) + "</span> " +
+              '<span class="ahero-sentence accent">' + UI.esc(block.headline.accent) + "</span> " +
+              '<span class="ahero-sentence">' + UI.esc(block.headline.proof) + "</span>" +
+            "</h1>" +
+            '<div class="ahero-actions">' + actions + "</div>" +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+      '<div class="ahero-band">' +
+        '<div class="wrap ahero-band-inner">' +
+          '<div class="ahero-promise">' +
+            '<span class="ahero-dash" aria-hidden="true"></span>' +
+            '<p class="ahero-lead">' + UI.esc(block.lead) + "</p>" +
           "</div>" +
           (stats ? '<ul class="ahero-stats">' + stats + "</ul>" : "") +
         "</div>" +
@@ -98,19 +117,24 @@
 
   /* ————— S2: the whole offer ————— */
 
-  /* The two ways in, as the live S2 words them, without their photographs:
-     the photograph now carries the hero, and the diagram under each block is
-     its picture. Both CTAs sit on one baseline, as they did. */
-  function wayBlock(panel) {
+  /* A way in, as the live S2 words it, on its own photograph. */
+  function wayTile(panel, image) {
     var UI = window.UI;
     var bullets = (panel.bullets || []).map(function (line) {
       return "<li>" + UI.icon("check") + "<span>" + UI.esc(line) + "</span></li>";
     }).join("");
-    return '<div class="ablock ablock--' + UI.esc(panel.id) + '">' +
-      '<h3 class="ablock-title">' + UI.esc(panel.title) + "</h3>" +
-      '<p class="body-text ablock-body">' + UI.esc(panel.body) + "</p>" +
-      '<ul class="tick-list ablock-list">' + bullets + "</ul>" +
-      '<p class="ablock-cta">' + UI.linkArrow({
+    var picture = image && image.file
+      ? '<img class="away-img" src="' + UI.esc(image.file) + '" alt=""' +
+          (image.focal ? ' style="object-position:' + UI.esc(image.focal) + '"' : "") +
+          ' loading="lazy" decoding="async">' +
+        '<span class="away-scrim" aria-hidden="true"></span>'
+      : "";
+    return '<div class="away away--' + UI.esc(panel.id) + '">' +
+      picture +
+      '<h3 class="away-title">' + UI.esc(panel.title) + "</h3>" +
+      '<p class="away-body">' + UI.esc(panel.body) + "</p>" +
+      '<ul class="tick-list away-list">' + bullets + "</ul>" +
+      '<p class="away-cta">' + UI.linkArrow({
         label: panel.cta.label,
         href: panel.cta.route,
         icon: panel.cta.direction === "down" ? "arrowDown" : "arrow"
@@ -118,116 +142,133 @@
       "</div>";
   }
 
-  /* A layer's owner, as the hero stack labelled it: the words, then the mark
-     of the company it belongs to. The marks are the ink files, turned white
-     by the stylesheet on the black panels. */
-  function owner(label, mark, width, height) {
+  /* A group's name breaks where its home tile breaks it, before its last
+     word; an ampersand holds to the word before it. */
+  function groupName(name) {
     var UI = window.UI;
-    return '<p class="apanel-owner">' +
-      '<span class="apanel-label">' + UI.esc(label) + "</span>" +
-      '<img class="apanel-mark" src="' + UI.esc(mark) + '" alt="" width="' + width + '" height="' + height + '" decoding="async">' +
-      "</p>";
+    var cut = name.lastIndexOf(" ");
+    var lines = cut === -1 ? [name] : [name.slice(0, cut), name.slice(cut + 1)];
+    return lines.map(function (line) {
+      return UI.esc(line).replace(/ &amp;/g, " &amp;");
+    }).join("<br>");
   }
 
-  /* Two short lines from each layer's foot to the foundation, at its
-     quarters, whatever its tile grid: the products and the services both run
-     on the Oracle platforms. */
-  function links(positions) {
-    return '<svg class="alinks" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true">' +
-      positions.map(function (x) {
-        return '<path class="alink" d="M' + x + ' 0V16"></path>';
-      }).join("") +
-      "</svg>";
+  /* An outlined chip: an octagon with 4 px cuts drawn as a path, so the
+     stroke follows the cut corners (a clipped border would lose them), and
+     dashed where the thing it stands for is optional or still to come. */
+  function node(size, dashed, inner) {
+    var s = size, c = 4, h = .75;
+    var d = "M" + c + " " + h + "H" + (s - c) + "L" + (s - h) + " " + c + "V" + (s - c) +
+      "L" + (s - c) + " " + (s - h) + "H" + c + "L" + h + " " + (s - c) + "V" + c + "Z";
+    return '<span class="amap-node amap-node--' + s + (dashed ? " amap-node--dashed" : "") + '">' +
+      '<svg class="amap-node-shape" viewBox="0 0 ' + s + " " + s + '" aria-hidden="true"><path d="' + d + '"></path></svg>' +
+      inner +
+      "</span>";
   }
 
-  /* The diagram's three layers, recoloured after softserveinc.com's Offers
-     band: each SoftServe layer is a black panel, the six product groups in
-     their own home-tile fills (a group keeps its colour wherever it
-     appears), the four services as white tiles numbered in their order, and
-     the Oracle platforms as the black foundation under both. Everything in
-     it is hidden from assistive technology; the stack's one label says the
-     same in a sentence. */
-  function offer(C) {
+  /* The portfolio in one picture, beside the two tiles and in their order:
+     the SoftServe card (one SoftServe mark over its three lanes: the product
+     groups in their home-tile fills, the packaged track as outlined steps on
+     a line, the bespoke pods with an open one that says the team grows),
+     then the Oracle card it is all built on, in Lviv blue 50. Light grounds
+     only; nothing in it is a control. The picture is hidden from assistive
+     technology and one sentence says the same. */
+  function diagram(C) {
     var UI = window.UI;
-    var block = C.overview.twoWays;
-    var copy = (C.overviewAlt || {}).offer || {};
+    var copy = (((C.overviewAlt || {}).offer || {}).diagram) || {};
     var stack = C.overview.hero.stack;
     var families = (C.shared && C.shared.tagFamilies) || {};
     var patternIcons = (families.pattern && families.pattern.icons) || {};
     var techIcons = (families.tech && families.tech.icons) || {};
-    var panels = block.panels || [];
-    var productsPanel = panels.filter(function (p) { return p.id === "products"; })[0] || panels[0];
-    var servicesPanel = panels.filter(function (p) { return p.id === "practice"; })[0] || panels[1];
+    var steps = (C.overview.delivery || {}).steps || [];
+    var stageIcons = copy.stageIcons || [];
+
+    var groups = (C.facets.categories || []).map(function (category) {
+      return '<li class="amap-chip amap-chip--' + UI.esc(category.tone) + '">' +
+        UI.icon(patternIcons[category.id]) +
+        '<span class="amap-chip-name">' + groupName(category.full) + "</span>" +
+        "</li>";
+    }).join("");
+
+    var stages = steps.map(function (step, index) {
+      var last = index === steps.length - 1;
+      return '<li class="amap-stage">' +
+        node(28, last, glyph(stageIcons[index] || "dot")) +
+        '<span class="amap-stage-name">' + UI.esc(step.title) +
+          (last && copy.optionalNote ? ' <span class="amap-optional">' + UI.esc(copy.optionalNote) + "</span>" : "") +
+        "</span>" +
+        "</li>";
+    }).join("");
+
+    var pods = [0, 1, 2].map(function () {
+      return "<li>" + node(36, false, glyph("users")) + "</li>";
+    }).join("") + "<li>" + node(36, true, glyph("plus")) + "</li>";
+
+    var platforms = (C.facets.technology || []).map(function (facet) {
+      return '<li class="amap-chip amap-chip--platform">' +
+        UI.icon(techIcons[facet.id]) +
+        '<span class="amap-chip-name">' + UI.esc(facet.label) + "</span>" +
+        "</li>";
+    }).join("");
 
     var ssMark = window.brandAsset("ssMark", "assets/img/softserve-wordmark-white.svg");
     var oracleMark = window.brandAsset("oracleMark", "assets/img/oracle-wordmark-white.svg");
 
-    /* A group's name breaks where its home tile breaks it, before its last
-       word, so the six names read the same here as in S3; an ampersand holds
-       to the word before it, so a first line too long for a narrow tile
-       wraps as "Enterprise / knowledge &", never before the "&". */
-    function groupName(name) {
-      var cut = name.lastIndexOf(" ");
-      var lines = cut === -1 ? [name] : [name.slice(0, cut), name.slice(cut + 1)];
-      return lines.map(function (line) {
-        return UI.esc(line).replace(/ &amp;/g, " &amp;");
-      }).join("<br>");
-    }
+    return '<div class="amap" aria-hidden="true">' +
+      '<div class="amap-card amap-card--softserve">' +
+        '<div class="amap-head">' +
+          '<img class="amap-mark amap-mark--softserve" src="' + UI.esc(ssMark) + '" alt="" width="96" height="16" decoding="async">' +
+          '<p class="amap-caption">' + UI.esc(copy.softserveCaption) + "</p>" +
+        "</div>" +
+        '<div class="amap-lane amap-lane--products">' +
+          '<p class="amap-label">' + UI.esc(copy.productsLabel) + "</p>" +
+          '<ul class="amap-chips amap-chips--products">' + groups + "</ul>" +
+        "</div>" +
+        '<p class="amap-link">' + glyph("upDown") + "<span>" + UI.esc(copy.link) + "</span></p>" +
+        '<div class="amap-lane amap-lane--packaged">' +
+          '<p class="amap-label">' + UI.esc(copy.packagedLabel) + "</p>" +
+          '<ol class="amap-track">' + stages + "</ol>" +
+        "</div>" +
+        '<div class="amap-lane amap-lane--bespoke">' +
+          '<p class="amap-label">' + UI.esc(copy.bespokeLabel) + "</p>" +
+          '<div class="amap-pods-row">' +
+            '<ul class="amap-pods">' + pods + "</ul>" +
+            '<p class="amap-pods-caption">' + UI.esc(copy.bespokeCaption) + "</p>" +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+      '<p class="amap-builton"><span>' + UI.esc(copy.builtOn) + "</span>" + UI.icon("arrowDown") + "</p>" +
+      '<div class="amap-card amap-card--oracle">' +
+        '<div class="amap-head">' +
+          '<img class="amap-mark amap-mark--oracle" src="' + UI.esc(oracleMark) + '" alt="" width="84" height="11" decoding="async">' +
+          '<p class="amap-caption">' + UI.esc(copy.oracleCaption) + "</p>" +
+        "</div>" +
+        '<p class="amap-label">' + UI.esc(stack.platformsLabel) + "</p>" +
+        '<ul class="amap-chips amap-chips--platforms">' + platforms + "</ul>" +
+      "</div>" +
+      "</div>";
+  }
 
-    var groupTiles = (C.facets.categories || []).map(function (category, index) {
-      return '<li class="atile atile--' + UI.esc(category.tone) + '" style="--i:' + index + '">' +
-        '<span class="atile-mark">' + UI.icon(patternIcons[category.id]) + "</span>" +
-        '<span class="atile-name">' + groupName(category.full) + "</span>" +
-        "</li>";
-    }).join("");
-
-    var serviceTiles = (((stack.services || {}).items) || []).map(function (item, index) {
-      return '<li class="atile atile--service" style="--i:' + index + '">' +
-        '<span class="atile-top">' +
-          '<span class="atile-index nums">' + UI.esc(String(index + 1)) + "</span>" +
-          '<span class="atile-mark">' + UI.icon(item.icon) + "</span>" +
-        "</span>" +
-        '<span class="atile-name">' + UI.esc(item.name) + "</span>" +
-        "</li>";
-    }).join("");
-
-    /* Every canonical platform, as the stack drew them: what the practice
-       builds on, not what the catalog filters by. */
-    var platforms = (C.facets.technology || []).map(function (facet, index) {
-      return '<li class="aplat" style="--i:' + index + '">' +
-        UI.icon(techIcons[facet.id]) +
-        '<span class="aplat-name">' + UI.esc(facet.label) + "</span>" +
-        "</li>";
+  function offer(C) {
+    var UI = window.UI;
+    var block = C.overview.twoWays;
+    var copy = (C.overviewAlt || {}).offer || {};
+    var images = copy.images || {};
+    var tiles = (block.panels || []).map(function (panel) {
+      return wayTile(panel, images[panel.id]);
     }).join("");
 
     return '<section class="section home-screen aoffer" id="two-ways"><div class="wrap">' +
-      head({ eyebrow: block.eyebrow, title: copy.title || block.title, lead: copy.lead }) +
-      '<p class="sr-only">' + UI.esc(stack.ariaLabel) + "</p>" +
-      '<div class="aoffer-grid reveal">' +
-        wayBlock(productsPanel) +
-        '<div class="apanel apanel--products" aria-hidden="true">' +
-          owner(stack.productsLabel, ssMark, 80, 14) +
-          '<ul class="atiles atiles--products">' + groupTiles + "</ul>" +
-        "</div>" +
-        '<div class="alinks-cell alinks-cell--products">' + links([25, 75]) + "</div>" +
-        wayBlock(servicesPanel) +
-        '<div class="apanel apanel--services" aria-hidden="true">' +
-          owner((stack.services || {}).label, ssMark, 80, 14) +
-          '<ol class="atiles atiles--services">' + serviceTiles + "</ol>" +
-        "</div>" +
-        '<div class="alinks-cell alinks-cell--services">' + links([25, 75]) + "</div>" +
-        '<div class="abase" aria-hidden="true">' +
-          owner(stack.platformsLabel, oracleMark, 77, 10) +
-          '<ul class="aplats">' + platforms + "</ul>" +
-        "</div>" +
-      "</div>" +
+      head({ eyebrow: block.eyebrow, title: copy.title || block.title }) +
+      '<p class="sr-only">' + UI.esc((copy.diagram || {}).ariaLabel) + "</p>" +
+      '<div class="aoffer-grid">' + tiles + diagram(C) + "</div>" +
       "</div></section>";
   }
 
   /* ————— the screens after S2: the live home page's own ————— */
 
   /* overview.js renders the whole live page; its hero, its proof strip (now
-     the hero's foot) and its S2 come out, and the rest stays as rendered. */
+     the hero's band) and its S2 come out, and the rest stays as rendered. */
   function liveScreens(params) {
     var template = document.createElement("template");
     template.innerHTML = window.PAGES.overview(params);
@@ -245,9 +286,34 @@
     return hero(C) + offer(C) + liveScreens(params);
   }
 
-  /* The live page's own wiring: the contact switch at its foot. */
+  /* The spark glyph's long axis stands 25.5 degrees off vertical; the line
+     runs between two fixed points of the photograph, so its angle changes
+     with the photograph's shape. The spark is turned by the difference on
+     every resize, so glyph and line always read as one mark. */
+  var sparkObserver = null;
+
+  function alignSpark(photo) {
+    var spark = photo.querySelector(".ahero-spark");
+    var line = photo.querySelector(".ahero-line line");
+    if (!spark || !line) return;
+    var box = photo.getBoundingClientRect();
+    var dx = (Number(line.getAttribute("x2")) - Number(line.getAttribute("x1"))) / 100 * box.width;
+    var dy = (Number(line.getAttribute("y1")) - Number(line.getAttribute("y2"))) / 100 * box.height;
+    if (!dy) return;
+    var degrees = Math.atan2(dx, dy) * 180 / Math.PI;
+    spark.style.setProperty("--spark-turn", (degrees - 25.5).toFixed(2) + "deg");
+  }
+
   overviewAlt.mount = function (params, root) {
     if (typeof window.PAGES.overview.mount === "function") window.PAGES.overview.mount(params, root);
+    var photo = root.querySelector(".ahero-photo");
+    if (sparkObserver) sparkObserver.disconnect();
+    if (!photo) return;
+    alignSpark(photo);
+    if ("ResizeObserver" in window) {
+      sparkObserver = new ResizeObserver(function () { alignSpark(photo); });
+      sparkObserver.observe(photo);
+    }
   };
 
   overviewAlt.title = function () { return window.SITE_CONTENT.site.title; };
