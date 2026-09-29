@@ -6706,3 +6706,98 @@ _Added by the `oracle-packs-web:listing` skill from the pack spec `packs/fleet-r
   - Whether to add a home case card once the engagement has a result.
   - The kit links, once the approved finals are in OneDrive.
   - Publishing, which waits for his word and for the layout sessions.
+
+## 40. Round 19 — every one-liner and home case card sells the business value, 2026-09-29
+
+**The asks** (Alex, in session, 2026-09-29):
+
+> On our Oracle minisite, review all oneliners used for the product category description on the main page + oneliners used on per product page and it's listing on the fasseted search page. Make sure they all focus not on the aspects of the tech implementation, but on the very specific business value. That's senior copywriter / product marketer task, take it seriously, without overengineering. […] Make sure this applies to the sessions running in parallel and doesn't mess up with them.
+
+> Similar task, while you're completing this: make sure that case studies picked on the main screen are focused also on business value, not on technical details + no justifications for reviewer and unnecessary disclaimers. […] The title of the cases (short with metric and small line underneath) are good (short metric is good, small line migh deserve some improvements); the remainder is at your full discretion to be reviewed and changed.
+
+**Split.** No Fable pass: the session ran on Opus 5.5 and wrote the copy itself. An Opus agent built the evidence brief: each product's problem, solution, metrics and case study, with its status. Three fresh-context Opus critics were launched and all three stalled before their first message, so the review was done in-session against the site's own rules: the evidence, the status of every figure, peers' openings, words per screen, and lines at 375.
+
+### 40.1 What changed: one-liners
+
+A product's one-liner is its hero lead, its catalog tile and the kit email's opening line (`mail/catalog.json`, rebuilt by `tools/sync-links.js`).
+
+| Where | Before (round 18) | After |
+|---|---|---|
+| Group · Enterprise knowledge & analytics | *Plain-language answers and analysis over your governed data, from the ERP to the systems around it, with the source behind every answer.* | *Managers get the numbers behind a decision in plain words, without a report request, and the figures agree from team to team.* |
+| Group · Deep research & investigation | *Agents that read across your systems and outside sources and bring back a cited answer: an account brief, a case file, a variance explained.* | *The research your experts spend weeks assembling, delivered ready for them to judge: an account brief, a case file, a cost overrun explained.* |
+| Group · Document processing | *Long contracts and records turned into checked, structured data, every value traced to its page and approved by a reviewer.* | *Your team checks contracts, policies and reports instead of keying them in, and deals, claims and new suppliers stop waiting days for data entry.* |
+| Group · Transaction & process execution | *Agents that carry a process step through to completion — an order, a claim, a ticket, a posting — inside your systems, with a person approving what moves.* | *Routine orders, claims, tickets and invoices closed without manual handoffs, so your people handle the exceptions and approve what moves.* |
+| Group · Forecasting & optimization | *Forecasts and plans computed against every constraint at once — demand, routes, shifts, allocations — for the people who own them to approve.* | *More work from the people and vehicles you already have, on plans your planners approve instead of building by hand.* |
+| Group · Video & image intelligence | *Cameras, footage and photos read by AI: defects spotted, scenes found, events flagged, for a person to confirm.* | *Defects spotted, incidents flagged and scenes found in your footage and photos, without anyone having to watch every hour of it.* |
+| Account insights | *Turns news, filings and market signals into cited, per-account opportunities and risks that sales and account teams can act on.* | *Opportunities your sellers would otherwise miss and risks caught before renewal, for every account a market event touches.* |
+| Case evidence collection | *Assembles the evidence trail for a case or complaint out of every system that holds a piece of it — cited, time-stamped, and ready for an investigator to decide on.* | *Investigators spend their hours deciding cases, not gathering evidence: every case file arrives complete and built the same way, whoever works it.* |
+| Plan vs actual investigation | *Compares plan against actual across completed projects, orders and engagements, and assembles each variance with its candidate drivers and the source evidence behind them.* | *See which finished projects and orders went over budget or ran late, by how much and why, across the whole portfolio.* |
+| Large docs processing and review | *Turns long, complex documents into validated, structured data — every extracted value carries a confidence score and a citation to its source page.* | *Contracts reach your systems without days of keying by hand, and a wrong rate is caught at review, not on the invoice.* (eyebrow unchanged: *100-page contract in minutes.*) |
+| Workforce optimization | *Optimizes field-service work zones and schedules with NVIDIA cuOpt — a region's four-week plan built in minutes, approved by dispatchers, exported to Oracle Field Service.* | *The same technicians complete more jobs a day, with less driving and waiting, on a four-week plan balanced across every zone.* (eyebrow unchanged) |
+| Cross-system ERP Q&A | *Answers plain-language questions that span the ERP, the CRM and the systems around them, from one governed layer on Oracle Autonomous AI Lakehouse.* · heroLine *Your ERP + everything around it.* | *Managers get answers across the ERP and CRM on their own, while the decision is still open, instead of weeks later in a report.* · heroLine *Which late orders hurt our best accounts?* (the problem statement's own question, shortened to hold one line at 375) |
+| Business metrics Q&A | *Answers plain-language questions about business metrics from one governed gold layer over the catalogs and databases you already run — consistent definitions, no data moved.* · heroLine *Ask once, every cloud answers.* | *Every team asks in plain words and gets the same number for the same metric, wherever the data sits.* · heroLine *Answers in seconds, not a week of extracts.* |
+| Fleet route optimization (its own session) | *…each van's day re-planned on NVIDIA cuOpt around booked slots…* | *Lowers the cost of every field visit: each van's day planned around booked slots, engineer skills and electric-van charging.* (the Fleet session, on this round's rule, in its own files) |
+| Catalog search | the haystack read the one-liner, which carried the engine names | it also reads `technology.narrative`, so *cuOpt*, *AI-Q* and *Lakehouse* still find their products |
+
+### 40.2 What changed: the home case cards
+
+The big figure is unchanged on every card (Alex: *"short metric is good"*). The **footnote row is retired** from the data, the renderer and the contract.
+
+| Card | Small line: before → after | Line: before → after |
+|---|---|---|
+| Workforce · Forecast · *+4.5% productivity* | *median gain in jobs per technician per day, against the current plan* → *typical gain in jobs per technician a day over the current plan, simulated on the customer's own history* | *Dispatchers built the four-week field-service plan by hand, region by region; NVIDIA cuOpt on Oracle Cloud Infrastructure now builds it and a dispatcher approves it.* → *Dispatchers built each region's four-week plan by hand and workloads came out uneven; now they approve one that evens them out.* |
+| Large docs · Proven · *5–15 min a contract* | *to extract 60–100 pages end to end, down from 3–5 days* → *60–100 pages into the cost system, down from 3–5 days of keying by hand* | *Contract rates were keyed into a cost-management system page by page; reviewers now validate AI-extracted rates beside the source PDF, every value cited to its page, and export.* → *Rates were keyed in page by page, and a wrong one surfaced only at invoice matching; now reviewers catch it before it reaches the system.* |
+| Account insights · Estimated · *Same-day insight* | *from a market signal to a qualified opportunity a seller can act on* → *from a market event to a qualified opportunity a seller can act on, not at the next quarterly review* | *The first engagement will run on the customer's own account base: every opportunity scored for magnitude and confidence, with its evidence cited.* → *Sellers sift market news one account at a time and miss the others an event touches without naming them.* |
+| Plan vs actual · Estimated · *Variances traced* | *each to its schedule, cost or contract source, in hours of expert time rather than weeks* → *every cost and schedule overrun explained, in hours of expert time rather than weeks* | *One completed project sample, with the customer's own schedule, cost and contract exports reconstructed into a single package-level view.* → *When a project finishes over budget or late, nobody can say reliably which work packages caused it, by how much or why.* |
+| The four footnotes | *…; illustrative, not contractual.* (×2) · *…on success metrics signed before the work starts.* · *…on a sample the customer's own experts validate.* | removed |
+| The rail's body | *Each card is one engagement: the industry, the workflow and the number it moves, marked as proven, forecast or estimated.* | *What each engagement moves, in numbers the business already tracks.* (two lines at 375) |
+
+### 40.3 Decisions
+
+- **The one-liner is the value, the eyebrow the hook, the tile bullets the proof.** A line never repeats its own bullets or eyebrow word for word; it carries the value they don't. Large docs: the eyebrow and bullet 1 carry the minutes, so the line carries the wrong rate caught before it is billed.
+- **Only Proven figures in a one-liner or a group line.** Workforce's *+4.5%* and *~30 min* are Forecast and uncleared (§4). Account insights' *same day* and Plan vs actual's *hours rather than weeks* are Estimated. The drafts' *on the day it happens*, *done in hours* and *built in minutes* came out on this rule; the cards keep their figures, where the chip says the status.
+- **The how is the change in the person's work** (*planners approve instead of building by hand*, *checks instead of keying*), never the platform, which the chips and the Technology tab already name.
+- **A card's line is the customer's old way and what changes. On an Estimated card it is the problem as it stands, in the present tense,** because nothing has been delivered yet and a *now* would claim it had.
+- **The forecast's caveat is kept, said positively.** PROVENANCE §4 makes two facts load-bearing on the Workforce figure: simulated, on the customer's own history. With the footnote gone they ride in the small line as *simulated on the customer's own history*, which also sells: the model is the customer's data, not a benchmark.
+- **The NDA line stays.** It is not a disclaimer but the reason no customer is named, plus an offer (reference calls).
+- **Peers take different claim shapes.**
+  - Home tiles: the numbers agree · expert weeks · keying · exceptions · capacity · footage nobody watches.
+  - Catalog: missed revenue · judging not gathering · overruns explained · keying and billing errors · jobs per day · the decision still open · one number · cost per visit.
+  - The human-approval claim now sits on two home tiles instead of five, and round 17's two em-dash pairs are gone.
+  - On the case screen, *day* and *hand* each fell from three uses to two in the last pass.
+
+### 40.4 The checker
+
+- `IMPLEMENTATION_TERMS` covers platform, vendor, engine, model and data-architecture words, word-bounded with the plural allowed. It fails in any product's `oneLiner`, `heroLine` or `heroCaption`, in any `facets.categories[].line`, and in a home card's `line` and `metric.label`.
+- `CASE_HEDGES` fails a card's `line` or `metric.label` that carries a reviewer justification or the engagement's mechanics (*illustrative*, *not contractual*, *success metrics*, *signed before*, *first engagement*, *will run*, *proof of value*, *scored against*).
+- A card `footnote` fails outright, and a `modeled` card's `metric.label` must say *simulated* and *own history*.
+- Tested both ways. The round-18 strings trip it: *cuopt*, *lakehouse*, *governed layer*, *gold layer*, *database*, *confidence score*, *structured data*, and on the cards *oracle*, *nvidia*, *cuopt* plus every hedge in the old footnotes. The new copy passes. *average*, *storage*, *rapid*, *social* and *sales pipeline* do not trip it.
+
+### 40.5 Checks
+
+- **Checker:** `node tools/check-grammar.js` prints OK at 9 products. The Repair-or-replace listing landed mid-round and passes the rule. `node --check` is clean on `site/assets/app.js` and `site/pages/products.js`.
+- **Email:** `mail/catalog.json` was rebuilt, and `node tools/mail-preview.js --sample` produced `as-read.txt`. Read cold, every one-liner stands alone as the line under *Your … sales kit* and in *What you can sell*.
+- **Browser** (a second `tools/serve.py`, never the shared 8765):
+  - the home tiles at 1440;
+  - the eight catalog tiles at an even height;
+  - the two changed heroes at 1440, 375 and 320;
+  - the four case cards at an even 547 px at 1440, with no footnote row;
+  - the case rail at 375;
+  - no horizontal overflow anywhere.
+- **Search:** *cuopt*, *ai-q*, *lakehouse* and *invoice* each return the right products.
+
+### 40.6 Parallel sessions
+
+- **Fleet route optimization (Sky):** dropped *NVIDIA cuOpt* from its one-liner, its source entry and its pack spec before the checker landed, so no gate went red. Its bullet 1 now carries the drivers.
+- **Repair-or-replace (Belron):** re-voiced its one-liner value-first before listing, and takes the next free section and round.
+- **Product pages (UI/layout, on a branch):** keeps `overview.*`, applies the rule to its problem/solution copy, and takes §41 and round 20 at merge.
+- **Not published.** The shared artifact still shows the last publish, and the working tree carries other sessions' in-flight work, so a publish from here would ship theirs too.
+
+### 40.7 Open for Alex
+
+- **Tile bullets and hero badges still speak implementation** on five products. This round's brief was one-liners and the home cards.
+  - Tile bullets: *confidence score and a citation* (Large docs); *Native Oracle Field Service integration: known endpoints…* (Workforce); *certified views*, *a governed foundation* (ERP Q&A); *the answer layer*, *a governed gold layer* (Business metrics); *an investigator UI with navigate-to-source* (Case evidence).
+  - Badges: *Prebuilt pipelines*, *Multi-cloud*, *On-prem too*, *No migration*.
+- **The product pages' own case studies** (Use cases tab) keep their stories and caveat sentences. Only the home cards changed.
+- **Account insights says it two ways:** its rail reads *Hours, rather than the next quarterly review* and its case figure *Same-day insight* (round 11's item). The card's small line now carries the quarterly-review baseline.
+- **The packaging plugin's own one-liner card** still asks for a *how* clause. Plugin 0.1.39 is installed from this Mac's checkout, which is 2 commits ahead of origin's 0.2.x and 40 behind. This is filed as a separate task.
