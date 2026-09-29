@@ -116,7 +116,7 @@ var FACET_FULL = {
 var NON_CATALOG_FACETS = ["oracle-ai-fusion"];
 /* A product's platforms, as the renderers read them (UI.productFacets): `facet`
    is one id, or an array of ids when the product's own engine is part of more
-   than one Oracle platform (2026-09-29, PROVENANCE §44). */
+   than one Oracle platform (2026-09-29, PROVENANCE §46). */
 function productFacets(p) {
   return Array.isArray(p.facet) ? p.facet : (p.facet === undefined ? [] : [p.facet]);
 }
@@ -2555,7 +2555,7 @@ if (/assets\/img\/logos\//.test(raw)) {
 
 /* The Internal review panel, a checklist of the brief's open assumptions that
    anyone with the preview link could open, ran from 2026-09-17 until Alex had
-   it removed on 2026-09-29 (PROVENANCE §44). Nothing internal ships in the
+   it removed on 2026-09-29 (PROVENANCE §46). Nothing internal ships in the
    site: the brief's record is docs/START-HERE.md §2, so the panel's files and
    their script tags stay gone, from the archived theme too. */
 ["site/data/review.js", "site/assets/review.js"].forEach(function (rel) {

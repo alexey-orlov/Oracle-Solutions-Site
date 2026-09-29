@@ -33,11 +33,11 @@ Current as of 2026-09-29, after round 19: **every one-liner and home case card s
   - **The site:** https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri. This is the one to publish to.
   - **The archive** (previous near-black theme, frozen): https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN (the same artifact as https://claude.ai/code/artifact/41e4f3b6-47d9-4ef2-af99-99c40c02b89b). Do not republish it.
   - **Open:** the archive's URL is the one that has been in circulation. If it needs to show the current site, the two have to be swapped — Alex's call.
-- **Stage:** prototype. The *Internal* button (bottom right) opens a checklist of the assumptions still to be confirmed, and it comes off before launch (§8).
+- **Stage:** prototype, with the brief's assumptions still to be confirmed (§2). The *Internal* checklist that showed them on every page came off on 2026-09-29 (§8).
 
 ## 2. The brief
 
-These are Alex's working assumptions as of 2026-09-17, and **each one is still to be confirmed**. The *Internal* panel shows them as a checklist (`site/data/review.js`). Alex's ticks are saved only in his own browser and never reach the repo, so a confirmation counts when Alex tells a session. That session then rewrites the line here and removes or rewords the item in `review.js`.
+These are Alex's working assumptions as of 2026-09-17, and **each one is still to be confirmed**. This page is their only record, since the *Internal* panel came off the site (§8): a confirmation counts when Alex tells a session, and that session rewrites the line here.
 
 - **Audience, in priority order:**
   1. Oracle sellers and partners.
@@ -62,7 +62,7 @@ These are Alex's working assumptions as of 2026-09-17, and **each one is still t
   - Karsten is the contact for communications.
   - Sales materials go only to corporate addresses at softserveinc.com or oracle.com.
 
-**Where the site does not match the brief today** (flagged in the panel and left unchanged until Alex decides):
+**Where the site does not match the brief today** (left unchanged until Alex decides):
 - **Test mode** (`mail/settings.json`): every request reaches the test inbox of whoever runs the sender, not oracle@softserveinc.com, and the emails go out from a temporary sender outside SoftServe's domain until a SoftServe integration replaces it (§9).
 - Two products print an **Integration price** on their Jumpstart tab: *Large docs processing and review* and *Workforce optimization* (€300–500K services plus infrastructure).
 - **No product is marked as planned**, so all eight read as available now.
@@ -123,6 +123,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
   - H2: five words or fewer, ≤ ~30 characters.
   - Light-band title: ≤ ~28 characters.
   - Check where the line breaks on a phone: no lone short word on a line, and no product name split at its hyphen (the renderer keeps a compound whole; PROVENANCE §43).
+  - Check the titles of peers side by side at every width their grid changes at: they take the same number of lines. Set the break and fit the size to the tile; never leave the count to the viewport, and never rename to fit (PROVENANCE §45).
 - **Repetition:**
   - No content word three times on one screen.
   - One word for one thing across the whole site.
@@ -154,7 +155,7 @@ carries no photograph · clean at 375, and the H1 still holds at 320.
 
 **A peer tile carries its peers' anatomy, never a stretched sparse box** (Alex, round 18, on the catalog's first *Looking for another solution?* tile: *"looks too empty"*). A tile in an equal-height grid takes its tallest peer's height, so a title and two lines on a flat fill stood ~70% empty beside a product tile. The fix is structural: the same slots — a picture where they carry one, a list where they list, the action at the foot — each filled with the tile's own content; never shrink it, never pad it with air. The checker holds the ask tile's anatomy; the general rule is also AO-Personal-OS `slide-design.md` rule 14. **A product tile's photograph meets its body on a clean edge** (round 18, as softserveinc.com's cards do): no veil between them, and the platform label sits on the brand's translucent chip plate.
 
-**Peer names in a row take the same number of lines** (Alex, round 18, on the six group tiles: *"some headings now are 2 lines, some 1 line, so content looks not so clean; fix line breaks (not allowed to do tile renaming)"*). Left to the viewport, names of different lengths wrapped to different counts in some row at every width from 320 to 1920, and everything under the shorter ones started higher. So the break is set, not left to the width: every group name is two lines, broken before its last word, and the name's size fits its tile so the first line never wraps (`VISUAL-GRAMMAR.md` §9). The names stay as written; renaming to fit is not the fix. The checker holds the break, the fit, the one-column step at 720 and each name's first line to 22 characters. The site's other titles were audited in the same pass: the catalog's product names hold one line in every row, and the product step strip, the hero stack's tiles and the case cards' bottom-anchored descriptors wrap inside boxes where a ragged line moves nothing below it.
+**Peer names in a row take the same number of lines** (Alex, after round 19, on the six group tiles; PROVENANCE §45: *"some headings now are 2 lines, some 1 line, so content looks not so clean; fix line breaks (not allowed to do tile renaming)"*). Left to the viewport, names of different lengths wrapped to different counts in some row at every width from 320 to 1920, and everything under the shorter ones started higher. So the break is set, not left to the width: every group name is two lines, broken before its last word, and the name's size fits its tile so the first line never wraps (`VISUAL-GRAMMAR.md` §9). The names stay as written; renaming to fit is not the fix. The checker holds the break, the fit, the one-column step at 720 and each name's first line to 22 characters. The site's other titles were audited in the same pass: the catalog's product names hold one line in every row, and the product step strip, the hero stack's tiles and the case cards' bottom-anchored descriptors wrap inside boxes where a ragged line moves nothing below it.
 
 **A second way to buy shows under the first** (Alex, round 18: landing on Packaged services, the Bespoke band must be *"slightly but sufficiently visible"*, or the packaged track reads as the whole offer). So nothing stands between the track and the band (the Why list moved after it), home anchors land with the screen's top edge under the header rather than 96 px down, and short desktop windows (≤ 800 px tall) tighten every home screen's padding. Measured after the header's *Services*: the band's eyebrow and heading show at 1366 × 650 and up, its eyebrow at 1280 × 620. On a phone the vertical track is taller than the screen, so the band follows it.
 
