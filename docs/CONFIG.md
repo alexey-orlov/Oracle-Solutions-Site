@@ -213,11 +213,11 @@ The renderer resolves the poster in this order, first non-empty wins:
 1. **`videoPoster`** — what you set here.
 2. **The YouTube thumbnail** — `https://img.youtube.com/vi/<id>/maxresdefault.jpg`, derived automatically when the `video` link is a YouTube link.
 
-There is no third step, and the product's hero image is explicitly **not** one. It used to be, and the result was the hero photograph rendered inside a frame sitting on top of the same photograph — a brighter cut-out of the wallpaper with a play button on it, in the first screen of the page (`PROVENANCE.md` §14.6).
+There is no third step, and the product's `hero.image` is explicitly **not** one: it is the catalog tile's photograph, and inside the frame it once read as a brighter cut-out of the wallpaper with a play button on it (`PROVENANCE.md` §14.6).
 
-So a YouTube demo needs nothing here at all. A recording with neither a poster nor a YouTube thumbnail renders with no `<img>`: the `video-card--plate` ground, the play button and the caption. The backdrop behind the hero is held a stop darker on this layout so the frame still reads as a card and not as a hole cut in the background.
+A YouTube recording would find its own thumbnail, but the checker still asks for `videoPoster` wherever the frame renders, so the frame never falls back. The fallback exists for a poster that fails to load: no `<img>`, the `video-card--plate` ground, the button and, for a recording, the caption.
 
-Set `videoPoster` when the auto-derived thumbnail is a bad frame, when the video is on Vimeo or Stream (no public thumbnail), or when you want a designed still rather than a screenshot — a product screenshot, a step frame, a desaturated crop at another focal point. Never point it at the hero file. Set today on `large-document-extraction` and `workforce-optimization`: each carries a 1600 × 900 still of its own walkthrough (`ASSETS.md` §1), shown the day its recording is linked.
+A poster is a distinct capture of the product's own screen, leading with its before → after band where it has one, taken from the walkthrough on synthetic data. Never point it at the tile's photograph, and never take it from a recording that runs on a customer's data.
 
 **If the poster cannot be loaded, it is dropped rather than shown broken.** The media frame keeps its veil, play button and caption over the inset panel, which already reads as a deliberate frame. One case needs naming: YouTube has `maxresdefault.jpg` only for videos uploaded above 720p, and for the rest it answers `200` with a 120×90 grey stand-in instead of a `404`. The renderer therefore treats a 120-pixel-wide YouTube thumbnail as a miss, retries `hqdefault.jpg` (which exists for every real video), and drops the poster only if that fails too. Nothing about this reaches the console.
 
@@ -277,7 +277,7 @@ The interactive walkthrough — a self-contained guided demo of the product on p
 - the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
 - the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same link.
 
-Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the products whose walkthrough ships under `site/demo/` (its `DEMO_SLUGS`), and `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
+Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On its product page, from any tab, the badge opens the walkthrough itself; from a tile it goes to the product page. Where the product has no recording, the hero's frame opens the walkthrough too, through the same `UI.demoHref` (§55). `tools/check-grammar.js` asserts that the link is set for exactly the products whose walkthrough ships under `site/demo/` (its `DEMO_SLUGS`), and `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
 
 ### `interactiveDemoArtifact`
 
@@ -289,7 +289,7 @@ On a real host it is ignored and the relative path is used, so nothing has to ch
 
 ### `video`
 
-The demo video itself. Paste the link when the recording lands, and the hero's video frame appears with it on the next reload: since round 18 nothing else turns it on (§3, the retired `video` switch). A normal share link is fine: YouTube `watch?v=`, `youtu.be/`, `youtube.com/shorts/` and `vimeo.com/<id>` links are converted to their embed form before the player is framed, and links already in embed or player form pass through unchanged. Expected first for `workforce-optimization`, `large-document-extraction` and `account-insights`. Empty on all seven today.
+The demo video itself. Paste the link when the recording lands, and on the next reload the hero's frame opens it instead of the walkthrough: since round 18 nothing else puts a recording on the page (§3, the retired `video` switch). A normal share link is fine. YouTube `watch?v=`, `youtu.be/`, `youtube.com/shorts/` and `vimeo.com/<id>` links, and a plain video file, play in the modal, converted to their embed form first; a SharePoint or Stream link opens in its own tab, because its page refuses to be framed on another site and opens only for a signed-in viewer (§55). The kit email lists it as *Demo video*. Set for `large-document-extraction` and `workforce-optimization` (§55, SharePoint links that open only for people signed in to SoftServe); empty on the other seven.
 
 ### Retired in round 12
 
