@@ -47,7 +47,7 @@ window.SITE_CONTENT = {
 
 | Key | Type | Notes |
 |---|---|---|
-| `sellersLink` | `{ label, route }` | **Round 8.** *For sellers* → `#/sellers`, the first link in the row. It is the only permanent way to `#/sellers`, the kit for any product, which is why it survived round 14's cut. Asserted. |
+| ~~`sellersLink`~~ | — | **Retired on 2026-09-29** with the `#/sellers` page (Alex: *"remove that link and page where it leads to"*; PROVENANCE §61). The checker fails the key and any `#/sellers` route in `content.js`. |
 | `legalLinks` | `[{ label, url }]` | **Exactly the brand's two, in the brand's words:** *Privacy Notice* → `https://www.softserveinc.com/en-us/privacy` and *Terms and Conditions* → `https://www.softserveinc.com/en-us/terms-and-conditions` (Alex gave both URLs). Title case because they are the pages' own names. Asserted. |
 | `siteLink` | `{ label, url }` | *SoftServe website* → `https://www.softserveinc.com/en-us`, last in the row. The url must be on `https://www.softserveinc.com/`. |
 | `socialLabel` | string | The accessible name of the glyph list. |

@@ -8109,3 +8109,17 @@ _The same session as §59, on Opus alone, under the account's 95 % usage cap. To
 - **Checks:** `node --check`, `check-grammar` OK with its one warning, the deny-list sweep empty, the console clean. Measured at 1920, 1440, 1280 and 1024 (the accent line on white; the link and the promise clear of the people; no horizontal overflow); seen at 1440, 1024 and 375 (three H1 lines, one line each).
 - **Published** as version 27: `home-alt.css`, `overview-alt.js`, `content.js` and the new picture, the only site files changed since version 26; the sky edge to edge as version 28 (`home-alt.css`, `overview-alt.js`).
 - **Open for Alex:** START-HERE §9, under §60.
+
+## 61. The footer's *For sellers* link and the `#/sellers` page removed, 2026-09-29
+
+_The same session as §59–§60, on Opus alone. Touched: `site/data/content.js` (`site.footer.sellersLink` retired), `site/assets/app.js` (the footer row, the `/sellers` route, `MOVED`), `site/index.html` and `site/index-legacy.html` (the script line), `site/pages/sellers.js` (deleted), `site/assets/site.css` (the page's block), `site/pages/overview.js` (a comment), `tools/check-grammar.js`, `site.manifest.json` (contract round 24), START-HERE, README, SCHEMA._
+
+- **The ask (Alex, 2026-09-29):** *"For sellers in the footer - remove that link and page where it leads to."*
+- **Decisions:**
+  - The footer's link row is the brand's two legal pages and *SoftServe website*; the Oracle row is unchanged.
+  - `#/sellers` and the home page's old `#/#kit` land on the catalog (`MOVED`, the address rewritten in place): a kit is one product's, on the second tab of its Contacts switch, so the seller picks the product there. The home contact was the other candidate; it carries no kit (§48).
+  - **Kept:** `salesKit.page`'s *For sellers* eyebrow and *Request another kit*, which the product Contacts tab's kit pane still reads; its other strings (the page's title, body and demo route) now render nowhere. `forms.js` keeps its generic kit form, whose product select only the page used. The product tab segment `…/sellers`, retired in round 10, still redirects to Contacts.
+- **The checker** now fails `site.footer.sellersLink`, a `#/sellers` route in `content.js`, a `/sellers` route or `site/pages/sellers.js` coming back, and either index loading it, and requires both redirects.
+- **Checks:** `check-grammar` OK with its one warning; the console clean; in the browser pane, `#/sellers` and `#/#kit` land on `#/products`, the footer reads *Privacy Notice · Terms and Conditions · SoftServe website*, and Account insights' `…/contacts#kit` opens its kit pane.
+- **Published** as version 29, `pages/sellers.js` mapped to `null` and confirmed gone from the artifact.
+- **Open for Alex:** the kit form's product select and the page-only `salesKit.page` strings are dead weight until someone removes them; the kit is now reachable only through a product page.

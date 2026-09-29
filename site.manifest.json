@@ -2,7 +2,7 @@
   "$comment": "The mini-site's machine-readable description of itself. The oracle-packs plugin's listing and demo skills read it before they edit, check, preview or publish this site. Change it in the same commit as the thing it describes. Prose rules live in docs/START-HERE.md; enforcement lives in tools/check-grammar.js.",
   "name": "Oracle AI & Data Solutions",
   "contract": {
-    "round": 23,
+    "round": 24,
     "asOf": "2026-09-29",
     "$comment": "Bump in any round that changes a content.js key, a config switch, a product tab, a checker rule or a publish rule. The plugin compares this with the round its own listing references were written against and defers to the site when the site is newer."
   },
