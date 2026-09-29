@@ -108,9 +108,45 @@ window.SITE_CONTENT = {
       { id: "overview", label: "Overview" },
       { id: "use-cases", label: "Use cases" },
       { id: "technology", label: "Technology" },
-      { id: "jumpstart", label: "Jumpstart", legacyIds: ["pov"] },
+      { id: "delivery", label: "Delivery", legacyIds: ["jumpstart", "pov"] },
       { id: "contacts", label: "Contacts", legacyIds: ["demo", "sellers"] }
     ],
+    /* Round 22 (Alex, 2026-09-29): the Technology tab's widget names the
+       Oracle products in play, "same names and icons … across all products,
+       as this should feel like a widget". One registry, so a system is
+       spelled and drawn one way everywhere; a product lists the ids it uses
+       and gives each its own two-to-four-word role (`technology.oracle`).
+       Platforms first, then the Oracle applications a product reads from or
+       writes to. */
+    oracleProducts: {
+      title: "Oracle products",
+      groups: { platform: "Platform", connected: "Sources & destinations" },
+      items: {
+        "oci": { name: "Oracle Cloud Infrastructure", group: "platform", icon: "platform-oci-nvidia" },
+        "ai-data-platform": { name: "Oracle AI Data Platform", group: "platform", icon: "platform-oracle-ai-data-platform" },
+        "ai-lakehouse": { name: "Oracle Autonomous AI Lakehouse", group: "platform", icon: "platform-oracle-ai-lakehouse" },
+        "ai-database": { name: "Oracle Autonomous AI Database", group: "platform", icon: "oracle-database" },
+        "fusion-field-service": { name: "Oracle Fusion Field Service", group: "connected", icon: "oracle-field-service" },
+        "cx": { name: "Oracle Customer Experience (CX)", group: "connected", icon: "oracle-cx" },
+        "fusion-apps": { name: "Oracle Fusion Applications", group: "connected", icon: "platform-oracle-ai-fusion" }
+      }
+    },
+    /* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
+       service-packages table with no price rows. The tiers and their standing
+       durations are the site's, the same on every product (4–8 weeks is the
+       proof of value's one duration, round 7); the scope lines and the rows
+       are each product's `delivery`. */
+    delivery: {
+      caption: "Service packages",
+      tiers: [
+        { id: "pov", name: "Jumpstart proof of value", size: "S", duration: "4–8 weeks" },
+        { id: "integration", name: "Integration", size: "M", duration: "3–5 months" },
+        { id: "scaling", name: "Scaling", size: "L", duration: "3–12 months" }
+      ],
+      durationLabel: "Duration",
+      marks: { partial: "partial", included: "included", advanced: "advanced", none: "not included" },
+      footnote: "Durations are approximate and confirmed at scoping."
+    },
     contact: {
       name: "Karsten Tramborg",
       title: "Oracle Partnership Director, SoftServe",
@@ -219,12 +255,6 @@ window.SITE_CONTENT = {
       scope: "Scope",
       scopeIn: "In scope",
       scopeOut: "Out of scope",
-      architecture: "Architecture",
-      stack: "Solution stack",
-      capabilities: "Capabilities",
-      stateSupported: "Supported",
-      statePartial: "Partial",
-      stateRoadmap: "Roadmap",
       howItWorks: "How it works",
       shotOpen: "Open the screen full size",
       shotPan: "Drag to move around the screen.",
@@ -241,17 +271,7 @@ window.SITE_CONTENT = {
       metricToday: "Today",
       metricAfter: "After",
       caseStudy: "Case study",
-      layerRequired: "Required",
-      layerOptional: "Optional",
-      directionInbound: "Inbound",
-      directionOutbound: "Outbound",
-      contacts: "Contacts",
-      jumpstartOutcomes: "What you get",
-      jumpstartTimeline: "How it runs",
-      jumpstartNeeds: "What we need from you",
-      jumpstartInvestment: "Investment",
-      jumpstartScoped: "Scope, price and duration are set in scoping.",
-      jumpstartNext: "After the Jumpstart"
+      contacts: "Contacts"
     }
   },
 
