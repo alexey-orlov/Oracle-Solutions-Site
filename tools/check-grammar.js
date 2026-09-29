@@ -465,6 +465,12 @@ if (!arr(C.products) || C.products.length !== 9) {
       if (vz.form === "baseline" && !str(before.label)) {
         fail(mw, "visual.before.label missing — the baseline's one printed label");
       }
+      /* Q1: a baseline filled to its end draws a full bar and says nothing;
+         the scale runs past today's value (1.5 × it, by the round-20 rule). */
+      if (vz.form === "baseline" && scaled && typeof before.value === "number" &&
+          ((vz.direction === "down" && before.value >= sc.max) || (vz.direction === "up" && before.value <= sc.min))) {
+        fail(mw, "visual.scale ends at today's value — the baseline is drawn as a full bar with nowhere to go; give the scale room (e.g. max = 1.5 × before.value)");
+      }
     });
   }
 
@@ -1127,6 +1133,11 @@ if (!arr(C.products) || C.products.length !== 9) {
     need(uses, ".ind-tablist", /var\(--border-hairline\)/, "the tab row sits on one #d1dae2 hairline");
     need(uses, ".ind-panel", /background:\s*var\(--bg-raised\)/, "the industry plate's copy half is the tab's one grey step, #edf0f2");
     need(uses, ".ind-panel", /--cut:\s*var\(--cut-8\)/, "the industry plate takes the 8px cut");
+    /* Q1: every industry's panel in one cell, so the plate is as tall as the
+       tallest and the case study under it never jumps between tabs. */
+    need(uses, ".ind-panels", /display:\s*grid/, "the industry panels share one grid cell, so the plate keeps one height across tabs");
+    need(uses, ".ind-panel", /grid-area:\s*1 \/ 1/, "every industry panel sits in the one cell");
+    need(uses, ".ind-panel[hidden]", /visibility:\s*hidden/, "an unselected panel keeps its cell, invisible, instead of leaving it");
     never(uses, ".ind-figure", /border:/, "the photograph runs edge to edge — no frame of its own");
     need(uses, ".case-callout", /background:\s*var\(--surface-dark-raised\)/, "the case study is the tab's one dark plate, #1a1a1a");
     need(uses, ".case-callout .case-figure-value", /font-family:\s*var\(--font-sans\)/, "a case figure is set in Replica, never Azurio");
@@ -1164,7 +1175,8 @@ if (!arr(C.products) || C.products.length !== 9) {
     need(contacts, ".contact-plate", /--cut:\s*var\(--cut-12\)/, "the white plate takes the 12px cut");
     need(contacts, ".contact-tile", /#459fdd/i, "the first person's portrait sits on Lviv blue 75");
     need(contacts, ".contact-person:nth-child(even) .contact-tile", /#fe8d6b/i, "the second person's portrait sits on Austin orange 75");
-    need(contacts, ".contact-mail", /color:\s*var\(--action\)/, "the mailbox is a blue link");
+    /* Q1: blue 125, the kit pane's link style (.inline-link), 7:1 on white. */
+    need(contacts, ".contact-mail", /color:\s*var\(--action-pressed\)/, "the mailbox is a blue-125 link (#0e5e8b), the kit pane's own link style — #1485c4 is 4.05:1 at 18px");
     never(contacts, ".contact-mail", /background|--fill/, "the mailbox carries a fill — an address is a link, never a button");
     need(contacts, ".contact-segmented", /background:\s*none[\s\S]*clip-path:\s*none|clip-path:\s*none[\s\S]*background:\s*none/, "the switch is two text tabs — no grey frame, no cut");
     need(contacts, ".contact-segmented .segment", /--fill:\s*transparent/, "a switch tab takes no fill");
@@ -2119,6 +2131,25 @@ if (!arr(C.products) || C.products.length !== 9) {
   var css = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
   if (css.indexOf("/* ===== Round 20 · Overview ===== */") === -1) {
     fail("site/assets/site.css", 'has no "===== Round 20 · Overview =====" block — the Overview\'s components live in one block');
+  }
+  /* Q1: the inset's offset scales with the frame (2.75% of its width, 4.4% of
+     its height: 24px at 1440), so it never meets the ring at 1280. */
+  ["tl", "tr", "bl", "br"].forEach(function (corner) {
+    var m = css.match(new RegExp("\\n\\.hiw-zoom--" + corner + " \\{([^}]*)\\}"));
+    var v = corner.charAt(0) === "t" ? "top" : "bottom";
+    var h = corner.charAt(1) === "l" ? "left" : "right";
+    if (!m || !new RegExp(v + ":\\s*4\\.4%").test(m[1]) || !new RegExp(h + ":\\s*2\\.75%").test(m[1])) {
+      fail("site/assets/site.css", ".hiw-zoom--" + corner + " must sit " + v + " 4.4% / " + h + " 2.75% of the frame — a fixed offset lets the inset meet the ring at 1280");
+    }
+  });
+  /* Q1: one chart convention — a range that improves downward is drawn
+     mirrored, and a dumbbell prints its labels in the order of its dots. */
+  var visualFn = (src.split("function kpiVisual(")[1] || "").split("\n  function ")[0];
+  if (!/down \? 100 - p : p/.test(visualFn)) {
+    fail("site/pages/product.js kpiVisual()", "a range that improves downward is no longer mirrored (today's tick at the right end, the band to its left)");
+  }
+  if (!/pa < pb \? afterLabel \+ beforeLabel : beforeLabel \+ afterLabel/.test(visualFn)) {
+    fail("site/pages/product.js kpiVisual()", "a dumbbell no longer prints its labels in the order of its dots");
   }
   /* Each is a prefix: `.stepper` stands for `.stepper-head` and the rest. */
   [".ps-strip", ".ps-panel", ".ps-mark", ".ps-arrow", ".ov-layout", ".ov-main", ".ov-rail", ".rail-card", ".stat-tile",

@@ -6801,3 +6801,297 @@ The big figure is unchanged on every card (Alex: *"short metric is good"*). The 
 - **The product pages' own case studies** (Use cases tab) keep their stories and caveat sentences. Only the home cards changed.
 - **Account insights says it two ways:** its rail reads *Hours, rather than the next quarterly review* and its case figure *Same-day insight* (round 11's item). The card's small line now carries the quarterly-review baseline.
 - **The packaging plugin's own one-liner card** still asks for a *how* clause. Plugin 0.1.39 is installed from this Mac's checkout, which is 2 commits ahead of origin's 0.2.x and 40 behind. This is filed as a separate task.
+
+## 41. Round 20: the product pages — Overview, Use cases, Contacts (2026-09-29)
+
+**The asks** (Alex, in session, 2026-09-29):
+
+> I need you to take a fresh look on Oracle minisite per-product pages and improve UIs / layouts. For now, we focus on Overview, Use cases, Contacts blocks.
+>
+> 1) all blocks are too greyish; take a look at softserveinc.com as a reference (including subpages like https://www.softserveinc.com/en-us/services/artificial-intelligence) and decide how we could elegantly improve that (I know the reference is not that great, but it is what it is, let's make the most of it, let's be smart about it) - this comment applies to all 3 tabs;
+>
+> All comments below are for Overview tab only.
+> 2) How it works block: poorly designed. Can't fit the entire block to a single screen, which is bad + step headings are poorly lined up + too many fonts in a single place; screenshots are too small cuts as for their current size (ideally, screenshots be fullscreen; they should not look like skeletons and should not be overloaded with details / too hard to read; play with their layouts so that they convey the message and serve the purpose, stay close to the interactive walkthrough as much as possible but also look good as per requirements I listed;
+> 3) More detail block - on Overview page - to be removed.
+> 4) Solution and problem blocks: too much text, heading indistinguishable from text, not sexy - have no motivation to read. If you'll be touching text, make sure to preserve sharpness and focus around ROI, business value and clarity for the audience outside the specific industry and no frame of reference for the use case in their mental model.
+> 5) ROI and business metrics block is too wordy, and too boring. Also, metrics are not that good (should focus on clear use-case specific ROI). You can find my guidance for ROI definitions in my packaging skills and previous sessions where we worked on crafting the ROI metrics. Rethink the metrics themselves (for the packs we've built - you can pick the ones we have in-pack, for others - create yourself). For visualization - I would use some visual representation of the metric (aka scale, speedometer, graph etc. dashboard - something common for data visualization; as long as we can't be promising specific number it could either point to number X and say that it's improvement "from X", or show the potential improvement range.
+> * Make sure to not add footnotes and explanations of how you built metrics; they should not lie but should [not] apologize and disclaim their value.
+> * No justification for reviewer notes pls ("The figure the delivered proof of value produced is in the case study, on the Use cases tab." - these things look weird).
+
+The bracketed *[not]* is the main session's reading, and so is the rule the last two bullets became: a metric is honest in its own framing, a measured before → after, a range or a *from X* baseline under a kind chip, and it carries no footnote, method note, apology or pointer to another tab.
+
+**Scope.** Nine products: the seven, Fleet route optimization (§39) and Repair-or-replace decisions (listed by another session the same day), three tabs each. Technology and Jumpstart are untouched. The contact component is shared, so the home page's contact screen changed with it.
+
+**Split.**
+- **Research, Opus.** R1 measured how softserveinc.com puts colour on a white page (home, the AI services page, a solution page, a case study, industries, contact, about; at 1440 and 375) and mapped each move to our components. R2 gathered Alex's ROI rules and, per product, the evidence and the candidate business metrics with their owners. R3 measured the pages as they were (copy volumes, block heights at 1440) and shot every walkthrough state at 1440 and 1280. R4 found and tiered the public benchmarks behind each possible range.
+- **Design and copy, Fable, one pass:** the colour system, the Overview's composition, the How it works frame and every frame's content, the KPI tile and its four chart forms, the Use cases and Contacts restyle, and the final copy of every new Overview field on nine products.
+- **Review, the main session (Opus):** nine edits to the Fable copy (41.3), then source verification: R5 (Opus) re-read seven benchmark figures on their own pages, and two tiles changed on what it found.
+- **Build, Opus.** B1 the Overview: the renderer, its CSS block, the checker, the content migration on nine products. B3 Use cases and Contacts. B2a the frames of the five walkthrough products. B2b the HTML shell A and the Account insights and Case evidence collection mocks. B2c the HTML shell B and the Business metrics Q&A and Plan vs actual investigation mocks.
+- **QA, Opus:** Q1, an independent pass against the asks at every width, run in parallel with these docs (D1, Opus).
+
+Fable was used once, for the design and copy decisions.
+
+### 41.1 Colour: one grey step, one contrast plate (ask 1)
+
+R1's finding: the brand is not a colourful system either. Its pages read less grey because each viewport carries one contrast plate (a dark card or a flat brand tile), its photographs are lit in its own orange and blue, its figures are big and Light under an orange-75 dash, and it never puts grey on grey. Our product pages put grey tiles inside grey rails and grey inputs on grey cards. **The rule: one grey step per viewport, one contrast plate per screen, and figures big and Light under an orange-75 dash.**
+
+| Surface | Before | Round 20 |
+|---|---|---|
+| Problem panel | `#edf0f2` | keeps `#edf0f2`, 12 px cut, ink: the screen's one grey step |
+| Solution panel | `#e1e7eb` | the `#1a1a1a` plate, 12 px cut, white type: the Overview's one dark plate |
+| ROI rail and its tiles | a grey card holding grey tiles | the full-bleed KPI band on softserveinc.com's own gradient, `#edf1f6` → `#fafaf8`; the figures on the ground, 1 px `#d1dae2` rules between the tiles |
+| Step frame | a crop on white | the screenshot itself, 12 px cut, 1 px `#bdcbd7` hairline; the region ring and the zoom inset in 2 px `#1485c4` |
+| Industry tabs | `#edf0f2` chips | text tabs, the selected one ink on a 2 px `#1485c4` underline |
+| Industry panel | copy beside a photograph on white | one split plate, 8 px cut: an `#edf0f2` copy half and a photograph half (R1: softserveinc.com's *Client Voice*) |
+| Case-study callout | `#edf0f2` | the `#1a1a1a` plate, 12 px cut: the Use cases tab's one dark plate |
+| Contact card, switch, inputs | all grey | a full-bleed `#edf0f2` band holding one white plate; white inputs with a 1 px `#bdcbd7` border; the switch as underline tabs; each portrait on a blue-75 or orange-75 tile |
+
+Three theme rules moved with it (`SS26-THEME.md` §2, §3, §5):
+- A product page spends **one dark plate per tab view**, the Solution on the Overview and the case study on Use cases. A plate with its own cut is not a band, by the reasoning §5 already applied to photographic panels.
+- **Orange 75 `#fe8d6b` is the fact marker**, a role apart from the orange-100 hero accent: the dash over every KPI and case figure.
+- **Facts are neutral** now means no status colour on a metric. Blue `#1485c4` is the one coloured mark in a chart.
+
+### 41.2 The Overview (asks 2–5)
+
+- **One column, no rail, in the order of the argument:** the problem and what changes, the numbers, then the screens. The number is the reason to look at the screens, so the KPI band comes before How it works (41.11). The blocks sit 64 px apart.
+- **Problem → What changes (ask 4).** Each side is an eyebrow, a real headline (28 px Replica 400, at most 60 characters and two lines) and one paragraph of at most 30 words, where the panels ran 25–49. The problem names the role and what it costs them. What changes names the change in that person's work and how much faster it goes. No platform or engine name (round 19's rule, extended here), no icon and no arrow: the contrast between the two plates carries the before → after.
+- **The KPI band (ask 5).** Two tiles a product, each a business metric with a buyer-side owner, a kind chip and one small chart drawn from its own numbers, in one of four forms: `compression` (a stated before → after), `range` (a modeled band, with a tick at today), `dumbbell` (a modeled before → after rate) and `baseline` (a sourced *from X*, a chevron showing the way it improves). The chips reuse the case study's three words: *Proven*, *Forecast*, *Estimated*. After QA the four forms share one convention, a value axis low on the left with every label under its own mark, and no figure is a bare unit word (41.9). No footnote, no method, no ROI paragraph and no pointer to another tab: the figure's own framing is its honesty. Where each figure comes from is 41.4, and nowhere on the page. The rail's rule that a tile never repeats a case-study figure left with the rail: the case study is on another tab, so Large docs prints its *5–15 min* on both.
+- **How it works (ask 2).** A step list beside one frame. Each row is the number and the title on one line at 20 px, titles at most 26 characters so none wraps; the open step's text sits under its title at 16 px. Two sizes, and no tick-lists. The frame is the whole screen of the walkthrough, 872 × 545 at 1440, with the step's region ringed in blue and a zoom of that region inset at the corner it leaves free, so its UI text reads at about its own size. The block is 627 px at 1440 × 900 (at most 830 fit under the header) and 547 px at 1280 × 800. A tablet puts the frame over the list; a phone shows four cards, each ending on its zoom.
+- **Frames are screens, not skeletons (ask 2).** The four products with no walkthrough (Account insights, Case evidence collection, Plan vs actual investigation, Business metrics Q&A) got one HTML mock per step, in the walkthroughs' own two visual languages and on synthetic records, captured the same way (`ASSETS.md` §1; the sources are in `tools/step-mocks/`). Their 16 SVG wireframes are deleted.
+- **More detail (ask 3)** is removed, and so is the data only it rendered (41.6). `scope`, `features` and each step's `features` stay in the data, unrendered; `scope` goes to the Jumpstart tab next round.
+- **The frame plan, as built:**
+  - Workforce's *Set the rules* is folded into step 1, because its only frame shows the uncleared plan-v1 *+4.8%* behind the settings drawer.
+  - Repair-or-replace step 2 shows one case judged against its market's rule, in the `ran` state, because the two-market rules screen is 1,210 px wide and no part of it fits the inset (B2a).
+  - Repair-or-replace step 3 zooms on the repeat-visits tile rather than the needless-replacements tile, because the latter prints a £ unit cost, which R2 keeps off the site (a currency beside glazing narrows the label to one company).
+  - Every region was held to the inset's legibility rule (scale ≥ 0.92): seven regions first measured 436 px wide were re-shot at 435.5, and one was trimmed for the inset's height (B2a).
+- The rules this round moved are rewritten where they live: `VISUAL-GRAMMAR.md` §2, §2a and §8, `SCHEMA.md` (the product `overview` and `shared`), `SS26-THEME.md` §2, §3 and §5, `ASSETS.md` §1 and `START-HERE.md` §4.
+
+### 41.3 The copy review, after the Fable pass
+
+The main session read Fable's copy against R2, R4 and the site's rules and changed ten things. Fable's original was kept beside the reviewed file in the round's scratchpad.
+
+1. **The kind tooltips keep the case study's meanings.** *Forecast*: modeled on the customer's own history, not yet measured in production (Fable's also allowed *or on published industry rates*). *Estimated*: set against published industry rates or the way the work is done today, the proof of value measuring the real change.
+2. **Large docs.** A third tile, *Manual data-entry effort per contract, −20 to −35%* (Forecast), is dropped: a modeled effort cut beside the Proven days → minutes contradicts it. The onboarding tile's line became *A new supplier or site, from signed agreement to billable rates.*
+3. **Workforce.** The solution headline is *A solved month to review in half an hour* (Fable: *Review the plan, not build it: half an hour*, the same pattern as Large docs' *Review the data, not type it*). *Jobs per technician per day* is Estimated, because its range rests on published rates. A third tile, *Driving time per technician, −5 to −10%*, is dropped, because it borrowed the routing literature.
+4. **Fleet.** *Cost per completed visit* is Estimated, because it rests on published routing studies (Fable: Forecast).
+5. **Repair-or-replace.** Both tiles are Estimated, and their after labels say *estimated*: the rates are modeled on industry assumptions, never on a customer's own data (Fable: Forecast).
+6. **Cross-system ERP Q&A.** The solution headline is *Ask once, get one ranked answer in minutes* (Fable: *Ask in plain words, …*; the sibling product's one-liner already says *plain words*).
+7. **Case evidence collection, after R5.** *Share of case time spent on gathering, from ~80%* became *Time to a complete case file: Day one*. R5 found that McKinsey's figure is the banks' own *as much as 85%* estimate for all financial-crime compliance and AML activity, not case handling; the new tile states the time claim the page itself makes.
+8. **Cross-system ERP Q&A, after R5.** *Analyst time spent getting data ready* (owner: head of FP&A) became *Data-team time spent preparing data* (owner: head of data and analytics), with the line *Pulling and cleaning extracts before a question can be answered.* Anaconda's survey counts data professionals' preparation and cleansing, 38–39%, and has no *loading* category.
+9. **Source notes** from R5 were added to four tiles; they are never printed (41.4).
+10. **The Solution plate's eyebrow is *The solution*** (`sectionLabels.solutionEyebrow`; Fable: *What changes*). Set after the first build, on the main session's read of the page: *What changes* on the dark plate sat directly above the band's H2 *What changes in your numbers*, one phrase twice on one screen, and *The problem* / *The solution* is the pair a reader outside the industry parses at once. The band's H2 keeps *What changes*.
+
+**The migration (B1)** moved every string to US spelling (*organization*, *recognized*, *optimized*; the checker bans the British forms in `content.js`) and then stripped every tile's `sources`: `content.js` ships in view-source, so a figure's provenance lives here, and the checker fails a `sources` key.
+
+### 41.4 Metric provenance
+
+Tiers as in R4: **T1** a regulator or government statistic, or peer-reviewed or INFORMS-refereed work; **T2** an analyst firm, consultancy, industry body or product-neutral vendor-run survey. Labels as in START-HERE §5: **[site]** on the site before this round, **[pub]** in a pack spec or external one-pager and publishable, **[clr]** needs clearance. Titles and figures are as printed after QA (41.9); `content.js` is the record of every string.
+
+| Product | Metric | Printed figure | Chip | Source | Verified how |
+|---|---|---|---|---|---|
+| Large docs | Contract to system-ready data | *5–15 min*, from 3–5 days | Proven | The measured case study (an international airline, 60–100-page agreements end to end, the reviewer's check included) [site; pub on the pack's external one-pager] | Unchanged from the case study; its Oracle and customer clearance is still open (§10.8) |
+| Large docs | Onboarding a new supplier | *from ~1 month* | Estimated | The travel-transport industry case and the case study's scope row: about a month to bring a new station online [site, pub] | Site copy; no neutral public benchmark exists (R4 §4) |
+| Workforce | Time to plan a region's four weeks | *~30 min*, from ~2 days | Proven | The pack's proof-of-value result, on the site since round 4 [pub, site] | §4 records it cleared on its own source (`SPEC` §1.4) |
+| Workforce | Jobs per technician per day | *+4 to +10%* | Estimated | The floor sits under the pack's own *+4.5%* median ([clr], §4; not printed on the band). The ceiling is the bottom of McKinsey's 10–20%, *Performance Management 2.0: Tech-enabled optimization of field forces*, 2020 (T2) | R5 read McKinsey's page: its 10–20% credits tech-enabled performance management (less discretionary time, job efficiency, drive time), not scheduling alone, so the range tops out under it |
+| Fleet | Cost per completed visit | *−5 to −10%* | Estimated | Toth & Vigo (eds.), *The Vehicle Routing Problem*, SIAM, 2002: computerized routing saves generally 5–20% of transport cost; the lower half is shown (T1). The pack's metric 1, owner the COO | R5, at second hand: a thesis that cites it (Fenton, arXiv 1605.05448, p. 5); the SIAM page is behind a bot check. UPS ORION's 100 million miles a year was verified (UPS 2016 and 2020, INFORMS 2016); its 6–8 miles per route was not found and is not used. R4 rates cost a proxy for distance |
+| Fleet | Unproductive driving per engineer | *up to 1 h a day* | Estimated | McKinsey, *How lean is your field force—really?*, 2019: an additional hour a day may go on unnecessary driving (T2) | R5 read it on McKinsey's page; the source hedges it as a possibility, hence *up to* |
+| Account insights | News to a reviewed brief | *from a quarter*, to hours | Estimated | The site's own claim, *hours, rather than the next quarterly review* (the retired rail tile); the case study's *Same-day insight*; the pack's *Time to act on a change*, owner the head of sales [site, pub] | No public benchmark exists (R4 §1) |
+| Account insights | A seller's week not spent selling | *from 72%* | Estimated | Salesforce, *State of Sales*, 5th edition, 2022: 28% of the week spent selling, n = 7,775 in 38 countries (T2) | R4 read it on the page. The 6th edition's 18% research share was not re-verified and is not used |
+| Case evidence | Time until the evidence is assembled | *from weeks*, to day one | Estimated | The site's own claim (the retired ROI line, *most of that clock goes on gathering the file*, and this round's solution headline); the FCA's eight-week complaint clock supports *weeks* (inferred; no number printed) | R4 read the FCA page. It replaced Fable's *from ~80%* tile after R5 (41.3) |
+| Case evidence | Complaints answered late | *from 5.6%* | Estimated | FCA, aggregate complaints data, 2025 H2: 5.6% of 1.74 million complaints closed after eight weeks (T1; UK financial services) | R4 read it on the page |
+| Plan vs actual | Expert time to explain an overrun | *from weeks*, to hours | Estimated | The in-preparation case study's *in hours of expert time rather than weeks* [site] | No public benchmark exists (R4 §3) |
+| Plan vs actual | Teams that review every closed project | *from 1 in 10* | Estimated | Williams, PMI-sponsored survey, *IEEE Transactions on Engineering Management* 55(2), 2008: 62.4% of organizations have a formal lessons-learned procedure and 11.7% of those follow it closely (T1; old and self-reported) | R5 read the two figures in Williams's 2006 PMI Research Conference paper on the same survey; the 2008 full text was not reachable. 62.4% × 11.7% ≈ 7%, printed as *about 1 in 10*. The title says *teams*, because the survey counts organizations, not projects (QA, 41.9) |
+| Cross-system ERP Q&A | Time an answer waits in the BI queue | *from weeks*, to minutes | Estimated | The site's cross-industry case, *the BI backlog runs in weeks* (the Lakehouse Jumpstart deck), and the hero badge *Answers in minutes* [site] | No readable public benchmark (R4 §7: TDWI's is for members only) |
+| Cross-system ERP Q&A | Data-team time spent preparing data | *from ~40%* | Estimated | Anaconda, *State of Data Science*: 22% preparation plus 17% cleansing in 2021, 38% in 2022 (T2, vendor-run and product-neutral) | R5, at second hand (BigDATAwire 2021, VentureBeat 2022; anaconda.com could not be reached from this machine). Retitled after R5 (41.3) |
+| Business metrics Q&A | Extracts built per request | *3 → 0* | Estimated | The site's *a data engineer, three extracts and a week* (the Lakehouse Jumpstart deck), and the product's design: queries run where the data lives [site] | Site copy |
+| Business metrics Q&A | Time to a group-wide figure | *from a week*, to minutes | Estimated | The same *three extracts and a week* [site] | No public benchmark exists (R4 §7). *Minutes* was chosen over the retired tile's untraced *seconds* |
+| Repair-or-replace | Needless replacements | *3.0 → 2.4%* | Estimated | The pack spec's modeled rate on industry assumptions, a 20% relative cut [pub, modeled]; Alex, 2026-09-22: carry the modeled case, labeled as modeled | The pack spec. Its unit cost (about £50) is not printed: a currency beside glazing narrows the label (R2) |
+| Repair-or-replace | Repeat visits for the same damage | *1.5 → 1.2%* | Estimated | The pack spec's modeled failed-repair and repeat-visit rate [pub, modeled] | The pack spec. The first tile names the payer and the second the operator, the pack's dual-buyer rule |
+
+**Two tiles are Proven, sixteen are Estimated, and none is Forecast.**
+
+**Where a chart's before and after are words** (a quarterly review, weeks, a day, hours, minutes), its `before.value` and `after.value` are drawing values in one unit, set only to draw the two bars, and they print nowhere. The after bar is drawn at least 8 px long, so no chart implies a ratio its labels do not state. The printed words are the claim.
+
+**Pages read** (R4, R5): McKinsey 2020, https://www.mckinsey.com/capabilities/operations/our-insights/performance-management-20-tech-enabled-optimization-of-field-forces · McKinsey 2019, https://www.mckinsey.com/capabilities/operations/our-insights/how-lean-is-your-field-force-really · Toth & Vigo, as cited in https://arxiv.org/pdf/1605.05448 · Salesforce, https://www.salesforce.com/news/stories/sales-research-2023/ · FCA, https://www.fca.org.uk/data/complaints-data/aggregate-complaints-data-2025-h2 · Williams 2006, https://www.pmi.org/learning/library/organizations-learn-projects-implementing-8048 · Anaconda, https://www.hpcwire.com/bigdatawire/2021/07/27/anacondas-2021-state-of-data-science-report-highlights-support-for-open-source-impacts-from-covid-19/ and https://venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state-of-data-science-report-has-the-answers · McKinsey on financial crime, 2020 (read and not used), https://www.mckinsey.com/capabilities/risk-and-resilience/our-insights/the-investigator-centered-approach-to-financial-crime-doing-what-matters.
+
+### 41.5 Use cases and Contacts (ask 1)
+
+- **The copy and the data are unchanged**; only the look moved.
+- **The industry tabs** are text over one hairline, the selected one on a blue underline. A row too long for its width scrolls sideways, fading at its end only while it overflows, so an underline never sits on a wrapped line.
+- **The selected industry is one split plate:** the copy first, *The problem* and *The solution* as 20 px headings over 18 px Light text (no eyebrows), then the photograph edge to edge. The panel no longer repeats the industry's name, because the tab above says it. Below 901 px the photograph stacks on top.
+- **The case study is the tab's one dark plate.** Its figures leave Azurio for Replica Light (64 px at 1440, each under the orange-75 dash, stacked in the evidence column), and the medallion and the status chip are white rings. The story keeps its caveat sentence (the checker holds it; 41.11).
+- **Contacts is one component on both surfaces**, `UI.contactSwitch`: a full-bleed grey band holding one white plate, as softserveinc.com sets its contact form (R1). The people are rows, each round portrait on a brand-fill tile (blue 75 for the first person, orange 75 for the second, as the brand shoots its team on brand grounds). The mailbox is a link in blue 125, the kit pane's own link style (41.9). The switch is two underline tabs, and the fields are white with a hairline border. The plate stacks card over form from 1100 px down rather than the design's 900: at 1024 the 352 px card left the form 336 px and clipped the product select (B3).
+- **The footer spacer.** The footer opens on a 152 px `#edf0f2` spacer, and a grey contact band right above it read as one grey mass. So the band is the page's last grey: the section that hosts it drops its bottom padding (on a product tab its top one too, so the band meets the tab bar), the band runs into the black footer, and the spacer is not drawn after a page that ends on it. That includes the home page.
+- **The home case cards and `#/sellers` keep their look.** Every Use cases rule is `.ind-*` or inside `.case-callout`, every Contacts rule sits inside the contact component, and the checker holds both.
+
+### 41.6 Retired, and why
+
+| Retired | Why | Checker |
+|---|---|---|
+| `overview.metricsNote` | The footnote under the metric row; on Large docs, the pointer to the Use cases tab that Alex quoted (*"these things look weird"*) | fails by name |
+| `overview.roi` | The ROI paragraph (27–52 words) left with the rail; the band says it in numbers (*"too wordy"*) | fails by name |
+| `overview.moreDetail`, `overview.featuresDetail`, `overview.featuresNote` | More detail is removed (ask 3); the other two rendered only inside it | fail by name |
+| `problemSolution.problem/solution.title`, `.icon` | The eyebrow is a shared label, and the plates carry no icon | fail by name |
+| `metrics[].value`, `.label`, `.qualifier`, `.icon` | The rail tile's shape | fail by name |
+| `steps[].image` | Replaced by `shot { full, zoom, region, anchor, alt }` | fails by name |
+| `shared.sectionLabels.metrics`, `metricsPlanned`, `roi`, `moreDetail`, `moreDetailFeatures` | The heading switch between *Metrics improved* and *What the proof of value measures* is one heading, `outcomes`; More detail is gone | fail by name |
+| A tile's `sources` | Internal research, readable in view-source; it lives in 41.4 | fails by name |
+| The feature-coverage invariant (every `overview.features` item under exactly one step) | The tick-lists are gone, so it has no surface | retired |
+| `.ps-strip`, `.ps-panel`, `.ps-mark`, `.ps-arrow`, `.ov-layout`, `.ov-main`, `.ov-rail`, `.rail-card`, `.stat-tile`, `.roi-band`, `.disclosure--detail`, `.detail-wrap`, `.detail-entry`, `.stepper…`, `.step-frame…` | The old Overview's CSS (with `.roi-*`, `.scope-grid`, `.dash-list`, `.panel--tight` and `.tab-body--compact`, deleted with it) | fail by name in `site.css` |
+| `moreDetail`, `featuresDetail`, `featuresNote`, `metricsNote`, `ov-rail`, `rail-card`, `stat-tile`, `roi-band`, `stepper-features`, `disclosure--detail` in `pages/product.js` | The old render paths | fail by name |
+| The 16 SVG step illustrations of Account insights, Business metrics Q&A, Case evidence collection and Plan vs actual investigation | Wireframes with placeholder words; the frames are screens now | — |
+| 16 rows of `content-case.js` (14 problem/solution titles, 2 More detail titles) | The strings they re-cased are gone; 20 rows remain | — |
+
+Two open items in START-HERE §9 closed with what they were about: round 10's cross-tab `metricsNote` on Large docs and the stepper's pinned air under a short description (§29.6, §29.7). A third, round 11's *Hours* rail tile beside the case study's *Same day* (§30.6), moved with the tile onto the band and is now 41.11's item 9.
+
+### 41.7 Before → after
+
+**The Overview tab**
+
+| | Before (round 19) | After |
+|---|---|---|
+| Layout | a MAIN column (803 px at 1440) and a rail (402 px); one column below 1100 px | one column at the wrap, 1,248 px at 1440 |
+| Order | MAIN: Problem ↔ Solution → How it works → More detail; the rail: Outcomes & ROI | Problem → What changes · the KPI band · How it works |
+| Height at 1440 | the tab body 1,237–1,328 px | the plates ≈ 264 px, the band ≈ 480 px, How it works 627 px, 64 px apart (B1) |
+
+**Problem → What changes**
+
+| | Before | After |
+|---|---|---|
+| Surfaces | two grey panels (`#edf0f2`, `#e1e7eb`) with an arrow between | the problem on `#edf0f2`, what changes on the `#1a1a1a` plate, 12 px cuts, no arrow |
+| Heading | a 12 px uppercase eyebrow as the only heading (*The problem*, *The solution*, and on three products *The solution: review the data, not type it* and its like) | the shared eyebrow over a 28 px headline of at most 60 characters |
+| Text | 16 px Light, 25–49 words a side | 18 px Light, at most 30 words |
+| Icons | `alert` and `spark` | none |
+| Height at 1440 | 280–348 px | ≈ 264 px |
+
+**The ROI block, now the KPI band**
+
+| | Before | After |
+|---|---|---|
+| Place | the rail's grey card, beside How it works | a full-bleed band between the plates and How it works |
+| Heading | *Metrics improved*, or *What the proof of value measures*, by data | *What changes in your numbers* |
+| Tiles | 1–4 grey tiles a product, 29 on eight products; 3 carried a value and none was an outcome (two were time to go live, one time to approve a plan) | 2 a product, 18 on nine, each a figure: 2 Proven, 16 Estimated |
+| Tile | an icon or a value, a label, a grey qualifier | the dash · the title and its kind chip · the figure · a 40 px chart · its labels · one line · the owner |
+| Around the tiles | an ROI paragraph (27–52 words) and a footnote (18–38 words; on Large docs a pointer to the Use cases tab) | nothing |
+| Height at 1440 | the rail card, 502–922 px | ≈ 480 px |
+
+**How it works**
+
+| | Before | After |
+|---|---|---|
+| Layout | a row of 3–5 step heads, the open step's text and tick-list under it, then the frame | the step list (344 px) beside the frame (872 px) |
+| Step heads | a number chip and a title of 12–32 characters, wrapping unevenly to two lines | the number and the title on one line, at most 26 characters |
+| Type | the title, the description at body size, the tick-list at small size, the number chip | 20 px and 16 px |
+| Frame | 803 × 503 at 1440: a 640 × 400 crop from three walkthroughs, Fleet's 1600 × 1000 crops, or an SVG wireframe on four products | 872 × 545 at 1440: the whole screen captured at 1280 × 800 (Large docs at 1440 × 900), the region ringed, a 401 px zoom inset |
+| Height at 1440 × 900 | 798–849 px | 627 px (the budget is 830); 547 px at 1280 × 800 |
+| Phone | the same accordion, the frame after the list | four cards, each ending on its zoom |
+
+**More detail**
+
+| Before | After |
+|---|---|
+| a collapsed disclosure at the foot of MAIN (57 px) holding `moreDetail` (3–10 entries), the scope lists, `featuresDetail` and `featuresNote` | removed |
+
+**Use cases: the industry tabs**
+
+| | Before | After |
+|---|---|---|
+| Tabs | grey chips | text tabs over one hairline, the selected one on a 2 px blue underline; a long row scrolls and fades |
+| Panel | the industry photograph beside *The problem* / *The solution* eyebrows over paragraphs, the industry's name repeated | one split plate: the copy on `#edf0f2` under 20 px headings, then the photograph edge to edge |
+| Panel height | changed with the selected tab, so the case study below moved | the tallest industry's on every tab (41.9) |
+
+**Use cases: the case study**
+
+| | Before | After |
+|---|---|---|
+| Surface | a grey callout | the `#1a1a1a` plate, 12 px cut |
+| Figure | Azurio | 64 px Replica Light, white, under an orange-75 dash |
+| Chip, medallion | on grey | white rings |
+
+**Contacts, on a product's tab and on the home page**
+
+| | Before | After |
+|---|---|---|
+| Ground | a grey card beside the switch, on white | a full-bleed `#edf0f2` band holding one white plate |
+| People | 72 px round photographs | 80 px round portraits on 96 px blue-75 and orange-75 tiles |
+| Mailbox | an underlined anchor | a link in blue 125 `#0e5e8b` with the mail glyph, the kit pane's style |
+| Switch | a grey segmented control in uppercase | two text tabs in sentence case, the selected one on a 2 px blue underline |
+| Fields | grey-filled | white, 1 px `#bdcbd7`, 48 px tall, no radius |
+| At the foot | the footer's grey spacer under the page | the band runs into the black footer |
+
+### 41.8 The checker
+
+- **The Overview (B1).** The plates: headline at most 60 characters, text at most 30 words, no implementation term, `title` and `icon` fail. The KPI tiles: two or three, their shape and budgets, one of the three kinds and the four forms, a printed label for every mark, `after` and `range` only where the form draws them, and the retired tile keys and `sources` fail. The retired Overview keys fail. `features` and `scope` keep their shapes, unrendered. The steps: 3–5, numbered from 1, title at most 26 characters, text at most 30 words, `shot` paths by slug and step and on disk, the region inside the frame, the anchor and the alt; `image` fails. A round-20 block: `overviewTab()` renders the three blocks in order, `pages/product.js` builds no retired render path and `site.css` styles no retired selector, the new section labels are present and the retired ones fail, both H2s are at most 30 characters, and `shared.metricKinds` reads exactly *Proven* · *Forecast* · *Estimated*, each with a tooltip. The catalog-size and gap sweep reads the new strings.
+- **Use cases and Contacts (B3).** Each region is one marked CSS block (`===== Round 20 · … =====`) whose selectors stay inside its component. The industry tab is text on a blue underline, never a fill or a frame; its plate is grey with an 8 px cut. The case study is `#1a1a1a`, its figures Replica Light under the `#fe8d6b` dash and never Azurio. The band is grey and full-bleed, the plate white with a 12 px cut, the tiles blue 75 and orange 75, the mailbox a `mailto` link and never a button, the switch two unframed tabs, the fields white with the hairline border under sentence-case labels, and the footer spacer is not drawn after the band. `contactSwitch()` wraps itself in the band and the plate, and `industryCases()` prints the copy before the photograph and no eyebrow.
+- **After QA (B1, 41.9).** The four inset offsets are 4.4% of the frame's height and 2.75% of its width. `kpiVisual()` mirrors a range that improves downward and prints a dumbbell's labels in the order of its dots. A baseline's value may not sit at its scale's end, which would draw a full bar. The industry panels share one grid cell, each an unselected panel keeping its box (`visibility: hidden`). The mailbox is blue 125, `var(--action-pressed)`.
+- **Not the checker's:** the inset's legibility (scale ≥ 0.92) and the anchor that keeps it off its own region are checked at capture (`ASSETS.md` §1).
+
+### 41.9 QA, and what it changed
+
+Q1 measured every product's Overview at 1440 and 1280, three products at 1024, 768, 375 and 320, Use cases on six products, Contacts on two with the home page's and `#/sellers`, and judged every screen against the asks.
+
+- **How it works:** 627 px at 1440 × 900 and 547 px at 1280 × 800 on all nine products; the frame 872 × 546 (the image 870 × 544 inside its hairline); the zoom image 401 px wide and at most 272 tall; every region at most 436 CSS px wide, so the inset's scale is at least 0.92; no inset over its ring at 1440, while at 1280 Cross-system ERP Q&A's steps 1 and 2 clipped a ring's corner (84 and 94 px²); every step title on one line, two type sizes, the list level with the frame.
+- **The plates** 612 × 264 on all nine. **The KPI band** 1248 × 480, its tiles 600 × 254, the figures 56 px (44 at 375), the chips *Proven* and *Estimated* only.
+- **Everywhere:** no horizontal overflow on any page measured, down to 320; no broken image; a clean console. Contrast passes on both dark plates, the problem plate, the KPI gradient and the industry plate; it failed on the Contacts mailbox link (`#1485c4` at 18 px, 4.05:1) and on the brand's blue button, which is site-wide (4.05:1, `SS26-THEME.md` §7).
+- **The count: 0 blockers, 4 majors, 26 minors**, five of the minors out of the round's scope or Alex's call.
+
+**The majors.** Three dumbbells (Business metrics Q&A's extracts and both Repair-or-replace tiles) printed their labels in the reverse order of their dots. Five compression tiles led with a bare unit word (*Hours*, *Day one*, *Minutes*), which is neither a *from X* nor a range. Plan vs actual's second tile titled a share of projects over a source that counts organizations.
+
+**What the main session decided, and B1 applied:**
+
+- **One chart convention: a value axis, low on the left**, so a metric that improves by falling improves leftward, and **every label sits under, or aligned to, the mark it names**, never in a fixed left or right slot. A dumbbell keeps its dots on the axis and prints its labels in their order. A range that falls is mirrored: today's tick at the right end and the band to its left, each label under its mark. A compression's labels align with their own bars, so *after* sits by the short blue bar. A baseline's scale runs past X, so the fill stops short of the end and the chevron has room: Fleet's road-time scale went from 60 to 90, Large docs' onboarding scale from 30 to 45 (1.5 × X).
+- **The five compression figures read *from X***, the baseline in the figure itself: Account insights *from a quarter*, Case evidence collection *from weeks*, Plan vs actual investigation *from weeks*, Cross-system ERP Q&A *from weeks*, Business metrics Q&A *from a week*. The two Proven compressions keep their measured figures, *5–15 min* and *~30 min*.
+- **Copy.** These strings supersede the round's design copy; `content.js` is the record of every printed string.
+
+| Product | What changed |
+|---|---|
+| Account insights | tile 1: *News to a reviewed brief*, *from a quarter* |
+| Case evidence collection | the solution text opens *Each complaint opens with*; tile 1: *Time until the evidence is assembled*, *from weeks*, line *Summary, timeline and draft response ready as the clock starts.*; tile 2: *from 5.6%*, its label *answered late today*, line *Complaints answered after the regulator's deadline, across the industry.* |
+| Plan vs actual investigation | tile 1: *Expert time to explain an overrun*, *from weeks*, line *Every variance, with its cause and the document behind it.*; tile 2: *Teams that review every closed project*, its label *about 1 organization in 10 does it today* |
+| Cross-system ERP Q&A | tile 1: *from weeks*, line *From asking to a ranked list the team can act on.*; tile 2: line *Pulling and cleaning extracts before anyone gets an answer.* |
+| Business metrics Q&A | tile 1: *Extracts built per request*, line *A data team's pulls and copies, replaced by one query run in place.*; tile 2: *Time to a group-wide figure*, *from a week* |
+| Large docs processing and review | tile 1: line *60 to 100 pages, end to end, the reviewer's check included.*; tile 2: *Onboarding a new supplier*, line *A new partner or site, from signature to first invoice.* |
+| Workforce optimization | the problem text drops *region by region*; tile 1: line *Optimized and approved by the dispatcher, end to end.* |
+| Fleet route optimization | the problem text ends *…is money spent.*; the solution text says *jobs per engineer*; tile 1: line *Driving, charging time and overtime, at your own rates.*; tile 2: *Unproductive driving per engineer*, its label *up to an hour a day today*, line *Hours at the wheel that produce no billable work.* |
+| Repair-or-replace decisions | the after labels *2.4% after* and *1.2% after*, so *estimated* is not said four times beside the chips |
+
+- **Layout.** The inset's offset scales with the frame (2.75% of its width from the side, 4.4% of its height from the top or bottom: 24 px each at 1440), so no inset touches its ring at 1280. The Use cases panels share one grid cell, the inactive ones hidden but holding their height, so the plate is as tall as its tallest industry and the case study below never moves when the reader changes tab. The plate headlines are balanced (`text-wrap: balance`), and the running copy is wrapped to avoid a lone last word (`text-wrap: pretty`). The Contacts mailbox takes blue 125 `#0e5e8b` (at least 7:1 on white), the kit pane's own link style, so one plate carries one link style.
+- **Not fixed, for Alex:** 41.11.
+
+### 41.10 Checks
+
+- `node --check` on every changed script. The checker prints **OK — 9 products** before and after the QA fix pass, with the same three warnings: Repair-or-replace's hero is not on disk yet, the About H2's length, and the Internal panel.
+- **The builders' browser checks**, on the round's branch server:
+  - B1: How it works 627 px at 1440 × 900 and 547 px at 1280 × 800; the band ≈ 480 px and the plates ≈ 264 px; step titles on one line at 1280; click, ←/→/↑/↓, Home and End move the steps, the crossfade has no dip, and `aria-expanded` and `aria-controls` follow; the tablet layout at 1024 and 768; the phone cards at 375, the zoom 341 px wide; no horizontal overflow at 320; a clean console.
+  - B3: Use cases and Contacts on four products and the home page at 1440, 1280, 1024, 768, 375 and 320. No overflow; the tabs scroll and fade where they overflow; the dark plate is `rgb(26, 26, 26)` and its figure 64 px Replica 300 at 1440; `#kit` opens the kit pane on a product and on the home page; the arrow keys work on both switches; `#/sellers` and the home case cards are unchanged.
+  - B2a–B2c: every frame and zoom read at display size; the anchor rule checked on a frame preview, so no inset covers its region; inset scales 0.92–0.96.
+- **Sources:** R5 re-read seven benchmark figures on their own pages (41.4).
+- **QA:** Q1's pass and the fixes it led to are 41.9.
+- **Not published.** The next publish carries `pages/product.js`, `assets/site.css`, `assets/app.js`, `data/content.js`, `data/content-case.js`, the 20 re-shot and 16 new step frames and the 36 zooms under `assets/img/steps/`, and maps the 16 deleted `assets/img/steps/*.svg` to `null`, because files left out of a publish are kept (`START-HERE.md` §6).
+- **Contract:** `site.manifest.json` is at round 20.
+
+### 41.11 Open for Alex
+
+1. **The band before the screens.** The KPI band sits before How it works, value first; the reverse order is one line in `overviewTab()`.
+2. **Two tiles on every product.** The in-pack metrics with no defensible public number stay off the band rather than print without a figure: Fleet's visits per engineer and missed appointments (its Jumpstart tab names them) and Repair-or-replace's decision consistency across sites (printed nowhere).
+3. **Fleet's *−5 to −10%* on cost per visit** rests on the routing literature: Toth & Vigo's 5–20% of transport cost, read at second hand, and UPS ORION's miles, whose per-route figure was not found. R4 rates cost a proxy for distance.
+4. **Workforce's *Set the rules* is folded into step 1**, because its only frame shows the uncleared plan-v1 *+4.8%* behind the settings drawer.
+5. **The chips:** seven products print Estimated tiles only, and Large docs and Workforce carry one Proven tile each. No tile is Forecast: the review kept *Forecast* for figures modeled on a customer's own history, and the band holds none.
+6. **The Use cases case study still ends on its caveat sentence** (*…illustrative, not contractual.*, which the checker holds this round) **and names the engine and the platform** (NVIDIA AI-Q, cuOpt, Oracle Cloud Infrastructure) on the tab's one dark plate. Trim it to the status chip and the business story, the cut the home cards got in round 19.
+7. **Clearance of the two Proven figures.** Large docs' *5–15 min* is Proven on its tile and in its case study, and §10.8 still lists its Oracle and customer clearance as open. Workforce's *~30 min* is Proven on its tile: §4 records it cleared on its own source, while round 19 (§40.3) grouped it with the uncleared figures. The *+4 to +10%* range's floor sits just under the uncleared *+4.5%* median, which the band does not print. Confirm both before the site gets a public URL.
+8. **Account insights' frames are HTML mocks.** Another session is building its walkthrough; once that is published, the four frames are re-captured from it and the product's folder under `tools/step-mocks/` goes.
+9. **One claim, two figures across the tabs.** Account insights' band runs *from a quarter* to *hours after*, while its case study says *Same-day insight* (round 11's item, now on the band). Workforce's jobs per technician reads *+4 to +10%* (Estimated) on its band and *+4.5%* (Forecast) in its case study.
+10. **Figures in two faces.** The product pages set their figures in Replica Light; the home page's proof strip, case cards and About tiles, and the Jumpstart investment card, still use Azurio, so Large docs' *5–15 min* is Azurio on its home card and Replica Light on its Use cases tab.
+
+From QA, not fixed this round (41.9):
+
+11. **The footer's grey spacer** still draws under the Overview and Use cases tabs: an empty 152 px `#edf0f2` strip above the black footer (round 14's brand footer), the one grey left on those tabs. It is hidden only after a page that ends on the contact band.
+12. **`#/sellers` keeps the old grey kit form** (a grey plate, grey fields, uppercase labels), while the same form on a Contacts tab is white with sentence-case labels.
+13. **Shared industry photographs that fit another product better:** Large docs' *Travel & transport* photograph is a street scene with object-detection boxes, which reads as video analytics rather than contracts, and Repair-or-replace's *Automotive* photograph is an abstract render. The edge-to-edge half makes both prominent.
+14. **The Internal pill** has an illegible label (black on near-black) and covers content at the bottom right, such as a KPI tile's owner line at 1440.
+15. **Repair-or-replace's hero has no photograph**, while the other eight carry one (its own session's).
+16. **Repair-or-replace's step-3 frame** still shows, around its zoom, the walkthrough's own disclaimer (*Modelled on industry figures, not a customer result. Apply to your own volumes.*) and its £ and $ unit costs, which R2 keeps off the site beside glazing.
+17. **Fleet's zooms 1 and 4 are 664 and 644 px wide**, so at 401 px they are soft on a 2× screen; widening their regions or re-shooting them would fix it.
+18. **The preview's "can't send" notes** under both contact forms are intended while the sender is off; confirm they stay until a public host exists.
+
+The list is repeated in START-HERE §9.

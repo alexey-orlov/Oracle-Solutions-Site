@@ -394,17 +394,37 @@
   function pct(p) { return (Math.round(p * 100) / 100) + "%"; }
 
   /* A swatch is drawn in the shape of the mark it names (a bar, a tick, a
-     dot), so the pairing never rests on colour alone. */
-  function kpiLabel(text, swatch) {
-    return '<span class="kpi-label"><span class="kpi-swatch kpi-swatch--' + swatch + '" aria-hidden="true"></span>' +
+     dot), so the pairing never rests on colour alone. `place`, where given, is
+     { at, align }: the label is set under its own mark, starting at, ending
+     at or centred on the mark's x in percent. */
+  function kpiLabel(text, swatch, place) {
+    var where = place
+      ? ' kpi-label--' + place.align + '" style="left: ' + pct(place.at)
+      : "";
+    return '<span class="kpi-label' + where + '"><span class="kpi-swatch kpi-swatch--' + swatch + '" aria-hidden="true"></span>' +
       "<span>" + window.UI.esc(text) + "</span></span>";
   }
 
-  /* The four forms (D-design §2.2), all 40px tall with the track at y 17:
+  /* Where a label centred on x would run past an end of the chart, it starts
+     at the left end or ends at the right one instead. */
+  function kpiPlace(at) {
+    if (at < 15) return { at: at, align: "start" };
+    if (at > 85) return { at: at, align: "end" };
+    return { at: at, align: "center" };
+  }
+
+  /* The four forms (D-design §2.2), all 40px tall with the track at y 17, on
+     one convention (Q1): a value axis, low on the left, so a metric that
+     improves by going down improves leftward, and every label sits under or
+     beside the mark it names, never in a fixed left or right slot.
      compression — measured before → after, the after bar its share of the
-       before one, at least 8px so a minutes-against-days bar still shows;
-     range — a modelled band on the scale, today's tick at its origin;
-     dumbbell — a modelled before → after on the scale;
+       before one, at least 8px so a minutes-against-days bar still shows; both
+       labels start at the bars' origin (site.css);
+     range — a modelled band beside today's tick, each label under its mark; a
+       range that improves downward is drawn mirrored, today at the right end
+       and the band to its left;
+     dumbbell — a modelled before → after on the axis, the labels in the order
+       of their dots;
      baseline — a sourced "from X" with no promised end: the scale filled to X,
        the tick, and a chevron pointing the way the number improves. */
   function kpiVisual(viz) {
@@ -417,8 +437,8 @@
     var track = '<rect class="kv-track" x="0" y="17" width="100%" height="6"></rect>';
     var tick = '<line class="kv-tick" x1="' + at + '" x2="' + at + '" y1="10" y2="30"></line>';
     var marks = "";
-    var left = "";
-    var right = "";
+    var labels = "";
+    var placed = false;
     var hidden = "";
 
     if (viz.form === "compression") {
@@ -428,24 +448,34 @@
       marks = '<rect class="kv-before" x="0" y="4" width="100%" height="10"></rect>' +
         '<rect class="kv-after" x="0" y="22" width="8" height="10"></rect>' +
         '<rect class="kv-after" x="0" y="22" width="' + pct(share) + '" height="10"></rect>';
-      left = kpiLabel(before.label, "before");
-      right = kpiLabel(after.label, "after");
+      labels = kpiLabel(before.label, "before") + kpiLabel(after.label, "after");
     } else if (viz.form === "range") {
-      var lo = kpiPos(range.lo, scale);
-      var hi = kpiPos(range.hi, scale);
+      /* x = (v − min)/(max − min), or (max − v)/(max − min) when down. */
+      var down = viz.direction === "down";
+      var rpos = function (v) { var p = kpiPos(v, scale); return down ? 100 - p : p; };
+      var t = rpos(before.value);
+      var a = rpos(range.lo);
+      var b = rpos(range.hi);
+      var x0 = Math.min(a, b);
+      var x1 = Math.max(a, b);
+      var tx = pct(t);
       marks = track +
-        '<rect class="kv-band" x="' + pct(Math.min(lo, hi)) + '" y="15" width="' + pct(Math.abs(hi - lo)) + '" height="10"></rect>' +
-        tick;
-      left = kpiLabel(label("metricToday") || before.label, "tick");
-      right = kpiLabel(range.label, "band");
+        '<rect class="kv-band" x="' + pct(x0) + '" y="15" width="' + pct(x1 - x0) + '" height="10"></rect>' +
+        '<line class="kv-tick" x1="' + tx + '" x2="' + tx + '" y1="10" y2="30"></line>';
+      labels = kpiLabel(label("metricToday") || before.label, "tick", kpiPlace(t)) +
+        kpiLabel(range.label, "band", kpiPlace((x0 + x1) / 2));
+      placed = true;
     } else if (viz.form === "dumbbell") {
-      var to = pct(kpiPos(after.value, scale));
+      var pb = kpiPos(before.value, scale);
+      var pa = kpiPos(after.value, scale);
+      var to = pct(pa);
       marks = track +
         '<line class="kv-link" x1="' + at + '" x2="' + to + '" y1="20" y2="20"></line>' +
         '<circle class="kv-dot kv-dot--before" cx="' + at + '" cy="20" r="7"></circle>' +
         '<circle class="kv-dot kv-dot--after" cx="' + to + '" cy="20" r="7"></circle>';
-      left = kpiLabel(before.label, "dot-before");
-      right = kpiLabel(after.label, "dot-after");
+      var beforeLabel = kpiLabel(before.label, "dot-before");
+      var afterLabel = kpiLabel(after.label, "dot-after");
+      labels = pa < pb ? afterLabel + beforeLabel : beforeLabel + afterLabel;
     } else if (viz.form === "baseline") {
       var up = viz.direction === "up";
       /* The nested svg carries the chevron to the tick's x; the path is drawn
@@ -455,7 +485,7 @@
         tick +
         '<svg x="' + at + '" y="15" width="1" height="10" overflow="visible">' +
           '<path class="kv-chevron" d="' + (up ? "M6 0 11 5 6 10" : "M-6 0 -11 5 -6 10") + '"></path></svg>';
-      left = kpiLabel(before.label, "fill");
+      labels = kpiLabel(before.label, "fill");
       var end = up ? scale.max : scale.min;
       hidden = '<span class="sr-only">' +
         UI.esc([label("metricToward"), end, viz.unit].filter(function (x) { return x !== undefined && x !== ""; }).join(" ")) +
@@ -464,7 +494,7 @@
 
     return {
       svg: '<svg class="kpi-svg" width="100%" height="40" aria-hidden="true" focusable="false">' + marks + "</svg>",
-      labels: '<p class="kpi-labels">' + left + right + hidden + "</p>"
+      labels: '<p class="kpi-labels' + (placed ? " kpi-labels--placed" : "") + '">' + labels + hidden + "</p>"
     };
   }
 

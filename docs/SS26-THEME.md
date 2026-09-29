@@ -94,9 +94,20 @@ because the real faces render:
 | Button | 16 px | 16 px | Replica 400 / 1.2 / **+.06em, UPPERCASE** |
 | Arrow link | 18 px | 18 px | Replica 400 / 1.2 / 0, sentence case |
 | Footer links and copyright | 14 px | 14 px | Replica 400 / 1.2 / 0; the dash separators in Light 300 |
+| KPI figure (`.kpi-value`, product Overview) | 56 px | 44 px | Replica **300** / 1.05 / −.01em; a long figure shrinks to its tile |
+| Case figure (`.case-callout .case-figure-value`, Use cases) | 64 px | 40 px (36 at ≤ 360) | Replica **300** / 1.05 / 0, white on the dark plate |
 
 **Uppercase is now a micro-type device only** — 12–16 px at +.06em on tags,
 buttons and kickers. It never appears in display type.
+
+**The figure face: Replica Light, never Azurio, on the product pages** (round 20).
+softserveinc.com sets its KPI figures in 64 px Replica Light, black, each under an
+orange-75 dash (PROVENANCE §41.1), and a serif at figure size reads as decoration
+rather than as a number. So the product Overview's KPI band and the Use cases case
+study set every figure in Replica 300 under that dash, and the checker holds both.
+The home page's proof strip, case cards and About tiles, and the Jumpstart
+investment card, still set their figures in Azurio: one figure face across the site
+is open (START-HERE §9).
 
 `.product-title`'s clamp slope is fitted to the hero's **copy column**, not the
 viewport: `clamp(2rem, -0.55rem + 5.05vw, 4rem)`. At 1024 that column is 435 px,
@@ -112,11 +123,13 @@ three-line strings, and this site carries 5–8-line paragraphs.
 
 ```
 ground        #ffffff   card/band #edf0f2   well #e1e7eb   fact chip #bdcbd7
-dark band     #000000   panel on it #1a1a1a
+dark band     #000000   panel on it #1a1a1a (also the product pages' dark plate)
 ink           #000000 strong · #26292b body · #4c5156 secondary and labels
 lines         #bdcbd7 control · #e1e7eb hairline · #d1dae2 panel rule
 action        #1485c4 · hover #459fdd · pressed #0e5e8b · tint #c1dff4
 accent        #f46a4a · tint #ffcec0
+fact marker   #fe8d6b (orange 75): the 32 × 4 px dash over a KPI or case figure
+KPI band      linear-gradient(to top, #edf1f6, #fafaf8)
 secondary btn #d1dae2 · hover #e1e7eb · pressed #bdcbd7
 footer ink    #fafaf8 · footer glyphs #e0e0e0 (#ffffff on hover)
 ```
@@ -127,19 +140,49 @@ footer ink    #fafaf8 · footer glyphs #e0e0e0 (#ffffff on hover)
    tab and nav item, the selected filter, focus rings, the active step. Its tint
    `#c1dff4` is the selected surface and the only decorative tint (icon wells,
    medallions, badges), besides the home group tiles' surface fills (below).
+   Since round 20 it is also **the one coloured mark in a KPI chart** (below).
 2. **Orange is the accent line of a hero H1, once per page.** Its tint is the
    one fill it may make (`.chip--accent`). Never on a control, never as text
    below 24 px. A product name gets none (`.product-title .accent { color: inherit }`).
+   **Orange 75 `#fe8d6b` is a separate role, the fact marker** (round 20): the
+   32 × 4 px dash softserveinc.com sets over every figure, here over each KPI and
+   case figure on a product page. It is never text, never a control, and never
+   the H1's accent.
 3. **Facts are neutral.** Figures, status chips, fact chips, rules and dots are
-   black and the cool greys.
+   black and the cool greys, and since round 20 that means **no status colour on
+   a metric**: green and red are reserved for state, so no figure, chip or chart
+   is coloured by whether its number is good. In a KPI chart the one coloured mark
+   is `#1485c4` (the after bar, the band, the after dot, the chevron), with
+   `#459fdd` for a dumbbell's connector; the track is `#d1dae2`, the before marks
+   `#bdcbd7` and the tick ink.
+
+**Product pages, round 20** (Alex: *"all blocks are too greyish"*). The rule is
+softserveinc.com's own, as R1 measured it: **one grey step per viewport and one
+contrast plate per screen.**
+
+- **The grey step** is an `#edf0f2` plate on white, one per viewport: the problem
+  plate on the Overview, the industry plate's copy half on Use cases, and the
+  contact band on Contacts, whose white plate carries white fields with a
+  `#bdcbd7` hairline. Never a grey tile inside a grey card, and never a grey
+  input on a grey surface.
+- **The contrast plate** is the `#1a1a1a` plate with its own 12 px cut, one per
+  tab view: What changes on the Overview and the case study on Use cases (§5).
+  On it, the type is white, secondary text `#bdcbd7`, and rules white at 20%.
+- **The KPI band** takes softserveinc.com's KPI ground, the light gradient above,
+  full-bleed; its figures sit on it with no tile behind them.
+- **The contact portraits** sit on square blue-75 `#459fdd` and orange-75
+  `#fe8d6b` tiles, the first person blue and the second orange, as the brand
+  shoots its team on brand grounds; the home page's one person is on blue.
 
 **Surface fills, round 17** (Alex: the home group tiles *"colored / styled like
 Our offers tiles"* on softserveinc.com). The brand's own Offers tiles are flat
 fills of its 75 steps with a black line drawing, so the palette's lighter steps
 are a fourth use, with no role: **Lviv blue 75 `#459fdd`, Austin orange 75
 `#fe8d6b`, Lviv blue 50 `#c1dff4` and neutral 400 `#bdcbd7` fill the six home
-group tiles and nothing else**, in the order blue 75 · orange 75 · blue 50 ·
-neutral 400 · blue 75 · orange 75. That is the one four-fill order in which no
+group tiles**, in the order blue 75 · orange 75 · blue 50 ·
+neutral 400 · blue 75 · orange 75. Since round 20 two of them fill one more surface:
+blue 75 and orange 75 ground the contact portraits, and orange 75 is also the fact
+marker (above). That is the one four-fill order in which no
 two touching tiles share a fill in the 3 × 2, 2 × 3 or one-column grid. The 100
 steps keep their roles: `#1485c4` is what you act on, `#f46a4a` the H1's accent,
 and neither paints a tile. The ink on a fill is `#1a1a1a` (6.0:1 on blue 75, the
@@ -188,9 +231,20 @@ three screens white, the monotony he asked to break.
 | Page | The dark screens |
 |---|---|
 | `#/` | **`#bespoke-services`** (S4b, the AI factory, a full-bleed photograph under a scrim, round 18) and **`#about`** (S6, "who builds it") |
-| `#/products`, product pages, `#/sellers` | none — the photo heroes carry the weight |
+| `#/products`, `#/sellers` | none |
+| product pages | no dark screen: the photo hero carries the weight. **One dark plate per tab view** (round 20): *What changes* on the Overview and the case study on Use cases; Technology, Jumpstart and Contacts carry none |
 
-Everything else is `#ffffff`, with `#edf0f2` for cards and the pre-footer band.
+**A plate is not a band** (round 20, R1: softserveinc.com's AI page puts one dark card
+inside a white section). The product pages' `#1a1a1a` plate sits inside the wrap
+with its own 12 px cut, the reasoning this section applies to photographic panels
+below, so it spends none of a page's dark screens. One per tab view keeps two dark
+masses from ever meeting on one screen.
+
+Everything else is `#ffffff`, with `#edf0f2` for cards and the pre-footer band. **A
+page that ends on the contact band draws no pre-footer band** (round 20): the band is
+the page's last grey and runs straight into the black footer, because the two greys
+back to back read as one grey mass (`VISUAL-GRAMMAR.md` §8). The product Overview's
+KPI band is a light gradient, not a dark screen.
 **A photograph is not a dark band.** The home page's two photographic panels (S2, round
 11) and its case cards' photo bands (S5) sit on black and `#1a1a1a` grounds, but those
 grounds only show if a photograph fails to load; what the reader sees is a photograph
@@ -236,8 +290,8 @@ cuts an outline drawn outside the box. `prefers-reduced-motion` drops every scal
 - **The primary button's label is 4.05:1**, white on `#1485c4` at 16 px — AA-large
   passes, AA-normal wants 4.5. This is SoftServe's own token pairing and is kept
   for fidelity. The one-line fix, if Alex wants AA: `--action: #0e5e8b`. Small
-  white-on-blue type already takes that darker step (the skip link, the active
-  stepper number), and inline links inside panels take it too.
+  white-on-blue type already takes that darker step (the skip link), and inline
+  links inside panels take it too, the Contacts mailbox among them (round 20).
 - **The three `site/demo/*` walkthroughs are still dark-themed.** They are out of
   scope for this pass and have their own CSS and their own sessions. A near-black
   demo now opens from a white page. Next round's item.
@@ -259,10 +313,11 @@ cuts an outline drawn outside the box. `prefers-reduced-motion` drops every scal
   overlay loaded after `content.js`, `data-theme="light"`, a white `theme-color`,
   no webfont service, every re-casing still matching `content.js`, and (round 17) the group tiles: painted by their tone's fill in the pinned order, no border or grey step, one `#1a1a1a` ink, and each drawing one ink at 1.75 px with one spark.
 - **Copy:** `content.js` is shared and must not change. Strings stored in
-  capitals are re-cased by `data/content-case.js`, which patches 41 paths and warns
-  (rather than silently overwriting) if a value has moved. The problem/solution
-  titles land in `.eyebrow`, which uppercases them by design — their stored
-  values are sentence case and that is correct.
+  capitals are re-cased by `data/content-case.js`, which patches 20 paths and warns
+  (rather than silently overwriting) if a value has moved. The Overview's two
+  plate eyebrows (`sectionLabels.problemEyebrow`, `solutionEyebrow`) land in
+  `.eyebrow`, which uppercases them by design — their stored values are sentence
+  case and that is correct.
 - **Publish:** strip the nine skeleton lines from `index.html` into
   `.work/publish/index.html` (its `<html>` line is
   `<html lang="en" data-theme="light" data-brand="ss26">`), then the Artifact tool with

@@ -7,9 +7,9 @@ The rule that produced it: a reader who has seen one product page must be able t
 Five hard rules:
 
 1. **Every product fills every slot.** No product is allowed to render a shorter Overview than another. Where a product has no published number, the slot is filled with a **qualitative** instance of the same component — never a blank, never a missing section, never a sentence apologising for the absence.
-2. **A number never renders without the disclaimer beside it.** `metricsNote` renders as a footnote line directly under the metric row, in the same block; `jumpstart.investment.footnote` under the price card, in its block; and the case-study callout, which has no footnote row, carries its caveat in the last sentence of `story`. The home case card has had no footnote row since round 19 either: its figure's small line (`metric.label`) carries the baseline (*down from 3–5 days of keying by hand*), and on a Forecast card the two load-bearing facts, *simulated on the customer's own history*.
+2. **A number never renders without its honest frame, and never with an apology.** On the Overview's KPI band (round 20, Alex: no footnotes, no method notes) the frame is inside the tile: the kind chip (*Proven* or *Estimated*) and the figure's own shape, a range or a "from X", drawn on a chart whose every mark carries a printed label (§2.4). A price keeps its footnote, `jumpstart.investment.footnote`, under the price card in its block; and the case-study callout, which has no footnote row, carries its caveat in the last sentence of `story`. The home case card has had no footnote row since round 19 either: its figure's small line (`metric.label`) carries the baseline (*down from 3–5 days of keying by hand*), and on a Forecast card the two load-bearing facts, *simulated on the customer's own history*.
 3. **Icons are 1.5px line icons, teal, from the one registry in `assets/app.js`.** No emoji anywhere. No filled icons except the existing `play` and `dot`.
-4. **Peer figures share their baselines.** Wherever a value/label pair sits beside another — the case-study callout's figures where it carries two, the Jumpstart investment figures, the side-rail metric tiles — the row is one grid with two rows, so every value occupies the first and every caption the second. Laid out as independent cards, one wrapped value drops its caption half a line below its neighbour's, and two captions on different baselines is the geometry inconsistency this file exists to prevent. On mobile the pairs stack and the rule is moot.
+4. **Peer figures share their baselines.** Wherever a value/label pair sits beside another — the case-study callout's figures where it carries two, the Jumpstart investment figures, the KPI band's tiles — the row is one grid with two rows, so every value occupies the first and every caption the second. Laid out as independent cards, one wrapped value drops its caption half a line below its neighbour's, and two captions on different baselines is the geometry inconsistency this file exists to prevent. On mobile the pairs stack and the rule is moot.
 5. **No customer mark is rendered at all** (Alex, 2026-09-16). A logo is the one element of a case study that cannot be anonymized, so the **industry** stands where a mark used to: on the product page's callout as the medallion — a circle carrying the `industry-<key>` line icon, at the same optical weight — and on the home page's card as that industry's own photograph (round 11, §9 S5). The files under `assets/img/logos/` stay on disk, unreferenced; `check-grammar.js` fails the build if a path under them returns to `content.js`.
 
 ---
@@ -146,81 +146,77 @@ rail no longer shows.
 
 ---
 
-## 2. Overview tab — two columns, a fixed order in each
+## 2. Overview tab — one column: the problem, the numbers, the screens
 
-**Target: the MAIN column reads in ~1.5 desktop screens at 1440×900 without feeling cramped.** If a product exceeds that, prose moves into §2.7 — it does not stay on the page. (The site footer sits below the tab body and adds about a third of a screen of its own — 315 px at 1440 since round 14; the target is about the tab, not about the scroll height of the document. The Previous/Next pager was removed in round 3 — the tab bar and the Products grid are the navigation.)
+**Round 20** (Alex, 2026-09-29: *"all blocks are too greyish"*; How it works *"Can't fit the entire block to a single screen"*; *"More detail block - on Overview page - to be removed"*; the ROI block *"too wordy, and too boring"*). The tab is **one column at the wrap's width**, 1,248 px at 1440, with **no rail**, in the order of the argument:
 
-The tab is a **two-column layout on desktop**: a MAIN column at roughly two thirds, and a SIDE rail at roughly one third, on the right. The rail cell stretches to the height of MAIN and holds **one card, §2.4 Outcomes & ROI**, which scrolls with the page. **Nothing pins any more** — the card that used to be sticky was §2.5 At a glance, and it went with round 3, H. Below 1100 px the layout collapses to one column and the rail follows the main column.
+| Order | Block | Source | Section |
+|---|---|---|---|
+| 1 | **Problem → What changes**: two plates | `overview.problemSolution` | §2.1 |
+| 2 | **What changes in your numbers**: the KPI band | `overview.metrics` | §2.4 |
+| 3 | **How it works**: the step list beside one frame | `overview.steps` | §2.2 |
 
-| Column | Order |
-|---|---|
-| **MAIN** | §2.1 Problem ↔ Solution → §2.2 How it works (the stepper) → §2.7 More detail (one disclosure) |
-| **SIDE rail** | §2.4 Outcomes & ROI — and nothing else |
+- **The number is the reason to look at the screens**, so the band comes before How it works. The checker holds the order (`problemSolution()` → `outcomesBlock()` → `howItWorks()` in `overviewTab()`); the reverse is one line there, and open for Alex (PROVENANCE §41.11).
+- **Spacing.** The blocks sit 64 px apart (40 on a phone; `.tab-body--overview`). The band is full-bleed with 64 px of padding (40 on a phone); the plates and the frame keep the wrap.
+- **One grey step and one contrast plate per screen** (`SS26-THEME.md` §3, §5): the problem plate is the tab's one `#edf0f2` surface, the What changes plate its one dark plate, and the band carries its own light gradient. Nothing on the tab is grey on grey.
+- **The screen budget.** How it works fits one 1440 × 900 screen under the 50 px header: the H2 (58 px) + 24 + the 545 px frame is **627 px, within 830**. At 1280 × 800 the frame is 744 × 465 and the block **547 px, within 750**. The plates are about 264 px tall at 1440 and the band about 480.
+- **Nothing else renders here.** More detail is removed (§2.7). `scope`, `features` and each step's `features` stay in the data, unrendered, and `scope` moves to the Jumpstart tab next round (`SCHEMA.md`). The industry tabs and the case study are the Use cases tab's (§2a), because they answer a different question: *where does this apply, and has it worked?*
+- **Breakpoints.** From 768 to 1099 px the plates keep two columns (padding 32, headline 24 px), the band two columns (a third tile full width under a rule), and How it works puts the frame over the list. Below 768 px everything stacks, and How it works becomes four cards (§2.2).
+- The Previous/Next pager was removed in round 3: the tab bar and the Products grid are the navigation.
 
-**Round 10 moved two blocks off this tab.** The industry tabs and the case study are
-now the **Use cases** tab (§2a): they answer a different question from the Overview's
-— *where does this apply, and has it worked?* — and in the MAIN column they were
-pushing How it works, the tab's own argument, out of the first screen. The rail is
-unchanged. The one cost is a pointer across tabs:
-`large-document-extraction`'s `metricsNote` sends the reader to the Use cases tab for
-the figure the rail does not repeat (§2.4, last rule).
+### 2.1 Problem → What changes — two plates
 
-**The rail is never taller than MAIN.** That is the constraint that decides what goes in it: a rail that out-runs its column leaves dead gutter at the foot of the page, and a pinned card that is taller than the viewport hides its own bottom for the whole scroll. Nothing else is a top-level block. The old standalone key-features checklist, in-scope/out-of-scope pair and long-form feature list are all still in the data and all render **inside** §2.7 — the compactness target is met by moving prose, never by dropping a fact.
+`overview.problemSolution` → `{ problem: { headline, text }, solution: { headline, text } }`
 
-### 2.1 Problem → Solution — paired two-panel strip
-
-`overview.problemSolution` → `{ problem: { title, text, icon }, solution: { title, text, icon } }`
-
-Two panels of identical height side by side, an arrow glyph (`icon("arrow")`) between them. Each panel: icon, eyebrow (`title`, uppercase), 1–2 sentences (`text`). Panels stack vertically on mobile with the arrow rotated 90°.
-
-Icon convention today: `problem.icon = "alert"`, `solution.icon = "spark"` on all seven. It is data so it can diverge — but only for a reason.
-
-### 2.2 How it works — the workflow stepper (MAIN)
-
-`overview.steps[]` — **3–5 steps**, `{ n, title, text, image, features }`. Heading from `sectionLabels.howItWorks`.
-
-This block **replaces the flat key-features checklist**. The same bullets are still on the page; they now sit under the step of the workflow they belong to, so a reader learns the shape of the work rather than a list of nouns.
-
-| Field | Rule |
-|---|---|
-| `n` | 1-based, in order. The circle beside the title. |
-| `title` | The step, as a verb phrase. One line. |
-| `text` | ≤ 2 lines (≤ 30 words). What happens at this step. |
-| `image` | `assets/img/steps/<slug>-<n>.jpg` — a real product screenshot where one exists, otherwise a designed step illustration built to the same frame. Either way it renders in **one 16:10 frame with a thin border**, so the two kinds are visually interchangeable and a screenshot can replace an illustration later with no layout change. |
-| `features` | The exact `overview.features` strings that belong to this step. Rendered as check-icon bullets under the step text. |
-
-**The coverage invariant.** Across a product's steps, the union of `features` must equal `overview.features` exactly — every bullet in one step, no bullet in two. That is what makes it safe for the stepper to be the only surface those bullets have. `tools/check-grammar.js` asserts it in both directions.
-
-**The anatomy, since round 10: the frame is the block.** The screenshots are the best
-thing on the page (Alex), and the old two-column layout gave them the narrower half
-of an already narrow column — **404 × 253 at 1440, shorter than the 380 px step list
-beside them**. On a desktop (≥ 901 px) the block now reads top to bottom:
-
-```
-H2  How it works
-[1 Upload and classify][2 Extract against the rules][3 Score, cite, validate][4 Review and export]   ← one cell per step
-[ active step: description at body size, then its features ]
-[ frame 16:10, the full width of MAIN ]
-```
-
-**The order is head → description → picture** (round 10b, Alex: *"the description text
-is below the image and too far from heading, so context is lost; also that description
-doesn't look like description, more like a footnote."*). A description belongs between
-the control that selects it and the picture it explains, and it is set at body weight
-because it is the step's description, not a caption of the image.
+Round 20 (Alex: *"too much text, heading indistinguishable from text, not sexy - have no motivation to read"*). Two plates side by side at one height, the problem on the left and what changes on the right:
 
 | Part | Rule |
 |---|---|
-| The grid | `.stepper` is `grid-template-columns: repeat(var(--steps), minmax(0, 1fr))`, `column-gap: 0`, `row-gap: 1rem`; the renderer emits `style="--steps: N"` (3–5). `.stepper-list` and `.stepper-step` are `display: contents`, so the heads, the body and `.step-frames` are all children of that one grid. Explicit rows: heads in row 1, the body at `grid-column: 1 / -1` in row 2, the frame at `1 / -1` in row 3. |
-| Head cell | The number chip and the title, `align-items: flex-start`, `align-self: stretch` so every cell is as tall as the strip's tallest, and a **continuous 2 px rail** under the row (`box-shadow: inset 0 -2px 0 var(--border-subtle)`, `var(--action)` under the active one) — the site's own tab language. The title may wrap to two lines: dim at rest, `--text` active, `--action` on hover. |
-| Body | **One column at body weight**, a flex column with `gap: .75rem` and `padding: .25rem 0 0`: `.stepper-text` at `var(--fs-body)` in `--text`, 1.35 leading, `max-width: 44rem`, then the feature tick-list at `var(--fs-sm)` in `--text-body` with 1 rem glyphs. A step with **no** features renders **no `<ul>` at all**. It starts 16 px under the heads row at 1440. |
-| **The row is pinned** | Every body is placed in the **same** grid cell and a closed one keeps it — `.stepper-body[hidden] { display: flex !important; visibility: hidden; }` — so the row is as tall as the tallest step and **the picture never moves when the reader switches steps** (frame top 1538.8 px on every step at 1440). `min-height: 5.5rem` is the floor for a product whose steps are all short. `visibility: hidden` is what keeps the closed bodies out of the tab order and the accessibility tree, the job the `hidden` attribute did before; the `!important` beats the global `[hidden] { display: none !important }` and is scoped to this one component at this one breakpoint. **The cost is up to ~64 px of air** under a short description (the bodies run 94, 126 and 158 px on the four-step product), which is the price of a picture that holds still. |
-| Frame | `.step-frame` keeps its 16:10, its thin border and its `contain`-for-SVG / `cover`-for-JPG rule, now at `width: 100%` of the row with `align-self: start`, and `margin-top: .25rem` on top of the row gap — 1.25 rem between a description and the picture it describes. **Measured on the large-document-extraction Overview: 803 × 503 at 1440, 700 × 438 at 1280, 832 × 521 at 1024** — the rail collapses at ≤ 1100 px, so MAIN becomes the whole column and the frame is wider there than at 1280. |
-| Keyboard | The strip is horizontal on a desktop and a vertical accordion below 901 px, and one component may not answer to different keys at two widths, so the stepper's roving `tabindex` takes **both axes**: ←/→ **and** ↑/↓, plus Home and End. Enter/Space activate; each head carries `aria-expanded` over its own body. `roving()` takes an `axis` of `"horizontal"` / `"vertical"` / `"both"` — the industry tabs stay horizontal. |
-| ≤ 900 px | **Today's accordion, unchanged**, including its own type sizes: `.stepper` a single-column flex, `.stepper-list` a vertical hairline-ruled list, each body under its own head, the frame after the list, and no box-shadow rail. The archive theme never sees the desktop rules at all. |
+| Grid | `.ps-pair`: two equal columns, gap 24, the plates stretched to one height. One column below 768 px (gap 16). |
+| Plate | `.ps-plate`, a 12 px cut, padding 40 (32 from 768 to 1099 px, 24 on a phone). **The problem** sits on `#edf0f2` in ink: the tab's one grey step. **What changes** sits on the `#1a1a1a` plate in white: the tab's one dark plate. |
+| Eyebrow | 12 px uppercase at +.06em, read from `sectionLabels.problemEyebrow` and `solutionEyebrow`, the same on every product: `#4c5156` on grey, `#bdcbd7` on dark. |
+| Headline | the plate's heading (an `h2`), Replica 400 at 28 px (24 below 1100), ink or white: the claim itself, **at most 60 characters and two lines**, balanced so the two lines come out even (`text-wrap: balance`). |
+| Text | one paragraph, 18 px Light, **at most 30 words**: `#26292b` on grey, white at 82% on dark, wrapped to avoid a lone last word (`text-wrap: pretty`). |
 
-Step 1 is selected on load on both layouts, the other steps collapse to number and
-title, and the frame's image `alt` is the step title.
+**No icon and no arrow.** The pair reads left to right on its own, and the contrast between the two plates carries the before → after. The pair is about 264 px tall at 1440.
+
+**The copy** (Alex: *"preserve sharpness and focus around ROI, business value and clarity for the audience outside the specific industry"*). The problem headline names the role and what the situation costs them, in the nouns on their desk; the headline opposite says what changes in that person's work, and how much faster. Neither names a platform or an engine (round 19's rule: the checker fails `IMPLEMENTATION_TERMS` in both fields), and neither repeats the product's one-liner. The checker also holds the two budgets, and fails a plate's `title` or `icon` by name.
+
+### 2.2 How it works — the step list beside one frame
+
+`overview.steps[]` — **3–5 steps** (four on every product today), `{ n, title, text, shot: { full, zoom, region, anchor, alt }, features }`. Heading `sectionLabels.howItWorks`, an H2 at 48 px.
+
+Round 20 (Alex: *"Can't fit the entire block to a single screen, which is bad + step headings are poorly lined up + too many fonts in a single place; screenshots are too small cuts … ideally, screenshots be fullscreen"*). The steps are one vertical list, and the screen is one frame beside it:
+
+```
+H2  How it works
+1  Drop the document in             [ the frame, 872 × 545 at 1440:            ]
+   the open step's text, 16 px      [ the whole screen, the step's region      ]
+2  The rates come out as rows       [ ringed in blue, and the zoom of that     ]
+3  Doubts are flagged               [ region inset at a free corner, 401 px    ]
+4  Approve and export
+```
+
+| Part | Rule |
+|---|---|
+| Grid | `.hiw-body`: the list at 344 px and the frame, 32 px apart, from 1400 px up; 320 px and 24 below. The frame sets the block's height; the list is shorter. |
+| Step row | `ol.hiw-list`, one row per step, its head a `<button>` (`aria-expanded`; `aria-controls` names its text and its frame). The number and the title **on one line, both 20 px Replica 400**: the number `#1485c4` on the open step, `#4c5156` otherwise. Padding 16 / 0 / 16 / 20, a 1 px `#d1dae2` rule under every row. The open row carries a **2 px blue left rule** and shows its `text` under the title at **16 px Light** in `#4c5156`, wrapped to avoid a lone last word; a closed row is its title alone. **Two sizes, 20 and 16, and no tick-lists.** A `title` is at most 26 characters, so none wraps; a `text` at most 30 words. |
+| Frame | `.hiw-shot`, 16:10: **872 × 545 at 1440**, 744 × 465 at 1280. `shot.full`, the whole screen, in a 12 px cut with a 1 px `#bdcbd7` hairline. Its `alt` is `shot.alt`, what the screen shows. |
+| Region ring | `shot.region`, `[x, y, w, h]` in percent of the frame: the one thing the step is about, outlined 2 px `#1485c4` with a 4 px cut. |
+| Zoom inset | `shot.zoom`, the region at its capture scale, in the corner `shot.anchor` names (`tl`, `tr`, `bl` or `br`), **2.75% of the frame's width from its side and 4.4% of its height from its top or bottom** (24 px each at 1440), so the offset scales with the frame and an inset clears its ring at 1280 as at 1440 (the checker holds the four offsets). **The zoom image is 46% of the frame wide (401 px at 1440)**, or narrower where its own aspect would take it past half the frame's height, with a 2 px blue outline outside it and an 8 px cut. The anchor is the corner whose inset leaves the region clear: an inset never hides its own ring. |
+| Switching | A click on a row, or ←/→/↑/↓, Home and End: one step open at a time, its frame and inset crossfading in over 200 ms with no dip (instant under reduced motion). Step 1 is open on load. |
+| 768–1099 px | One column: the frame at the wrap's width, then the same list under it. |
+| Below 768 px | No frame. Four static cards, each the number and the title (20 px), the text (16 px), then **the zoom alone** at the column's width (about 343 px at 375), because the zoom is the part of the screen that reads at that width. |
+
+**The legibility rule.** The inset shows its region at the scale s = inset width ÷ region width in CSS px of the capture, and **s ≥ 0.92**, so the UI text in the inset reads at about its real size. At the 401 px inset that bounds a region at **436 × 296 CSS px** of the capture (401 ÷ 0.92, and 272 ÷ 0.92 for half the frame's height): an element bigger than that gives its most telling part (two KPI tiles, not five; the flagged row, not the table). The zoom file is 802 px wide, the inset's width at DPR 2. The capture recipe is `ASSETS.md` §1.
+
+**A frame is a real screen, never a crop or a skeleton** (Alex: *"they should not look like skeletons and should not be overloaded with details"*): the whole screen of the product's walkthrough, or of its HTML mock where it has none, on synthetic data, with the ring and the inset carrying the step.
+
+**A description sits between the control that selects it and the thing it explains** (round 10b, START-HERE §4): the open step's text sits under its own title, beside its frame, at body weight.
+
+**The feature-coverage invariant is retired** with the tick-lists: no surface prints `steps[].features`, so nothing keeps them in step with `overview.features`. Both lists stay in the data for the Jumpstart tab.
+
+The checker holds 3–5 steps numbered from 1, the title and text budgets, `shot.full` = `assets/img/steps/<slug>-<n>.jpg` and `shot.zoom` = `assets/img/steps/<slug>-<n>-zoom.jpg` (a missing file is a warning), a region of four numbers inside the frame, one of the four anchors and a non-empty `alt`, and fails the retired `image` by name. The legibility rule is checked at capture, not by the checker.
 
 ### 2.3 Industry use cases — **moved to the Use cases tab** (round 10)
 
@@ -228,28 +224,49 @@ The block is unchanged; only its home is. Its anatomy, its data contract and its
 rules are **§2a.1**. Nothing on the Overview renders `overview.industryCases[]` any
 more.
 
-### 2.4 Outcomes & ROI (SIDE rail)
+### 2.4 What changes in your numbers — the KPI band
 
-`overview.metrics[]` + `overview.metricsNote` + `overview.roi`, stacked as one compact block. Heading from `sectionLabels.outcomes`.
+`overview.metrics[]`, **two or three tiles** (two on every product today), under `sectionLabels.outcomes`, *What changes in your numbers*, an H2 at 48 px.
 
-Tile shape:
+Round 20 (Alex: the ROI block *"too wordy, and too boring"*; show the metric *"from X"* or *"the potential improvement range"*; *"not add footnotes and explanations of how you built metrics"*). The tile:
 
 ```js
-{ value: "~30 min" | null, label: "…", qualifier: "…", icon: "clock" }
+{ key, title, kind: "proven" | "forecast" | "estimated", owner,
+  figure: { prefix?, text },
+  visual: { form: "compression" | "range" | "dumbbell" | "baseline", unit, direction: "up" | "down",
+            scale: { min, max }, before: { value, label }, after?: { value, label }, range?: { lo, hi, label } },
+  line }
 ```
 
-| Field | Rule |
+| Part | Rule |
 |---|---|
-| `value` | The figure, short enough to set large (≤ 14 characters). **`null` means a qualitative tile** — the value slot renders the `icon` at display size instead of a number, and the tile keeps its full height so the stack stays even. |
-| `label` | What the figure measures. One line, ≤ 8 words. |
-| `qualifier` | The honest caveat or baseline: "Down from ~2 days", "Targeted reduction at proof of value". ≤ 12 words. |
-| `icon` | An icon-registry key (§4). Always present, on numeric and qualitative tiles alike. |
+| Band | `.kpi-band`, full-bleed on softserveinc.com's KPI ground, `linear-gradient(to top, #edf1f6, #fafaf8)`, with 64 px of padding (40 on a phone); the tiles keep the wrap. One column per tile, 48 px apart; each tile after the first stands behind a 1 px `#d1dae2` rule with 48 px of padding. The tiles share row tracks (subgrid), so every figure and every chart sits on one line across the band, whatever a title wraps to. From 768 to 1099 px: two columns, a third tile full width under a top rule. Below 768 px: one column, 1 px rules between the tiles. |
+| Dash | 32 × 4 px in orange 75, `#fe8d6b`, over every tile: the fact marker (`SS26-THEME.md` §3). |
+| Title row | `title` at 16 px Replica 400 (at most 40 characters), and at its right the **kind chip**: 12 px uppercase in ink on a 1 px `#bdcbd7` ring with a 4 px cut. Its word is `shared.metricKinds[kind].chip`, the case study's own three words (*Proven* · *Forecast* · *Estimated*), and its `tooltip` is the chip's title. |
+| Figure | `figure.prefix` (at most 6 characters, 20 px Light `#4c5156`: *from*), then `figure.text` at **56 px Replica Light**, 44 on a phone, never Azurio. At most 14 characters with three tiles and 20 with two. A long figure shrinks to its tile; a short one never does. |
+| Chart | one 40 px SVG drawn from the tile's own numbers, `aria-hidden`, in one of four forms (below). |
+| Labels | 14 px, real text in the DOM, each after a 10 px swatch in the shape of the mark it names (a bar, a tick, a dot), so no pairing rests on colour alone. **The chart carries nothing its labels do not print.** |
+| Line | `line`, 16 px Light `#26292b`, at most 14 words (two lines): what the figure counts, in the buyer's words. |
+| Owner | *Owner ·* (`sectionLabels.metricOwner`) and `owner`, 14 px `#4c5156`: the buyer-side role who tracks the number, at most 40 characters. |
 
-In the rail the tiles **stack vertically** rather than sitting in a row — up to four tiles in their compact form, then the `roi` callout in its compact single-column form, then `metricsNote` as the footnote line closing the block. All three stay in the same visual block: rule 2 of this file is that a number never renders away from its disclaimer, and a rail that scrolled the figure past its footnote would break it as surely as a missing footnote would.
+**One chart convention for all four forms** (round 20, after QA found three dumbbells labelled in the reverse order of their dots): **a value axis, low on the left**, so a metric that improves by falling improves leftward, and **every label sits under, or aligned to, the mark it names**, never in a fixed left or right slot. Each form is drawn on a 40 px canvas with its track at y 17:
 
-**The heading follows the data.** When at least one tile carries a `value`, the block is headed `sectionLabels.metrics` ("Metrics improved"). When every tile is qualitative it is headed `sectionLabels.metricsPlanned` ("What the proof of value measures") instead — a heading asserting improvement over four tiles with no number, closed by a footnote saying no metrics are published, contradicts itself two lines later.
+| Form | For | Drawn |
+|---|---|---|
+| `compression` | a before → after whose after is a fraction of the before (days → minutes) | two 10 px bars from the axis' origin: before in `#bdcbd7` at full width, after in `#1485c4` at its share of before and at least 8 px long. The labels (`before.label`, `after.label`) start at the bars' origin, 24 px apart, so *after* sits by the short blue bar |
+| `range` | a modeled band (*+4 to +10%*) | a 6 px `#d1dae2` track for the scale, a 10 px `#1485c4` band from `range.lo` to `range.hi`, a 2 × 20 px ink tick at today (`before.value`). **A range that improves downward is mirrored** (x = (max − v) ÷ (max − min)): today's tick at the right end and the band to its left. Each label is set under its own mark, *today* (`sectionLabels.metricToday`) under the tick and `range.label` under the band, centred on it unless that would run past an end |
+| `dumbbell` | a modeled before → after rate (*3.0 → 2.4%*) | the track, a 4 px `#459fdd` connector, a 14 px `#bdcbd7` dot at before and a `#1485c4` dot at after, both on the value axis, so a falling rate's after dot sits left of its before. **The labels print in the order of their dots** |
+| `baseline` | a sourced *from X* with no promised end | the track filled `#bdcbd7` up to X, a tick at X, and a 10 px blue chevron beside it pointing the way the number improves (`direction`). **The scale runs past X** (1.5 × X where X had been the scale's end), so the fill stops short and the chevron has room; the checker fails a baseline drawn as a full bar. One label, `before.label`; a screen reader also hears *improves toward* (`sectionLabels.metricToward`), the scale's end and the `unit` |
 
-**A rail tile never repeats a case-study figure.** The case study owns the two numbers it sets large; the rail holds outcomes and ROI. Where a product's proof produced figures that the story already carries, the rail keeps the qualitative tiles and `metricsNote` points at the story — **which since round 10 means pointing at the Use cases tab**, by name (*"…in the case study, on the Use cases tab."*), because a note saying "on this page" stopped being true when the callout moved. The reader still meets each number once, and the two named products are built the same way.
+**A figure is never a bare unit word** (QA, round 20: *Hours* or *Minutes* is neither a *from X* nor a range). A Proven compression prints its measured after (*5–15 min*, *~30 min*); an Estimated one prints its baseline, `prefix` *from* and the before in words (*from weeks*, *from a quarter*), and its chart shows where it goes; a range prints its band, a dumbbell its before → after, and a baseline its *from X*.
+
+**The honesty lives in the framing, never in a note** (Alex: metrics *"should not lie but should [not] apologize and disclaim their value"*; *"No justification for reviewer notes pls"*). A figure is a measured before → after, a range or a *from X* baseline, and its chip says which kind: **Proven** is measured end to end in a completed proof of value on the customer's own data; **Forecast** is modeled on the customer's own history; **Estimated** is set against published industry rates or the way the work is done today. **No footnote, no method note, no ROI paragraph and no pointer to another tab.** Where each figure comes from is recorded in `PROVENANCE.md` §41.4, never on the page: the checker fails a `sources` key in `content.js`, which ships in view-source. No status colour decorates a metric; blue is the one coloured mark in a chart.
+
+**A metric is a business metric** (START-HERE §4): the money, time, volume, risk or quality a named buyer-side owner already tracks and the product moves directly. Never an accept rate, a coverage figure, a calibration, a delivery duration or a feature. Two tiles on one band never share a claim shape.
+
+**The band may carry its product's case-study figure.** Large docs prints *5–15 min* on its Proven tile and in its case study: the case study is on the Use cases tab (§2a.2), so each tab states the number once. The rail's rule that a tile never repeats a case figure left with the rail.
+
+The checker holds two or three tiles; a unique `key`; the title, owner, line, figure and prefix budgets; one of the three kinds and the four forms; a unit, a direction and a numeric scale; every value on its scale and every mark with a printed label; `after` only on the compression and dumbbell forms and `range` only on the range form. It fails the retired rail-tile keys (`value`, `label`, `qualifier`, `icon`) and `sources` by name.
 
 ### 2.5 At a glance — **removed** (round 3, H)
 
@@ -267,16 +284,9 @@ The home page renders **one compact card per case study** — a 16:9 photo band 
 
 **Nothing else repeats that grid.** The Services page once carried the measurement method beside it rather than the same four cards (a repeat had made the evidence feel padded rather than deep); that page left the site in round 18, and the cards are the evidence's one home.
 
-### 2.7 More detail — one collapsible disclosure (MAIN)
+### 2.7 More detail — **removed** (round 20)
 
-Collapsed by default, one control at the end of the MAIN column. Inside, in order:
-
-1. `overview.moreDetail[]` — `[{ title, body }]`: the today/tomorrow pairs, the pattern definitions, the pull quotes, the per-persona "where it applies" paragraphs, the scope boundaries, the roadmap notes, the evaluation disclaimer.
-2. `overview.scope` → in / out, the two compact lists, under `sectionLabels.scope`.
-3. `overview.featuresDetail[]` — the long-form feature list, under `sectionLabels.moreDetailFeatures`.
-4. `overview.featuresNote?` — the asterisked caveat, where the product carries one. Only `workforce-optimization` does.
-
-Nothing that reads as a wall of text sits above the fold. Equally, **nothing is dropped**: every one of those five is a shipped fact that used to have a top-level block, and the disclosure is where it went.
+Alex: *"More detail block - on Overview page - to be removed."* The disclosure is gone, and `moreDetail`, `featuresDetail` and `featuresNote` with it (the checker fails each by name); `scope` and `features` stay in the data, unrendered, for the Jumpstart tab next round.
 
 ---
 
@@ -288,11 +298,14 @@ Two blocks, in this order and nothing else:
 | Order | Component | Source |
 |---|---|---|
 | 1 | **The industry tabs** (§2a.1) | `overview.industryCases[]` + `overview.industriesNote` |
-| 2 | **The case study**, in its wide variant (§2a.2) | `overview.caseStudy` — `null` on four of the seven |
+| 2 | **The case study** (§2a.2) | `overview.caseStudy` — `null` on five of the nine |
 
-- **One column at the full content width, and no rail** (`tab-body`, not
-  `tab-body--compact`): 1,248 px at 1440 against the Overview MAIN column's 803 px.
-  That extra width is what the wide case callout is for.
+- **One column at the full content width, and no rail** (`tab-body`): 1,248 px at
+  1440, the Overview's width too since round 20.
+- **One grey step and one dark plate** (round 20, Alex: *"all blocks are too
+  greyish"*): the industry plate's copy half is the tab's one `#edf0f2` surface and the
+  case study its one `#1a1a1a` plate (`SS26-THEME.md` §3, §5). Round 20 moved only the
+  look; the copy and the data are unchanged.
 - **Where `caseStudy` is `null` the tab is the industries block alone** — no empty
   state, no placeholder, no line saying a case study is coming. The same rule as
   everywhere else on the site (rule 1, and `SCHEMA.md` rule 2).
@@ -302,49 +315,58 @@ Two blocks, in this order and nothing else:
   block. `sectionLabels.industryCases` (*By industry*) survives only as the tablist's
   accessible name. The checker fails that label if it contains *use case*, and fails
   `industryCases()` if it prints a heading again.
-- Both blocks moved off the Overview because they answer a different question from it
-  and were pushing How it works out of the first screen (§2).
+- Both blocks moved off the Overview in round 10 because they answer a different
+  question from it and were pushing How it works out of the first screen (§2).
+- **Every rule of this tab's CSS is `.ind-*` or inside `.case-callout`**, in one
+  marked block (`===== Round 20 · Use cases =====`), so the home page's case cards
+  keep their own look; the checker holds it.
 
 ### 2a.1 The industry tabs
 
 `overview.industryCases[]` — **3–6 cases**, `{ industry, label, image, problem, solution }`. No heading (round 13); `sectionLabels.industryCases` is the tablist's `aria-label`.
 
-A row of tabs, each an industry icon (§5) plus its label. The selected tab shows: a treated industry photograph (`assets/img/industries/<key>.jpg`), the industry name, then **The problem** and **The solution** — 2–3 sentences each, headed from `sectionLabels.caseProblem` / `caseSolution`.
+| Part | Rule |
+|---|---|
+| Tabs | One row of **text tabs** over one 1 px `#d1dae2` hairline: each the industry's 16 px line icon (§5) and its label in 16 px Replica 400, `#4c5156`, ink on hover. **The selected tab is ink on a 2 px `#1485c4` underline**; no tab carries a fill or a frame (the checker fails both). A row too long for its width scrolls sideways, as the tab bar above it does, so an underline never sits on a wrapped line; it fades at its end only while it overflows (`is-scrolling`, measured without the fade's own padding). |
+| Panel | **One split plate**, softserveinc.com's *Client Voice*: an 8 px cut, the grid 55 / 45. **The copy half first**, on `#edf0f2`, padding 40 (32 at ≤ 900 px, 24 at ≤ 540): *The problem* and *The solution*, each a 20 px Replica 400 heading (`sectionLabels.caseProblem` / `caseSolution`, never an eyebrow) over 2–3 sentences of 18 px Light text. **Then the photograph**, `assets/img/industries/<key>.jpg`, edge to edge (`object-fit: cover`, at least 360 px tall), filling its half at whatever height the copy takes and never setting it. The plate does not print the industry's name: the selected tab says it one line above. |
+| Height | **One height on every tab.** The panels share one grid cell; an unselected panel keeps its `hidden` attribute but also its box (`visibility: hidden`, which keeps it out of the tab order and the accessibility tree), so the plate is as tall as its tallest industry and the case study below never moves when the reader changes tab (QA, round 20; the checker holds it). |
+| Below 901 px | The plate is one column, the photograph on top at 16:9. |
+| Note | `industriesNote`, 14 px `#4c5156`, under the plate. The copy and the note wrap to avoid a lone last word (`text-wrap: pretty`). |
 
 - The images are keyed by **industry, not product**, so one file serves every product that uses that tab.
-- First tab open by default. Tabs are a proper `role="tablist"` with roving `tabindex`: ←/→, Home and End move and select, Enter/Space activate, and each panel is `aria-labelledby` its tab and hidden with the `hidden` attribute.
+- First tab open by default. Tabs are a proper `role="tablist"` with roving `tabindex`: ←/→, Home and End move and select, Enter/Space activate, and each panel is `aria-labelledby` its tab and hidden with the `hidden` attribute. The plate's focus ring is drawn inside it, because its cut clips anything outside.
 - The two Lakehouse products lead with the `cross-industry` tab, because "the same two pains in every industry, regardless of stack" is their honest answer; the vertical tabs beside it are illustrations of it, not a claim of vertical focus.
 - The failure mode to watch: a `problem`/`solution` pair that would read identically under any other tab. If it would, it is not an industry case.
 
-This block **is** the product page's industry telling. The old `overview.industries[]` chip row is gone from the data: every key it held was already a tab here, so the disclosure was saying the same verticals a second time. `industriesNote` survives and renders as the footnote line closing this block — one telling per vertical, per product. A `moreDetail` entry that repeats a vertical already covered by a tab is the same defect and is removed on sight.
+This block **is** the product page's industry telling. The old `overview.industries[]` chip row is gone from the data: every key it held was already a tab here. `industriesNote` survives and renders as the line closing this block — one telling per vertical, per product.
 
-### 2a.2 The case study — a dark callout, wide
+### 2a.2 The case study — the tab's one dark plate
 
-`overview.caseStudy`, under the industry tabs, keeping the **3px teal left rule** the success-story block had. **`null` on four of the seven products, and then nothing renders** — there is no empty state. A case renders only where the engagement has actually started: an engagement still pre-contract gets no card, because the softest true reading of a status chip is still a claim a customer's own account team can contradict in the room.
+`overview.caseStudy`, under the industry tabs. **`null` on five of the nine products, and then nothing renders** — there is no empty state. A case renders only where the engagement has actually started: an engagement still pre-contract gets no card, because the softest true reading of a status chip is still a claim a customer's own account team can contradict in the room.
 
 **No customer is named and no logo is rendered.** A logo is the one element of a case study that cannot be anonymized, so the round-4 callout is built around what can: the industry.
 
-The block is a **surface-level dark panel with a 3px teal left rule, and that rule is its only decoration**. Since round 10 its children sit in **two containers** — `.case-main`, the narrative, and `.case-side`, the evidence — and `.case-callout--wide` splits them:
+**The block is the `#1a1a1a` plate with a 12 px cut** (round 20; a grey callout before it), padding 48, in white type. Its children sit in **two containers** — `.case-main`, the narrative, and `.case-side`, the evidence:
 
 | Width | Layout |
 |---|---|
-| ≥ 901 px | `.case-body` is `minmax(0, 1.4fr) minmax(0, 1fr)` with a `clamp(1.5rem, 2.4vw, 2rem)` column gap; `.case-side` is top-aligned behind a 1 px `--border-subtle` **left rule** with the same clamp as its padding. Inside that ~480 px column `.case-figures` and `.case-scope` are each **one column**: two 40 px figures side by side, or a three-up scope grid, are unreadable there. |
-| ≤ 900 px | One column — main, then side — and the rule becomes a **top rule**. On a phone the story is therefore read before the figures. |
+| ≥ 901 px | `.case-body` is two equal columns; `.case-side` stands behind a 1 px **left rule** in white at 20%, 48 px from each side. Inside it the figures and the scope facts are each **one column**: the column is too narrow for two 64 px figures side by side. |
+| ≤ 900 px | One column — main, then side — and the rule becomes a **top rule**; padding 32 (24 at ≤ 540). On a phone the story is therefore read before the figures. |
 
 **Narrative left, evidence right**, and the chip stays **directly above the figures it qualifies** — that pairing is why the chip moved into the side column rather than staying above the whole body.
 
 `.case-main`, in order:
 
-1. **The `Case study` eyebrow**, then the **industry medallion** — a circle carrying the `industry-<key>` line icon, sitting where the logo used to, at the same optical weight. There is **no header photograph**: the industry tabs directly above render the same `assets/img/industries/<key>.jpg`, so a band here showed the same picture twice within one viewport at two crops and read as a template filling itself in. Beside the medallion, the `descriptor` as the title (*"A global home-appliance manufacturer"*) and the `area` on a second line (*"Field-service operations across three countries"*). Below 768px the medallion top-aligns, so a descriptor that wraps to three lines keeps the icon-then-title reading.
-2. **The story** — two to three sentences: what was done, on what data, with which stack. The last sentence carries the caveat that qualifies the figures; the panel has no footnote row, so that is how rule 2 of this file is satisfied here. **The caveat is written in the chip's plain words** — *measured*, *forecast from simulations against the customer's own historical baseline*, *an estimate set against <what it is compared with>* — and never as a negation (*not results*, *no results yet*): the chip has said it, positively, in the column beside it (§18.9). The modeled case is the one where the wording is constrained rather than free: `PROVENANCE.md` §4 makes the simulations-and-historical-baseline pair load-bearing.
-3. **The NDA line** — *"Customer under NDA · reference call available on request"* on a measured or modeled case; on one in preparation it says results follow at the end of the proof of value instead, because offering a reference call about an engagement with no results yet is a promise nobody can keep.
-4. **`downloadLabel`** as the one link out, rendered **only** when `SITE_CONFIG.products[slug].successStoryUrl` is non-empty. No URL, no control.
+1. **The `Case study` eyebrow** (`#bdcbd7`), then the **industry medallion** — the `industry-<key>` line icon in a 48 px square with a 4 px cut, drawn as a white 1 px ring, where the logo used to sit. There is **no header photograph**: the industry tabs directly above render the same `assets/img/industries/<key>.jpg`, so a band here showed the same picture twice within one viewport at two crops and read as a template filling itself in. Beside the medallion, the `descriptor` as the title, 28 px Replica 400 in white (24 at ≤ 540), wrapped greedily so *home-appliance* never splits at its hyphen (*"A global home-appliance manufacturer"*), and the `area` on a second line at 16 px `#bdcbd7` (*"Field-service operations across three countries"*).
+2. **The story**, 16 px Light in white at 85% — two to three sentences: what was done, on what data, with which stack. The last sentence carries the caveat that qualifies the figures; the panel has no footnote row, so that is how rule 2 of this file is satisfied here. **The caveat is written in the chip's plain words** — *measured*, *forecast from simulations against the customer's own historical baseline*, *an estimate set against <what it is compared with>* — and never as a negation (*not results*, *no results yet*): the chip has said it, positively, in the column beside it (§18.9). The modeled case is the one where the wording is constrained rather than free: `PROVENANCE.md` §4 makes the simulations-and-historical-baseline pair load-bearing.
+3. **The NDA line**, 14 px `#bdcbd7` — *"Customer under NDA · reference call available on request"* on a measured or modeled case; on one in preparation it says results follow at the end of the proof of value instead, because offering a reference call about an engagement with no results yet is a promise nobody can keep.
+4. **`downloadLabel`** as the one link out, a white arrow link, rendered **only** when `SITE_CONFIG.products[slug].successStoryUrl` is non-empty. No URL, no control.
 
 `.case-side`, in order:
 
-5. **Status chip** — **`Proven`**, **`Forecast`** or **`Estimated`**, one plain word, read from `shared.caseStudyStatus` by the `status` key (its tooltip carries the long form). It is the element that tells a reader, at a glance, what the numbers below are, and **it is the only place on the card the status word appears** (§18.9). It used to read *"Measured in the proof of value"* / *"Modeled in the proof of value"* / *"Proof of value in preparation"*, with the same word repeated in an eyebrow over the figure — the status said twice, in a sentence about the sales stage, which made a result read as a disclaimer. **The chip and the caveat sentence in the story must still agree** — a card that says *Proven* at the top and *forecast from simulations* four lines down retracts its own headline, and it is the first thing a sceptical customer pulls on.
-6. **One or two big metrics, with no eyebrow over them** — the chip above has already said what they are, and the `.case-metrics` block carries the breathing room the eyebrow used to (`margin-top: .75rem`; on the home card, `.case-card-metric { margin-top: .25rem }`). Two is the default, and a third would make the panel a metric row in its own right, competing with the Overview rail's tiles (§2.4); **one** is correct where only one real outcome exists, and the row then renders as a single column. A case with no published figure sets a **qualitative outcome statement** — a turnaround claim like *Same day* or a coverage claim like *Every variance* — never an invented number, and never a restatement of the mechanic: *"One signal"* and *"Evidence-backed"* were the product's own description set at 40px in a numbers slot, which is what a slot filled because it was there looks like.
-7. **The scope row** — exactly three compact facts (`scope[]`), label above value: duration, data footprint, constraint count, the human gate. Each must be a fact the rest of the card does not already carry — a slot spent restating the `area` line is a slot wasted. External-safe only: no contract value, no contract duration, no headcount, no € figure.
+5. **Status chip**, a white 1 px ring with its dot (full on Proven, half on Forecast, hollow on Estimated) — **`Proven`**, **`Forecast`** or **`Estimated`**, one plain word, read from `shared.caseStudyStatus` by the `status` key (its tooltip carries the long form). It is the element that tells a reader, at a glance, what the numbers below are, and **it is the only place on the card the status word appears** (§18.9). It used to read *"Measured in the proof of value"* / *"Modeled in the proof of value"* / *"Proof of value in preparation"*, with the same word repeated in an eyebrow over the figure — the status said twice, in a sentence about the sales stage, which made a result read as a disclaimer. **The chip and the caveat sentence in the story must still agree** — a card that says *Proven* at the top and *forecast from simulations* four lines down retracts its own headline, and it is the first thing a sceptical customer pulls on.
+6. **One or two big metrics, with no eyebrow over them** — the chip above has already said what they are. **Each figure sits under its own orange-75 dash** (32 × 4 px, `#fe8d6b`) and is set in **Replica Light, white, 64 px at 1440** (it scales down to 40, and 36 at ≤ 360 px), **never Azurio** (round 20; the checker holds both), with its label under it at 16 px Light, white at 85%. Two figures stack, 32 px apart. Two is the default, and a third would make the panel a metric row in its own right, competing with the Overview's KPI band (§2.4); **one** is correct where only one real outcome exists. A case with no published figure sets a **qualitative outcome statement** — a turnaround claim like *Same day* or a coverage claim like *Every variance* — never an invented number, and never a restatement of the mechanic: *"One signal"* and *"Evidence-backed"* were the product's own description set at 40px in a numbers slot, which is what a slot filled because it was there looks like.
+7. **The scope row** — exactly three compact facts (`scope[]`) in one column under a white 20% rule, label above value (the label 12 px uppercase `#bdcbd7`, the value 16 px white): duration, data footprint, constraint count, the human gate. Each must be a fact the rest of the card does not already carry — a slot spent restating the `area` line is a slot wasted. External-safe only: no contract value, no contract duration, no headcount, no € figure.
 
 ## 3. Technology tab — exactly two blocks
 
@@ -561,20 +583,17 @@ Every product object must satisfy all of the following. `tools/check-grammar.js`
 | Slot | Requirement |
 |---|---|
 | `hero.image` | `{ file, alt, focal }`, all non-empty |
-| `overview.problemSolution.problem` | `{ title, text, icon }`, all non-empty |
-| `overview.problemSolution.solution` | `{ title, text, icon }`, all non-empty |
-| `overview.metrics` | 1–4 tiles; each has `label`, `qualifier`, `icon`; `value` is a non-empty string **or** `null`. Four is the shape the rail is designed at; fewer is legitimate when a figure has been withdrawn (see `PROVENANCE.md` §14.1) and never a reason to keep an uncleared number on the page |
-| `overview.metricsNote` | non-empty string |
-| `overview.roi` | `{ icon, text }`, both non-empty |
-| `overview.features` | 6–8 strings, each ≤ 12 words |
-| `overview.steps` | 3–5 `{ n, title, text, image, features }`; `n === index + 1`; `text` ≤ 30 words; `image` is `assets/img/steps/<slug>-<n>.<ext>`; the union of `features` equals `overview.features`, no bullet twice, none missing |
+| `overview.problemSolution.problem` / `.solution` | `{ headline ≤ 60 chars, text ≤ 30 words }`; `title` and `icon` are retired and fail by name (round 20) |
+| `overview.metrics` | 2–3 tiles (§2.4, round 20); each `{ key, title ≤ 40, kind: proven | forecast | estimated, owner, figure { prefix?, text }, visual { form, direction, scale, before, after? , range? }, line ≤ 14 words }`; `figure.text` ≤ 14 chars on a three-tile band, ≤ 20 on two; a baseline scale runs past today's value; **no `sources`** (provenance lives in `PROVENANCE.md` §41) |
+| `overview.metricsNote`, `overview.roi` | **absent** — retired in round 20 (Alex: no footnotes, no method notes); the checker fails either if it returns |
+| `overview.features` | 6–8 strings, each ≤ 12 words; kept in the data, not rendered since round 20 |
+| `overview.steps` | 3–5 `{ n, title ≤ 26 chars, text ≤ 30 words, shot { full, zoom, region, anchor, alt }, features }`; `n === index + 1`; `shot.full` is `assets/img/steps/<slug>-<n>.jpg` and `shot.zoom` `…-<n>-zoom.jpg`, both present; `region` four percentages inside the frame; `anchor` ∈ `tl` `tr` `bl` `br`; `image` is retired and fails by name |
 | `overview.industryCases` | 3–6 `{ industry, label, image, problem, solution }`; `industry` in the set of 16 and unique; `label` matches `shared.industryLabels[industry]`; `image` is `assets/img/industries/<key>.<ext>`; `problem` and `solution` are 2–3 sentences each |
 | `overview.sideFacts` | **absent** — the At-a-glance card was removed; the checker fails if it returns |
-| `overview.featuresDetail` | ≥ 6 `{ title, body }` |
+| `overview.featuresDetail`, `overview.featuresNote`, `overview.moreDetail` | **absent** — the More detail block was removed in round 20; the checker fails each if it returns |
 | `overview.industries` | **absent** — superseded by `industryCases` |
 | `overview.industriesNote` | non-empty string |
-| `overview.scope.in` / `.out` | ≥ 4 items each |
-| `overview.moreDetail` | ≥ 3 `{ title, body }` |
+| `overview.scope.in` / `.out` | ≥ 4 items each; kept in the data, not rendered since round 20 (it moves to the Jumpstart tab) |
 | `overview.caseStudy` | present — `null`, or `{ descriptor, area, industry, status, metrics ×1–2, scope ×3, story, ndaLine, downloadLabel }` with a caveat clause inside `story`; no `customer`, no `logo`, no `image`, and **no `metricsEyebrow`** — retired in §18.9, the status word is the chip's alone, and the key is a build failure if it returns |
 | `products[].statusNote` | present only on `case-evidence-collection` and `plan-vs-actual-investigation`, one sentence; no product carries `availability`, `availabilityChip`, `availabilityTooltip`, or an availability string in `tags` |
 | `technology.narrative` | ≤ 3 sentences |
@@ -617,16 +636,21 @@ also `shared.people[product.contactPerson]` → `{ name, title, photo, linkedin?
 
 The tab formerly labelled **Request a demo** is now **Contacts**, at `#/products/<slug>/contacts`, and it is the **last** tab. Two retired segments redirect to it in place — `…/demo`, and since round 10 `…/sellers` (`legacyIds: ["demo", "sellers"]`) — and every contact control on a product page points at this tab rather than at a form anchor. The header button and the home-page CTAs open the home page's own contact at `#/#request-a-demo`, which since round 18 is this same switch (below).
 
-**The tab is one row of two columns** — `UI.contactSwitch` since round 18, which wraps `UI.contactSplit` and renders the same row on the home page's last screen — collapsing to a single column below 1100 px — the card, then the switch and its open pane. The two columns **start level and each end where its own content ends**:
+**One component on both surfaces, and it brings its own ground** (round 20, Alex: *"all blocks are too greyish"*). `UI.contactSwitch` (round 18) wraps `UI.contactSplit` in a **full-bleed `#edf0f2` band holding one white plate**, as softserveinc.com sets its contact form: the band with 64 px of padding (40 at ≤ 900 px, 24 at ≤ 540), the plate with a 12 px cut and 48 px of padding (32, then 24). It renders a product's Contacts tab and the home page's last screen alike, so neither page paints a ground of its own. Every rule is scoped to the component, in one marked block (`===== Round 20 · Contacts =====`), so `#/sellers` keeps its own form; the checker holds it.
 
-1. **LEFT — the contact panel**, a bounded surface (not a bare row of text): circular `photo` at the top, then `name`, `title`, the `email` as a **mailto link** — an underlined anchor at body size with the mail glyph, never a filled button (§9, the address rule) — and the one-line `blurb`. `title` renders only when non-empty; an empty one leaves name + email, never a placeholder. `linkedin` renders only when the key exists. **On this tab the card takes no heading**: `cardHeading` is omitted, because the tab is already called Contacts and the switch opposite is the row's heading — which is also what levels the two columns (card top and switch top both at 818.2 px at 1440). The option stays on `contactSplit`, but no surface passes it since round 18: Home S7 renders this same headless card under its own screen head. **The card is not stretched to the form's height** (`align-items: start` on `.contact-split`, `flex: 0 0 auto` on `.contact-card--panel`): stretching left a person's name floating above a field of empty inset, and a card is not a container to fill.
-   **Round 13 (Alex, 2026-09-23): on a product page the card names two people**: the partnership contact (`shared.contact`), then the product's own lead (`shared.people`, picked by `contactPerson`). The card switches to its team form, `.contact-card--team`: a `ul.contact-people` with one `li.contact-person` per person, each a **row** with a 72 px circular photo (`4.5rem`) beside the name and title, 1 rem apart. Under the list come the one `email` link and the one `blurb`, printed once for both people, because the people are several and the mailbox is one. Rows rather than two stacked portrait blocks, so the pair reads as one team and the address under them is plainly shared rather than the second person's. A person's `linkedin`, when one exists, renders inside their own row. At 1440 the card and the switch still start level (both at 87 px); at 375 the rows keep photo beside text, and the title wraps under the name. Home S7 passes no `people`, so it keeps the one-person card: Karsten alone.
+**Inside the plate, one row of two columns** (`.contact-split`: the card at 352 px, then the switch and its open pane, 48 px apart). The two **start level and each end where its own content ends**. **From 1100 px down the plate stacks**, card over form, the form under a hairline, and the people sit side by side while two fit: at 1024 a 352 px card left the form 336 px and clipped the product select.
+
+1. **LEFT — the card.** It has no surface of its own: the plate is the surface. The people are **rows** (`ul.contact-people`, one `li.contact-person` each): an **80 px round portrait on a 96 px square brand-fill tile with a 4 px cut** — Lviv blue 75 `#459fdd` for the first person, Austin orange 75 `#fe8d6b` for the second, as softserveinc.com shoots its team on brand grounds (80 and 64 px at ≤ 540) — beside the `name` (20 px Replica 400) and the `title` (16 px Light `#4c5156`). A person's `linkedin`, when one exists, renders in their own row. Under the rows, once for everyone, come the `email` as a **mailto link** — blue 125 `#0e5e8b` (7:1 on white, where `#1485c4` is 4.05:1) with the mail glyph, 18 px, over a thin underline, both turning Lviv blue `#1485c4` on hover: the kit pane's own link style (`.inline-link`), so the plate carries one link style; **never a filled button** (§9, the address rule) — and the one-line `blurb` at 16 px Light. The monogram is the portrait's own ground, so a missing photograph leaves initials, not a broken frame. `title` renders only when non-empty; an empty one leaves the name alone, never a placeholder. **The card takes no heading**: the tab is already called Contacts, and the switch opposite is the row's heading. **The card is not stretched to the form's height**: a card is not a container to fill.
+   **Round 13 (Alex, 2026-09-23): on a product page the card names two people**: the partnership contact (`shared.contact`), then the product's own lead (`shared.people`, picked by `contactPerson`). Rows rather than two stacked portrait blocks, so the pair reads as one team and the one address under them is plainly shared rather than the second person's: the people are several, the mailbox is one. Home S7 passes no `people`, so it names Karsten alone, on one blue tile.
 2. **RIGHT — a two-tab switch, and never two open forms** (round 10b, Alex: *"Get the sales kit block should be visible without scroll down + having two active input forms on one screen is a bad practice. Maybe user can switch between talk to us and Get the sales kit (for sellers)."*). The column is `.contact-tabs`, carrying `id="talk"` and a `scroll-margin-top` of `--nav-h + 5rem`:
-   - **The switch** is the theme's own segmented control (`.segmented` / `.segment`) as a `role="tablist"`, capped at `max-width: 30rem` so two uppercase labels stay a switch rather than a band across the column. Two tabs: **Talk to us**, open by default, reading `site.primaryCta.label`, and **Get the sales kit**, reading `salesKit.tab.title`. Each segment is a `role="tab"` with `aria-selected` and `aria-controls`; each pane a `role="tabpanel"` whose inactive state is the `hidden` attribute; ←/→, Home and End move between the two segments (`UI.mountContactSwitch`). `.segment[aria-selected="true"]` paints exactly like `[aria-pressed="true"]` — one appearance for a control that is a toggle in one place and a tablist in another.
-   - **The Talk pane** is `forms.demo.sub` then the demo form, its submit reading `site.primaryCta.label`, so the hero, the header and this form are one ask (§1). **The kit pane** (`id="kit"`, §11) is the *For sellers* eyebrow, `salesKit.tab.body` with the product name, and the kit form fixed to the product. **Neither pane carries a heading** — the selected segment is it.
+   - **The switch** keeps the segmented control's markup (`.segmented.contact-segmented`, a `role="tablist"` of two `.segment` tabs) and is styled as **two text tabs** over one hairline: 16 px Replica 400 in sentence case, `#4c5156`, **the selected one ink on a 2 px `#1485c4` underline**; no fill, no frame and no cut (the checker fails each). Two tabs: **Talk to us**, open by default, reading `site.primaryCta.label`, and **Get the sales kit**, reading `salesKit.tab.title`. Each is a `role="tab"` with `aria-selected` and `aria-controls`; each pane a `role="tabpanel"` whose inactive state is the `hidden` attribute; ←/→, Home and End move between the two (`UI.mountContactSwitch`).
+   - **The fields**, in both panes: labels 14 px Replica 400 in ink, sentence case; inputs and selects **white**, with a 1 px `#bdcbd7` border, 48 px tall with 12 px of padding, no radius, blue on focus; the message 160 px tall; the radios unchanged. The submit is the filled blue button, the plate's one filled control.
+   - **The Talk pane** is `forms.demo.sub` then the demo form, its submit reading `site.primaryCta.label`, so the hero, the header and this form are one ask (§1). **The kit pane** (`id="kit"`, §11) is the *For sellers* eyebrow, `salesKit.tab.body` with the product name, and the kit form fixed to the product, at the ask form's width. **Neither pane carries a heading** — the selected tab is it.
    - **Both forms are mounted at render**, open or hidden, and the switch is bound after them, so switching never lands on an unbound field.
    - **The anchor picks the tab**, in `mount`, before the router scrolls: `#kit` opens the kit pane and everything else — `#talk` included — the ask.
    - **Home S7 renders the same switch** (round 18, Alex: the home form *"equivalent (texts, CTAs, etc., flow) to what we have on per-product page (though logical difference to be preserved)"*). What differs is data only: the card names Karsten alone; the ask's product select starts on *Not sure yet*; the kit pane carries `salesKit.page.body` and the *Kit for* select (all offers or any one product), and its confirmation offers *Talk to us* and *Request another kit*, not *Get the full kit*. `#/#talk` opens the ask, `#/#kit` the kit. The checker fails `closing()` or `contactsTab()` if either renders a form of its own.
+
+**The band is the page's last grey** (round 20). The footer opens on a 152 px `#edf0f2` spacer, and a grey band directly above it would merge with it into one grey mass. So the section that hosts the band gives up its bottom padding — on a product tab its top one too, so the band meets the tab bar — the band runs straight into the black footer, and **the footer's spacer is not drawn after a page that ends on the band** (`#app:has(> :last-child .contact-band) + .site-footer::before { display: none }`). The band's own 64 px is the breathing room the spacer gave. It holds on a product's Contacts tab and on the home page, and the checker fails the rule's absence.
 
 **The *Bring to the call* list is retired** (round 10) from the data, the renderer and the CSS, on all three surfaces that render the card. It said the same thing three times over — the form's own message placeholder and the Jumpstart tab's *What we need from you* already ask for the workflow, the systems and the timeline. The card is a person, an address and one line, and `blurb` carries the ask.
 

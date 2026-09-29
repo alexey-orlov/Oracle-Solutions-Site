@@ -11,135 +11,107 @@ same ship gate as `heroes.json` (PROVENANCE §8 / §11.1): nothing served from t
 public root may name an internal deck, a customer, or an internal path.
 
 Manifest: `site/assets/img/manifest-edits.json`
-Build scripts (scratch, rerunnable): `steps_shots.py`, `steps_illus.py`,
-`industries.py`, `manifest.py`, `grade.py` in the assets working folder.
+Build scripts (scratch, rerunnable): `industries.py`, `manifest.py`, `grade.py`
+in the assets working folder. The step frames are no longer made by
+`steps_shots.py` / `steps_illus.py` (the SVG illustrations were retired in
+round 20): their recipe is §1 below, and the mock sources and the capture tool
+are committed in `tools/step-mocks/`.
 
 ---
 
 ## 1. Step frames — `assets/img/steps/`
 
-Every product ships **four** steps: intake → processing → review/decision →
-delivery. Frames are 16:10. Screenshots are 1600 × 1000 JPEG (q86, ≤ 300 KB);
-illustrations are SVG at a 1600 × 1000 viewBox (≈ 3 KB each).
+**Round 20** (Alex: *"screenshots are too small cuts as for their current size (ideally, screenshots be fullscreen; they should not look like skeletons and should not be overloaded with details / too hard to read … stay close to the interactive walkthrough as much as possible"*). Every product ships **four** steps, and every step **two files**:
 
-**The legibility rule, for both kinds.** The frame renders about **454 CSS px
-wide** on the Overview tab. A frame whose type does not survive that reduction is
-not a picture of the product doing the step — it is a decorative placeholder, and
-it reads as one.
-
-- Illustrations: `rendered = font-size × (454 / viewBox width)` must be **≥ 12**.
-  At a 1600 viewBox that means 44 px type or larger, which is why the scenes
-  carry few, large labels rather than many small ones.
-- Screenshots: `rendered = source px × (454 / crop width in source px)`, same
-  floor. A full application capture cannot clear it — crop to the one region the
-  step is about, and keep every heading whole inside the crop.
-
-### Product frames from the interactive walkthroughs (12 frames + 3 posters, 3 products)
-
-All four `large-document-extraction-*.jpg` frames are captures of the site's own
-interactive walkthrough (`site/demo/large-document-extraction/`, 2026-09-15),
-not of the delivered product. The walkthrough keeps the product's layout and
-data model — upload → documents → split-view review with a citation on every
-value, confidence and business-rule validators → rate-card export — on a
-**synthetic** supplier agreement (`MSA-2026-014`, "Meridian Facility Services
-Ltd", invented sites NGC / RDC, invented rates and clauses), so the frames carry
-no customer, no real counterparty and no real figure. That is the standard any
-future product screenshot has to meet before it ships.
-
-| File | Shows | Capture state |
+| File | What it is | Where it shows |
 |---|---|---|
-| `large-document-extraction-1.jpg` | Upload: the pipeline stages — classify, route pages, extract, score and cite, validate | Upload screen mid-processing |
-| `large-document-extraction-2.jpg` | Extract: a group expanded in the columns its schema needs — rows, rate basis, section, confidence, status | Review tab, Routine cleaning open |
-| `large-document-extraction-3.jpg` | Score, cite, validate: the flagged row's details — evidence, confidence, the validator's rule and its suggested fix | Review tab, Volume discounts open, flagged row selected |
-| `large-document-extraction-4.jpg` | Review and export: the flat table against the reference template, XLSX / CSV, and the send to the target system | Export tab after approval |
+| `<slug>-<n>.jpg` | **The whole screen**, 1744 × 1090 (16:10), JPEG q82 | the How it works frame, 872 × 545 at 1440 |
+| `<slug>-<n>-zoom.jpg` | **The step's region** at its capture scale, 802 px wide (or its own width if narrower), JPEG q85 | the inset over the frame, 401 px wide at 1440; on a phone, the step's only picture |
 
-**Capture.** `tools/capture-demo-frames.mjs` drives the walkthrough in headless
-Chrome over the DevTools protocol (`MODE=frames DPR=2`, the page opened with
-`?tour=off&ui=clean` — no welcome card, no guide, no guide toggle) through the
-same clicks a viewer makes, at 1600 × 1000 CSS px and device scale 2. Each frame
-is then a **640 × 400 CSS-px crop of the region the step is about** (1280 × 800
-device px), Lanczos to 1600 × 1000, light unsharp, progressive JPEG q≈86 — the
-crop, not the full screen, is what keeps 13–14 px UI text near 10 px at the
-frame's 454 px render width, the same band the earlier video-derived frames sat
-in. The crop offsets used: `-1` (260, 150) · `-2` (880, 350, 700 × 438) · `-3`
-(880, 560, 700 × 438) · `-4` (880, 130, 700 × 438). `.step-frame` adds a 1 px
-inset rim in CSS so every frame, raster or vector, is bounded the same way.
+`overview.steps[n-1].shot` in `content.js` names both files and carries the `region` (`[x, y, w, h]` in percent of the frame), the `anchor` (the inset's corner) and the `alt` (what the screen shows, about 12 words). How the page draws them is `VISUAL-GRAMMAR.md` §2.2. Nine products, 36 frames and 36 zooms; the crops and the 16 SVG illustrations of rounds 1–19 are gone (1.7).
 
-**Poster.** `assets/img/posters/large-document-extraction.jpg`, 1600 × 900: the
-full review screen with the first group open and no details panel, set as
-`videoPoster` so the pending video frame shows a still of the product instead of
-the plate. It is a distinct capture from every step frame, as VISUAL-GRAMMAR §1
-requires.
+### 1.1 The legibility rule — the region
 
-**Re-captured 2026-09-16** after the generalisation round — two document types, schema-specific columns per group, four validator kinds (PROVENANCE §16.4) — with the same crops and the same capture states.
+The inset shows the region at the scale **s = 401 ÷ region width in CSS px of the capture, and s ≥ 0.92**, so the UI text in the inset reads at about its real size. At a 1280 × 800 capture that bounds a region at **436 CSS px wide and 296 tall** (272, half the frame's height, ÷ 0.92). If the element the step is about is bigger, take its most telling part — the first two KPI tiles, not five; the flagged row and its chip, not the table — and never shrink the scale to fit more. The widest regions shipped are 435.5 px.
 
-**Workforce optimization (2026-09-16).** All four `workforce-optimization-*.jpg`
-frames and `posters/workforce-optimization.jpg` are captures of the second
-walkthrough (`site/demo/workforce-optimization/`, PROVENANCE §19), not of the
-delivered product. The walkthrough keeps the product's flow and information
-model — run optimization (region · period · XLSX) → schematic map with zone and
-technician details → current-vs-optimized compare → weekly schedule in zone and
-technician view with before/after KPIs → accept / reject / comment →
-re-optimize with feedback → export in the field-service import format — on a
-**fictional metro** ("Harborview": twelve invented districts HV-01…HV-12 with
-invented postcodes, eighteen synthetic technician ids T-1041…T-1058, no names),
-so the frames carry no customer geography, no real zone-naming convention, no
-real resource id and no figure outside the cleared band (fleet productivity
-4.54 → 4.75 jobs per technician per day, +4.5%). That closes the rejection
-recorded below.
+**The anchor** is the frame corner — `br` first, then `bl`, `tr`, `tl` — whose inset (2.75% of the frame's width from the side and 4.4% of its height from the top or bottom, 24 px each at 1440; 401 px wide; the region's height × s tall; inside the 872 × 545 frame) does not overlap the region mapped into the frame. The inset never covers its own ring, and because its offset scales with the frame, that holds at 1280 too.
 
-| File | Shows | Capture state |
-|---|---|---|
-| `workforce-optimization-1.jpg` | Load the period's data: the Run optimization modal — sources (manual XLSX · field-service system connected · booking, inventory, HR/WFM, forecast, BI configured), region, period, the attached file and its seven sheets | Run modal, file chosen, before Optimize |
-| `workforce-optimization-2.jpg` | Set the rules: the Optimization settings drawer — planning mode and capacity, objectives and weights (productivity 40 · waiting time 35 · workload balance 25) and the first hard rule | Settings drawer over the optimized plan |
-| `workforce-optimization-3.jpg` | Solve the plan: the solver stages — validate the input (with its warning), travel matrix, rules, GPU solve, KPIs | Run modal 2.3 s into the run |
-| `workforce-optimization-4.jpg` | Review, approve, measure: the value readout under the toolbar — the first three KPI tiles, each a big coloured delta over its before → after line (jobs per technician per day +4.5%, capacity used +3 pts, avg wait −0.6 d) | Final plan (v2, decisions accepted), KPI band, narrow viewport |
+### 1.2 The capture recipe
 
-**Capture.** The same tool in `MODE=script` with `tools/capture-wfo-frames.json`,
-`DPR=2` (`tools/capture-wfo-tour.json` drives the whole guided tour by real
-clicks and is the tour's regression test — it reports console exceptions).
-`-1`, `-2` and `-3` are taken with the page opened at `?tour=off&ui=clean&state=start`
-(the scenario runs the optimization itself); `-4` and the poster with
-`&state=final` — plan v2 with the decisions accepted, so the band reads the
-cleared +4.5% rather than plan v1's +4.8% — and only the two last shots of the
-scenario are kept from those runs. Two viewports:
+1. **Open the screen** at **1280 × 800 CSS px, DPR 2**, headless: a walkthrough at `site/demo/<slug>/index.html?tour=off&ui=clean&state=<state>` (1.3), or a mock page (1.4). **Where a walkthrough clips or overlaps at 1280, capture it at 1440 × 900, DPR 2**: Large docs, whose review PDF overlaps the page footer at 1280. No toast, no tour bubble, no cursor, no scrollbar, and nothing half-loaded — unless the step *is* a processing state, and then it shows its stages clearly mid-way, some ticked and one running.
+2. **In one capture run per step:** reach the state; hide the overlays; read the chosen element's `getBoundingClientRect()` in CSS px; shoot the **full viewport**; then shoot **the region's rectangle** directly at DPR 2 (a `rectshot` step), rather than cropping afterwards.
+3. **Write the files.** The full PNG resampled to 1744 px wide, then JPEG q82 → `assets/img/steps/<slug>-<n>.jpg`. The region PNG resampled to 802 px wide (kept at its own width if narrower), then JPEG q85 → `<slug>-<n>-zoom.jpg`. On this Mac: `sips --resampleWidth`, then `sips -s format jpeg -s formatOptions <q>`, one call each. A region narrower than 401 CSS px gives a zoom under 802 px, which is soft on a 2× screen: keep regions at least 401 px wide where the element allows (Fleet's zooms 1 and 4, 664 and 644 px, are open).
+4. **Record the step** in `content.js`: `shot.region` as `[x/W·100, y/H·100, w/W·100, h/H·100]` of the capture viewport, one decimal; `shot.anchor` by the rule in 1.1; `shot.alt`.
+5. **Check before shipping**, reading every final JPG at display size: the zoom is crisp and its UI text reads at normal size; the frame is one complete, settled screen that looks like a real product, not a wireframe; the region is the one thing the step is about; the inset leaves the ring clear (the mocks' `frames-preview.html` shows each frame at 872 × 545 with its ring and inset); **no uncleared figure and no real name** (1.5).
 
-    MODE=script STEPS=tools/capture-wfo-frames.json DPR=2 W=1600 H=1000 \
-      node tools/capture-demo-frames.mjs \
-      "file://<repo>/site/demo/workforce-optimization/index.html?tour=off&ui=clean&state=start" /tmp/wfo1600
-    MODE=script STEPS=tools/capture-wfo-frames.json DPR=2 W=1184 H=1000 \
-      node tools/capture-demo-frames.mjs "<same URL>" /tmp/wfo1184
+The round's capture tool was a copy of `tools/capture-demo-frames.mjs` (`MODE=script`) with a `rectshot` step and a configurable port, run from the round's scratchpad; it is not in the repository. The step files in `tools/step-mocks/` use its step types (`eval`, `shot`, `rectshot`).
 
-`-1`, `-2`, `-3` and the poster come from 1600 × 1000 runs; `-4` comes from
-the 1184 × 1000 run, because three of the band's five tiles fit a 640 px crop
-only in the narrow window between 1181 px (below it the band reflows to three
-columns 349 px wide) and ~1185 px (above it five 1/5-width tiles are again too
-wide). At 1184 px the three span 639 px and fill the crop edge to edge.
+### 1.3 The walkthrough products — which state each step shows
 
-Crops follow the rule above and were converted with `sips` (crop → resample →
-JPEG) on a Mac without ffmpeg; no unsharp pass — e.g. for `-1`
+Five products have a walkthrough, and their frames are its own screens on its synthetic data (1.6), captured by the recipe above in round 20. The state is the screen the walkthrough is in (its `state=` name where it has one); the region is what the ring and the inset hold.
 
-    sips -c 800 1280 --cropOffset 522 960 frame-1.png --out c.png   # device px, Y then X
-    sips -z 1000 1600 c.png --out b.png
-    sips -s format jpeg -s formatOptions 86 b.png --out workforce-optimization-1.jpg
+| Product | Step | State | The region |
+|---|---|---|---|
+| Large docs processing and review (**1440 × 900**) | 1 | upload, frozen mid-extract: two stages ticked, one running, two pending | the processing stages and the sources |
+| | 2 | `review`, *Routine cleaning* open | the group's rows with their cited source pages |
+| | 3 | `review`, *Volume discounts*, the flagged row | the extracted value, the validator and its suggested fix, the page-9 evidence |
+| | 4 | `review` after *Approve all*, details closed | the rate groups, each *Approved* |
+| Workforce optimization | 1 | the Run modal, the planning file chosen | the file card and *Optimize* |
+| | 2 | the solver, frozen as the GPU-solve stage starts | stages 3–5 |
+| | 3 | `final` (plan v2) | *What the solver changed*: a vacation covered, a sick day split |
+| | 4 | `final` (plan v2) | the band's head and its first two KPI tiles |
+| Cross-system ERP Q&A | 1 | Ask Oracle, 0.9 s into the run | the order agent's block |
+| | 2 | `analysed`, Data Studio's Live Feed | the heading and the first two source cards |
+| | 3 | `analysed`, Decisions › Recommendations | the two right tiles: revenue at risk, tier-A exposure |
+| | 4 | `final`, the answer after the manager's override | the causes and the first proposed action |
+| Fleet route optimization | 1 | `replayed` | the replay checks: visits matched, journey times against telematics |
+| | 2 | `changes` | the change cards, each with its rule and its effect |
+| | 3 | `solved`, the map | the first two KPI tiles: cost per completed visit, visits per engineer |
+| | 4 | `final`, the Field Service export | the export head: approved changes, visits, charging stops |
+| Repair-or-replace decisions | 1 | `reviewed`, scrolled to the case panel | case RR-24811's photograph with its measured chip |
+| | 2 | `ran`, one case opened | the reading, the market's rule and the call |
+| | 3 | `ran` | the before → after tile for repeat visits (not the needless-replacements tile beside it, which prints a £ unit cost) |
+| | 4 | `handoff` | the booking import: sent and held, rule, measurement, who authorised it |
 
-Offsets in CSS px (device px are twice these, at `DPR=2`): `-1` (480, 261,
-640 × 400) · `-2` (960, 176, 640 × 400) · `-3` (480, 298, 640 × 400) · `-4`
-(87.5, 130, 640 × 400, at the 1184 px viewport). The poster is a 1600 × 900
-crop of the 1600 × 1000 dashboard taken from y = 66 rather than from the very
-top: dropping the topbar buys the whole schedule header, so the poster carries
-the KPI band, the map with every zone, the "What the solver changed" list and
-the Weekly schedule header, with no details panel and the toast hidden. It is
-JPEG q82 (q86 puts it at 314 KB, over the 300 KB ceiling); the four step
-frames are q86. **`sips` gotcha:** `--cropOffset 0 0` means *centred*, not
-top-left — any other value is an absolute top-left origin, so a true top crop
-needs a non-zero offset on one axis.
+- **Workforce's settings screen is not a step.** Its only frame shows plan v1's uncleared *+4.8%* behind the drawer, so *Set the rules* is folded into step 1's text.
+- **Repair-or-replace's two-market rules screen is not a step.** It is 1,210 px wide, and no part of it fits the inset, so step 2 shows one case judged against its market's rule.
 
-**Superseded.** The two earlier real-UI frames (`-2`, `-3`, crops of the
-customer-demo recording on the synthetic `SYN-GHA-RL-001` ground-handling
-contract, with the per-channel darkening curve) and the two illustrations at
-`-1` and `-4` are gone from disk; the walkthrough frames replace all four so the
-product's stepper reads as one system.
+### 1.4 The HTML mocks — the four products with no walkthrough
+
+Account insights, Case evidence collection, Plan vs actual investigation and Business metrics Q&A have no walkthrough under `site/demo/`, so their frames are captured from **one static HTML page per step**, 1280 × 800, self-contained, system fonts, no external request. The sources are committed at **`tools/step-mocks/`**, outside `site/`, so nothing there ships; its `README.md` says how to regenerate a frame. Two shells, in the walkthroughs' own two visual languages:
+
+- **Shell A** (`shell-a.css`, the Large docs and Workforce look): a dark sidebar with the product's mark, three nav rows and a user at its foot, a white top bar with a breadcrumb and a *Synthetic data* chip, a light ground, white cards with a hairline, pill chips in blue, green, amber, red and grey, a blue primary button. **Account insights, Case evidence collection and Plan vs actual investigation.**
+- **Shell B** (`shell-b.css`, the Cross-system ERP Q&A look): a dark workspace bar with the workspace name and platform tabs, an *Ask* bar card, results on a light grey ground, Shell A's cards and chips; its red is an identity mark only, never a button. **Business metrics Q&A.**
+
+**Synthetic names only.** Two invented users per shell — Robin Hale and Nadia Brandt in Shell A (named in its header comment), Elena Marsh and Tomas Reyes in Shell B, so the two can never be confused — and invented companies (Alder Foods, Baltic Packaging, Meridian Grocers, Torvik Foods …); no customer, real company or person, ever. Each step's screen:
+
+| Product | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Account insights | the signals inbox: five news items, each with its source, time and the accounts it affects | one signal fanned out to four accounts (the company named, a supplier, a customer, a competitor), each with what it means for it | an opportunity brief: magnitude and confidence scores, the service line, three cited sources | the reviewer queue: one brief approved and exported to the CRM, one rejected with a comment |
+| Case evidence collection | the case list: a complaint on day 3 of its 56-day clock, four sources connected | the timeline being assembled: twelve dated events from four systems | the case file: a cited summary, one citation opened to its billing row, the draft response | the review: amend, approve or flag, and a five-entry audit log |
+| Plan vs actual investigation | the imports: four sources loaded, 96% of records resolved and 4% listed as gaps | the packages table: plan against actual, the façade package 38% over cost and nine weeks late | that package's causes: a change order cited to page 31 of the contract, weather days, rework | the expert review: confirm or reject per cause, a pattern recurring in 7 of 32 packages |
+| Business metrics Q&A | the Ask bar with a revenue question and three connected sources, no data moved | the net revenue definition, version 3, signed off by group FP&A | the answer as a table and a chart, two columns masked for this role | the audit entry: who asked, the sources read, the query, 4 s |
+
+The figures in a mock are the mock's own synthetic records, never an Overview metric. **When a product gets its own walkthrough, its frames are re-captured from the walkthrough and its folder in `tools/step-mocks/` is deleted** (Account insights' is being built by another session).
+
+### 1.5 Never in a frame
+
+- An uncleared figure: Large docs' Documents screen (*96.4% benchmark accuracy*); Workforce's settings drawer and its `v1-dashboard` (*+4.8%*); a £ unit cost beside a glazing example, which narrows the anonymized label to one company (PROVENANCE §41.2). Repair-or-replace's step-3 frame still shows its walkthrough's £ and $ unit costs and its *Modelled on industry figures* line around the zoom, which holds the repeat-visits tile; that frame is open for Alex (PROVENANCE §41.11).
+- A screen that is not settled or cannot be read at the frame's size: Fleet mid-solve, which looks half-loaded; Workforce's compare view, whose map labels come out at about 6 px.
+- Large docs' export table, clipped in its pane at any capture width.
+- A real customer, company or person name, in a walkthrough or a mock.
+
+### 1.6 The walkthroughs' synthetic data, and their posters (unchanged by round 20)
+
+A walkthrough frame shows the whole screen, so everything on it must be synthetic.
+
+**Large docs processing and review.** The walkthrough (`site/demo/large-document-extraction/`, 2026-09-15, generalised on 2026-09-16 to two document types, schema-specific columns per group and four validator kinds, PROVENANCE §16.4) keeps the product's layout and data model — upload → documents → split-view review with a citation on every value, confidence and business-rule validators → rate-card export — on a **synthetic** supplier agreement (`MSA-2026-014`, "Meridian Facility Services Ltd", invented sites NGC / RDC, invented rates and clauses), so its frames carry no customer, no real counterparty and no real figure. That is the standard any future product screenshot has to meet before it ships.
+
+**Poster.** `assets/img/posters/large-document-extraction.jpg`, 1600 × 900, captured with `tools/capture-demo-frames.mjs` (`MODE=frames DPR=2`, `?tour=off&ui=clean`): the full review screen with the first group open and no details panel, set as `videoPoster`. It is a distinct capture from every step frame, as VISUAL-GRAMMAR §1 requires, and it renders only once the product has a recording in `links.json`.
+
+**Workforce optimization.** The walkthrough (`site/demo/workforce-optimization/`, 2026-09-16, PROVENANCE §19) keeps the product's flow and information model — run optimization (region · period · XLSX) → schematic map with zone and technician details → current-vs-optimized compare → weekly schedule in zone and technician view with before/after KPIs → accept / reject / comment → re-optimize with feedback → export in the field-service import format — on a **fictional metro** ("Harborview": twelve invented districts HV-01…HV-12 with invented postcodes, eighteen synthetic technician ids T-1041…T-1058, no names), so its frames carry no customer geography, no real zone-naming convention, no real resource id and no figure outside the band the site already carries (4.54 → 4.75 jobs per technician per day, *+4.5%*, on plan v2). That closes the rejection recorded below. `tools/capture-wfo-tour.json` drives its whole guided tour by real clicks and is the tour's regression test (it reports console exceptions).
+
+**Poster.** `assets/img/posters/workforce-optimization.jpg`: a 1600 × 900 crop of the 1600 × 1000 `state=final` dashboard (`tools/capture-demo-frames.mjs` in `MODE=script` with `tools/capture-wfo-frames.json`, `DPR=2`), taken from y = 66 rather than from the very top: dropping the topbar buys the whole schedule header, so the poster carries the KPI band, the map with every zone, the "What the solver changed" list and the Weekly schedule header, with no details panel and the toast hidden. JPEG q82 (q86 put it at 314 KB, over the 300 KB ceiling).
 
 **What was rejected.**
 
@@ -168,154 +140,17 @@ product's stepper reads as one system.
   product UI — its 40 images are slide exports, and those carry a customer name
   in the case study.
 
-**Cross-system ERP Q&A (2026-09-16, re-shot for round 2 and again for round 3, both 2026-09-17).** All four
-`cross-system-erp-qa-*.jpg` frames and `posters/cross-system-erp-qa.jpg` are
-captures of the third walkthrough (`site/demo/cross-system-erp-qa/`,
-PROVENANCE §22). There is no delivered product behind this pack, so the "real
-product" the frames have to be faithful to is the **platform** — Oracle
-Autonomous AI Lakehouse (Data Studio) and Oracle AI Data Platform (Agent Hub),
-replicated from Oracle's own product videos and doc figures, plus a small
-Redwood app for the decisions. The world is synthetic throughout: a fictional
-multi-entity group, invented customer names (Halden Tooling Group, Kestrel
-Components, Bramley Logistics …), invented ids on each system's real key shapes
-(JDE `F4211 · SDDOCO 6421007`, Fusion `DOO_FULFILL_LINES_ALL · FULFILL_LINE_ID
-300000048210650`, NetSuite `transactionLine`), invented values, and a band that
-carries **no** time-to-answer, cost, saving or delivery-time figure — the pack
-has no cleared outcome number, and every money figure on screen is the AI's own
-estimate on invented order lines, labelled as such. No customer mark, no Oracle
-logo file, no currency symbol beyond the USD prefix the product itself prints.
+**Cross-system ERP Q&A.** The walkthrough (`site/demo/cross-system-erp-qa/`, 2026-09-16, rebuilt twice on 2026-09-17, PROVENANCE §22) has no delivered product behind it, so the "real product" its screens are faithful to is the **platform** — Oracle Autonomous AI Lakehouse (Data Studio) and Oracle AI Data Platform (Agent Hub), replicated from Oracle's own product videos and doc figures, plus a small Redwood app for the decisions. The world is synthetic throughout: a fictional multi-entity group, invented customer names (Halden Tooling Group, Kestrel Components, Bramley Logistics …), invented ids on each system's real key shapes (JDE `F4211 · SDDOCO 6421007`, Fusion `DOO_FULFILL_LINES_ALL · FULFILL_LINE_ID 300000048210650`, NetSuite `transactionLine`), invented values, and a band that carries **no** time-to-answer, cost, saving or delivery-time figure — every money figure on screen is the AI's own estimate on invented order lines, labelled as such. No customer mark, no Oracle logo file, no currency symbol beyond the USD prefix the product itself prints. `tools/capture-erpqa-tour.json` drives its whole guided tour by real clicks and is the tour's regression test (`LOGS: none` is the gate); the walkthrough's own capture history is PROVENANCE §22.
 
-The five images were re-shot on 2026-09-17 for round 2 — the walkthrough's
-domain changed from a finance close to revenue at risk across systems — and
-**again the same day for round 3**, because the interface-fidelity pass
-(PROVENANCE §22.21–22.23) changed every screen they show: the Data Studio nav,
-top bar and Live Feed page, the Agent Hub home and its bar, the generated
-dashboard's chrome and the Decisions app's whole page-title region. Same file
-names, same mapping to the **step copy**, not to the tour order:
+**Poster.** `assets/img/posters/cross-system-erp-qa.jpg`, 1600 × 900: a 1180 × 664 CSS-px crop at `DPR=2` (offset (233, 341), resampled from 2360 × 1328, q86, 244 KB) of the analysis view at `state=final` in Dana's own role, from a 1440 × 1100 run of `tools/capture-demo-frames.mjs` with `tools/capture-erpqa-frames.json` — the six tiles after her override (134 lines, USD 3.77 M, eight tier-A accounts), the "Why the lines are late" chart with its four causes, and the four recommended actions with their owners, values and the line that says each one is a task and nothing is written back to an ERP. The window is chosen so both boxes of `.an-cols` are whole. It is wired as `videoPoster` and renders only once the product has a recording in `links.json`.
 
-| File | Shows | Capture state |
-|---|---|---|
-| `cross-system-erp-qa-1.jpg` | Connect the applications: Data Studio › Data Load › Live Feed, "Sources feeding the lakehouse" — all five source cards in Oracle's Data Load four-card idiom (outline icon, plain title, the system behind it, what it holds, then the feed, the freshness and the object count on one muted line), over the dark-teal header of the load job that rebuilds `GOLD.CROSS_SYSTEM_COMMERCIAL_MODEL` | `state=analysed`, Live Feed, **896 px** viewport |
-| `cross-system-erp-qa-2.jpg` | Shape one decision domain: the six-tile band "per system → across systems" — late lines known 61 + 49 + 28 → 138, lines with an account tier 0 → 138, lines with a cause attributed 0 → 138, lines fixable from stock elsewhere 0 → 44, revenue at risk — → USD 4.18 M, tier-A exposure — → 9 accounts · USD 2.36 M — under the Decisions page's own subtitle, "What the AI proposes, and what you decide about each account." | `state=analysed`, Decisions, 676 px viewport |
-| `cross-system-erp-qa-3.jpg` | Guard it in the data layer: the **dashboard the AI generated**, seen by the regional analyst — "Built by the AI · Tue 6 Oct 2026 · 09:58", "NG-NA only · Regional operations analyst NA · 57 lines", and the SLA-penalties tile masked to dots with "Contract penalty terms are hidden for this role" | `state=final`, `role=analyst`, `panel=dashboard`, Agent Hub › Insights, 868 px viewport |
-| `cross-system-erp-qa-4.jpg` | Ask in plain language: the Agent Hub with the Ask Oracle box (Oracle's white outlined ellipse, mic, paperclip, agent picker), the typed question "Which open orders are at risk this week, and which of our best accounts are exposed?" and the run card mid-run — the order agent **In progress** on a grey row wash with a spinner in the Duration lane and its four sub-steps on the dotted rail, the identity, cause and impact agents waiting below with no status label, as Oracle renders a step that has not run | `state=start`, **0.9 s** into the run, Agent Hub, **880 px** viewport |
+**Fleet route optimization** and **Repair-or-replace decisions.** Their walkthroughs (`site/demo/fleet-route-optimization/`, PROVENANCE §39; `site/demo/repair-or-replace-decisions/`) were built by their own sessions on synthetic data: Fleet's replayed days, vans and engineers; Repair-or-replace's cases (RR-24811 …) and example rule sets. Fleet's poster, `assets/img/posters/fleet-route-optimization.jpg`, was captured from its walkthrough at 2.5× and cropped to 1600 × 900 (§39).
 
-**Capture.** `tools/capture-demo-frames.mjs` in `MODE=script` with
-`tools/capture-erpqa-frames.json`, `DPR=2`, the page opened at
-`?tour=off&ui=clean&state=start`
-(`tools/capture-erpqa-tour.json` drives the whole guided tour by real clicks and
-is the tour's regression test — `LOGS: none` is the gate). The scenario walks
-every state through `window.DEMO` — `prime('analysed'|'final'|'start')`,
-`setApp`, `setDsScreen`, `setRwTab`, `setWbPanel`, `setRole`, `ask` — and ends
-by clicking the saved question so the run card is caught live, so one scenario
-file produces all five shots and each **viewport** run keeps only the shot it
-was sized for:
+### 1.7 Superseded in round 20
 
-    MODE=script STEPS=tools/capture-erpqa-frames.json DPR=2 W=896 H=1000 \
-      node tools/capture-demo-frames.mjs \
-      "file://<repo>/site/demo/cross-system-erp-qa/index.html?tour=off&ui=clean&state=start" /tmp/erp896
-    # …the same command with W=676 H=1000, W=868 H=1000, W=880 H=1000 and W=1440 H=1100
-
-Five viewports, because each surface is exactly 640 CSS px wide at a different
-one, and **round 3 moved three of them** (the Data Studio nav is 216 px while
-the Data Load sub-tree is open, the Workbench nav is 180 px under 1120, and the
-Ask Oracle box is capped at Oracle's measured 729 px rather than 760):
-`-1` from the **896** run (the Data Studio page is `W − 216` and the cards sit
-inside a 20 px gutter, so `.src-cards` is `W − 256` = 640 and reflows to 3 + 2
-under 1120 px); `-2` from the 676 run (the Decisions app has no left nav, so
-its band is `W − 36`, and under 1120 px it reflows to 3 × 2 — all six tiles at
-the size three of six would have at 1240 px); `-3` from the 868 run (the
-generated-dashboard card is `W − 228` = 640); `-4` from the **880** run
-(the Hub's main column is `W − 240`, so the Ask Oracle box and the run card —
-capped at 640 — are both exactly 640 and sit one above the other); the poster
-from the 1440 run at **H = 1100**, where `.an-cols` is two columns, the causes
-chart sits beside the four actions, and the taller viewport leaves the 664 px
-window room inside the shot.
-
-Crop offsets in CSS px (device px are twice these, at `DPR=2`): `-1`
-(236, 150, 640 × 400) · `-2` (18, 177) · `-3` (204, 139) · `-4` (210, 260) ·
-poster (233, 341, 1180 × 664). Every edge is placed on a real boundary —
-`-1` starts in the white under the *Live Feed* page title and ends in the white
-padding under the job accordion's dark-teal header; `-2` starts on the
-*Recommendations* title's bottom edge and ends exactly on the tab strip's top;
-`-3` starts 3 px under the *Insights* subtitle and ends inside the first chart
-card's top padding, under the four tiles; `-4` starts in the white between the
-greeting and the Ask Oracle box and ends exactly on the boundary below the
-fourth agent's row, so nothing in that frame is half a line; the poster starts
-in the gap between the band head and the tiles and ends 4 px under the actions
-box. Converted with `sips` (crop → resample → progressive JPEG q86) on a Mac
-without ffmpeg; 157–244 KB each, inside the 300 KB ceiling. **`sips` gotcha,
-corrected 2026-09-17:** `--cropOffset` takes **Y then X** and is the crop's
-**top-left origin**, not an offset from a centred crop — the round-2 note that
-`0 0` means *centred* is wrong and cost a wasted pass. Verified empirically:
-`sips -c 800 1280 --cropOffset 300 472 frame-1.png` yields exactly the window
-whose top-left is (472, 300).
-
-**Why the five source cards needed a CSS fix first.** Under 1120 px the cards
-were pinned to a fixed 128 px height so the step-1 hint always had room under
-them, but the content does not fit that height: the flex children were squeezed
-and the second line of each card's description was cut *through* its glyphs —
-visible at the 1024 px QA viewport too, not only in the crop. **Round 3 re-cut
-the same trade-off**, because the cards were re-skinned into Oracle's Data Load
-four-card idiom and the QA viewport dropped to 1024 × **768**: the page subtitle
-is hidden under 1120 px, the feed line switches to each pipeline's short name
-(`GoldenGate CDC`, `SuiteAnalytics Connect · 30 min`) so the freshness and the
-object count still fit on two lines, and the cards are **134 px** — measured, not
-guessed: `#src-cards` then ends at y 482 and the step-1 callout (252 px tall)
-sits at 496–748 inside a 768 px viewport, which is what the tour's own
-"no callout covers the element its copy names" assertion checks. The card's own
-parts keep their size (`flex: none`) and the description
-is capped at two whole lines with a fade into the card colour where there is
-more to read. Nothing is sliced at any viewport; the fade is invisible on a line
-that ends early (2026-09-17, leg E3).
-
-**Poster.** `assets/img/posters/cross-system-erp-qa.jpg`, 1600 × 900: a
-1180 × 664 CSS-px crop at `DPR=2` (offset (233, 341), resampled from 2360 × 1328,
-q86, 244 KB) of the analysis view at `state=final` in Dana's own role — the six
-tiles after her override (134 lines, USD 3.77 M, eight tier-A accounts), the
-"Why the lines are late" chart with its four causes, and the four recommended
-actions with their owners, values and the line that says each one is a task and
-nothing is written back to an ERP. The window is chosen so both boxes of
-`.an-cols` are whole: it starts on the band's tiles and ends four pixels under
-the actions box. It is wired as `videoPoster` but **nothing renders it yet**:
-the product has `video: false`, so the hero has no media frame (`docs/CONFIG.md`
-§3). It is captured now so that turning the frame on later is a one-word change.
-
-**Superseded.** Round 1's four frames — the Data Studio catalog with five
-mounted catalogs, the Mapping review health band, and the same answer under two
-roles — and its 800 × 450 poster are gone from disk; so are round 2's. The
-**round-3** captures replace all five at the same file names, so `content.js`
-and `config.js` needed no change in either round. Working shots:
-`.work/erpqa-qa/r4-f{896,676,868,880,1440}/`.
-
-### Designed step illustrations (16 frames, 4 products)
-
-`account-insights-1..4`, `case-evidence-collection-1..4`,
-`plan-vs-actual-investigation-1..4`, `business-metrics-qa-1..4`. Large docs,
-Workforce optimization and Cross-system ERP Q&A are the three products whose
-frames are captures (above); the four `cross-system-erp-qa-*.svg` illustrations
-were deleted from disk on 2026-09-16 when the captures replaced them.
-
-Drawn, not sourced. One grammar across all of them: a white ground with a
-`#C1DFF4` radial lift, 2–3 px strokes (≈ 1.5 px on screen at the rendered size),
-**`#1485C4` for the active path** and `#BDCBD7` for structure, labels in
-`#4C5156`, one blue eyebrow of **at most three words** per frame and short
-uppercase labels underneath at `.06em`. (The sixteen SVG frames were drawn for
-the near-black theme and recoloured into this grammar on 2026-09-18; the
-checker now fails any SVG under `site/assets/img/` that carries the retired
-teal or the old near-black palette.) No emoji, no filled icons, no sentences inside the artwork — the step
-title and caption live in the page, not in the picture.
-
-Scene vocabulary, so the same step reads the same way on every product:
-fan-in (intake), graph / dossier / semantic layers / bars / weighted rules /
-constraint solve (processing), three decision rows (review), fan-out and answer
-card (delivery). The three answer cards carry a different inner glyph — bars,
-merge, trend — so a reader moving between products can tell them apart.
-
-Labels are 44–56 px in the 1600 viewBox (12.5–15.9 CSS px in the frame) and the
-eyebrow is 50 px. The scenes are laid out around that type: three or four
-labelled nodes, wide cards, generous gaps. Where a label has to cross artwork —
-the account-map frame — it sits on a soft `#10161A` plate rather than shrinking.
+- **Every step frame of rounds 1–19.** Large docs and Workforce optimization shipped 640 × 400 CSS-px crops of 1600 × 1000 captures (Workforce's step 4 from a 1184 px window), Cross-system ERP Q&A five crops each sized to its own viewport (896, 676, 868 and 880 px), and Fleet 1600 × 1000 crops at 2.5×. The round-20 captures replace every one at the same file names, and each gains its zoom.
+- **The 16 designed SVG illustrations** of Account insights, Case evidence collection, Plan vs actual investigation and Business metrics Q&A (drawn to a 1600 viewBox, 44–56 px labels, one blue eyebrow a frame) are deleted from disk; the HTML mocks (1.4) replace them. They were wireframes with placeholder words (*OPPORTUNITY*), the kind of frame Alex's *"they should not look like skeletons"* retired.
+- **Cropping with `sips`.** Round 20 captures the region's rectangle directly instead. For a poster re-crop, the corrected note stands: `--cropOffset` takes **Y then X** and is the crop's **top-left origin** (verified 2026-09-17: `sips -c 800 1280 --cropOffset 300 472 frame-1.png` yields the window whose top-left is (472, 300)).
 
 ---
 

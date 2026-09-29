@@ -1792,9 +1792,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .ps-plate--problem { background: var(--bg-raised); }
 .ps-plate--solution { background: var(--surface-dark-raised); }
 .ps-plate--solution .ps-eyebrow { color: var(--surface-fact); }
-.ps-headline { font-weight: 400; font-size: 1.75rem; line-height: 1.2; letter-spacing: 0; color: var(--text); }
+.ps-headline { font-weight: 400; font-size: 1.75rem; line-height: 1.2; letter-spacing: 0; color: var(--text); text-wrap: balance; }
 .ps-plate--solution .ps-headline { color: #ffffff; }
-.ps-copy { font-weight: 300; font-size: 1.125rem; line-height: 1.3; letter-spacing: .5px; color: var(--text-body); }
+.ps-copy { font-weight: 300; font-size: 1.125rem; line-height: 1.3; letter-spacing: .5px; color: var(--text-body); text-wrap: pretty; }
 .ps-plate--solution .ps-copy { color: rgba(255, 255, 255, .82); }
 
 /* — 2 · what changes in your numbers: the KPI band — */
@@ -1883,6 +1883,13 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   letter-spacing: 0;
   color: var(--text-body);
 }
+/* Each label sits by the mark it names (Q1): a compression's two labels start
+   at the bars' origin, and a range's are set under their own marks. */
+.kpi-viz--compression + .kpi-labels { justify-content: flex-start; column-gap: 1.5rem; }
+.kpi-labels--placed { position: relative; display: block; height: calc(.875rem * 1.3); }
+.kpi-labels--placed .kpi-label { position: absolute; top: 0; white-space: nowrap; }
+.kpi-label--center { transform: translateX(-50%); }
+.kpi-label--end { transform: translateX(-100%); }
 .kpi-label { display: inline-flex; align-items: center; gap: .375rem; min-width: 0; }
 .kpi-swatch { flex: none; width: 10px; height: 10px; }
 .kpi-swatch--before, .kpi-swatch--fill, .kpi-swatch--dot-before { background: var(--border); }
@@ -1925,7 +1932,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .hiw-step.is-active .hiw-num { color: var(--action); }
 .hiw-title { min-width: 0; transition: color var(--t-base) var(--ease); }
 .hiw-step:not(.is-active) .hiw-head:hover .hiw-title { color: var(--action); }
-.hiw-text { padding: 0 0 1rem 3rem; font-weight: 300; font-size: 1rem; line-height: 1.35; color: var(--text-muted); }
+.hiw-text { padding: 0 0 1rem 3rem; font-weight: 300; font-size: 1rem; line-height: 1.35; color: var(--text-muted); text-wrap: pretty; }
 .hiw-step:not(.is-active) .hiw-text { display: none; }
 
 /* The frames stack in one cell. The incoming one fades in on top over 200ms
@@ -1949,7 +1956,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     calc(100% - 4.83px) calc(100% - 2px), calc(100% - 2px) calc(100% - 4.83px),
     calc(100% - 2px) 4.83px, calc(100% - 4.83px) 2px, 4.83px 2px);
 }
-/* The zoom of that region, 24px in from its anchor corner. The zoom image
+/* The zoom of that region, in from its anchor corner by 24px at 1440: 2.75%
+   of the frame's width and 4.4% of its height, so the gap scales with the
+   frame and the inset never meets the ring at 1280 (Q1). The zoom image
    itself is 46% of the frame wide (401px at 1440, the width the images are
    made for), or narrower where that would take it past half the frame's
    height. The frame is this picture plus its 1px hairline and 16:10, so 46%
@@ -1964,10 +1973,10 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   background: var(--action);
 }
 .hiw-zoom img { --cut: 6.83px; display: block; width: 100%; height: auto; aspect-ratio: var(--za, 1.6); object-fit: cover; background: #ffffff; }
-.hiw-zoom--tl { top: 1.5rem; left: 1.5rem; }
-.hiw-zoom--tr { top: 1.5rem; right: 1.5rem; }
-.hiw-zoom--bl { bottom: 1.5rem; left: 1.5rem; }
-.hiw-zoom--br { bottom: 1.5rem; right: 1.5rem; }
+.hiw-zoom--tl { top: 4.4%; left: 2.75%; }
+.hiw-zoom--tr { top: 4.4%; right: 2.75%; }
+.hiw-zoom--bl { bottom: 4.4%; left: 2.75%; }
+.hiw-zoom--br { bottom: 4.4%; right: 2.75%; }
 
 /* The phone's four cards; hidden until 767px. */
 .hiw-cards { display: none; }
@@ -3485,16 +3494,24 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* Inside the tab: the row scrolls, and a scroller clips what lies outside it. */
 .ind-tab:focus-visible { outline: 2px solid var(--action); outline-offset: -2px; }
 
-.ind-panels { margin-top: 2rem; }
+/* Every industry's panel sits in the one cell, so the plate is as tall as the
+   tallest of them and the case study under it never moves when the reader
+   switches tabs (Q1). A panel that is not selected keeps its cell but goes
+   invisible, which also takes it out of the tab order and the accessibility
+   tree; it has to out-shout the global [hidden] rule to keep its box. */
+.ind-panels { display: grid; margin-top: 2rem; }
 
 .ind-panel {
   --cut: var(--cut-8);
   position: relative;
+  grid-area: 1 / 1;
   display: grid;
   grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
   background: var(--bg-raised);
   overflow: hidden;
 }
+
+.ind-panel[hidden] { display: grid !important; visibility: hidden; }
 
 /* The plate's cut clips anything drawn outside it, so the focus ring is drawn
    inside, over the photograph too. */
@@ -3518,7 +3535,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .ind-figure { position: relative; min-height: 22.5rem; margin: 0; background: var(--surface-fact); }
 .ind-figure img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
 
-.ind-note { margin-top: 1rem; max-width: 52rem; font-size: .875rem; line-height: 1.5; color: var(--text-muted); }
+.ind-note { margin-top: 1rem; max-width: 52rem; font-size: .875rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
 
 /* — the case study: the tab's one dark plate — */
 .case-callout { background: var(--surface-dark-raised); color: #ffffff; overflow: hidden; }
@@ -3611,7 +3628,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   color: #ffffff;
   text-wrap: balance;
 }
-.case-callout .case-figure-label { max-width: 30rem; margin-top: .75rem; font-size: 1rem; font-weight: 300; line-height: 1.4; color: rgba(255, 255, 255, .85); }
+.case-callout .case-figure-label { max-width: 30rem; margin-top: .75rem; font-size: 1rem; font-weight: 300; line-height: 1.4; color: rgba(255, 255, 255, .85); text-wrap: pretty; }
 
 /* Three external-safe facts, label above value — no contract value, no
    contract duration, no headcount. */
@@ -3741,7 +3758,10 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .contact-title { font-size: 1rem; font-weight: 300; line-height: 1.35; color: var(--text-muted); }
 .contact-card-copy { display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
 
-/* An address is a link, never a filled button: blue, its glyph, no fill. */
+/* An address is a link, never a filled button: its glyph, no fill, and the
+   kit pane's own link style (.inline-link), so the plate carries one: blue
+   125 #0e5e8b (7:1 on white; #1485c4 is 4.05) over a thin underline that
+   turns full blue on hover (Q1). */
 .contact-mail {
   display: inline-flex;
   align-items: center;
@@ -3753,13 +3773,14 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   font-weight: 400;
   line-height: 1.3;
   letter-spacing: 0;
-  color: var(--action);
+  color: var(--action-pressed);
   transition: color var(--t-base) var(--ease);
 }
 
-.contact-mail span { min-width: 0; overflow-wrap: anywhere; }
+.contact-mail span { min-width: 0; overflow-wrap: anywhere; border-bottom: 1px solid rgba(14, 94, 139, .45); transition: border-color var(--t-base) var(--ease); }
 .contact-mail .icon { width: 1.125rem; height: 1.125rem; flex: none; }
-.contact-mail:hover, .contact-mail:focus-visible { color: var(--action-pressed); text-decoration: underline; text-underline-offset: .2em; }
+.contact-mail:hover, .contact-mail:focus-visible { color: var(--action); }
+.contact-mail:hover span, .contact-mail:focus-visible span { border-bottom-color: var(--action); }
 
 .contact-social { display: inline-flex; align-items: center; gap: .5rem; align-self: flex-start; font-size: var(--fs-sm); color: var(--action); }
 .contact-social:hover { color: var(--action-pressed); }

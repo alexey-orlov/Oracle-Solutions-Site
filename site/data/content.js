@@ -637,10 +637,10 @@ window.SITE_CONTENT = {
         metrics: [
           {
             key: "time-to-move",
-            title: "From an account's news to a next move",
+            title: "News to a reviewed brief",
             kind: "estimated",
             owner: "Head of sales",
-            figure: { text: "Hours" },
+            figure: { prefix: "from", text: "a quarter" },
             visual: {
               form: "compression",
               unit: "elapsed time",
@@ -978,16 +978,16 @@ window.SITE_CONTENT = {
           },
           solution: {
             headline: "A finished, cited file on day one",
-            text: "Each case opens with a summary, a dated timeline and a drafted response, every sentence linked to the record it came from. The investigator amends, approves or flags."
+            text: "Each complaint opens with a summary, a dated timeline and a drafted response, every sentence linked to the record it came from. The investigator amends, approves or flags."
           }
         },
         metrics: [
           {
             key: "file-ready",
-            title: "Time to a complete case file",
+            title: "Time until the evidence is assembled",
             kind: "estimated",
             owner: "Head of investigations",
-            figure: { text: "Day one" },
+            figure: { prefix: "from", text: "weeks" },
             visual: {
               form: "compression",
               unit: "time to a complete, cited case file",
@@ -996,22 +996,22 @@ window.SITE_CONTENT = {
               before: { value: 21, label: "weeks of gathering before" },
               after: { value: 1, label: "day one after" }
             },
-            line: "Summary, timeline and draft response ready when the case opens."
+            line: "Summary, timeline and draft response ready as the clock starts."
           },
           {
             key: "late-answers",
             title: "Complaints answered late",
             kind: "estimated",
             owner: "Head of complaints",
-            figure: { prefix: "from", text: "1 in 18" },
+            figure: { prefix: "from", text: "5.6%" },
             visual: {
               form: "baseline",
               unit: "share of complaints",
               direction: "down",
               scale: { min: 0, max: 10 },
-              before: { value: 5.6, label: "5.6% past the eight-week clock today" }
+              before: { value: 5.6, label: "answered late today" }
             },
-            line: "Late answers on the regulator's own count, across UK financial services."
+            line: "Complaints answered after the regulator's deadline, across the industry."
           }
         ],
         features: [
@@ -1312,10 +1312,10 @@ window.SITE_CONTENT = {
         metrics: [
           {
             key: "expert-hours",
-            title: "Expert hours to explain an overrun",
+            title: "Expert time to explain an overrun",
             kind: "estimated",
             owner: "Head of project controls",
-            figure: { text: "Hours" },
+            figure: { prefix: "from", text: "weeks" },
             visual: {
               form: "compression",
               unit: "expert time per completed project",
@@ -1324,11 +1324,11 @@ window.SITE_CONTENT = {
               before: { value: 480, label: "weeks before" },
               after: { value: 8, label: "hours after" }
             },
-            line: "One completed project, every variance with its cause and its source."
+            line: "Every variance, with its cause and the document behind it."
           },
           {
             key: "projects-reviewed",
-            title: "Closed projects that get a real review",
+            title: "Teams that review every closed project",
             kind: "estimated",
             owner: "PMO director",
             figure: { prefix: "from", text: "1 in 10" },
@@ -1337,7 +1337,7 @@ window.SITE_CONTENT = {
               unit: "organizations",
               direction: "up",
               scale: { min: 0, max: 10 },
-              before: { value: 1, label: "about 1 organization in 10 follows its own lessons-learned process today" }
+              before: { value: 1, label: "about 1 organization in 10 does it today" }
             },
             line: "Every one reviewed against its plan, not the one somebody had time for."
           }
@@ -1651,7 +1651,7 @@ window.SITE_CONTENT = {
             text: "Operations staff read 60 to 100 pages of supplier terms and type the rate cards into the cost system, line by line. Throughput hangs on the few people who can."
           },
           solution: {
-            headline: "Review the data, not type it: minutes per contract",
+            headline: "Review the data, not type it: minutes per contract",
             text: "The values arrive already extracted, each with its page in the agreement beside it. The reviewer checks the flagged ones, approves, and exports to the cost system."
           }
         },
@@ -1670,11 +1670,11 @@ window.SITE_CONTENT = {
               before: { value: 5760, label: "3–5 days before" },
               after: { value: 10, label: "5–15 min after" }
             },
-            line: "One 60 to 100-page agreement, end to end, the reviewer's check included."
+            line: "60 to 100 pages, end to end, the reviewer's check included."
           },
           {
             key: "onboarding",
-            title: "Onboarding a new supplier's rates",
+            title: "Onboarding a new supplier",
             kind: "estimated",
             owner: "Head of procurement operations",
             figure: { prefix: "from", text: "~1 month" },
@@ -1682,10 +1682,10 @@ window.SITE_CONTENT = {
               form: "baseline",
               unit: "days",
               direction: "down",
-              scale: { min: 0, max: 30 },
+              scale: { min: 0, max: 45 },
               before: { value: 30, label: "about a month today" }
             },
-            line: "A new supplier or site, from signed agreement to billable rates."
+            line: "A new partner or site, from signature to first invoice."
           }
         ],
         features: [
@@ -2003,7 +2003,7 @@ window.SITE_CONTENT = {
         problemSolution: {
           problem: {
             headline: "Two days to plan one region's month, by hand",
-            text: "Dispatchers assign technicians to zones and jobs region by region, juggling skills, absences and travel. Workloads come out uneven and customers wait longer for a visit."
+            text: "Dispatchers assign technicians to zones and jobs, juggling skills, absences and travel. Workloads come out uneven and customers wait longer for a visit."
           },
           solution: {
             headline: "A solved month to review in half an hour",
@@ -2025,7 +2025,7 @@ window.SITE_CONTENT = {
               before: { value: 2880, label: "~2 days before" },
               after: { value: 30, label: "~30 min after" }
             },
-            line: "Optimized and approved by the dispatcher, region by region."
+            line: "Optimized and approved by the dispatcher, end to end."
           },
           {
             key: "jobs-per-tech",
@@ -2372,7 +2372,7 @@ window.SITE_CONTENT = {
             title: "Time an answer waits in the BI queue",
             kind: "estimated",
             owner: "VP of commercial operations",
-            figure: { text: "Minutes" },
+            figure: { prefix: "from", text: "weeks" },
             visual: {
               form: "compression",
               unit: "elapsed time",
@@ -2381,7 +2381,7 @@ window.SITE_CONTENT = {
               before: { value: 336, label: "weeks before" },
               after: { value: 0.1, label: "minutes after" }
             },
-            line: "From the question asked to a ranked list the team can act on."
+            line: "From asking to a ranked list the team can act on."
           },
           {
             key: "data-prep",
@@ -2396,7 +2396,7 @@ window.SITE_CONTENT = {
               scale: { min: 0, max: 100 },
               before: { value: 40, label: "about 40% of the week today" }
             },
-            line: "Pulling and cleaning extracts before a question can be answered."
+            line: "Pulling and cleaning extracts before anyone gets an answer."
           }
         ],
         features: [
@@ -2693,7 +2693,7 @@ window.SITE_CONTENT = {
         metrics: [
           {
             key: "extracts",
-            title: "Extracts built per cross-cloud question",
+            title: "Extracts built per request",
             kind: "estimated",
             owner: "Head of data engineering",
             figure: { text: "3 → 0" },
@@ -2705,14 +2705,14 @@ window.SITE_CONTENT = {
               before: { value: 3, label: "3 extracts today" },
               after: { value: 0, label: "0 after" }
             },
-            line: "A data engineer's pulls and copies, replaced by one query run in place."
+            line: "A data team's pulls and copies, replaced by one query run in place."
           },
           {
             key: "time-to-answer",
-            title: "Time to answer across clouds",
+            title: "Time to a group-wide figure",
             kind: "estimated",
             owner: "Chief financial officer",
-            figure: { text: "Minutes" },
+            figure: { prefix: "from", text: "a week" },
             visual: {
               form: "compression",
               unit: "elapsed time",
@@ -3004,11 +3004,11 @@ window.SITE_CONTENT = {
         problemSolution: {
           problem: {
             headline: "Every extra mile, charger wait and missed slot is paid for",
-            text: "Planners route hundreds of vans by hand around booked windows, skills and, for electric vans, charging. Every wasted mile, idle hour and repeat trip is a cost line."
+            text: "Planners route hundreds of vans by hand around booked windows, skills and, for electric vans, charging. Every wasted mile, idle hour and repeat trip is money spent."
           },
           solution: {
             headline: "See the saving on your own past days first",
-            text: "Your days are replayed and planned again around windows, skills and battery range. Operations and finance see cost per visit, visits per engineer and missed slots before any route changes."
+            text: "Your days are replayed and planned again around windows, skills and battery range. Operations and finance see cost per visit, jobs per engineer and missed slots before any route changes."
           }
         },
         metrics: [
@@ -3026,11 +3026,11 @@ window.SITE_CONTENT = {
               before: { value: 0, label: "today" },
               range: { lo: 5, hi: 10, label: "−5% to −10%" }
             },
-            line: "Driving, paid charging time and overtime, priced at your own unit costs."
+            line: "Driving, charging time and overtime, at your own rates."
           },
           {
             key: "road-time",
-            title: "Paid time on the road per engineer",
+            title: "Unproductive driving per engineer",
             kind: "estimated",
             owner: "Director of field operations",
             figure: { text: "up to 1 h a day" },
@@ -3038,10 +3038,10 @@ window.SITE_CONTENT = {
               form: "baseline",
               unit: "minutes per engineer per day",
               direction: "down",
-              scale: { min: 0, max: 60 },
-              before: { value: 60, label: "up to an hour a day that adds no visit, today" }
+              scale: { min: 0, max: 90 },
+              before: { value: 60, label: "up to an hour a day today" }
             },
-            line: "Unnecessary miles in a technician's day, the first item on every visit's bill."
+            line: "Hours at the wheel that produce no billable work."
           }
         ],
         features: [
@@ -3368,7 +3368,7 @@ window.SITE_CONTENT = {
           "direction": "down",
           "scale": { "min": 0, "max": 4 },
           "before": { "value": 3, "label": "3.0% today" },
-          "after": { "value": 2.4, "label": "2.4% estimated" }
+          "after": { "value": 2.4, "label": "2.4% after" }
         },
         "line": "Parts swapped where a repair would have held; the payer funds them."
       },
@@ -3384,7 +3384,7 @@ window.SITE_CONTENT = {
           "direction": "down",
           "scale": { "min": 0, "max": 2 },
           "before": { "value": 1.5, "label": "1.5% today" },
-          "after": { "value": 1.2, "label": "1.2% estimated" }
+          "after": { "value": 1.2, "label": "1.2% after" }
         },
         "line": "Repairs that fail and come back, absorbed by the operator."
       }
