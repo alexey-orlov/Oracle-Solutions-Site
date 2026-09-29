@@ -7139,12 +7139,12 @@ _Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pac
   - The one-liner leads with the saving and the job done once; what the product does comes second.
   - The problem names who decides and what a wrong call costs: a needless replacement for the payer, a repeat visit for the network.
   - The measures are the value per unit, not accuracy:
-    - *about £460* saved per needless replacement avoided (UK industry averages for vehicle glazing, 2013; about $250 in the US);
+    - *about $250* saved per needless replacement avoided (US industry averages for vehicle glazing: about $350 a replacement against $99 a crack repair). It first shipped as *about £460* from the UK averages. The product-pages session flagged that a UK pound figure beside vehicle glass and several markets could point toward the source engagement's customer, and Alex chose the US figure (2026-09-29). Page, walkthrough, spec and the four kit documents now carry no UK or pound figure;
     - *$300–400 and 4 days* per avoidable recalibration;
     - wrong calls *45 → 36 per 1,000 cases*.
     All three are modelled; the metrics note says so, and says the proof of value measures each one on the customer's own cases.
   - The ROI line carries the spec's two-buyer decision: the saving lands on the payer (the insurer or lessor keeps the price gap) and on the operator (one visit with the right part instead of two).
-  - The walkthrough's value band agrees with the page. Its needless-replacement and repeat-visit rates (3.0% → 2.4%, 1.5% → 1.2%) add up to the page's 45 → 36 per 1,000. Its count lines carry *about £460 kept on each* and *$300–400 and 4 days saved on each*, and its third number is *Avoidable recalibrations*, the page's word.
+  - The walkthrough's value band agrees with the page. Its needless-replacement and repeat-visit rates (3.0% → 2.4%, 1.5% → 1.2%) add up to the page's 45 → 36 per 1,000. Its count lines carry *about $250 kept on each* and *$300–400 and 4 days saved on each*, and its third number is *Avoidable recalibrations*, the page's word.
 - **No case study:** `caseStudy: null`. The engagement is a scoped proposal with nothing delivered yet (the spec's *Delivered* is empty).
 - **Duration:** the site's *4–8 weeks* holds everywhere; the spec's 8-week proof sits inside it.
 - **Assets:**
@@ -7186,6 +7186,7 @@ _Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pac
   - The two walkthroughs were published as their own artifacts first: Repair-or-replace `DCgrK6RjucSP7LKBYTKdh3`, Fleet `6KeSmkVC5ASh7UeYXtQNFA`. `links.json` › `interactiveDemoArtifact` holds each, and `data/links.js` was built fresh for the publish.
   - The site went to version 1790676289-ee3a with 39 map entries: the 13 files changed since the 2026-09-28 publish, 23 new files (the round-18 band photographs and ask tile, the two products' heroes, the Fleet poster, eight step images, both walkthrough folders), the fresh `data/links.js`, and `"pages/services.js": null`. Seven unreferenced new images under `assets/img/` stayed out.
   - `list_files` shows 135 files, the new ones live, `services.js` gone, and nothing from the never-ship list.
+  - **The US-figure patch, later the same day:** a three-file publish on top of the version the alternative-home-page session had published by then. The page wrapper was that version's own, so its `home-alt.css` and `overview-alt.js` links stayed. The files were `data/content.js` (the live copy plus the four `$250` lines, nothing else) and the walkthrough's `data.js` and `demo.js`; the walkthrough's own artifact was republished too. The live copies were read back: no pound sign in any of them.
 
 ## 43. A product name's hyphenated compound stays whole on phones, 2026-09-29
 
