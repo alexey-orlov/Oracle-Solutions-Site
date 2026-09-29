@@ -1639,11 +1639,14 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 @media (max-width: 1024px) { .catalog-hero { --sp-w: 5.5rem; --sp-r: 1.5rem; } }
 
-/* Narrower than the photograph, the lead takes the full measure, so the frame
-   is widened past the hero's right edge until the oval is out of view, and the
-   line down from the spark, which would cross the lead, is not drawn. */
 @media (max-width: 768px) {
   .catalog-hero { --ch-pt: 4.5rem; --ch-pb: 4.5rem; --ch-gap: 3.25rem; --ch-under: 1rem; --sp-w: 3.5rem; --sp-r: 1.25rem; }
+}
+
+/* On a phone the lead takes the full measure, so the frame is widened past
+   the hero's right edge until only the oval's glow shows there, and the line
+   down from the spark, which would cross the lead, is not drawn. */
+@media (max-width: 720px) {
   .catalog-hero-img { width: 160%; object-position: 0 50%; }
   .catalog-hero-lead { max-width: 36rem; }
   .catalog-hero-line--down { display: none; }
