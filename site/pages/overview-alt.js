@@ -107,7 +107,8 @@
               '<span class="ahero-sentence accent">' + UI.esc(headline.accent) + "</span> " +
               '<span class="ahero-sentence">' + UI.esc(headline.proof) + "</span>" +
             "</h1>" +
-            '<p class="ahero-lead">' + UI.esc(lead) + "</p>" +
+            /* "fast-track" stays whole on a phone. */
+            '<p class="ahero-lead">' + UI.keepCompounds(lead) + "</p>" +
             '<div class="ahero-actions">' + actions + "</div>" +
           "</div>" +
         "</div>" +

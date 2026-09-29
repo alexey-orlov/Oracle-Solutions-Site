@@ -8,6 +8,13 @@
     "unreferenced": true,
     "note": "Kept on disk. The home page renders no hero photograph."
   },
+  "products": {
+    "file": "heroes/products.jpg",
+    "alt": "A tall oval of light open in a dark wall, an orange rim along its edge, its light running out across still water",
+    "focal": "100% 30%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
   "account-insights": {
     "file": "heroes/account-insights.jpg",
     "alt": "A web of linked signal nodes glowing above an out-of-focus night city, seen past a silhouetted figure",
