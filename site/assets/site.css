@@ -1611,6 +1611,13 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 @media (max-width: 1024px) { .catalog-hero { --sp-w: 5.5rem; --sp-r: 1.5rem; } }
 
+/* A tablet's hero is taller for its width, so the photograph grows and only
+   its dark side would show: shifting it within the frame brings the man in
+   the cap back, still clear of the lead, his face short of the spark. */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .catalog-hero-img { object-position: 63% 30%; }
+}
+
 @media (max-width: 768px) {
   .catalog-hero { --ch-pt: 4.5rem; --ch-pb: 4.5rem; --ch-gap: 3.25rem; --ch-under: 1rem; --sp-w: 3.5rem; --sp-r: 1.25rem; }
 }
