@@ -222,6 +222,7 @@ Exact commands are in HANDOFF §4.
   - Check every changed screen at 1440, 1280, 1024, 768 and 375, and the H1 at 320.
   - Hide the other `#app` sections and add `is-in` to the `.reveal` blocks, so each screenshot is taken at scroll 0 (screenshots taken after scrolling come back black).
   - Check horizontal overflow at every width.
+  - **A component's states are screens too** (2026-09-29: round 20 rebuilt the contact band and checked the resting form, and the confirmation kept a panel drawn for the old ground until Alex found it *"a bit ugly"*, §50). After restyling a form, look at its confirmation, its error line and its cannot-send line on the new ground, not only the resting fields. Reach the confirmation through a stub inside the page that answers the POST (`window.fetch` wrapped for POST, `SITE_CONFIG.formEndpoint` set to an `.invalid` host), so nothing is sent.
   - A component moved to a new page takes its wrapper, modifier classes and breakpoints with it.
 - **Gates.** All three must pass:
   - the checker prints OK;
