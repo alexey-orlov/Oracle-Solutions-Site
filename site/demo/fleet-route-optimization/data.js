@@ -26,7 +26,7 @@
   var CHARGERS = [
     { id: "CH-DEP", name: "Depot chargers",       x: 548, y: 318, kind: "depot · 22 kW · 6 bays" },
     { id: "CH-BRK", name: "Brookfield hub",       x: 452, y: 150, kind: "rapid · 4 bays" },
-    { id: "CH-DUN", name: "Dunmere rapid charger", x: 935, y: 305, kind: "rapid · 2 bays · shared public" },
+    { id: "CH-DUN", name: "Dunmere rapid charger", x: 900, y: 192, kind: "rapid · 2 bays · shared public" },
     { id: "CH-GLE", name: "Glenwick hub",         x: 668, y: 420, kind: "rapid · 4 bays" }
   ];
 

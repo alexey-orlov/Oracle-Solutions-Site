@@ -438,10 +438,13 @@ window.SITE_CONTENT = {
     intro: "Every product runs in your own Oracle tenancy and starts with a Jumpstart on your data — at a fixed price where one is published, otherwise scoped per engagement. Filter by the Oracle platform it runs on, or search for the job you need done.",
     searchPlaceholder: "Search products or workflows…",
     /* Round 18 (Alex): the catalog's way out is its last tile, "Looking for
-       other solution? Let's talk", into the home page's contact. */
+       other solution? Let's talk", into the home page's contact, with a product
+       tile's anatomy so it does not stand empty beside one. */
     askTile: {
       title: "Looking for another solution?",
-      body: "Tell us the workflow you need fixed. We will say which of these is closest, or what it would take to build one on your data.",
+      body: "PROVISIONAL",
+      outcomes: ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL"],
+      image: "assets/img/groups/ask.svg",
       cta: { label: "Let’s talk", route: "#/#request-a-demo" }
     }
   },

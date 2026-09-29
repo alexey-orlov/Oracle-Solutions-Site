@@ -194,7 +194,7 @@
     D.chargers.forEach(function (c) {
       svg.push('<g class="chg' + (c.id === "CH-DUN" && warnDun ? " warn" : "") + '"><circle cx="' + c.x + '" cy="' + c.y + '" r="10"/>' +
         '<path d="M' + (c.x - 2) + "," + (c.y - 6) + " l5,0 l-3,5 l4,0 l-7,8 l2,-6 l-3,0 z\" fill=\"#fff\"/>" +
-        (c.x > 780 ? '<text text-anchor="end" x="' + (c.x - 14) + '" y="' + (c.y + 4) + '">' : '<text x="' + (c.x + 14) + '" y="' + (c.y + 4) + '">') + c.name + "</text></g>");
+        (c.x > 780 ? '<text text-anchor="middle" x="' + c.x + '" y="' + (c.y - 16) + '">' : '<text x="' + (c.x + 14) + '" y="' + (c.y + 4) + '">') + c.name + "</text></g>");
     });
     svg.push('<g class="dep"><rect x="' + (D.depot.x - 9) + '" y="' + (D.depot.y - 9) + '" width="18" height="18" rx="3"/>' +
       '<text x="' + (D.depot.x - 60) + '" y="' + (D.depot.y - 16) + '">' + D.depot.name + "</text></g>");
