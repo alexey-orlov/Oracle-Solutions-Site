@@ -70,7 +70,7 @@
 .ahero-title {
   margin-top: 1.5rem;
   max-width: 11em;
-  font-size: clamp(2.375rem, min(1.2rem + 4.2vw, 8.4vh), 6rem);
+  font-size: clamp(2.375rem, min(1.2rem + 4.2vw, 8.2vh), 6rem);
   line-height: 1;
   letter-spacing: .01em;
   color: #ffffff;
@@ -100,10 +100,10 @@
 
 /* The second line runs at 25.5 degrees off vertical, the long axis of the
    spark glyph, so line and spark read as one mark. The crossing sits just
-   left of the figures: above the hairline the line clears the H1's line
-   ends, and below it the line falls leftward through the gap and past the
-   buttons, which is why the lead's measure is held back (.ahero-lead) and
-   why the foot stacks below 1280 px, where that gap closes. */
+   left of the figures, where above the hairline the line clears the H1's
+   line ends. Below the hairline its arm fades out within 90 px, while it is
+   still in the gap beside the lead, so it never runs through a word or a
+   button. */
 .ahero-cross {
   position: absolute;
   left: calc(100% - var(--stats-w) - .5rem);
@@ -118,7 +118,7 @@
   top: 0;
   width: 1px;
   height: 300vh;
-  background: rgba(255, 255, 255, .38);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, 0) calc(50% + 90px));
   transform: translate(-50%, -50%) rotate(25.5deg);
 }
 
@@ -143,13 +143,7 @@
 
 .ahero-copy { min-width: 0; }
 
-/* The measure stops short of the falling line: it drifts ~0.48 px left per
-   px down, ~70 px across the lead's height. */
-.ahero-lead {
-  max-width: min(36rem, calc(100% + var(--foot-gap) - 5rem));
-  color: rgba(255, 255, 255, .86);
-  text-wrap: pretty;
-}
+.ahero-lead { max-width: 36rem; color: rgba(255, 255, 255, .86); text-wrap: pretty; }
 .ahero-cta { margin-top: clamp(1.25rem, 3vh, 2rem); }
 
 /* On the photograph the grey secondary would read as a disabled button. */
@@ -219,16 +213,20 @@
   to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
 }
 
-/* Below 1280 px the lead would be squeezed beside the figures and the
-   falling line would meet the buttons, so the figures move under the
-   buttons. The crossing moves right, over the photograph's light, and its
-   line runs only upward from the spark, since below the hairline every
-   column now holds words. */
-@media (max-width: 1279px) {
+/* Below 1200 px the two buttons no longer fit beside the figures, so the
+   figures move under the buttons. The crossing moves right, over the
+   photograph's light, and its line runs only upward from the spark, since
+   below the hairline every column now holds words. */
+@media (max-width: 1199px) {
   .ahero-foot { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
   .ahero-stats { max-width: 40rem; }
   .ahero-cross { left: 80%; }
-  .ahero-diag { height: 150vh; transform-origin: 50% 100%; transform: translate(-50%, -100%) rotate(25.5deg); }
+  .ahero-diag {
+    height: 150vh;
+    background: rgba(255, 255, 255, .4);
+    transform-origin: 50% 100%;
+    transform: translate(-50%, -100%) rotate(25.5deg);
+  }
 }
 
 /* Below 1101 px the oval would stand behind the copy, so the picture shows

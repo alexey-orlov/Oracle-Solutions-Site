@@ -6938,7 +6938,12 @@ _A change between rounds, made in its own session while the group-name fix (§45
 - **Checker:** the block that validated the list (keys, lengths, ids, customer names) and warned on every run is replaced by a guard. It fails if either file exists under `site/` again, or if either index file loads a `review.js`. Each half was run against a copy with the panel put back, and failed.
 - **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products, the panel's warning gone; on the saved files, the home page loads twelve scripts and no `review.js`, and `#/`, `#/products`, a product page and its Contacts tab, `#/sellers` and the archive theme render no `.review-*` element, define no `SITE_REVIEW`, request no `review.js` and log nothing to the console; the deny-list grep returns nothing.
 - **No contract bump:** the plugin never wrote the panel's files, so its listings pass the new guard as they are. Round 20 stays with the product-pages session.
-- **Not published.** The shared link, version 1790676289-ee3a, still shows the pill until the next publish maps `data/review.js` and `assets/review.js` to `null` (START-HERE §6, `site.manifest.json` › `publish.fullTree`).
+- **Published** on Alex's word, which asked for localhost and the claude.ai link both to show the current site: version 1790678606-4e27, 2026-09-29 13:43, from `main` as it stood.
+  - **The map, 15 entries:** the wrapper; a fresh `data/links.js`; the nine changed files (`assets/app.js`, `assets/forms.js`, `assets/site.css`, `data/content.js`, `data/content-case.js`, `pages/overview.js`, `pages/product.js`, `pages/products.js`, `pages/sellers.js`); the two new files of the work-in-progress `#/alt` home (`assets/home-alt.css`, `pages/overview-alt.js`; its session confirmed they were whole and namespaced, §47); and `data/review.js` and `assets/review.js` mapped to `null`. The change set was found by comparing every path `list_files` showed with the local file, and matched the files git shows changed after the previous publish.
+  - **Went out with it:** §45, §46 and §48, all on `main`.
+  - **Left out:** `demo/account-insights/`, mid-build and not named in `links.json` (its session asked); the seven images under `assets/img/` that no page references; the never-publish files.
+  - **Before:** the checker OK; the console clean and no horizontal overflow at 1440 and 375 on every route, `#/alt` included; the deny-list grep clean.
+  - **After:** `list_files` shows 135 files, the two panel files gone and the two `#/alt` files added; the live page renders with no pill. Localhost is `tools/serve.py` on 8765, run by another session, and serves the same tree.
 - **Seen and left as is:**
   - `docs/HANDOFF-erp-qa-demo.md` records a past QA run whose "one standing warning is the internal review panel". It is a dated record in a walkthrough's own handoff.
   - Oracle-Packaging-Skills' `deny-list.example.json` still says the checker matches the deny-list against `review.js` as well as `content.js`. That is one comment line in the plugin repo, where plugin changes are made.
@@ -6975,7 +6980,7 @@ _A fix between rounds, made in the session that built round 18's home page, whil
 - **Checker:** it fails a group `full` that is one word or puts more than 22 characters before its last word (the fit is measured on *Enterprise knowledge &*), `groupTiles()` rendering the name as one run or breaking it without the space, `.gtile-body` without `container-type: inline-size`, `.gtile-name` without the `--name-fit` clamp above or below 1280, and the one-column step anywhere but 720. Each guard was run against a copy with its part reverted, and failed.
 - **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the known About-H2 warning; at 1920, 1680, 1536, 1440, 1366, 1300, 1280, 1279, 1200, 1150, 1101, 1100, 1024, 900, 834, 800, 768, 721, 720, 640, 561, 430, 390, 360 and 320, every name two lines, the one-liners and arrows level, no horizontal overflow; the console clean. The browser pane was hidden, so no screenshot was taken: everything above is measured geometry.
 - **No contract bump:** the rule binds the site's own renderer and stylesheet, and the six names pass it as they are.
-- **Not published.** The shared link is version 1790676289-ee3a (§42); this goes out with the next publish, on Alex's word.
+- **Published** in version 1790678606-4e27 on 2026-09-29 (§44, *Published*).
 
 ## 46. Cross-system ERP Q&A and Business metrics Q&A on two platforms, 2026-09-29
 
@@ -7004,7 +7009,7 @@ _A change between rounds, made in its own session while the Internal-panel remov
 - **Checker:** `facet` is a string, or an array of two or more canonical ids in canonical order with no repeats; `tags` holds one label per platform; a second platform is named by its full name in `technology.narrative` and in a Data & platform item; the `catalog: false` rule reads every platform in the list. Each rule was run against a copy with its part broken, and failed.
 - **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products; the console clean on the catalog and both product pages; no horizontal overflow at 1440 or 375; the deny-list grep returns nothing. The archive theme stacks the two labels (`site-legacy.css`).
 - **No contract bump:** the plugin writes `facet` as one string with two `tags`, which still pass. Round 20 stays with the product-pages session, as in §43.
-- **Not published:** the shared link shows round 17 until Alex says publish (START-HERE §1).
+- **Published** in version 1790678606-4e27 on 2026-09-29 (§44, *Published*).
 - **Parallel sessions:** the product-pages session (round 20, on a branch) was told which regions moved, and its `overview` rewrite leaves the two products' `facet`, `tags` and `technology` alone. §44, §45 and §46 were numbered with the two sessions at work at the same time.
 - **Open for Alex:** START-HERE §9, under §46.
 
@@ -7058,4 +7063,4 @@ _A fix between rounds, made on its own branch (`fix/home-contact-no-kit`, merged
 - **Open for Alex:** START-HERE §9, under §48.
   1. The sender still answers a kit request for all offers made without the page; refusing one is a change to the live n8n sender (`mail/render.js`).
   2. The home contact's column opens on the ask's own line, with no heading of its own.
-- **Not published:** on `main`, and ships with the next publish, whose map carries `assets/app.js`, `assets/forms.js`, `assets/site.css`, `data/content.js`, `pages/overview.js`, `pages/product.js` and `pages/sellers.js`.
+- **Published** in version 1790678606-4e27 on 2026-09-29 (§44, *Published*), with those seven files in its map: `assets/app.js`, `assets/forms.js`, `assets/site.css`, `data/content.js`, `pages/overview.js`, `pages/product.js` and `pages/sellers.js`.
