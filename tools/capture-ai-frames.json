@@ -1,0 +1,60 @@
+[
+ {
+  "sleep": 400 },
+ {
+  "goto": "http://127.0.0.1:8765/demo/account-insights/index.html?tour=off&ui=clean&state=running" },
+ {
+  "eval": "(()=>{ document.querySelector('#toast').hidden = true; window.scrollTo(0, 0); return true; })()" },
+ {
+  "sleep": 500 },
+ {
+  "eval": "(()=>{ var li=document.querySelectorAll('#stages li'), a=li[0].getBoundingClientRect(), b=li[3].getBoundingClientRect(), s=document.querySelector('#stages').getBoundingClientRect(); var c=document.querySelector('#run').getBoundingClientRect(); window.__R={n:1, alt:'The morning check: stories read, noise dropped, repeats merged, accounts matched.', x:c.left, y:a.top-8, w:Math.min(436, Math.floor(656-c.left)), h:b.bottom-a.top+16}; return {region: window.__R, scrollY: scrollY}; })()" },
+ {
+  "shot": "step-1-full" },
+ {
+  "exprshot": {
+   "name": "step-1-zoom",
+   "expr": "(()=>{ var R=window.__R; return {x:R.x, y:R.y+scrollY, w:R.w, h:R.h}; })()" } },
+ {
+  "goto": "http://127.0.0.1:8765/demo/account-insights/index.html?tour=off&ui=clean&state=ran" },
+ {
+  "eval": "(()=>{ document.querySelector('#toast').hidden = true; var g=document.querySelector('.grp[data-signal=\"SIG-0929-014\"]'); window.scrollTo(0, g.getBoundingClientRect().top + scrollY - 66); return true; })()" },
+ {
+  "sleep": 600 },
+ {
+  "eval": "(()=>{ var g=document.querySelector('.grp[data-signal=\"SIG-0929-014\"]').getBoundingClientRect(); window.__R={n:2, alt:'One story reaching four accounts: named, supplier, customer and competitor.', x:g.left-6, y:g.top-4, w:436, h:Math.min(296, g.height+8)}; return {region: window.__R, scrollY: scrollY}; })()" },
+ {
+  "shot": "step-2-full" },
+ {
+  "exprshot": {
+   "name": "step-2-zoom",
+   "expr": "(()=>{ var R=window.__R; return {x:R.x, y:R.y+scrollY, w:R.w, h:R.h}; })()" } },
+ {
+  "goto": "http://127.0.0.1:8765/demo/account-insights/index.html?tour=off&ui=clean&state=brief" },
+ {
+  "eval": "(()=>{ document.querySelector('#toast').hidden = true; var p=document.querySelector('.moves-panel'); window.scrollTo(0, p.getBoundingClientRect().top + scrollY - 72); document.querySelector('#brief').scrollTop = 0; return true; })()" },
+ {
+  "sleep": 600 },
+ {
+  "eval": "(()=>{ var s=document.querySelectorAll('#brief .b-sec'), a=s[1].getBoundingClientRect(), b=s[2].getBoundingClientRect(); window.__R={n:3, alt:'A move for Meridian Grocers: both scores and what changes, with citations.', x:a.left, y:a.top, w:Math.min(436, a.width), h:Math.min(296, b.bottom-a.top)}; return {region: window.__R, scrollY: scrollY}; })()" },
+ {
+  "shot": "step-3-full" },
+ {
+  "exprshot": {
+   "name": "step-3-zoom",
+   "expr": "(()=>{ var R=window.__R; return {x:R.x, y:R.y+scrollY, w:R.w, h:R.h}; })()" } },
+ {
+  "goto": "http://127.0.0.1:8765/demo/account-insights/index.html?tour=off&ui=clean&state=decided" },
+ {
+  "eval": "(()=>{ document.querySelector('#toast').hidden = true; var g=document.querySelector('.grp[data-signal=\"SIG-0929-014\"]'); window.scrollTo(0, g.getBoundingClientRect().top + scrollY - 66); document.querySelector('#brief').scrollTop = 0; return true; })()" },
+ {
+  "sleep": 600 },
+ {
+  "eval": "(()=>{ var g=document.querySelector('.grp[data-signal=\"SIG-0929-014\"]'), gr=g.getBoundingClientRect(), rows=g.querySelectorAll('.read'), a=rows[0].getBoundingClientRect(), c=rows[2].getBoundingClientRect(); window.__R={n:4, alt:'The review: moves approved, one rejected with its reason kept.', x:gr.left-6, y:a.top-6, w:436, h:Math.min(296, c.bottom-a.top+12)}; return {region: window.__R, scrollY: scrollY}; })()" },
+ {
+  "shot": "step-4-full" },
+ {
+  "exprshot": {
+   "name": "step-4-zoom",
+   "expr": "(()=>{ var R=window.__R; return {x:R.x, y:R.y+scrollY, w:R.w, h:R.h}; })()" } }
+]

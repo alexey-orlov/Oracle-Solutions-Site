@@ -10,6 +10,7 @@
 //   {"scrollthrough": ms}   scroll to the bottom in 700 px steps (lazy images load), then back to top
 //   {"clipshot": {"name": "n", "selector": "css"}}  PNG of one element's box
 //   {"rectshot": {"name": "n", "x": 10, "y": 20, "w": 400, "h": 280}}  PNG of a CSS-px rectangle (at DPR)
+//   {"exprshot": {"name": "n", "expr": "js returning {x, y, w, h}"}}  the same, measured on the page (page coordinates)
 //   {"goto": "url"}         navigate, then wait 1800 ms
 //   {"size": {"w": 375, "h": 812, "mobile": true}}  change the viewport
 // Every shot prints "shot <name>" so a caller can log per unit of work.
@@ -82,6 +83,13 @@ try {
       const q = s.rectshot;
       const r = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true, clip: { x: q.x, y: q.y, width: q.w, height: q.h, scale: 1 } });
       save(q.name, r.data);
+    }
+    else if (s.exprshot) {
+      // {"exprshot": {"name": "n", "expr": "js returning {x, y, w, h} in page CSS px"}}: measured, not guessed.
+      const q = await ev(s.exprshot.expr);
+      if (!q) throw new Error("exprshot: no rectangle for " + s.exprshot.name);
+      const r = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true, clip: { x: q.x, y: q.y, width: q.w, height: q.h, scale: 1 } });
+      save(s.exprshot.name, r.data);
     }
     else if (s.clipshot) {
       const box = await ev(`(()=>{const el=document.querySelector(${JSON.stringify(s.clipshot.selector)}); if(!el) return null; const r=el.getBoundingClientRect(); return {x:r.left+scrollX, y:r.top+scrollY, w:r.width, h:r.height};})()`);

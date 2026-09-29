@@ -1,0 +1,69 @@
+[
+  {"sleep": 600},
+  {"eval": "(()=>{ if (document.querySelector('#gate').hidden) throw new Error('gate hidden at start'); return true; })()"},
+  {"shot": "00-gate"},
+
+  {"click": "#gate-start"}, {"sleep": 700},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 1 of 6 · 1 of 2') throw new Error('step text '+s); if (document.querySelector('#tour-next').hidden) throw new Error('passive step without Next'); return true; })()"},
+  {"shot": "01-sources"},
+
+  {"click": ".nav [data-view=accounts]"}, {"sleep": 300},
+  {"eval": "(()=>{ if (DEMO.state.view!=='today') throw new Error('guard let a nav click through on a passive step'); return true; })()"},
+
+  {"click": "#tour-next"}, {"sleep": 600},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 1 of 6 · 2 of 2') throw new Error('step text '+s); if (!document.querySelector('#tour-next').hidden) throw new Error('Next shown on an action step'); return true; })()"},
+  {"shot": "02-run-hint"},
+
+  {"click": "#btn-run"}, {"sleep": 1500},
+  {"eval": "(()=>{ if (!DEMO.state.ran) throw new Error('run did not finish'); var s=document.querySelector('#tour-step').textContent; if (s!=='Step 2 of 6') throw new Error('step text '+s); if (document.querySelector('#tour-next').hidden) throw new Error('value step without Next'); var k=DEMO.kpis(DEMO.appliedIds()); if (k.before.moves!==6||k.after.moves!==13||k.after.missed!==7||k.after.protect!==4) throw new Error('moves '+JSON.stringify(k)); if (k.before.days!==29||k.after.minutes!==119) throw new Error('time '+JSON.stringify(k)); if (k.before.research!==660||k.after.research!==39) throw new Error('research '+JSON.stringify(k)); return true; })()"},
+  {"shot": "03-value"},
+
+  {"click": "#tour-next"}, {"sleep": 600},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 3 of 6') throw new Error('step text '+s); return true; })()"},
+  {"click": "#kpi-moves"}, {"sleep": 700},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 4 of 6 · 1 of 2') throw new Error('step text '+s); if (DEMO.state.kpi!=='moves') throw new Error('kpi not selected'); if (document.querySelectorAll('.read.is-hit').length!==7) throw new Error('highlighted rows '+document.querySelectorAll('.read.is-hit').length); return true; })()"},
+  {"shot": "04-drill"},
+
+  {"click": "li[data-move=\"MV-03\"]"}, {"sleep": 800},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 4 of 6 · 2 of 2') throw new Error('step text '+s); if (DEMO.tour.avoidHit()) throw new Error('callout covers the brief'); if (!/Meridian Grocers/.test(document.querySelector('#brief h3').textContent)) throw new Error('wrong brief'); return true; })()"},
+  {"shot": "05-brief"},
+
+  {"click": "#tour-next"}, {"sleep": 700},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 5 of 6 · 1 of 3') throw new Error('step text '+s); return true; })()"},
+  {"click": "li[data-move=\"MV-02\"]"}, {"sleep": 800},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 5 of 6 · 2 of 3') throw new Error('step text '+s); if (DEMO.tour.avoidHit()) throw new Error('callout covers the review box'); if (document.querySelector('#reason').value!=='Already in our pipeline') throw new Error('reason default'); return true; })()"},
+  {"shot": "06-reject-hint"},
+
+  {"click": "#btn-reject"}, {"sleep": 800},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 5 of 6 · 3 of 3') throw new Error('step text '+s); var k=DEMO.kpis(DEMO.appliedIds()); if (k.after.moves!==12||k.after.missed!==6||k.before.days!==31||k.after.minutes!==140.5||k.before.research!==600||k.after.research!==36) throw new Error('after reject '+JSON.stringify(k)); if (!/12/.test(document.querySelector('#kpi-moves .k-after').textContent)) throw new Error('band not recomputed'); return true; })()"},
+  {"shot": "07-follow"},
+
+  {"click": "#tour-next"}, {"sleep": 700},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 6 of 6 · 1 of 2') throw new Error('step text '+s); if (!/\\(11\\)/.test(document.querySelector('#btn-approve-rest').textContent)) throw new Error('approve count '+document.querySelector('#btn-approve-rest').textContent); return true; })()"},
+  {"click": "#btn-approve-rest"}, {"sleep": 1000},
+  {"eval": "(()=>{ var s=document.querySelector('#tour-step').textContent; if (s!=='Step 6 of 6 · 2 of 2') throw new Error('step text '+s); if (DEMO.state.view!=='export') throw new Error('not on export'); var n=document.querySelectorAll('#export-table tbody tr').length; if (n!==11) throw new Error('export rows '+n); if (DEMO.tour.avoidHit()) throw new Error('callout covers the file'); var kept=document.querySelector('#kept').innerText; if (!/Already in our pipeline/.test(kept)||!/Keswick/.test(kept)) throw new Error('kept list '+kept); return true; })()"},
+  {"shot": "08-file"},
+
+  {"click": "#tour-next"}, {"sleep": 800},
+  {"eval": "(()=>{ if (document.querySelector('#gate').hidden) throw new Error('no end card'); if (document.querySelectorAll('#gate-try [data-door]').length!==3) throw new Error('doors'); if (/\\d/.test(document.querySelector('#gate-body').textContent)) throw new Error('figure on end card'); if (document.querySelector('#tour-step').textContent!=='Step 6 of 6 · done') throw new Error('counter at end'); return true; })()"},
+  {"shot": "09-end"},
+
+  {"click": "#gate-try [data-door=\"held\"]"}, {"sleep": 700},
+  {"eval": "(()=>{ if (DEMO.state.open!=='MV-13') throw new Error('held door'); return true; })()"},
+  {"click": "[data-act=confirm][data-acc=\"ACC-029\"]"}, {"sleep": 500},
+  {"eval": "(()=>{ if (document.querySelector('#btn-approve')===null) throw new Error('held move not approvable after confirm'); return true; })()"},
+  {"click": "#btn-approve"}, {"sleep": 500},
+  {"click": "[data-act=toggle-filtered]"}, {"sleep": 400},
+  {"click": "li[data-move=\"MV-14\"]"}, {"sleep": 500},
+  {"click": "[data-act=admit]"}, {"sleep": 500},
+  {"eval": "(()=>{ var k=DEMO.kpis(DEMO.appliedIds()); if (k.after.moves!==13||k.after.missed!==7) throw new Error('after admit '+JSON.stringify(k)); return true; })()"},
+  {"click": "li[data-move=\"MV-02\"]"}, {"sleep": 500},
+  {"click": "[data-act=undo]"}, {"sleep": 500},
+  {"eval": "(()=>{ var k=DEMO.kpis(DEMO.appliedIds()); if (k.after.moves!==14) throw new Error('after restore '+JSON.stringify(k)); return true; })()"},
+  {"shot": "10-free"},
+  {"click": ".nav [data-view=setup]"}, {"sleep": 400}, {"shot": "11-setup"},
+  {"click": ".nav [data-view=accounts]"}, {"sleep": 400}, {"shot": "12-accounts"},
+  {"click": ".nav [data-view=export]"}, {"sleep": 400},
+  {"click": ".seg-btn[data-mode=json]"}, {"sleep": 400}, {"shot": "13-json"},
+  {"click": "#btn-submit"}, {"sleep": 300}, {"click": "#submit-send"}, {"sleep": 300}
+]
