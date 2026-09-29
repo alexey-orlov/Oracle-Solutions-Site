@@ -302,11 +302,20 @@
     return '<p class="divider' + (center ? " divider--center" : "") + '"><span>' + esc(label) + "</span></p>";
   }
 
+  /* A product name's hyphenated compound ("Repair-or-replace", "Cross-system")
+     is one unit: balanced headings would otherwise split it at a hyphen on a
+     phone (site.css .compound). Returns escaped HTML. */
+  function keepCompounds(text) {
+    return esc(text).split(/(\s+)/).map(function (part) {
+      return /\S-\S/.test(part) ? '<span class="compound">' + part + "</span>" : part;
+    }).join("");
+  }
+
   function headline(parts, tag, className) {
     var element = tag || "h1";
     var cls = className || "h1";
-    return "<" + element + ' class="' + cls + '"><span class="accent">' + esc(parts.accent) +
-      "</span> " + esc(parts.rest) + "</" + element + ">";
+    return "<" + element + ' class="' + cls + '"><span class="accent">' + keepCompounds(parts.accent) +
+      "</span> " + keepCompounds(parts.rest) + "</" + element + ">";
   }
 
   function sectionHead(options) {
@@ -626,7 +635,7 @@
       band +
       '<div class="ptile-body">' +
         '<div class="chip-row ptile-chips">' + chips.join("") + "</div>" +
-        '<h3 class="ptile-title"><a href="' + esc(href) + '">' + esc(product.name) + "</a></h3>" +
+        '<h3 class="ptile-title"><a href="' + esc(href) + '">' + keepCompounds(product.name) + "</a></h3>" +
         '<p class="ptile-desc">' + esc(product.oneLiner) + "</p>" +
         (outcomes ? '<ul class="outcome-list ptile-outcomes">' + outcomes + "</ul>" : "") +
         '<p class="ptile-cta">' + linkArrow({ label: "Learn more", href: href }) + "</p>" +

@@ -250,6 +250,13 @@ a { color: inherit; text-decoration: none; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 p { margin: 0; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--font-sans); text-wrap: balance; }
+/* Balancing splits a hyphenated compound at its hyphen whenever that evens the
+   lines: "Repair-or- / replace decisions" at 375, although the whole compound
+   fits the line. So a product name's compounds render in this span (app.js
+   keepCompounds()) and stay whole; the data carries no invisible character.
+   `text-wrap: pretty` or `wrap` on the title would strand a short word on
+   another name instead ("Business metrics / Q&A" at 320). */
+.compound { white-space: nowrap; }
 hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 :focus-visible {
