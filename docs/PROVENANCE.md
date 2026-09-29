@@ -6927,3 +6927,35 @@ _A fix between rounds, made in its own session while the product-pages session (
   - The archive theme renders the same span without the rule, so its titles still split at the hyphen. It is frozen and never republished.
   - Measured in Chromium only. The fix rests on `white-space: nowrap`, which every engine honours.
 - **Published** in the 2026-09-29 publish, version 1790676289-ee3a (§42, Publish), with `assets/app.js` and `assets/site.css` in its map; the live files carry `keepCompounds()` and `.compound`. The code is autosync `896f80b` and `caa1f84`.
+
+## 45. The six group names set on two lines, 2026-09-29
+
+_A fix between rounds, made in the session that built round 18's home page, while the Internal-panel removal (§44), the facet tagging (§46) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: it renames nothing and writes no copy; the call is where the break falls and how the size fits. Touched: `site/pages/overview.js` (`groupTiles()`), `site/assets/site.css` (`.gtile-body`, `.gtile-name`, the `.gtiles` one-column step), `tools/check-grammar.js`, VISUAL-GRAMMAR §9, START-HERE §4 and, in AO-Personal-OS, `slide-design.md` rule 2. No content key, switch, tab or publish rule moved._
+
+- **The ask (Alex, with a screenshot of S3 on a wide screen):** *"some headings now are 2 lines, some 1 line, so content looks not so clean; fix line breaks (not allowed to do tile renaming) - decide how to handle that"*. Two names ran to two lines and four to one, so the one-liners under the four started a line higher than their row-mates'.
+- **The cause:** each name ran as one string and wrapped wherever its tile's width put it. Before the fix some row mixed its counts at every width measured from 320 to 1920; at 561 to 640 the longest names even took three lines.
+- **Decision: every name on two lines, broken before its last word.** `groupTiles()` puts a space and a `<br>` before the last word: *Enterprise knowledge & / analytics*, *Deep research & / investigation*, *Document / processing*, *Transaction & process / execution*, *Forecasting & / optimization*, *Video & image / intelligence*. The noun sits on the second line and the kind of work on the first, and the two names that already wrapped keep their breaks. The data, the rail, the chips and the hero stack keep each name as one string. The space keeps the link's accessible name *Enterprise knowledge & analytics*, not *…&analytics*; a line's trailing space takes no room.
+- **The first line must never wrap, so the size fits the tile.** `.gtile-body` is an inline-size container, and the name is `clamp(20px, (100cqi − 12px) / 10.6, 28px)` with a 24 px ceiling below 1280. The longest first line, *Enterprise knowledge &*, is 303 px at 28 px: 10.43 em of glyphs and 11 px of letter-spacing. The name holds 28 px from 1366 up and 24 px in most narrower tiles. Its lowest are 25.5 px at 1280, 21.4 at 1101, 21.9 at 800 and 21.5 on a 320 phone.
+- **Two across now stops at 720, not 560**, where the rest of the home page already goes to one column: below it a half row holds the longest first line only at 20 px (640) and 16 px (561).
+- **Rejected:**
+  - *Reserving two lines of height* (a `min-height`, or a subgrid row per row of tiles): the one-liners line up, but four names still read one line, with air under or over them. That is the mix Alex asked to remove, and a gap in a tile is what *"looks too empty"* (§38.7) objected to.
+  - *One line for every name at a smaller size*: *Enterprise knowledge & analytics* on one line at 1280 means about 19 px, barely over the one-liners' 16, and two across would still wrap it.
+  - *Breaking at the ampersand* (*Deep research / & investigation*): it reads well on three names, but in *Transaction & process execution* and *Video & image intelligence* the ampersand joins two modifiers, so the break point would have to be chosen name by name. The last-word rule needs no such choice.
+- **Before and after** (name lines per row, measured in Chromium; after the fix the one-liners and arrows are level in every row):
+
+| Width | Before | After |
+|---|---|---|
+| 1920, 1680 | 2 1 1 · 2 1 1 | 2 2 2 · 2 2 2 |
+| 1440 | 2 2 1 · 2 2 1 | 2 2 2 · 2 2 2 |
+| 1366, 1280, 1200, 1101 | 2 2 1 · 2 2 2 | 2 2 2 · 2 2 2 |
+| 1024 | 2 1 · 1 1 · 1 1 | 2 2 · 2 2 · 2 2 |
+| 800 | 2 2 · 1 2 · 2 2 | 2 2 · 2 2 · 2 2 |
+| 561 | 3 2 · 2 3 · 2 2 | one column, 2 each |
+| 390 | 2, 2, 1, 2, 1, 1 | 2 each |
+
+- **The rest of the site, audited in the same pass** for peers in a row whose titles wrap to different counts. The catalog's product names hold one line in every row from 1280 to 1920, and the catalog is one column below. Elsewhere the ragged titles sit where they move nothing: the product step strip wraps titles inside equal cells over one shared body, the hero stack's tiles bottom-align their names, the home case cards bottom-anchor their descriptors so the figures start level, and the stat labels end their tiles. None changed.
+- **Seen and left as is:** in the catalog, descriptions of two to four lines push the outcome lists under them out of line in some rows (at 1440, two of five). Levelling them means air in the shorter tiles or copy edits, so it is Alex's call.
+- **Checker:** it fails a group `full` that is one word or puts more than 22 characters before its last word (the fit is measured on *Enterprise knowledge &*), `groupTiles()` rendering the name as one run or breaking it without the space, `.gtile-body` without `container-type: inline-size`, `.gtile-name` without the `--name-fit` clamp above or below 1280, and the one-column step anywhere but 720. Each guard was run against a copy with its part reverted, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the known About-H2 warning; at 1920, 1680, 1536, 1440, 1366, 1300, 1280, 1279, 1200, 1150, 1101, 1100, 1024, 900, 834, 800, 768, 721, 720, 640, 561, 430, 390, 360 and 320, every name two lines, the one-liners and arrows level, no horizontal overflow; the console clean. The browser pane was hidden, so no screenshot was taken: everything above is measured geometry.
+- **No contract bump:** the rule binds the site's own renderer and stylesheet, and the six names pass it as they are.
+- **Not published.** The shared link is version 1790676289-ee3a (§42); this goes out with the next publish, on Alex's word.
