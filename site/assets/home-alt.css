@@ -376,7 +376,7 @@
   gap: 1rem;
   min-width: 0;
   min-height: 6.5rem;
-  padding: .875rem .875rem 1rem;
+  padding: .75rem .75rem .875rem;
   background: var(--tile-fill);
   color: #1a1a1a;
   clip-path: polygon(
@@ -413,6 +413,16 @@
   color: #1a1a1a;
   overflow-wrap: anywhere;
   text-wrap: balance;
+}
+
+/* A group name is two lines, broken before its last word (overview-alt.js),
+   and its size fits the tile so the longer first line, "Enterprise
+   knowledge &" at 10.5 em, holds one line: 15 px wherever the tile has the
+   room, never under 13. */
+.atiles--products .atile { container-type: inline-size; }
+.atiles--products .atile-name {
+  font-size: .9375rem;
+  font-size: clamp(.8125rem, calc((100cqi - 4px) / 10.5), .9375rem);
 }
 
 /* The connectors: one short line per tile column, down to the foundation. */
@@ -482,13 +492,16 @@
   .js-reveal .aoffer-grid.reveal :is(.ablock, .apanel, .abase, .aplat, .atile, .alink) { transition: none; }
 }
 
-/* From 1024 to 1279 the two columns hold, but a third of a column no
-   longer fits a group name without stranding its "&": the groups go two
-   across, the services one per row (the two panels still end level, since
-   their row stretches the shorter), and the four platforms two across. */
-@media (max-width: 1279px) {
+/* From 1024 to 1439 the two columns hold, but a third of a column is too
+   narrow for a group name's first line at 13 px: the groups go two across,
+   the services one per row (the two panels still end level, since their
+   row stretches the shorter), and below 1280 the four platforms two across. */
+@media (max-width: 1439px) {
   .atiles--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .atiles--services { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 1279px) {
   .aplats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: .5rem; }
 }
 
@@ -520,9 +533,12 @@
   .aplat:nth-child(odd) { border-left: 0; padding-left: 0; }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 720px) {
   .atiles--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .atile { min-height: 5.75rem; padding: .75rem .75rem .875rem; }
+}
+
+@media (max-width: 560px) {
+  .atile { min-height: 5.75rem; }
 }
 
 /* Paper keeps the words and drops the photograph and the black grounds. */
