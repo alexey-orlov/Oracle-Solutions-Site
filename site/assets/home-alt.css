@@ -163,13 +163,14 @@
   grid-column: 7 / 13;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  gap: 16px;
   min-width: 0;
 }
 
-/* Each figure fits its third of the column: 48 px wherever "from 30 days"
-   holds one line at that size, smaller where it would not, never under 30.
-   The three stay one size, since their columns are equal. */
+/* Each figure fits its third of the column: "30 days" is 3.54 em of Azurio
+   and "from" with its gap 41 px, so the size is 48 px from about 1640 px up,
+   ~42 at 1440, never under 30. The three stay one size, since their
+   columns are equal. */
 .ahero-stat { min-width: 0; container-type: inline-size; }
 
 .ahero-stat-value {
@@ -180,7 +181,7 @@
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 48px;
-  font-size: clamp(30px, calc((100cqi - 46px) / 3.3), 48px);
+  font-size: clamp(30px, calc((100cqi - 44px) / 3.6), 48px);
   line-height: 1;
   letter-spacing: 0;
   color: #000000;
@@ -494,7 +495,7 @@
   .ahero-actions .ahero-link { align-self: flex-start; }
   .ahero-lead { font-size: 18px; }
   .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .ahero-stat { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
+  .ahero-stat { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
   .ahero-stat-value { font-size: 40px; }
   .ahero-stat-label { margin-top: 0; font-size: 14px; }
   .away { padding: 24px; }
@@ -510,8 +511,8 @@
 /* At 320 "Built on Oracle." holds one line only at 36 px. */
 @media (max-width: 359px) {
   .ahero-title { font-size: 36px; }
-  .ahero-stat { grid-template-columns: 8.5rem minmax(0, 1fr); }
-  .ahero-stat-value { font-size: 34px; }
+  .ahero-stat { grid-template-columns: 9.75rem minmax(0, 1fr); }
+  .ahero-stat-value { font-size: 32px; }
 }
 
 /* Paper keeps the words and drops the photographs. */
