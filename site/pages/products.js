@@ -257,25 +257,46 @@
     return String(shown) + (shown === 1 ? " product" : " products");
   }
 
+  /* The catalog's head is a photographic hero after softserveinc.com's About
+     Us (Alex, 2026-09-29): the page's name and the lead in white on a dark
+     photograph, and the brand's crossing drawn over it — one hairline from
+     the left edge, under the H1, into the spark and out to the right edge,
+     and one line on the spark's long axis from the top edge to the bottom
+     edge. The hero carries the claim and nothing else, so the search box
+     sits over the results it filters. PROVENANCE §54. */
+  function hero(C) {
+    var UI = window.UI;
+    var page = C.productsPage;
+    var image = page.image || {};
+    var spark = window.brandAsset("ssSparkWhite", "assets/img/softserve-star-white.svg");
+    return '<section class="catalog-hero">' +
+      '<div class="catalog-hero-media" aria-hidden="true">' +
+        (image.file
+          ? '<img class="catalog-hero-img" src="' + UI.esc(image.file) + '" alt="" decoding="async" fetchpriority="high"' +
+            (image.focal ? ' style="--focal:' + UI.esc(image.focal) + '"' : "") + ">"
+          : "") +
+        '<span class="catalog-hero-scrim"></span>' +
+        '<span class="catalog-hero-line catalog-hero-line--left"></span>' +
+        '<span class="catalog-hero-line catalog-hero-line--right"></span>' +
+        '<span class="catalog-hero-line catalog-hero-line--up"></span>' +
+        '<span class="catalog-hero-line catalog-hero-line--down"></span>' +
+        '<img class="catalog-hero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async">' +
+      "</div>" +
+      '<div class="wrap catalog-hero-inner">' +
+        '<h1 class="h1 catalog-hero-title">' + UI.esc(page.title) + "</h1>" +
+        '<p class="lead catalog-hero-lead">' + UI.esc(page.intro) + "</p>" +
+      "</div>" +
+      "</section>";
+  }
+
   function products(params) {
     var UI = window.UI;
     var C = window.SITE_CONTENT;
     var page = C.productsPage;
     readState(params && params.query);
 
-    return '<section class="section section--tight">' +
-        '<div class="wrap products-head">' +
-          '<p class="eyebrow eyebrow--accent">' + UI.esc(C.site.owner) + " · " + UI.esc(C.site.tagline) + "</p>" +
-          '<h1 class="h1">' + UI.esc(page.title) + "</h1>" +
-          '<p class="lead products-intro">' + UI.esc(page.intro) + "</p>" +
-          '<div class="search-field products-search">' + UI.icon("search") +
-            '<label class="sr-only" for="product-search">' + UI.esc(page.searchPlaceholder) + "</label>" +
-            '<input class="input" type="search" id="product-search" placeholder="' +
-              UI.esc(page.searchPlaceholder) + '" value="' + UI.esc(state.q) + '">' +
-          "</div>" +
-        "</div>" +
-      "</section>" +
-      '<section class="section section--flush-top">' +
+    return hero(C) +
+      '<section class="section catalog-body">' +
         '<div class="wrap">' +
           '<div class="rail-layout">' +
             '<aside class="rail" id="facet-rail" aria-label="' + UI.esc(C.facets.technologyLabel) + '">' +
@@ -283,6 +304,11 @@
             "</aside>" +
             '<div class="rail-content">' +
               '<div class="results-bar">' +
+                '<div class="search-field products-search">' + UI.icon("search") +
+                  '<label class="sr-only" for="product-search">' + UI.esc(page.searchPlaceholder) + "</label>" +
+                  '<input class="input" type="search" id="product-search" placeholder="' +
+                    UI.esc(page.searchPlaceholder) + '" value="' + UI.esc(state.q) + '">' +
+                "</div>" +
                 '<p class="results-count" id="results-count" role="status" aria-live="polite">' +
                   UI.esc(countLine()) + "</p>" +
               "</div>" +
