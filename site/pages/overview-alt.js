@@ -73,14 +73,12 @@
 
     return '<section class="ahero" id="top">' +
       '<div class="ahero-photo">' +
-        /* The picture's sky, the scene and the veil, in one layer behind
-           the words (home-alt.css); under 1024 px the scene stacks above
-           them. */
+        /* The picture's sky and the scene, in one layer behind the words
+           (home-alt.css); under 1024 px the scene stacks above them. */
         '<div class="ahero-media" aria-hidden="true">' +
           (image.file
             ? '<img class="ahero-img" src="' + UI.esc(image.file) + '" alt="" width="2400" height="1352" decoding="async" fetchpriority="high">'
             : "") +
-          '<span class="ahero-scrim"></span>' +
         "</div>" +
         '<div class="wrap ahero-inner">' +
           /* The claim, its promise, then the ask: the reader has the reason

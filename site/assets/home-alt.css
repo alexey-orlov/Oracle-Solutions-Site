@@ -24,11 +24,12 @@
    under a warm peach sky, upscaled four times (Real-ESRGAN) from its 800 px
    original, so a 2x screen never draws it past its pixels (PROVENANCE §60).
    Its sky is one vertical gradient, so the hero paints the same gradient
-   behind it and the scene stands at the right, half the window wide, on the
-   hero's foot, with no seam. A white veil from the left keeps the copy on
-   white, where the accent line holds its contrast, and the one ask is the
-   site's blue button. The figures follow on white, in the live page's own
-   proof strip. */
+   across its whole width and the scene stands at the right, on the hero's
+   foot, with no seam: one picture edge to edge, as softserveinc.com's
+   colour heroes run their gradient (Alex, the same evening, on a white veil
+   behind the copy: "looks like a bug to a user"). The words are ink on the
+   sky, the one ask the site's blue button. The figures follow on white, in
+   the live page's own proof strip. */
 .ahero { background: #ffffff; color: var(--text); }
 
 /* Held to the window's height less the header and the proof strip's
@@ -84,16 +85,6 @@
   mask-image: linear-gradient(to bottom, #000000 90%, rgba(0, 0, 0, 0) 100%);
 }
 
-/* The veil: white past the accent line (43 % of the column), gone at 53 %,
-   just inside the scene, so sky and picture meet without a seam. */
-.ahero-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #ffffff 0,
-    #ffffff calc(var(--wrap-left) + var(--wrap) * .43),
-    rgba(255, 255, 255, 0) calc(var(--wrap-left) + var(--wrap) * .53));
-}
-
 .ahero-inner { position: relative; z-index: 1; width: 100%; }
 
 /* The copy takes a share of the page's column: 58 % beside the scene, all
@@ -127,6 +118,11 @@
 }
 
 .ahero-sentence { display: block; text-wrap: balance; }
+
+/* The accent line is ink here: Austin orange holds 3:1 only on white and
+   falls to 1.5-2.2:1 on the peach sky, and the sky already carries the
+   page's orange. */
+.ahero .ahero-sentence.accent { color: inherit; }
 
 /* The promise, between the claim and the ask: body copy in the brand's
    neutral 700, two even lines on a laptop or a desktop screen. */
@@ -497,7 +493,6 @@
   .ahero-photo { flex-direction: column; align-items: stretch; min-height: 0; }
   .ahero-media { position: relative; inset: auto; background: none; }
   .ahero-img { position: relative; display: block; width: 100%; }
-  .ahero-scrim { display: none; }
   .ahero-copy { --ahero-share: 1; --ahero-h1: min(44px, var(--ahero-fit)); --ahero-pad: 36px; }
   .ahero-actions { flex-direction: column; align-items: flex-start; }
   .ahero-actions .ahero-link { margin-bottom: -.26em; }
