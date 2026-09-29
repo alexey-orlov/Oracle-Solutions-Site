@@ -3,9 +3,10 @@
 
    What pages/overview-alt.js draws or re-arranges: the hero (.ahero, one dark
    screen: a photograph that dissolves into a solid ground carrying the
-   promise and the figures), S2's top spacing (.aoffer, the live page's two
-   panels), and the Why screen (.awhy: the portfolio diagram, .amap, on the
-   left of the three reasons). Everything else is the live page's, styled by
+   promise and the figures), S2's two tiles (.aoffer: the live page's two
+   ways in, re-laid as dark tiles with the words off the picture), and the
+   Why screen (.awhy: the portfolio diagram, .amap, on the left of the three
+   reasons). Everything else is the live page's, styled by
    site.css. Kept in its own file while the two versions are compared;
    adopting this page folds it into site.css (PROVENANCE §47). The theme's
    rules hold: Azurio 400 display, sentence case, orange only as the H1's
@@ -208,11 +209,60 @@
   color: rgba(255, 255, 255, .64);
 }
 
-/* ——— S2: the live page's two panels, closer under the hero ——————————— */
+/* ——— S2: the two ways in, as dark tiles ————————————————————————————— */
 
 /* After a dark hero the screen needs no hairline, and a shorter top lets
    its heading show under the hero at 1280 x 800 and 1366 x 768. */
 .aoffer.home-screen { border-top: 0; padding-top: 44px; }
+
+/* After softserveinc.com's Solutions tile (services/agentic-business-process):
+   the words on a flat dark field and the picture where the words are not
+   (Alex, 2026-09-29: "text is hard to read, images are bad resolution").
+   The live panel set its copy on a photograph behind a scrim and stretched a
+   1920 x 900 file over a near-square panel, so a retina screen drew it at
+   1.4x its pixels, and the hover zoom made that worse. Here the picture takes
+   the tile's top at 2 : 1, near its own proportions, so the same file is drawn
+   at 1.4 file pixels per screen pixel or finer, then dissolves into the
+   tile's black; the heading starts on the last of the fade, and the body,
+   the ticks and the link sit on black at 13:1 or better. The icon badge goes:
+   the picture is the tile's image now. */
+.aoffer .way--photo {
+  --way-pad: clamp(1.75rem, 2.8vw, 2.5rem);
+  min-height: 0;
+  gap: 1rem;
+  padding: 0 0 var(--way-pad);
+}
+
+.aoffer .way--photo > * { margin-inline: var(--way-pad); }
+
+.aoffer .way-img {
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  display: block;
+  width: auto;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  margin: 0;
+  transition: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000000 0%, #000000 55%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, #000000 0%, #000000 55%, rgba(0, 0, 0, 0) 100%);
+}
+
+.aoffer .way-scrim,
+.aoffer .way--photo .way-mark { display: none; }
+
+.aoffer .way--photo .way-title { position: relative; margin-top: -2.5rem; font-size: clamp(1.625rem, 2.1vw, 1.875rem); line-height: 1.15; }
+.aoffer .way--photo .way-body { max-width: 34rem; line-height: 1.5; color: rgba(255, 255, 255, .8); }
+.aoffer .way--photo .tick-list li { line-height: 1.45; color: rgba(255, 255, 255, .88); }
+.aoffer .way--photo .way-cta { padding-top: .75rem; }
+
+/* The picture holds still: scaling it on hover would draw it past its
+   pixels again. The link still moves. */
+@media (hover: hover) {
+  .aoffer .way--photo:hover .way-img,
+  .aoffer .way--photo:focus-within .way-img { transform: none; }
+}
 
 /* ——— Why SoftServe on Oracle: the diagram and the three reasons ——————— */
 

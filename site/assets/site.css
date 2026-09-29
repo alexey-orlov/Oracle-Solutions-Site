@@ -1668,6 +1668,13 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 .products-search { flex: 1 1 18rem; max-width: 32rem; }
 
+/* Where the rail stacks over the grid, the search box leads it, as it did
+   under the old head: the bar is lifted out of its column and put first. */
+@media (max-width: 720px) {
+  .catalog-body .rail-content { display: contents; }
+  .catalog-body .results-bar { order: -1; }
+}
+
 .results-count { margin-left: auto; font-size: var(--fs-sm); color: var(--text-dim); letter-spacing: .06em; text-transform: uppercase; }
 
 .rail-options { display: flex; flex-direction: column; gap: .25rem; }
@@ -2171,7 +2178,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* The frame is the screen and nothing drawn over it (Alex, 2026-09-29): a
    12px cut on a 1px #bdcbd7 hairline, and a button that opens the screen full
    size, its one mark shown on hover or focus only. */
-.hiw-open { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.hiw-open { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; text-align: left; cursor: zoom-in; }
 .hiw-open:focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
 .hiw-canvas { --cut: var(--cut-12); display: block; padding: 1px; background: var(--border); }
 .hiw-pic { --cut: 11.41px; display: block; aspect-ratio: 16 / 10; background: var(--bg-raised); }

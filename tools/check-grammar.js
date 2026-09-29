@@ -512,6 +512,9 @@ if (!arr(C.products) || C.products.length !== 9) {
         if (!range || !onScale(range.lo) || !onScale(range.hi) || !(range.hi > range.lo)) {
           fail(mw, "visual.range needs { lo, hi } on the scale, with hi above lo");
         }
+        /* Today's bar is indexed to 100 and prints what it stands for
+           (current rate, current cost): an unlabeled bar read as a bug. */
+        shortLabel("visual.before.label", before.label);
         if (!range || range.label !== fig.text) fail(mw, "visual.range.label must equal figure.text — the After bar's span prints the figure");
       } else if (range !== undefined) {
         fail(mw, "visual.range belongs to the range form only");
@@ -519,7 +522,8 @@ if (!arr(C.products) || C.products.length !== 9) {
       if (vz.form === "baseline") {
         if (before.label !== fig.text) fail(mw, "visual.before.label must equal figure.text — a baseline's Today row prints the figure");
         /* 0–100 is a share (a meter), 0–10 a count in ten (ten dots); any other
-           scale draws no chart and the figure is the tile. */
+           scale draws the Today row with its value and no bar, so the figure
+           reads as today's number, never as the saving. */
         if (sc.max === 10 && before.value !== Math.round(before.value)) {
           fail(mw, "visual.scale 0–10 draws ten dots, so before.value must be a whole number");
         }
@@ -2401,7 +2405,7 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 
   var labels = (C.shared || {}).sectionLabels || {};
-  ["outcomes", "howItWorks", "problemEyebrow", "solutionEyebrow", "metricOwner", "metricToday", "metricAfter", "shotOpen"].forEach(function (k) {
+  ["outcomes", "howItWorks", "problemEyebrow", "solutionEyebrow", "metricOwner", "metricToday", "metricAfter", "shotOpen", "shotPan"].forEach(function (k) {
     if (!str(labels[k])) fail("shared.sectionLabels", k + " missing — the Overview prints it");
   });
   /* The chart's two row names sit in a column of their own beside the bars. */
