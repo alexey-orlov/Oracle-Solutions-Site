@@ -338,14 +338,20 @@
 
   /* Round 18 (Alex): under the packaged track, the other way to buy the
      practice — a team built around the customer's own roadmap — on a dark
-     photograph so the page changes pace, after softserveinc.com's "Confidence
-     earned" banner: the copy on the photograph's dark left half, the people at
-     work on its right. It keeps the home screens' head (eyebrow, H2, lead) and
-     adds four points, the factory's parts, in a row along the band's foot. The
-     wide photograph carries the band from 769 px up; below that the tall crop
-     takes over, dark at the top where the copy sits, as softserveinc.com's own
-     banner does on a phone. The image is decorative (alt=""): the copy says
-     what the band offers, and `image.alt` describes the picture for the docs. */
+     band so the page changes pace. Re-cut on 2026-09-29 (Alex: "content
+     should be centered on the right to balance the page", and a picture of
+     "parallelism and infinity" in place of the people at a laptop): the
+     picture is softserveinc.com's own render of parallel chrome ribbons in one
+     long wave, mirrored so it runs in from the band's left edge, and the copy
+     is one column on the right, where every other home screen reads from the
+     left. The column reads claim, reasons, ask: the head (eyebrow, H2, lead),
+     the factory's four parts two by two, then the button, which closed the
+     head before the reasons until then. From 1025 px the wide crop fills the
+     band's left half and fades into its ground before the column; below that
+     the band stacks, and the tall crop, the wave along its foot, takes a row
+     of its own between the head and the parts. The picture is decorative
+     (alt=""): the copy says what the band offers, and `image.alt` describes it
+     for the docs. */
   function bespoke(C) {
     var UI = window.UI;
     var block = C.overview.bespoke;
@@ -359,36 +365,39 @@
         "</li>";
     }).join("");
 
-    /* The services' one ask (round 18): S4 above it ends on its Why list, so a
-       filled button here is the only one between the hero and the contact. */
+    /* The services' one ask (round 18): S4 above it ends on its track, so a
+       filled button here is the only one between the hero and the contact.
+       It follows the four parts: a standing team is a considered buy, so the
+       reader gets the reasons before the ask. */
     var cta = block.cta && block.cta.label
       ? '<div class="cta-row bespoke-cta">' + UI.button({ label: block.cta.label, href: block.cta.route, kind: "primary" }) + "</div>"
       : "";
 
-    /* Two rows around the picture, so a phone can stack copy, photograph and
-       parts in that order; from 769 px the picture leaves the flow and covers
-       the band. Only the points reveal, never the band — a transform on an
-       ancestor would pin the covering picture to it mid-animation — and never
-       the copy either, which is this screen's head: a reader landing on
-       Packaged services sees the band's eyebrow and heading under the track at
-       once, where a reveal would hold them back until they cleared the
-       observer's bottom margin (round 18). */
+    /* Two rows around the picture, so a phone can stack head, picture, then
+       the parts and the ask, in that order; from 1025 px the picture leaves
+       the flow and both rows put their column on the right. Only the parts
+       and the ask reveal, never the band — a transform on an ancestor would
+       pin the picture to it mid-animation — and never the head either: a
+       reader landing on Packaged services sees the band's eyebrow and heading
+       under the track at once, where a reveal would hold them back until they
+       cleared the observer's bottom margin (round 18). */
     return '<section class="home-screen home-bespoke" id="' + UI.esc(block.anchor) + '">' +
       '<div class="wrap bespoke-row">' +
         '<div class="bespoke-copy">' +
           '<p class="eyebrow bespoke-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
           '<h2 class="h2 bespoke-title">' + UI.esc(block.title) + "</h2>" +
           (block.lead ? '<p class="lead bespoke-lead">' + UI.esc(block.lead) + "</p>" : "") +
-          cta +
         "</div>" +
       "</div>" +
       '<picture class="bespoke-media" aria-hidden="true">' +
-        '<source media="(min-width: 769px)" srcset="' + UI.esc(image.wide) + '">' +
+        '<source media="(min-width: 1025px)" srcset="' + UI.esc(image.wide) + '">' +
         '<img class="bespoke-img" src="' + UI.esc(image.tall) + '" alt="" loading="lazy" decoding="async">' +
       "</picture>" +
-      '<span class="bespoke-scrim" aria-hidden="true"></span>' +
       '<div class="wrap bespoke-row">' +
-        '<ul class="bespoke-points reveal">' + points + "</ul>" +
+        '<div class="bespoke-body reveal">' +
+          '<ul class="bespoke-points">' + points + "</ul>" +
+          cta +
+        "</div>" +
       "</div>" +
       "</section>";
   }
