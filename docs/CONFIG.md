@@ -191,22 +191,22 @@ There is **no separate hero button**: a second control pointing at the same URL 
 
 ### `video` — retired in round 18
 
-The hero's demo frame **renders only when `links.json` holds the product's `video` link**, and clicking it plays the recording in a modal (§3a). A product without a recording has the single-column hero: text over the hero background image, no frame, no poster, no play button. The `video` boolean that used to put the frame on the page before a recording existed — *"the owner's statement that a recording exists or is coming"*, answered on click by a *"The demo recording is being prepared"* panel — is retired, and `check-grammar.js` fails the key on any product (Alex, round 18: *"No fake and placeholder links no longer allowed"*). A listing written with it, for example from the packaging plugin's exemplar, fails by name until the key is deleted.
+The hero's frame **renders only when `links.json` holds a recording (`video`) or a walkthrough (`interactiveDemo`) for the product** (§55): the recording where there is one, else the walkthrough (§3a). A product with neither has the single-column hero on the gradient: no frame, no poster, no play button. The `video` boolean that used to put the frame on the page before a recording existed — *"the owner's statement that a recording exists or is coming"*, answered on click by a *"The demo recording is being prepared"* panel — is retired, and `check-grammar.js` fails the key on any product (Alex, round 18: *"No fake and placeholder links no longer allowed"*). A listing written with it, for example from the packaging plugin's exemplar, fails by name until the key is deleted.
 
-Where the frame renders, the frame *is* the watch affordance, so no separate "Watch the demo" button joins the CTA row, and *Talk to us* stays the only primary CTA. The frame is also what the demo badge scrolls to on a product page; where there is none, the badge opens the walkthrough itself, from `links.json` like the hero button. Neither the badge nor the *Interactive demo* filter reads the video: they read the walkthrough link, `interactiveDemo`.
+A recording's frame *is* its watch affordance, so no "Watch the demo" button joins the CTA row, and *Talk to us* stays the only primary CTA; *Interactive demo* stays in the row wherever a walkthrough exists, beside a frame that may open it too. The demo badge opens the walkthrough itself, from `links.json` like the hero button, and never clicks the frame (§55). Neither the badge nor the *Interactive demo* filter reads the video: they read the walkthrough link, `interactiveDemo`.
 
 ### `videoPoster`
 
-The still image shown inside that media frame. **Only ever used where the frame renders** — that is, where a `video` link is set in `links.json`; on a product without one it is dead weight, which is why it is safe to leave empty everywhere.
+The still inside the hero's frame: the product's own screen, over the recording or, where there is none, over the walkthrough (§55). The key keeps its round-3 name because the packaging plugin writes it. **Required wherever the frame renders**, that is wherever `links.json` holds a `video` or an `interactiveDemo`: `check-grammar.js` fails an empty one there, a path outside `assets/img/posters/`, a file not on disk, and the tile's photograph. On a product with neither it is dead weight and stays empty.
 
 ```js
-videoPoster: "assets/img/posters/workforce-optimization.jpg",
-videoPoster: "assets/img/posters/cross-system-erp-qa.jpg",   // set; no recording linked yet
+videoPoster: "assets/img/posters/workforce-optimization.jpg",   // over the recording
+videoPoster: "assets/img/posters/account-insights.jpg",         // over the walkthrough
 ```
 
-A path relative to `site/index.html`, or an absolute `https://` URL. Landscape, 16:9, at least 1280×720.
+A path relative to `site/index.html`, under `assets/img/posters/`. Landscape, 16:9, 1600 × 900, under 300 KB.
 
-Three products carry a poster with no recording linked yet (`large-document-extraction`, `workforce-optimization`, `cross-system-erp-qa`), so nothing renders them today: the files are captured and wired, so the frame shows the product the day its `video` link lands, with no capture round.
+Six products carry one: `large-document-extraction` and `workforce-optimization` over their recordings, and `account-insights`, `cross-system-erp-qa`, `fleet-route-optimization` and `repair-or-replace-decisions` over their walkthroughs (ASSETS §1.6).
 
 The renderer resolves the poster in this order, first non-empty wins:
 
