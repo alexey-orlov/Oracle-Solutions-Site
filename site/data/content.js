@@ -11,11 +11,13 @@ window.SITE_CONTENT = {
       divider: window.brandAsset("headerDivider", "assets/img/header-divider-white.svg"),
       productName: "Oracle AI & Data Solutions"
     },
+    /* Round 18 (Alex): the Services page is gone; "Services" lands on the home
+       page's Packaged services screen, and the header's ask on its contact. */
     nav: [
       { label: "Products", route: "#/products" },
-      { label: "Services", route: "#/services" }
+      { label: "Services", route: "#/#how-we-deliver" }
     ],
-    navCta: { label: "Talk to us", route: "#/services#contact" },
+    navCta: { label: "Talk to us", route: "#/#request-a-demo" },
     primaryCta: { label: "Talk to us", route: "#/#request-a-demo" },
     footer: {
       sellersLink: { label: "For sellers", route: "#/sellers" },
@@ -24,6 +26,18 @@ window.SITE_CONTENT = {
         { label: "Terms and Conditions", url: "https://www.softserveinc.com/en-us/terms-and-conditions" }
       ],
       siteLink: { label: "SoftServe website", url: "https://www.softserveinc.com/en-us" },
+      /* Round 18 (Alex): links to Oracle's own pages, a second row set like the
+         first. The three platforms the practice builds on, in the site's
+         canonical order and under their full Oracle names, then Oracle's home
+         page, named as the first row names SoftServe's. Checked 2026-09-29:
+         each URL is the page Oracle itself calls canonical. */
+      oracleLabel: "Oracle",
+      oracleLinks: [
+        { label: "Oracle Autonomous AI Lakehouse", url: "https://www.oracle.com/autonomous-database/autonomous-ai-lakehouse/" },
+        { label: "Oracle AI Data Platform", url: "https://www.oracle.com/ai-data-platform/" },
+        { label: "Oracle Cloud Infrastructure", url: "https://www.oracle.com/cloud/" },
+        { label: "Oracle website", url: "https://www.oracle.com/" }
+      ],
       socialLabel: "SoftServe on social media",
       social: [
         { label: "LinkedIn", url: "https://www.linkedin.com/company/softserve/" },
@@ -84,7 +98,7 @@ window.SITE_CONTENT = {
       title: "Before the clock starts",
       body: "Sponsor named, two to three success metrics signed, source access approved in writing. The gate is what protects the fixed price."
     },
-    engageLink: { label: "How we engage, from proof of value to scale →", route: "#/services#how-we-engage" },
+    engageLink: { label: "How we deliver, from proof of value to scale →", route: "#/#how-we-deliver" },
     productTabs: [
       { id: "overview", label: "Overview" },
       { id: "use-cases", label: "Use cases" },
@@ -120,10 +134,6 @@ window.SITE_CONTENT = {
     heroAsideFootLabel: "Proof of value",
     videoCaption: "Watch the demo",
     demoCta: "Interactive demo",
-    videoPending: {
-      body: "The demo recording is being prepared.",
-      cta: "Request a live demo"
-    },
     industryLabels: {
       "manufacturing": "Manufacturing",
       "logistics": "Logistics & supply chain",
@@ -294,12 +304,12 @@ window.SITE_CONTENT = {
 
     catalog: {
       eyebrow: "Products",
-      title: "Kick off your AI adoption with accelerator apps.",
+      title: "Ready-to-use solutions to kick off your AI adoption.",
       cta: { label: "See all products", route: "#/products" }
     },
 
     delivery: {
-      eyebrow: "Services",
+      eyebrow: "Packaged services",
       title: "Service delivery that accelerates time to value.",
       anchor: "how-we-deliver",
       steps: [
@@ -392,11 +402,6 @@ window.SITE_CONTENT = {
         { value: "17", label: "countries" },
         { value: "54", label: "offices" }
       ],
-      partnerLine: "Built with",
-      partners: [
-        { name: "Oracle", file: window.brandAsset("oracleMark", "assets/img/oracle-wordmark-white.svg"), width: 139, height: 18 },
-        { name: "NVIDIA", file: window.brandAsset("nvidiaMark", "assets/img/nvidia-wordmark.svg"), width: 92, height: 18 }
-      ],
       link: { label: "softserveinc.com", url: "https://www.softserveinc.com/en-us/about-us" }
     },
 
@@ -432,21 +437,21 @@ window.SITE_CONTENT = {
         label: "AI Lakehouse",
         fullLabel: "Oracle Autonomous AI Lakehouse",
         description: "The self-managing governed gold layer, with Iceberg, vector search and Select AI.",
-        emptyState: "The practice delivers on this platform — see Services, or tell us the workflow you have in mind."
+        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind."
       },
       {
         id: "oracle-ai-data-platform",
         label: "AI Data Platform",
         fullLabel: "Oracle AI Data Platform",
         description: "Governed enterprise data for AI — structured, unstructured and real-time, multi-cloud.",
-        emptyState: "The practice delivers on this platform — see Services, or tell us the workflow you have in mind."
+        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind."
       },
       {
         id: "oracle-ai-fusion",
         label: "AI for Fusion Applications",
         fullLabel: "Oracle AI for Fusion Applications",
         description: "Embedded AI agents and AI Agent Studio across ERP, SCM, HCM and CX.",
-        emptyState: "The practice delivers on this platform — see Services, or tell us the workflow you have in mind.",
+        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind.",
         catalog: false
       },
       {
@@ -454,7 +459,7 @@ window.SITE_CONTENT = {
         label: "OCI + NVIDIA NeMo",
         fullLabel: "Oracle Cloud Infrastructure + NVIDIA NeMo",
         description: "GPU cloud plus the NVIDIA agent, extraction and optimization engines — AI-Q, cuOpt, NeMo.",
-        emptyState: "The practice delivers on this platform — see Services, or tell us the workflow you have in mind."
+        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind."
       }
     ],
     categoryLabel: "What it does",
@@ -2726,115 +2731,6 @@ window.SITE_CONTENT = {
 
   ],
 
-  services: {
-    hero: {
-      image: {
-        file: "assets/img/heroes/services.jpg",
-        alt: "An engineer seen from behind at a wall of code on dark monitors in a low-lit workspace",
-        focal: "50% 50%"
-      },
-      headline: { accent: "FRONTIER AI", rest: "ON ORACLE." },
-      lead: "SoftServe’s research and engineering bench works at the frontier of what agents can do. A dedicated Oracle practice brings that bench to your Oracle estate: architects who own the reference architecture shape the scope, engineers trained on the platforms below build and integrate it, and a product team turns what repeats into the agents on this site. What one delivery teaches goes into the next.",
-      secondParagraph: "One entry point for every Oracle engagement. Joint teams with Oracle’s AI & Data organization, one contract.",
-      stats: [
-        { value: "1993", label: "founded · 10,000 people in 17 countries today" },
-        { value: "1,000+", label: "experts in AI, data and R&D" },
-        { value: "30", label: "Fortune 500 clients in data and analytics" }
-      ],
-      platformsTitle: "Delivered on",
-      /* The full Oracle product names, in the canonical order — the short
-         labels are for the rail, the chips and the hero stack (round 9). */
-      platforms: [
-        { name: "Oracle Autonomous AI Lakehouse" },
-        { name: "Oracle AI Data Platform" },
-        { name: "Oracle AI for Fusion Applications" },
-        { name: "Oracle Cloud Infrastructure + NVIDIA NeMo" }
-      ],
-      cta: { label: "Request a scoping call", route: "#/services#contact" }
-    },
-
-    howWeEngage: {
-      anchor: "how-we-engage",
-      eyebrow: "How we engage",
-      title: "Every step has a number.",
-      lead: "Measuring what an innovation changes is the discipline behind everything we do. Two or three success metrics and today’s baseline are signed by you, Oracle and SoftServe before the clock starts; each step is judged against them, and you decide the next one on the measured result.",
-      steps: [
-        {
-          title: "Workshop",
-          body: "Short and time-boxed, hands-on with your team: which use case carries the value, whether its data is ready, and which of the products fits it.",
-          factLabel: "Ends with",
-          fact: "A value hypothesis and the use case to prove first"
-        },
-        {
-          title: "Jumpstart proof of value",
-          body: "4–8 weeks on your own data in a separate environment, nothing touching production. Each number is computed the same way for the current path and the new one, so the comparison holds.",
-          factLabel: "Ends with",
-          fact: "An executive readout against the signed baseline, and a costed expansion plan"
-        },
-        {
-          title: "Integration",
-          body: "Live at one location or for one document type in 3–5 months, with no manual work left in the loop — built to reach the return the proof predicted.",
-          factLabel: "Ends with",
-          fact: "Your metrics reported live, with observability in place"
-        },
-        {
-          title: "Scaling",
-          body: "All locations and document types over 3–12 months, with per-region rules where they differ.",
-          factLabel: "Ends with",
-          fact: "The same readout, organization-wide"
-        },
-        {
-          title: "Managed services",
-          body: "Optional, for as long as you choose: we keep it running and re-tuned, with periodic accuracy and cost reviews.",
-          factLabel: "Ends with",
-          fact: "Your own team taking over, trained and certified, when you decide"
-        }
-      ],
-      footnote: "On one engagement that discipline took a customer’s existing AI solution to 81% accuracy — past the point where checking the output beats doing the job by hand. Not every stage is for everyone: if you are already convinced, start at integration; a process that is identical everywhere may never need to scale; and managed services are yours to take or leave. Durations are illustrative and confirmed in scoping."
-    },
-
-    proofOfValue: {
-      anchor: "proof-of-value",
-      eyebrow: "Proof of value",
-      title: "Not a project. A proof.",
-      lead: "Every product on this site runs the same way: a signed gate, a separate environment, nothing touching production. The gate is what keeps the price fixed and the calendar short.",
-      stat: { value: "4–8 weeks", label: "to a measured result in your own tenancy" },
-      footnote: "A fixed price where one is published; otherwise agreed in the scoping call.",
-      cta: { label: "The case studies, with the figures →", route: "#/#case-studies" },
-      panels: [
-        {
-          id: "you-bring",
-          icon: "users",
-          title: "You bring",
-          body: "Nothing to build or install on your side.",
-          bullets: [
-            "A sponsor",
-            "Two or three success metrics, and today’s baseline",
-            "Read-only access to the data",
-            "The people who will judge the output"
-          ]
-        },
-        {
-          id: "you-leave-with",
-          icon: "check",
-          title: "You leave with",
-          body: "What a steering committee needs to fund integration.",
-          bullets: [
-            "A working agent on your data",
-            "A measured readout against the signed baseline",
-            "A costed plan for the next step"
-          ]
-        }
-      ]
-    },
-
-    contact: {
-      anchor: "contact",
-      heading: "Let’s talk",
-      sub: "Tell us the workflow, the volume and the current cycle time. We come back with what a proof of value would cover, what it would cost, and what it would measure."
-    }
-  },
-
   forms: {
     roles: [
       { value: "customer", label: "An Oracle customer" },
@@ -2859,8 +2755,6 @@ window.SITE_CONTENT = {
       message: "What are you trying to fix?",
       messagePlaceholder: "The workflow, the volume, and what \"good\" would look like.",
       submitDemo: "Talk to us",
-      submitRequest: "Send the request",
-      submitContact: "Request a scoping call",
       sending: "Sending…",
       required: "Required",
       invalidEmail: "Enter a valid work email address."
@@ -2869,23 +2763,12 @@ window.SITE_CONTENT = {
       anchor: "request-a-demo",
       heading: "Talk to us",
       sub: "Tell us the account or workflow you have in mind. We start with a workshop with your team, then scope a Jumpstart proof of value on your own data.",
-      submitLabel: "Talk to us",
-      secondaryHeading: "SEND A REQUEST"
-    },
-    contact: {
-      anchor: "contact",
-      heading: "LET’S TALK",
-      sub: "Tell us the workflow, the volume and the current cycle time. We come back with what a proof of value would cover, what it would cost, and what it would measure.",
-      submitLabel: "Send"
+      submitLabel: "Talk to us"
     },
     confirmations: {
       posted: {
         title: "Thanks, your request is in",
         body: "Someone from the Oracle practice will reply within two working days."
-      },
-      contactPosted: {
-        title: "Thanks, your request is in",
-        body: "Someone from the Oracle practice will reply within two working days to set up the scoping call."
       }
     },
     offline: "This preview can’t send forms. Email {mailbox} and the Oracle practice will reply within two working days.",
@@ -2901,7 +2784,7 @@ window.SITE_CONTENT = {
       title: "Get the sales kit",
       body: "Enter your SoftServe or Oracle work email and we’ll email you the sales kit — what an account team needs to position SoftServe’s AI agents on Oracle and open the first customer conversation. Ask for the whole portfolio or a single product.",
       again: "Request another kit",
-      routeLink: { label: "Request a scoping call", route: "#/services#contact" },
+      routeLink: { label: "Talk to us", route: "#/#talk" },
       povTitle: "See the fit in an account?",
       povBody: "Let’s discuss a Proof of Value on the customer’s own data — 4–8 weeks, ending in measurable KPIs.",
       povLink: "Talk to us"

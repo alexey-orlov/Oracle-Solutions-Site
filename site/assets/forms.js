@@ -25,9 +25,10 @@
     return config().formEndpoint || localEndpoint;
   }
 
-  function instance(kind) {
-    var forms = content().forms;
-    return kind === "contact" ? forms.contact : forms.demo;
+  /* One ask site-wide (round 10): the Services page's scoping-call form left
+     with the page in round 18, so every contact form is the "demo" one. */
+  function instance() {
+    return content().forms.demo;
   }
 
   function consentLabel() {
@@ -57,8 +58,7 @@
     var labels = C.forms.labels;
     var meta = instance(kind);
     var uid = "form-" + kind + "-" + Math.random().toString(36).slice(2, 8);
-    var submitLabel = opts.submitLabel ||
-      (kind === "contact" ? labels.submitContact : labels.submitDemo);
+    var submitLabel = opts.submitLabel || labels.submitDemo;
     /* `role: null` leaves every option unchecked — for an entry both audiences use. */
     var selectedRole = opts.role === null ? null : (opts.role || C.forms.roles[0].value);
 
@@ -263,7 +263,7 @@
           body: JSON.stringify(payload(kind, data))
         }).then(function (response) {
           if (!response.ok) throw new Error(response.status === 429 ? "limited" : "rejected");
-          confirmation(block, kind === "contact" ? "contactPosted" : "posted");
+          confirmation(block, "posted");
         }).catch(function (error) {
           busy(form, false);
           var line = error && error.message === "limited" ? C.forms.errors.limited : C.forms.errors.send;
