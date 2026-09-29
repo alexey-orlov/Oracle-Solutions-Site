@@ -981,11 +981,12 @@
     });
   }
 
-  /* `axis` is "horizontal" or "vertical". Both tab rows on a product page, How
-     it works' steps and the industries, take horizontal. */
+  /* `axis` is "horizontal", "vertical" or "both". How it works takes both: its
+     steps are a row of tabs, and a list beside the frame from 1100 to 1239px. */
   var ROVING_KEYS = {
     horizontal: { forward: ["ArrowRight"], back: ["ArrowLeft"] },
-    vertical: { forward: ["ArrowDown"], back: ["ArrowUp"] }
+    vertical: { forward: ["ArrowDown"], back: ["ArrowUp"] },
+    both: { forward: ["ArrowRight", "ArrowDown"], back: ["ArrowLeft", "ArrowUp"] }
   };
 
   function roving(buttons, onSelect, axis) {
@@ -1007,8 +1008,8 @@
 
   /* One step open at a time: its tab carries the blue underline and its panel
      shows its text at once while its frame crossfades in over the last one
-     (CSS, 200ms). ← → Home and End move along the row, as on every tab row
-     here. The phone's cards are static and take no binding. */
+     (CSS, 200ms). ← → ↑ ↓ Home and End move between the steps. The phone's
+     cards are static and take no binding. */
   function bindHowItWorks(root) {
     var block = root.querySelector("[data-hiw]");
     if (!block) return;
@@ -1039,8 +1040,8 @@
         var UI = window.UI;
         var title = button.getAttribute("data-shot-title");
         UI.modal.open('<h2 class="h3 modal-title">' + UI.esc(title) + "</h2>" +
-          '<img class="modal-shot" src="' + UI.esc(button.getAttribute("data-shot")) + '"' +
-            ' alt="' + UI.esc(button.getAttribute("data-shot-alt")) + '">',
+          '<div class="modal-shot-wrap"><img class="modal-shot" src="' + UI.esc(button.getAttribute("data-shot")) + '"' +
+            ' alt="' + UI.esc(button.getAttribute("data-shot-alt")) + '"></div>',
           { label: title, className: "modal-panel--media modal-panel--shot" });
       });
     });

@@ -2070,12 +2070,37 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 .hiw-open-mark .icon { width: 1.125rem; height: 1.125rem; }
 .hiw-open:hover .hiw-open-mark, .hiw-open:focus-visible .hiw-open-mark { opacity: 1; }
-/* Full size: the screen at the modal's width, never taller than the window. */
+/* Full size: the screen at the modal's width, never taller than the window.
+   On a phone the screen keeps the width it was captured at, 1280px, and the
+   reader pans across it: at the phone's own width its text is too small. */
 .modal-panel--shot { width: min(90rem, 94vw); }
+.modal-shot-wrap { display: block; overflow: auto; overscroll-behavior: contain; }
 .modal-shot { display: block; width: 100%; height: auto; max-height: calc(92vh - 8rem); object-fit: contain; background: #ffffff; }
+@media (max-width: 767px) {
+  .modal-shot-wrap { max-height: calc(92vh - 7rem); }
+  .modal-shot { width: 80rem; max-width: none; max-height: none; }
+}
 
 /* The phone's cards; hidden until 767px. */
 .hiw-cards { display: none; }
+
+/* A short window beside the main column (1366 × 768 and the like): the block
+   gives up 26px, so its frame ends at, or within a few pixels of, the fold. */
+@media (min-width: 1240px) and (max-height: 820px) {
+  .hiw { gap: 1rem; }
+  .hiw .ov-h2 { font-size: 2.5rem; }
+  .hiw-tab { padding: .5rem 0 .75rem; }
+}
+
+/* One column from 1100 to 1239px (a laptop zoomed in): the column is wide
+   enough for the steps to stand as a list beside the frame, which keeps the
+   block on one screen, where a frame at the column's full 1047px would not. */
+@media (min-width: 1100px) and (max-width: 1239px) {
+  .hiw-body { display: grid; grid-template-columns: 18rem minmax(0, 1fr); column-gap: 2rem; align-items: start; }
+  .hiw-tabs { grid-auto-flow: row; grid-auto-columns: auto; box-shadow: none; }
+  .hiw-tab { padding: 1rem 0 1rem 1.25rem; box-shadow: inset 0 -1px 0 var(--border-panel); }
+  .hiw-tab.is-active { box-shadow: inset 2px 0 0 var(--action), inset 0 -1px 0 var(--border-panel); }
+}
 
 @media (max-width: 1099px) {
   .ps-plate { padding: 2rem; }
