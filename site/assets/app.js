@@ -574,35 +574,6 @@
     select(anchor === CONTACT_ANCHORS.kit ? 1 : 0);
   }
 
-  function media(key) {
-    return (C.media && C.media[key]) || null;
-  }
-
-  function diagram(key) {
-    var registry = window.SITE_DIAGRAMS;
-    if (!registry || typeof registry.render !== "function") return "";
-    return registry.render(key);
-  }
-
-  function figure(key, options) {
-    var opts = options || {};
-    var item = media(key);
-    if (!item) return "";
-    var classes = ["media-figure"];
-    if (opts.className) classes.push(opts.className);
-    var art = item.diagram ? diagram(item.diagram) : "";
-    if (art) {
-      classes.push("media-figure--diagram");
-      return '<figure class="' + classes.join(" ") + '" role="img" aria-label="' +
-        esc(opts.alt === false ? "" : item.alt) + '">' + art + "</figure>";
-    }
-    if (!item.src) return "";
-    return '<figure class="' + classes.join(" ") + '">' +
-      '<img src="' + esc(item.src) + '" alt="' + esc(opts.alt === false ? "" : item.alt) +
-      '" loading="lazy" decoding="async">' +
-      "</figure>";
-  }
-
   function orderedProducts() {
     var order = (CFG && CFG.productOrder) || [];
     var rank = {};
@@ -832,9 +803,6 @@
     card: card,
     productTile: productTile,
     orderedProducts: orderedProducts,
-    media: media,
-    figure: figure,
-    diagram: diagram,
     facetLabel: facetLabel,
     productFacets: productFacets,
     industryLabel: industryLabel,

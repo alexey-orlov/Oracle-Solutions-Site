@@ -52,43 +52,6 @@ window.SITE_CONTENT = {
     }
   },
 
-  media: {
-    "account-insights": {
-      diagram: "account-insights",
-      alt: "Flow diagram: signal feeds and client context enter the Account insights app and NVIDIA AI-Q on a dedicated AI cluster on Oracle Cloud Infrastructure, which filter, fan out, reason, score and cite; a reviewer approves before one JSON per account goes to the CRM"
-    },
-    "case-evidence-collection": {
-      diagram: "case-evidence-collection",
-      alt: "Flow diagram: source exports enter evidence assembly and NVIDIA AI-Q multi-document reasoning on a dedicated AI cluster on Oracle Cloud Infrastructure, and the assembled case reaches an investigator UI with amend, approve and a full audit log"
-    },
-    "plan-vs-actual-investigation": {
-      diagram: "plan-vs-actual-investigation",
-      alt: "Flow diagram: approved exports enter a conformed data model and hybrid retrieval on Oracle Cloud Infrastructure, and the review app presents variances, drivers and citations, with unresolved records reported as coverage gaps"
-    },
-    "large-document-extraction": {
-      diagram: "large-document-extraction",
-      alt: "Flow diagram: contracts from the repository enter the extraction pipeline and NVIDIA AI-Q vision-language models on a dedicated AI cluster on Oracle Cloud Infrastructure, and a reviewer validates in a split view before approved rows export to the cost or ERP system"
-    },
-    "workforce-optimization": {
-      diagram: "workforce-optimization",
-      alt: "Flow diagram: Oracle Field Service data enters the workforce app and the NVIDIA cuOpt solver on a dedicated AI cluster on Oracle Cloud Infrastructure, a dispatcher approves the plan, and the approved plan is written back to Oracle Field Service"
-    },
-    "cross-system-erp-qa": {
-      diagram: "cross-system-erp-qa",
-      alt: "Diagram: Oracle applications and one or two other sources connect into Oracle Autonomous AI Lakehouse — governed data model, masking and row rules, SQL firewall, Select AI — which answers in plain language over certified views and dashboards"
-    },
-    "business-metrics-qa": {
-      diagram: "business-metrics-qa",
-      alt: "Diagram: existing catalogs, linked databases and existing platforms stay where they are and connect into Oracle Autonomous AI Lakehouse as the governed gold layer, which answers across every source with no data movement"
-    },
-
-    "repair-or-replace-decisions": {
-      diagram: "repair-or-replace-decisions",
-      alt: "Flow diagram: media from the capture channel and the asset record enter the Repair-or-replace decisions app and the NVIDIA AI Enterprise vision and reasoning engine on Oracle Cloud Infrastructure; a reviewer confirms or overrules each call before it reaches the booking, dispatch or claims system"
-    }
-
-  },
-
   disclaimers: {
     kpiTile: "KPIs measured before/after on proof-of-value data; figures are illustrative, not contractual.",
     kpiTileTargets: "Targets from the proof of value; figures are illustrative, not contractual.",
