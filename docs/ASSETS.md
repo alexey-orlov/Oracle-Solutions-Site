@@ -77,7 +77,7 @@ Six products have a walkthrough, and their frames are its own screens on its syn
 | | 3 | `brief`, Meridian Grocers' move open | both scores and *What changes*, with its citation markers |
 | | 4 | `decided`, scrolled to the first story | three reads decided: two approved, one rejected with its reason |
 
-- **Account insights' regions are shaped by the anchor rule.** A region in the middle of the frame leaves no corner free, so step 1's stops at the inset's edge (396 px wide, zoom 792 px) and steps 2 and 4 are scrolled to sit just under the top bar; steps 1, 2 and 4 anchor `br`, step 3 `bl`.
+- **Account insights' regions are shaped by the anchor rule.** A region in the middle of the frame leaves no corner free, so step 1's stops 6 px short of the inset (380 px wide, zoom 760 px) and steps 2 and 4 are scrolled to sit just under the top bar; steps 1, 2 and 4 anchor `br`, step 3 `bl`.
 - **Workforce's settings screen is not a step.** Its only frame shows plan v1's uncleared *+4.8%* behind the drawer, so *Set the rules* is folded into step 1's text.
 - **Repair-or-replace's two-market rules screen is not a step.** It is 1,210 px wide, and no part of it fits the inset, so step 2 shows one case judged against its market's rule.
 
