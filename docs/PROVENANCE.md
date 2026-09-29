@@ -6801,3 +6801,57 @@ The big figure is unchanged on every card (Alex: *"short metric is good"*). The 
 - **The product pages' own case studies** (Use cases tab) keep their stories and caveat sentences. Only the home cards changed.
 - **Account insights says it two ways:** its rail reads *Hours, rather than the next quarterly review* and its case figure *Same-day insight* (round 11's item). The card's small line now carries the quarterly-review baseline.
 - **The packaging plugin's own one-liner card** still asks for a *how* clause. Plugin 0.1.39 is installed from this Mac's checkout, which is 2 commits ahead of origin's 0.2.x and 40 behind. This is filed as a separate task.
+
+## 42. A new product: Repair-or-replace decisions, 2026-09-29
+
+_Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pack spec `packs/repair-or-replace-decisions/pack-spec.md` (Oracle-Packaging-Skills, origin/main 16add02). Two other sessions were reworking the home and product-page layouts at the time. Only this product's data, figure, walkthrough and images were written; no renderer, stylesheet or layout file was touched. Not published. Numbered §42 because §40.6 holds §41 and round 20 for the product-pages merge._
+
+- **The ask (Alex, 2026-09-29):** list the pack as a product, following the site's rules, while two sessions change the layouts. He then passed on earlier feedback on the case, *"there is not enough focus on business value"*, and asked to *"revise the messaging, metrics from that perspective and take that in account when preparing the website page"*. The pack spec was recast value-first and its four print documents rebuilt before the page was written from it.
+- **Clearance (Alex):** the source engagement's customer is never named and its logo never used, anywhere. The site's name gates already list the customer. The plugin's deny-list gained four related brand names (Oracle-Packaging-Skills 3c323d4). The one descriptive mention of the customer in this file (§40.6) was removed. The guards keep the name because they exist to catch it: the name pattern recorded in this file and `CUSTOMER_NAMES` in the checker.
+- **What it is:** the person who books the job (a call agent, a depot surveyor, a claims handler) confirms or overrules a repair-or-replace call measured from photos, before the job is booked. The case is vehicle glass; the listing spans five industries that make the same call on the same pipeline: vehicle glass, shipping containers, rental and lease returns, insurance claims, and aircraft skin. Group: *Video & image intelligence*. Platform chip: *OCI + NVIDIA NeMo* (the site's facet label; the engine is NVIDIA AI Enterprise with VSS and AI-Q, which the Technology tab names). Contact: Alex.
+- **Business value first:**
+  - The eyebrow asks *What if a wrong call were caught before it cost anything?*
+  - The one-liner leads with the saving and the job done once; what the product does comes second.
+  - The problem names who decides and what a wrong call costs: a needless replacement for the payer, a repeat visit for the network.
+  - The measures are the value per unit, not accuracy:
+    - *about £460* saved per needless replacement avoided (UK industry averages for vehicle glazing, 2013; about $250 in the US);
+    - *$300–400 and 4 days* per avoidable recalibration;
+    - wrong calls *45 → 36 per 1,000 cases*.
+    All three are modelled; the metrics note says so, and says the proof of value measures each one on the customer's own cases.
+  - The ROI line carries the spec's two-buyer decision: the saving lands on the payer (the insurer or lessor keeps the price gap) and on the operator (one visit with the right part instead of two).
+  - The walkthrough's value band agrees with the page. Its needless-replacement and repeat-visit rates (3.0% → 2.4%, 1.5% → 1.2%) add up to the page's 45 → 36 per 1,000. Its count lines carry *about £460 kept on each* and *$300–400 and 4 days saved on each*, and its third number is *Avoidable recalibrations*, the page's word.
+- **No case study:** `caseStudy: null`. The engagement is a scoped proposal with nothing delivered yet (the spec's *Delivered* is empty).
+- **Duration:** the site's *4–8 weeks* holds everywhere; the spec's 8-week proof sits inside it.
+- **Assets:**
+  - **Hero:** `heroes/repair-or-replace-decisions.jpg`, 1920×900, 273 KB, graded to the hero set (median 60, p99 209). It is a fallback: SoftServe deck art (IP Customer Stories, image46, a template-layout background with no brand or text), because none of the decks holds a neutral inspection photograph 1920 px wide. It sits close to the Cross-system ERP Q&A hero's ribbed look. Swapping it means one file plus `alt` and `focal` in `heroes.json` and `content.js`.
+  - **Steps:** four images (`steps/repair-or-replace-decisions-1..4.jpg`), captured from the walkthrough at 2.5× and cropped to 1600×1000:
+    1. the photo with its scale tag, before it is read;
+    2. the reading stages mid-run;
+    3. a call with its measurement and rule;
+    4. the flagged call's review controls.
+    The booking file is too wide to crop legibly, so no frame shows the hand-off. No poster, because there is no video.
+- **Walkthrough:** `site/demo/repair-or-replace-decisions/`, on the shared tour engine, with synthetic data and example rules only. `links.json` › `repair-or-replace-decisions.interactiveDemo` holds its path. `interactiveDemoArtifact` and the kit keys stay empty until it is published on its own and the approved finals are in OneDrive. Fixed in this pass:
+  - the value band described above;
+  - a 551 px panel that scrolled the page sideways at 375, because `.work-main` had no column template and took the Cases table's width;
+  - the scale-tag badge, whose label ran past it;
+  - the drawing showed the zone and the measurement before the damage was read; they now appear with the reading.
+  It is stamped with the current spec (sha256:f19841556d00).
+- **Figure:** generated from the pack's architecture model by `diagram_to_site.py`. Two lines were then fitted to their boxes by hand. The target's second line, *into the booking, dispatch or claims system* (398 px in a 216 px box), became *Confirm or overrule, then the job is booked*. The destination moved into the note: *Nothing reaches the booking, dispatch or claims system until a person confirms it*. `check_diagram` still passes, because it reads titles, subs, labels and the note.
+- **Checker:**
+  - The product count went 8 → 9 (*expected exactly 9 products*).
+  - `DEMO_SLUGS` gained the slug.
+  - No contract bump, following §39.
+- **Checks:**
+  - `check-grammar` OK at 9 products, with the two known warnings.
+  - `check_diagram` passes for the site.
+  - The walkthrough runs all 11 tour steps with no script error at 1440, and none of its three tabs scrolls sideways at 375 or 320.
+  - The customer-name sweep finds only the guards.
+- **Seen, not changed (passed to the product-pages session, which answered):**
+  - Every product's Technology figure draws dark boxes with near-invisible titles: `.dg-card` fills `#0B0F13` under `.dg-title` in `var(--text)`. Flagged to Alex as a separate task.
+  - `text-wrap: balance` on headings breaks a hyphenated name at its hyphen on phones (*Repair-or- / replace decisions* at 375, where the whole compound fits). Flagged to Alex as a separate task.
+  - The label *Metrics improved* over modelled figures goes in round 20, where each figure carries a Proven, Forecast or Estimated chip. All three of this product's figures are Estimated.
+- **Open for Alex:**
+  - The PoV price.
+  - The kit links, once the approved finals are in OneDrive.
+  - The solution line's *any recalibration listed*: the spec's feature table marks *Follow-on work and safety flags at decision* as roadmap, delivered in the proof of value, while the line states it as present.
+  - Publishing, which waits for his word and for the layout sessions.
