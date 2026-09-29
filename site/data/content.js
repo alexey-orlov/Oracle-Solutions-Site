@@ -290,7 +290,7 @@ window.SITE_CONTENT = {
           bullets: [
             "A proof of value from 30 days, on your own data",
             "Measurable ROI in focus from day one",
-            "One team, from the first use case to your AI factory"
+            "One team, all the way to your own AI factory"
           ],
           image: {
             file: "assets/img/heroes/services.jpg",
@@ -331,10 +331,7 @@ window.SITE_CONTENT = {
           { icon: "why-agentic", title: "Agentic AI expertise", body: "Agents and workflows tested on real enterprise systems, with evaluation and guardrails built into every engagement." },
           { icon: "why-scope", title: "Fixed-scope delivery", body: "Signed success metrics up front, and every Jumpstart ends with an executive readout and a costed expansion plan." }
         ]
-      },
-      ctas: [
-        { label: "See the full method", route: "#/services#how-we-engage", kind: "primary" }
-      ]
+      }
     },
 
     /* Round 18 (Alex): the second way to buy the practice, under the packaged

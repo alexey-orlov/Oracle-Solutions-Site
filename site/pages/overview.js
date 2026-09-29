@@ -254,8 +254,9 @@
      the managed service is a stage of its own and the customer's choice, and
      the durations are floors ("From 4 weeks"), so the block carries no caveat.
      The three reasons to pick this team follow the track as a hairline list
-     across the full width, not a column beside it, and the screen ends on its
-     one button. */
+     across the full width, not a column beside it. Round 18: the screen ends
+     on that list. Its button led to the Services page, which is gone, and the
+     services' one ask now closes the Bespoke band directly below. */
   function ladderModifier(count) {
     return count === 5 ? " ladder3--five" : count === 4 ? " ladder3--four" : "";
   }
@@ -276,14 +277,6 @@
           '<p class="ladder3-fact-value">' + UI.esc(step.fact) + "</p>" +
         "</div>" +
         "</div>";
-    }).join("");
-
-    var ctas = (block.ctas || []).map(function (cta, index) {
-      return UI.button({
-        label: cta.label, href: cta.route,
-        kind: cta.kind === "primary" ? "primary" : "quiet",
-        iconAfter: index === 0 ? "arrow" : null
-      });
     }).join("");
 
     var pillars = ((block.why && block.why.pillars) || []).map(function (pillar) {
@@ -307,7 +300,6 @@
           '<p class="eyebrow">' + UI.esc(block.why.title) + "</p>" +
           '<div class="pillars pillars--list">' + pillars + "</div>" +
         "</div>" +
-        '<div class="cta-row deliver-cta">' + ctas + "</div>" +
       "</div>" +
       "</div></section>";
   }
@@ -337,8 +329,10 @@
         "</li>";
     }).join("");
 
+    /* The services' one ask (round 18): S4 above it ends on its Why list, so a
+       filled button here is the only one between the hero and the contact. */
     var cta = block.cta && block.cta.label
-      ? '<p class="bespoke-cta">' + UI.linkArrow({ label: block.cta.label, href: block.cta.route }) + "</p>"
+      ? '<div class="cta-row bespoke-cta">' + UI.button({ label: block.cta.label, href: block.cta.route, kind: "primary" }) + "</div>"
       : "";
 
     /* Two rows around the picture, so a phone can stack copy, photograph and

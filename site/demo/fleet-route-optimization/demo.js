@@ -101,14 +101,14 @@
   function renderBand() {
     var b = D.kpis([]), a = D.kpis(S.applied);
     var tiles = [
-      { lab: "Jobs per engineer per day", from: b.jobsPerEng.toFixed(2), to: a.jobsPerEng.toFixed(2),
-        d: deltaChip(b.jobsPerEng, a.jobsPerEng, true, "", true), note: a.completed + " of 72 booked visits done" },
+      { lab: "Cost per completed visit", from: "€" + b.costPerVisit.toFixed(2), to: "€" + a.costPerVisit.toFixed(2),
+        d: deltaChip(b.costPerVisit, a.costPerVisit, false, "", true), note: "driving and paid charging time, illustrative unit costs" },
+      { lab: "Visits per engineer per day", from: b.jobsPerEng.toFixed(2), to: a.jobsPerEng.toFixed(2),
+        d: deltaChip(b.jobsPerEng, a.jobsPerEng, true, "", true), note: "the same fleet, no new hires · " + a.completed + " of 72 done" },
       { lab: "Missed and late appointments", from: b.missedLate, to: a.missedLate,
-        d: deltaChip(b.missedLate, a.missedLate, false, ""), note: a.missed + " missed · " + a.late + " late" },
+        d: deltaChip(b.missedLate, a.missedLate, false, ""), note: "each one a second visit · " + a.missed + " missed, " + a.late + " late" },
       { lab: "Charging downtime per electric van", from: fmtMin(b.chargePerEv), to: fmtMin(a.chargePerEv),
-        d: deltaChip(b.chargePerEv, a.chargePerEv, false, "min"), note: "in-day charging, detours included" },
-      { lab: "Travel time per job", from: fmtMin(b.travelPerJob), to: fmtMin(a.travelPerJob),
-        d: deltaChip(b.travelPerJob, a.travelPerJob, false, "min"), note: "the driver behind jobs per engineer" }
+        d: deltaChip(b.chargePerEv, a.chargePerEv, false, "min"), note: "paid engineer time spent charging" }
     ];
     $("#band").innerHTML = tiles.map(function (t) {
       return '<div class="kpi"><div class="lab">' + t.lab + '</div><div class="vals"><span class="from">' + t.from +
@@ -447,8 +447,8 @@
         target: function () { return $("#btn-opt"); },
         auto: function () { optimize(false); } },
       { id: "kpis", major: 3, side: "bottom", passive: true, scroll: "center",
-        title: "See what got better",
-        body: "Same day, same bookings, same method: the day as it ran against the re-plan. Illustrative numbers from a synthetic day.",
+        title: "See what it is worth",
+        body: "Same day, same bookings: cost per visit, visits per engineer and missed appointments, as it ran against the re-plan. Illustrative unit costs on a synthetic day.",
         target: function () { return $("#band-wrap"); },
         anchor: function () { return $("#band"); },
         auto: function () { tour.next(); } },

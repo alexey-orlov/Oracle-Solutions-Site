@@ -107,6 +107,7 @@
      charge = in-day charging minutes across the 8 electric vans (incl. detours);
      travel = driving minutes across the 12 vans.                              */
   var BASE = { charge: 304, travel: 2112, engineers: 12, evs: 8, booked: 72 };
+  var UNIT = { engineerDay: 280, driveMin: 0.35, chargeMin: 0.5 };   /* € — illustrative, invented */
 
   /* The re-plan, as changes a planner can read. fixes = job problems it removes. */
   var CHANGES = [
@@ -191,8 +192,12 @@
       charge += e.charge || 0; travel += e.travel || 0;
     });
     var completed = BASE.booked - missed;
+    /* Illustrative unit costs (invented): the fleet's fixed cost per engineer-day,
+       plus driving and in-day charging priced per minute. */
+    var cost = BASE.engineers * UNIT.engineerDay + travel * UNIT.driveMin + charge * UNIT.chargeMin;
     return {
       completed: completed, missed: missed, late: late, charge: charge, travel: travel,
+      costPerVisit: cost / completed,
       jobsPerEng: completed / BASE.engineers,
       missedLate: missed + late,
       chargePerEv: charge / BASE.evs,
