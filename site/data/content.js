@@ -330,7 +330,13 @@ window.SITE_CONTENT = {
         { title: "Managed services", body: "If you want it, we keep it running and re-tuned, with periodic accuracy and cost reviews. Or your team runs it, trained and certified by us.", factLabel: "Duration", fact: "For as long as you choose" }
       ],
       why: {
-        title: "Why SoftServe on Oracle",
+        /* Alex, 2026-09-29: the block "misses the heading next to subheading
+           … around the 'AI and Oracle expertise' message". The question is
+           the eyebrow; the H2 answers it and leaves the proof to the three
+           reasons (AI experts: the agentic pillar; know Oracle: the
+           platform pillar). */
+        eyebrow: "Why SoftServe on Oracle",
+        title: "AI experts who know Oracle.",
         /* Round 17 (Alex: the same line count for each, and icons "more
            aligned with" softserveinc.com): the three bodies sit in one length
            band, 105-120 characters, which wraps each to the same number of
@@ -3044,14 +3050,17 @@ window.SITE_CONTENT = {
   ],
 
   forms: {
+    /* Alex's order and names (2026-09-29). None is picked until the email
+       has a domain, which then picks one (config.js formDomains). The legend
+       is the noun "Role", as its siblings are nouns: "I am a…" read "I am a…
+       An Oracle seller". */
     roles: [
-      { value: "customer", label: "An Oracle customer" },
-      { value: "oracle-seller", label: "An Oracle seller" },
-      { value: "oracle-partner", label: "An Oracle partner" },
-      { value: "softserve", label: "SoftServe" },
+      { value: "oracle-seller", label: "Oracle seller" },
+      { value: "softserve", label: "SoftServe seller" },
+      { value: "oracle-partner", label: "Oracle partner" },
+      { value: "customer", label: "Customer" },
       { value: "other", label: "Other" }
     ],
-    roleLabel: "I am a…",
     consent: {
       label: "I agree to SoftServe processing this inquiry. See the privacy policy.",
       linkLabel: "privacy policy",
@@ -3062,10 +3071,14 @@ window.SITE_CONTENT = {
       name: "Full name",
       email: "Work email",
       company: "Company",
-      role: "I am a…",
+      role: "Role",
       product: "Product of interest",
-      message: "What are you trying to fix?",
-      messagePlaceholder: "The workflow, the volume, and what \"good\" would look like.",
+      /* Alex, 2026-09-29: "not so good of a question". "Fix" presumed a fault
+         and spoke to a customer only; a seller brings an account. This one
+         reads the same for both, and the placeholder asks for the four facts
+         a reply needs. */
+      message: "What should we know first?",
+      messagePlaceholder: "Who it’s for, what they do today, the volume, and what should change.",
       submitDemo: "Talk to us",
       sending: "Sending…",
       required: "Required",
