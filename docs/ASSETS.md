@@ -48,7 +48,7 @@ The round's capture tool was a copy of `tools/capture-demo-frames.mjs` (`MODE=sc
 
 ### 1.3 The walkthrough products — which state each step shows
 
-Five products have a walkthrough, and their frames are its own screens on its synthetic data (1.6), captured by the recipe above in round 20. The state is the screen the walkthrough is in (its `state=` name where it has one); the region is what the ring and the inset hold.
+Six products have a walkthrough, and their frames are its own screens on its synthetic data (1.6), captured by the recipe above (in round 20; Account insights' on the same day, from its new walkthrough, §49). The state is the screen the walkthrough is in (its `state=` name where it has one); the region is what the ring and the inset hold.
 
 | Product | Step | State | The region |
 |---|---|---|---|
@@ -72,27 +72,31 @@ Five products have a walkthrough, and their frames are its own screens on its sy
 | | 2 | `ran`, one case opened | the reading, the market's rule and the call |
 | | 3 | `ran` | the before → after tile for repeat visits (not the needless-replacements tile beside it, which prints a £ unit cost) |
 | | 4 | `handoff` | the booking import: sent and held, rule, measurement, who authorised it |
+| Account insights | 1 | `running`: the morning check frozen with three stages ticked and *Match to your accounts* running | the first four stages: stories read, noise dropped, repeats merged, accounts being matched |
+| | 2 | `ran`, scrolled to the first story | the story and its four reads: the company named, a supplier, a customer, a competitor |
+| | 3 | `brief`, Meridian Grocers' move open | both scores and *What changes*, with its citation markers |
+| | 4 | `decided`, scrolled to the first story | three reads decided: two approved, one rejected with its reason |
 
+- **Account insights' regions are shaped by the anchor rule.** A region in the middle of the frame leaves no corner free, so step 1's stops at the inset's edge (396 px wide, zoom 792 px) and steps 2 and 4 are scrolled to sit just under the top bar; steps 1, 2 and 4 anchor `br`, step 3 `bl`.
 - **Workforce's settings screen is not a step.** Its only frame shows plan v1's uncleared *+4.8%* behind the drawer, so *Set the rules* is folded into step 1's text.
 - **Repair-or-replace's two-market rules screen is not a step.** It is 1,210 px wide, and no part of it fits the inset, so step 2 shows one case judged against its market's rule.
 
-### 1.4 The HTML mocks — the four products with no walkthrough
+### 1.4 The HTML mocks — the three products with no walkthrough
 
-Account insights, Case evidence collection, Plan vs actual investigation and Business metrics Q&A have no walkthrough under `site/demo/`, so their frames are captured from **one static HTML page per step**, 1280 × 800, self-contained, system fonts, no external request. The sources are committed at **`tools/step-mocks/`**, outside `site/`, so nothing there ships; its `README.md` says how to regenerate a frame. Two shells, in the walkthroughs' own two visual languages:
+Case evidence collection, Plan vs actual investigation and Business metrics Q&A have no walkthrough under `site/demo/`, so their frames are captured from **one static HTML page per step**, 1280 × 800, self-contained, system fonts, no external request. The sources are committed at **`tools/step-mocks/`**, outside `site/`, so nothing there ships; its `README.md` says how to regenerate a frame. Two shells, in the walkthroughs' own two visual languages:
 
-- **Shell A** (`shell-a.css`, the Large docs and Workforce look): a dark sidebar with the product's mark, three nav rows and a user at its foot, a white top bar with a breadcrumb and a *Synthetic data* chip, a light ground, white cards with a hairline, pill chips in blue, green, amber, red and grey, a blue primary button. **Account insights, Case evidence collection and Plan vs actual investigation.**
+- **Shell A** (`shell-a.css`, the Large docs and Workforce look): a dark sidebar with the product's mark, three nav rows and a user at its foot, a white top bar with a breadcrumb and a *Synthetic data* chip, a light ground, white cards with a hairline, pill chips in blue, green, amber, red and grey, a blue primary button. **Case evidence collection and Plan vs actual investigation**; the Account insights walkthrough is built in the same shell.
 - **Shell B** (`shell-b.css`, the Cross-system ERP Q&A look): a dark workspace bar with the workspace name and platform tabs, an *Ask* bar card, results on a light grey ground, Shell A's cards and chips; its red is an identity mark only, never a button. **Business metrics Q&A.**
 
-**Synthetic names only.** Two invented users per shell — Robin Hale and Nadia Brandt in Shell A (named in its header comment), Elena Marsh and Tomas Reyes in Shell B, so the two can never be confused — and invented companies (Alder Foods, Baltic Packaging, Meridian Grocers, Torvik Foods …); no customer, real company or person, ever. Each step's screen:
+**Synthetic names only.** Two invented users per shell — Robin Hale and Nadia Brandt in Shell A (named in its header comment), Elena Marsh and Tomas Reyes in Shell B, so the two can never be confused — and invented companies; no customer, real company or person, ever. Each step's screen:
 
 | Product | 1 | 2 | 3 | 4 |
 |---|---|---|---|---|
-| Account insights | the signals inbox: five news items, each with its source, time and the accounts it affects | one signal fanned out to four accounts (the company named, a supplier, a customer, a competitor), each with what it means for it | an opportunity brief: magnitude and confidence scores, the service line, three cited sources | the reviewer queue: one brief approved and exported to the CRM, one rejected with a comment |
 | Case evidence collection | the case list: a complaint on day 3 of its 56-day clock, four sources connected | the timeline being assembled: twelve dated events from four systems | the case file: a cited summary, one citation opened to its billing row, the draft response | the review: amend, approve or flag, and a five-entry audit log |
 | Plan vs actual investigation | the imports: four sources loaded, 96% of records resolved and 4% listed as gaps | the packages table: plan against actual, the façade package 38% over cost and nine weeks late | that package's causes: a change order cited to page 31 of the contract, weather days, rework | the expert review: confirm or reject per cause, a pattern recurring in 7 of 32 packages |
 | Business metrics Q&A | the Ask bar with a revenue question and three connected sources, no data moved | the net revenue definition, version 3, signed off by group FP&A | the answer as a table and a chart, two columns masked for this role | the audit entry: who asked, the sources read, the query, 4 s |
 
-The figures in a mock are the mock's own synthetic records, never an Overview metric. **When a product gets its own walkthrough, its frames are re-captured from the walkthrough and its folder in `tools/step-mocks/` is deleted** (Account insights' is being built by another session).
+The figures in a mock are the mock's own synthetic records, never an Overview metric. **When a product gets its own walkthrough, its frames are re-captured from the walkthrough and its folder in `tools/step-mocks/` is deleted**, as Account insights' was on 2026-09-29 (§49).
 
 ### 1.5 Never in a frame
 
@@ -145,6 +149,8 @@ A walkthrough frame shows the whole screen, so everything on it must be syntheti
 **Poster.** `assets/img/posters/cross-system-erp-qa.jpg`, 1600 × 900: a 1180 × 664 CSS-px crop at `DPR=2` (offset (233, 341), resampled from 2360 × 1328, q86, 244 KB) of the analysis view at `state=final` in Dana's own role, from a 1440 × 1100 run of `tools/capture-demo-frames.mjs` with `tools/capture-erpqa-frames.json` — the six tiles after her override (134 lines, USD 3.77 M, eight tier-A accounts), the "Why the lines are late" chart with its four causes, and the four recommended actions with their owners, values and the line that says each one is a task and nothing is written back to an ERP. The window is chosen so both boxes of `.an-cols` are whole. It is wired as `videoPoster` and renders only once the product has a recording in `links.json`.
 
 **Fleet route optimization** and **Repair-or-replace decisions.** Their walkthroughs (`site/demo/fleet-route-optimization/`, PROVENANCE §39; `site/demo/repair-or-replace-decisions/`) were built by their own sessions on synthetic data: Fleet's replayed days, vans and engineers; Repair-or-replace's cases (RR-24811 …) and example rule sets. Fleet's poster, `assets/img/posters/fleet-route-optimization.jpg`, was captured from its walkthrough at 2.5× and cropped to 1600 × 900 (§39).
+
+**Account insights.** The walkthrough (`site/demo/account-insights/`, 2026-09-29, §49) keeps the delivered prototype's flow and information model — the account list, the stories kept after noise and duplicates, the agent run, a review screen per move with scores, cited sources and approve / reject — and replaces its content wholesale. The world is an unnamed logistics and supply-chain services provider with a book of 24 invented accounts (Alder Foods, Baltic Packaging, Meridian Grocers …, ids `ACC-003`…`ACC-046`), two invented account managers (Robin Hale, Nadia Brandt), 12 generic service lines, five invented stories (`SIG-0929-014` …) and invented places (Lindmark, North Quay, Port Selden), so its frames carry none of the prototype's real account names, real news items, the customer's service lines or its data sources (the rejected reviewer console, below). Every figure on screen is computed from those records. No poster: it would render only with a recording in `links.json`.
 
 ### 1.7 Superseded in round 20
 
