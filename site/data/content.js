@@ -91,7 +91,7 @@ window.SITE_CONTENT = {
         "ai-database": { name: "Oracle Autonomous AI Database", group: "platform", icon: "oracle-database" },
         "fusion-field-service": { name: "Oracle Fusion Field Service", group: "connected", icon: "oracle-field-service" },
         "cx": { name: "Oracle Customer Experience (CX)", group: "connected", icon: "oracle-cx" },
-        "fusion-apps": { name: "Oracle Fusion Applications", group: "connected", icon: "platform-oracle-ai-fusion" }
+        "fusion-erp": { name: "Oracle Fusion Cloud ERP", group: "connected", icon: "platform-oracle-ai-fusion" }
       }
     },
     /* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
