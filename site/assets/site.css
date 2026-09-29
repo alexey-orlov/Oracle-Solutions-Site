@@ -1623,13 +1623,18 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .catalog-hero { --ch-pt: 4.5rem; --ch-pb: 4.5rem; --ch-gap: 3.25rem; --ch-under: 1rem; --sp-w: 3.5rem; --sp-r: 1.25rem; }
 }
 
-/* On a phone the hero shows the photograph's dark side and the lead takes the
-   full measure, so the line down from the spark, which would cross the lead,
-   is not drawn. */
+/* On a phone the lead takes the full measure, so the frame shows the man in
+   the cap's lit back at the right edge, his face past it; the scrim darkens
+   the rows the lead sits on; and the line down from the spark, which would
+   cross the lead, is not drawn. */
 @media (max-width: 720px) {
+  .catalog-hero-img { object-position: 25% 30%; }
+  .catalog-hero-scrim { background: linear-gradient(180deg, rgba(3, 7, 12, .15) 0%, rgba(3, 7, 12, .15) 30%, rgba(3, 7, 12, .72) 52%, rgba(3, 7, 12, .82) 100%); }
   .catalog-hero-lead { max-width: 36rem; }
   .catalog-hero-line--down { display: none; }
 }
+
+@media (max-width: 440px) { .catalog-hero-img { object-position: 50% 30%; } }
 
 /* The catalog's search box sits over the results it filters, in the bar that
    reports what a filter returned. */
