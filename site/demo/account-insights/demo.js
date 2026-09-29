@@ -287,7 +287,7 @@
     if (st === "rejected") cls.push("is-rejected");
     if (S.kpi === "moves") cls.push(m.rel === "named" ? "is-dim" : "is-hit");
     var note = "";
-    if (st === "rejected") note = '<span class="r-note">Rejected: ' + esc(S.decided[m.id].reason) + "</span>";
+    if (st === "rejected") note = '<span class="r-note">Rejected: ' + esc(decisionText(m)) + "</span>";
     /* The status sits beside the name, so the row's left part (what a zoomed
        product-page frame shows) carries the whole decision. An open move
        needs no chip: the list is the review queue. */
@@ -334,7 +334,7 @@
     if (!S.ran) { box.innerHTML = ""; return; }
     var m = S.open && move(S.open);
     if (!m) {
-      box.innerHTML = '<div class="empty">Open a move to see what changes, what to offer, both scores and every source behind it.</div>';
+      box.innerHTML = '<div class="empty">Open a move: what changes, what to offer, both scores, every source.</div>';
       return;
     }
     var a = acc(m.account), s = sig(m.signal), st = status(m);
@@ -357,9 +357,15 @@
     h.push('<div class="b-sec review" id="review">' + reviewControls(m, st) + "</div>");
     box.innerHTML = h.join("");
   }
+  /* The reviewer's reason, and their own words when they add any. */
+  function decisionText(m) {
+    var d = S.decided[m.id];
+    if (!d) return "";
+    return (d.reason || "") + (d.note ? (d.reason ? " · " : "") + "“" + d.note + "”" : "");
+  }
   function reviewControls(m, st) {
     if (st === "filtered") {
-      return '<p class="state">Below the confidence line, so it was kept off the list. Admit it if you know better.</p>' +
+      return '<p class="state">Kept off the list: below the confidence line. Admit it if you know better.</p>' +
         '<div class="row"><button type="button" class="btn" data-act="admit">Admit it to the list</button></div>';
     }
     if (st === "held") {
@@ -368,13 +374,16 @@
       }).join("") + "</div>";
     }
     if (st === "approved") {
-      return '<p class="state">Approved. It goes to the CRM file with its sources.</p><div class="row"><button type="button" class="btn" data-act="undo">Undo</button></div>';
+      var an = S.decided[m.id].note;
+      return '<p class="state">Approved. It goes into the CRM file with its sources.' + (an ? " Note: “" + esc(an) + "”" : "") +
+        '</p><div class="row"><button type="button" class="btn" data-act="undo">Undo</button></div>';
     }
     if (st === "rejected") {
-      return '<p class="state">Rejected: ' + esc(S.decided[m.id].reason) + '. The reason is kept with the decision.</p><div class="row"><button type="button" class="btn" data-act="undo">Restore it</button></div>';
+      return '<p class="state">Rejected: ' + esc(decisionText(m)) + '. Kept with the decision.</p><div class="row"><button type="button" class="btn" data-act="undo">Restore it</button></div>';
     }
     return '<label>Reason, if you reject<select id="reason">' + D.reasons.map(function (r) { return "<option>" + esc(r) + "</option>"; }).join("") +
-      '</select></label><div class="row"><button type="button" class="btn btn--danger" id="btn-reject">Reject</button>' +
+      '</select></label><label>Note, kept with the decision<textarea id="note" rows="2" placeholder="Optional"></textarea></label>' +
+      '<div class="row"><button type="button" class="btn btn--danger" id="btn-reject">Reject</button>' +
       '<button type="button" class="btn btn--ok is-filled" id="btn-approve">' + icon("check") + "Approve</button></div>";
   }
 
