@@ -478,7 +478,7 @@ window.SITE_CONTENT = {
       }
     },
     offer: {
-      title: "Everything to go live with AI.",
+      title: "Everything to go live with AI on Oracle.",
       /* S2 is the live page's two ways in; only the products panel's
          photograph changes, because the hero now carries the oval. */
       productsImage: {

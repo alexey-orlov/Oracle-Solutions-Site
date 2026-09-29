@@ -690,8 +690,12 @@
           '<p class="case-area">' + esc(item.area) + "</p>" +
         "</div>" +
       "</div>" +
+      /* No status chip on a home card (Alex, 2026-09-29: "remove 'Forecast',
+         'Proven' etc labels on the main page in case studies"): the figure
+         opens the body, and a forecast's small line still says it was
+         simulated on the customer's own history. A product page's case study
+         keeps its chip. */
       '<div class="case-card-body">' +
-        caseStatusChip(item.status) +
         '<div class="case-card-metric">' +
           '<p class="case-figure-value nums">' + esc(item.metric.value) + "</p>" +
           '<p class="case-figure-label">' + esc(item.metric.label) + "</p>" +
