@@ -481,9 +481,19 @@
   .js-reveal .aoffer-grid.reveal :is(.ablock, .apanel, .abase, .aplat, .atile, .alink) { transition: none; }
 }
 
-/* Two columns hold to 1024; below it the blocks and their layers stack,
-   each block over its own layer, and the connectors go: a line from the
-   products panel would point at the services block under it. */
+/* From 1024 to 1279 the two columns hold, but a third of a column no
+   longer fits a group name without stranding its "&": the groups go two
+   across, the services one per row (the two panels still end level, since
+   their row stretches the shorter), and the four platforms two across. */
+@media (max-width: 1279px) {
+  .atiles--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atiles--services { grid-template-columns: minmax(0, 1fr); }
+  .aplats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: .5rem; }
+}
+
+/* Below 1024 the blocks and their layers stack, each block over its own
+   layer, and the connectors go: a line from the products panel would point
+   at the services block under it. A layer then has the full measure again. */
 @media (max-width: 1023px) {
   .aoffer-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -497,6 +507,8 @@
   .alinks-cell { display: none; }
   .apanel--products, .apanel--services { margin-bottom: 2.5rem; }
   .apanel--services { margin-bottom: .75rem; }
+  .atiles--products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .atiles--services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {

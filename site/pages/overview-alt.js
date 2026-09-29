@@ -129,8 +129,9 @@
       "</p>";
   }
 
-  /* One short line per tile column, from a panel's foot to the foundation:
-     the products and the services both run on the Oracle platforms. */
+  /* Two short lines from each layer's foot to the foundation, at its
+     quarters, whatever its tile grid: the products and the services both run
+     on the Oracle platforms. */
   function links(positions) {
     return '<svg class="alinks" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true">' +
       positions.map(function (x) {
@@ -196,13 +197,13 @@
           owner(stack.productsLabel, ssMark, 80, 14) +
           '<ul class="atiles atiles--products">' + groupTiles + "</ul>" +
         "</div>" +
-        '<div class="alinks-cell alinks-cell--products">' + links([18, 50, 82]) + "</div>" +
+        '<div class="alinks-cell alinks-cell--products">' + links([25, 75]) + "</div>" +
         wayBlock(servicesPanel) +
         '<div class="apanel apanel--services" aria-hidden="true">' +
           owner((stack.services || {}).label, ssMark, 80, 14) +
           '<ol class="atiles atiles--services">' + serviceTiles + "</ol>" +
         "</div>" +
-        '<div class="alinks-cell alinks-cell--services">' + links([26, 74]) + "</div>" +
+        '<div class="alinks-cell alinks-cell--services">' + links([25, 75]) + "</div>" +
         '<div class="abase" aria-hidden="true">' +
           owner(stack.platformsLabel, oracleMark, 77, 10) +
           '<ul class="aplats">' + platforms + "</ul>" +
