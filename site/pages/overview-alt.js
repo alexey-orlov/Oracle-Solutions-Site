@@ -77,11 +77,11 @@
             : "") +
           '<span class="ahero-scrim"></span>' +
           /* One line in the dark gap between the copy and the oval, the spark
-             on it, turned to the line's angle in mount(). From 769 to
+             on it, turned to the line's angle in mount(). From 1024 to
              1239 px the copy fills more of the photograph's width, so a
-             steeper line keeps clear of the promise and the ask. At 768 px
-             and under the copy meets the oval and no gap is left, so both
-             go (home-alt.css). */
+             steeper line keeps clear of the promise and the ask. Under
+             1024 px the copy meets the oval and no gap is left, so both go
+             (home-alt.css). */
           '<svg class="ahero-line" viewBox="0 0 100 100" preserveAspectRatio="none">' +
             '<line class="ahero-line-desk" x1="54" y1="100" x2="66" y2="0"></line>' +
             '<line class="ahero-line-mid" x1="60.5" y1="100" x2="64" y2="0"></line>' +

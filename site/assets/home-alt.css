@@ -27,19 +27,20 @@
    text"; .ahero-copy sets the optical centre), with the figures on white
    under it. It is held to the window's height less the header and the
    proof strip's figures, so the strip's figures show under it from
-   1366 x 768 up: at
-   1440 x 900 it is 610 px, where the version with the figures on a dark
-   band under it stood 658 tall (Alex, 2026-09-29: the hero "can be
-   slightly smaller (but not for the full height of the metrics")). The
-   60vw cap bites only on a tall, narrow window (a tablet held upright),
-   where the photograph would otherwise tower over its copy and push the
-   figures below the fold. */
+   1366 x 768 up: at 1440 x 900 it is 610 px, where the version with the
+   figures on a dark band under it stood 658 tall (Alex, 2026-09-29: the
+   hero "can be slightly smaller (but not for the full height of the
+   metrics")). It is never taller than 47 % of its width: the picture is
+   then drawn at the full width, not cropped from the left, so the oval of
+   light keeps its place clear of the line on any window from 1024 px up,
+   a squarish monitor or a tablet held upright included. A minimum, not a
+   height, so the copy is never taller than its photograph. */
 .ahero-photo {
   position: relative;
   isolation: isolate;
   display: flex;
   align-items: center;
-  height: clamp(480px, min(calc(100vh - 290px), 60vw), 800px);
+  min-height: clamp(480px, min(calc(100vh - 290px), 47vw), 800px);
 }
 
 /* The picture, its scrim, the line and the spark, as one layer that holds
@@ -56,7 +57,7 @@
   mask-image: linear-gradient(to bottom, #000000 0%, #000000 50%, rgba(0, 0, 0, 0) 100%);
 }
 
-/* The oval of light stays at the right (67–91 % of the width from 769 px
+/* The oval of light stays at the right (66–91 % of the width from 1024 px
    up) and no copy is ever set over it. */
 .ahero-img {
   position: absolute;
@@ -261,36 +262,25 @@
 
 /* ——— the portfolio diagram ———————————————————————————————————————————— */
 
-/* Alex's layout: the packaged services over the products, the bespoke
-   services beside both, Oracle's platforms under all three. Light grounds
-   only: white blocks with a hairline, the groups' own fills, outlined
-   services, and Lviv blue 50 for Oracle. Each block is a name, set as the
-   page's headings are, one lighter line and a picture; nothing in it is a
-   control. */
-.amap { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+/* Alex's layout, as two layers, each a box with its company's mark inside
+   it (Alex: one box around the whole SoftServe layer, since Oracle's mark
+   sits inside Oracle's). SoftServe's box holds the packaged services over
+   the products on the left and the narrower bespoke column beside both;
+   Oracle's box under it holds the four platforms. Light grounds only: white
+   on a hairline, the groups' own fills, outlined services, and Lviv blue 50
+   for Oracle. The cuts step down with the size, 12, 8 and 4 px. Each block
+   is a name, set as the page's headings are, one lighter line and a
+   picture; nothing in it is a control. */
+.amap { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 
-.amap-mark { display: block; flex: none; height: auto; }
-.amap-mark--softserve { width: 96px; }
-.amap-mark--oracle { width: 84px; }
-
-.amap-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-  grid-template-areas:
-    "packaged bespoke"
-    "products bespoke"
-    "oracle oracle";
-  gap: 12px;
-}
-
-.amap-block {
-  --cut: 8px;
+.amap-layer {
+  --cut: 12px;
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 14px;
   min-width: 0;
-  padding: 19px 19px 21px;
-  background: #ffffff;
+  padding: 18px;
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
     100% var(--cut), 100% calc(100% - var(--cut)),
@@ -298,14 +288,32 @@
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
-/* The hairline is a ring (polygon evenodd), as on the product pages' KPI
-   widget, so the cut corners carry it; a border would stop short of them. */
+/* SoftServe's box takes whatever height the reasons beside it add. */
+.amap-layer--softserve { flex: 1 0 auto; background: #ffffff; }
+.amap-layer--oracle { background: #c1dff4; }
+
+/* A hairline on a cut shape is a ring (polygon evenodd), as on the product
+   pages' KPI widget, so the cut corners carry it; a border stops short of
+   them. */
+.amap-layer--softserve::before,
 .amap-block::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: #d1dae2;
+}
+
+.amap-layer--softserve::before {
+  clip-path: polygon(evenodd,
+    12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px),
+    calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px, 12px 0,
+    12.41px 1px, 1px 12.41px, 1px calc(100% - 12.41px), 12.41px calc(100% - 1px),
+    calc(100% - 12.41px) calc(100% - 1px), calc(100% - 1px) calc(100% - 12.41px),
+    calc(100% - 1px) 12.41px, calc(100% - 12.41px) 1px, 12.41px 1px);
+}
+
+.amap-block::before {
   clip-path: polygon(evenodd,
     8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px),
     calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px, 8px 0,
@@ -314,27 +322,62 @@
     calc(100% - 1px) 8.41px, calc(100% - 8.41px) 1px, 8.41px 1px);
 }
 
+.amap-mark { display: block; flex: none; height: auto; }
+.amap-mark--softserve { width: 88px; }
+.amap-mark--oracle { width: 84px; }
+
+/* The bespoke column is under a third of the box, just wide enough for
+   three pods a row; spare height goes to the products' row. */
+.amap-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "packaged bespoke"
+    "products bespoke";
+  gap: 10px;
+}
+
+.amap-block {
+  --cut: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 17px 17px 19px;
+  background: #ffffff;
+  clip-path: polygon(
+    var(--cut) 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%,
+    0 calc(100% - var(--cut)), 0 var(--cut));
+}
+
 .amap-block--packaged { grid-area: packaged; }
 .amap-block--products { grid-area: products; }
 .amap-block--bespoke { grid-area: bespoke; }
-.amap-block--oracle { grid-area: oracle; gap: 14px; background: #c1dff4; }
-.amap-block--oracle::before { content: none; }
 
 .amap-name { font-family: var(--font-sans); font-weight: 400; font-size: 18px; line-height: 1.15; letter-spacing: 0; color: #000000; }
 .amap-line { margin-top: 4px; font-family: var(--font-sans); font-weight: 300; font-size: 14px; line-height: 1.3; color: #4c5156; }
-.amap-pic { margin-top: 16px; }
+.amap-pic { margin-top: 14px; }
 
-/* The bespoke block is as tall as the two beside it; its pods stand at its
-   foot, level with the products' tiles. */
-.amap-block--bespoke .amap-pic { margin-top: auto; padding-top: 16px; }
+/* A block taller than its content keeps its picture at its foot, so the
+   products' tiles and the pods end level. */
+.amap-block--products .amap-pic,
+.amap-block--bespoke .amap-pic { margin-top: auto; padding-top: 14px; }
 
-/* Products: the six groups' four fills, once each, and no names. */
-.amap-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+/* Products: the six groups, in their order, each in its home tile's fill
+   with its icon in ink. */
+.amap-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
 
 .amap-tile {
   --cut: 4px;
   --tile-fill: #bdcbd7;
-  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
   background: var(--tile-fill);
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
@@ -342,6 +385,8 @@
     calc(100% - var(--cut)) 100%, var(--cut) 100%,
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
+
+.amap-tile .icon { width: 44%; height: 44%; max-width: 28px; max-height: 28px; color: #1a1a1a; }
 
 .amap-tile--blue { --tile-fill: #459fdd; }        /* Lviv blue 75 */
 .amap-tile--orange { --tile-fill: #fe8d6b; }      /* Austin orange 75 */
@@ -388,21 +433,24 @@
 
 .amap-arrow--dashed::before { border-top-style: dashed; }
 
-/* Bespoke services: a team of pods, three to a row, the last one open. */
-.amap-pods { display: grid; grid-template-columns: repeat(3, minmax(0, 60px)); gap: 8px; }
+/* Bespoke services: a square team, three by three, filling the column's
+   width edge to edge; the last pod open, the team that grows. */
+.amap-pods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .amap-pod .amap-node { width: 100%; height: auto; aspect-ratio: 1; }
-.amap-pod .amap-node .icon { width: 22px; height: 22px; }
+.amap-pod .amap-node .icon { width: 42%; height: 42%; max-width: 22px; max-height: 22px; }
 
-/* Oracle: its mark over its platforms, in the diagram's order. */
+/* Oracle: its mark over its platforms, in the diagram's order, each with
+   its icon. */
 .amap-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 
 .amap-chip {
   --cut: 4px;
   display: flex;
   align-items: center;
+  gap: 8px;
   min-width: 0;
   min-height: 44px;
-  padding: 8px 12px;
+  padding: 8px 10px;
   background: #ffffff;
   color: #000000;
   font-family: var(--font-sans);
@@ -418,6 +466,9 @@
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
+.amap-chip .icon { flex: none; width: 18px; height: 18px; color: #000000; }
+.amap-chip span { min-width: 0; }
+
 /* ——— widths ——————————————————————————————————————————————————————————— */
 
 /* The diagram and the reasons stack, the diagram first, as it reads on the
@@ -427,34 +478,43 @@
   .awhy-map { max-width: 44rem; }
 }
 
-/* From 769 to 1239 px the promise and the ask reach further across the
+/* From 1024 to 1239 px the promise and the ask reach further across the
    photograph, so the line runs steeper, clear of both and of the oval, and
    the spark moves onto it (64 - 3.5 x .34 = 62.81 %). */
-@media (min-width: 769px) and (max-width: 1239px) {
+@media (min-width: 1024px) and (max-width: 1239px) {
   .ahero-line-desk { display: none; }
   .ahero-line-mid { display: inline; }
   .ahero-spark { left: 62.81%; }
 }
 
+/* Under 1024 px the photograph's 480 px floor is more than 47 % of its
+   width, so the picture is cropped from the left and the oval moves in to
+   meet the copy: no dark gap is left for the line, so the line and the
+   spark go. */
+@media (max-width: 1023px) {
+  .ahero-line, .ahero-spark { display: none; }
+}
+
 /* The photograph takes its content's height and the oval moves to the right
-   edge, where the copy meets it: no dark gap is left for the line, so the
-   line and the spark go, as on a phone. The copy widens up to the oval, and
-   the promise runs past two lines here. */
+   edge. The copy widens up to the oval, and the promise runs past two lines
+   here. */
 @media (max-width: 768px) {
-  .ahero-photo { height: auto; min-height: 440px; }
+  .ahero-photo { min-height: 440px; }
   .ahero-img { object-position: 56% 50%; }
   .ahero-copy { --ahero-share: .68; --ahero-h1: min(40px, var(--ahero-fit)); }
   .ahero-lead { text-wrap: pretty; }
-  .ahero-line, .ahero-spark { display: none; }
 }
 
 /* A phone: the blocks stack in reading order, the pods in one row and the
    platforms two by two. */
 @media (max-width: 560px) {
-  .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "packaged" "products" "bespoke" "oracle"; }
-  .amap-block--bespoke .amap-pic { margin-top: 16px; padding-top: 0; }
-  .amap-pods { grid-template-columns: repeat(6, minmax(0, 44px)); gap: 6px; }
-  .amap-pod .amap-node .icon { width: 18px; height: 18px; }
+  .amap-layer { padding: 14px; }
+  .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "packaged" "products" "bespoke"; }
+  .amap-block--products .amap-pic,
+  .amap-block--bespoke .amap-pic { margin-top: 14px; padding-top: 0; }
+  .amap-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .amap-tile { aspect-ratio: 2 / 1; }
+  .amap-pods { grid-template-columns: repeat(3, minmax(0, 44px)); gap: 6px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -479,7 +539,7 @@
 @media print {
   .ahero-media { display: none !important; }
   .ahero { background: #ffffff !important; color: #111111; }
-  .ahero-photo { height: auto; }
+  .ahero-photo { min-height: 0; }
   .ahero-title { color: #111111 !important; }
   .ahero-lead { color: #333333 !important; }
   .aoffer .way--photo { padding-top: 1.5rem; }
