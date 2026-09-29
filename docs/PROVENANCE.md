@@ -7400,3 +7400,47 @@ _Built in a session opened in AO-Personal-OS, alongside round 20 (§41), whose s
   2. **The product name's case.** The pack spec's site variant is *Account Insights*; the page and the walkthrough say *Account insights*, the site's sentence case. The packaging linter flags the difference.
   3. **The band's first tile** is the pack's pipeline metric, which the page does not print.
   4. **The page's time tile** reads *from a quarter*; the walkthrough computes each account's next quarterly review (29 days, median). They agree in kind, not in number.
+
+## 50. The form confirmation without its blue panel, and the practice named as SoftServe’s, 2026-09-29
+
+_A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with no Fable pass: one component's styling, and a name Alex supplied. Touched: `site/assets/site.css` (the forms block: `.form-confirm`, its title, body, next line and button, `.form-confirm-mark` and its glyph; the `.kit-confirm` rule removed), `site/assets/forms.js` (`settle()`, called by both confirmations and by *Request another kit*), `site/data/content.js` (`forms.confirmations.posted.body`, `forms.offline`, the four `facets.technology[].emptyState`), `tools/check-grammar.js`, START-HERE §4, §9 and §10, VISUAL-GRAMMAR §8 and §11, SCHEMA (`facets.technology`, `forms`). The code reached `main` in the autosync commits 16a3d59, 03c913b and 3e15957._
+
+- **The ask (Alex, 2026-09-29, with a screenshot of the home contact after a sent request):** *"make sure this looks good from UI standpoint (now a bit ugly). Also, name "SoftServe's Oracle dedicated practice" to disambiguate."*
+- **What made it ugly**, measured at 1440 × 900: the confirmation was a slab of `--surface-select` (`#c1dff4`), the theme's *selected* tint, used as a ground; `max-width: 40rem` made it 640 px in a 720 px column, so its edge stopped 80 px short of the lead above it; its check sat in a white 40 px square that read as a ticked checkbox; its title was a full H3, 40 px beside the section's 48 px H2; and the lead *Tell us the account or workflow you have in mind…* stayed over it, asking for what had just been sent. The kit confirmations (a product's kit tab, `#/sellers`) were the same slab at full width.
+- **What changed:**
+  - `.form-confirm` has **no surface of its own**: no fill, no padding, the column's full width. The plate, or `#/sellers`' panel, is the surface.
+  - **The check sits in the theme's icon well**: 48 px, `--surface-select`, 4 px cut, a 24 px glyph at the 1.5 px stroke in blue 125, as `.gate-mark` and `.step-index` draw it (the tint's one decorative use).
+  - **The title steps down** to 28 px (24 on a phone), a clear step under the H2; the body stays at body size, with `text-wrap: pretty`.
+  - **On the Contacts switch a confirmation takes its whole pane**: `settle()` hides the Talk pane's `forms.demo.sub`, or the kit pane's eyebrow and body, and *Request another kit* brings the lead back with the fresh form. `#/sellers` keeps its title and body, which are the page's own.
+  - **The practice is named *SoftServe’s Oracle dedicated practice***, Alex's words: in the confirmation (*Someone from SoftServe’s Oracle dedicated practice will reply within two working days.*), in `forms.offline` (the line a copy that cannot send prints under the form), and in the catalog's empty state for a platform with no product, which read *The practice delivers on this platform…* (the four `emptyState` strings). On a site named *Oracle AI & Data Solutions*, *the Oracle practice* reads as Oracle's own team, and *the practice* names no owner. The other uses of *practice* already carry theirs and are unchanged: the hero's *SoftServe’s leading AI practice*, S2's *a large, dedicated practice of experts* under *we*, the proof strip's and About's *data and analytics practice*.
+- **Decisions:**
+  - **No surface rather than a lighter one.** A grey card would be a second grey on the band (START-HERE §4, *one grey step*), and the blue tint means *selected*. The white plate already frames the moment.
+  - **Top-aligned, where the form was**, not centred in the plate: level with the card's eyebrow on the home page and under the switch on a product page, so the tabs never move. The plate shrinks to the card's height after a send, and the title takes focus, so a reader who pressed the button at the fold lands on it (at 1512 × 850 it sits at 406–439 px after a send from the fold).
+  - **No new copy** beyond the name: no *what happens next* list (retired in round 10, VISUAL-GRAMMAR §8), no second ask in the Talk confirmation.
+  - **The name as Alex wrote it.** *SoftServe’s dedicated Oracle practice* is the more usual English order; the name is his, and a swap is one phrase in six strings.
+- **Before → after:**
+
+| Where | Before | After |
+|---|---|---|
+| Confirmation surface | `#c1dff4` slab, 40 px padding, 8 px cut | none: the plate is the surface |
+| Width in a 720 px column | 640 px | 720 px, the column's |
+| Mark | white 40 px square, 18 px check | 48 px icon well in the tint, 24 px check |
+| Title | 40 px (the H3 scale) | 28 px; 24 on a phone |
+| The lead over the form | stays, asking for what was sent | hidden on the Contacts switch; back with *Request another kit* |
+| Who replies | *the Oracle practice* | *SoftServe’s Oracle dedicated practice* |
+| Platform empty state | *The practice delivers on this platform…* | *SoftServe’s Oracle dedicated practice delivers on this platform…* |
+
+- **The checker** now fails a `.form-confirm` rule without `background: none` or `max-width: none`; a `.form-confirm .h3` with no size of its own or on the H2 or H3 scale; a `.form-confirm-mark` not on `--surface-select`; a `forms.js` without `settle(block, done)`, or a confirmation that does not call it; *the practice*, *our practice* or *Oracle practice* anywhere in `content.js`; and a `forms.confirmations.posted.body` or `forms.offline` that does not name *SoftServe’s Oracle dedicated practice*. Each guard was run against a scratch copy with its part of the fix reverted, and failed (14 failures, one per guard and per string).
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the one known warning (`overview.about.title`); the name grep returns nothing. In headless Chrome (`tools/step-mocks/cap.mjs` against `tools/serve.py`), every confirmation, reached through a stub that answered the POST inside the page so nothing was sent: the home contact, a product's Talk and kit panes and `#/sellers`, at 1440, 1280, 1024, 768 and 375, with no console error; and the catalog's empty state at 1440 and 375. In the browser pane at 1512 × 850: the title takes focus and is in view, the lead is hidden only in the pane that confirmed, the other tab's pane is untouched, and *Request another kit* restores the form with the email kept.
+- **No contract bump:** the fix changes no key, switch, tab or publish rule. The naming guard reaches product copy, but no listing names the practice today, and the failure line says what to write. As in §43 and §48, round 20 stays the last contract round.
+- **Open for Alex:** START-HERE §9, under §50.
+  1. **The word order:** *SoftServe’s dedicated Oracle practice* is one phrase away, in six strings.
+  2. **The confirmation cannot be seen on the shared link:** the claude.ai preview cannot send, so the link shows only the renamed line under each form and the renamed empty state; a local run with the sender shows the rest.
+
+## 51. The case-study rail without its reference-call link, 2026-09-29
+
+_Built in a session opened in AO-Personal-OS, alongside §50's session. Touched: `overview.caseStudiesIntro.cta` in `content.js` (removed), `caseStudies()` in `site/pages/overview.js`, `.cases-link` in `site.css` and `site-legacy.css` (removed), `tools/check-grammar.js`, `SCHEMA.md`, `VISUAL-GRAMMAR.md` §9 S5 and the case-card paragraph._
+
+- **The ask (Alex, 2026-09-29):** *"Ask for a reference call - remove this CTA from oracle minisite main page (both published at claude.ai and local version)."*
+- **What changed:** the home page's Case studies rail ends on the NDA line; its one link, *Ask for a reference call* → `#/#request-a-demo`, is gone. The NDA line (*"Customers stay unnamed under NDA. Reference calls on request."*) and each case card's own NDA line stay: the ask was the link.
+- **The checker** now fails `overview.caseStudiesIntro.cta` if it returns, and the route list no longer reads it.

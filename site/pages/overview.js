@@ -397,7 +397,7 @@
 
   /* The rail says what the four cards are; the cards carry the figures. The
      rail ends on the NDA line: its link ("Ask for a reference call") left on
-     2026-09-29 (PROVENANCE §50). Measured,
+     2026-09-29 (PROVENANCE §51). Measured,
      modeled and in preparation are three states of the same card, so no
      engagement has to be left out to keep the grid honest, and no customer is
      named on either side. */
