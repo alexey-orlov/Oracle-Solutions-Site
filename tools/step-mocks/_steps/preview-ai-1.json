@@ -1,5 +1,0 @@
-[
-  {"sleep": 300},
-  {"eval": "(()=>{const r=document.querySelector('#row-1').getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height, sw: document.documentElement.scrollWidth, sh: document.documentElement.scrollHeight};})()"},
-  {"shot": "preview-1"}
-]
