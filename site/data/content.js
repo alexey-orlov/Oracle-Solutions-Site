@@ -3150,7 +3150,7 @@ window.SITE_CONTENT = {
         "icon": "gauge"
       }
     ],
-    "metricsNote": "Modeled figures: the saving per call and the recalibration cost are published industry averages (vehicle glazing, UK 2013, about $250 in the US; collision repair estimates), and the rate follows industry assumptions. Each is applied to your own volumes, and the proof of value measures all three on your own cases.",
+    "metricsNote": "Modeled figures: the saving per call and the recalibration cost are published industry averages (vehicle glazing, UK 2013, about $250 in the US; collision repair estimates), and the rate follows industry assumptions. Each is applied to your own volumes, and the proof of value measures each one on your own cases.",
     "roi": {
       "icon": "roi",
       "text": "The saving lands on both sides: the insurer or lessor keeps the price gap every time a repair would have met the rules, and the network makes one visit with the right part instead of two."
