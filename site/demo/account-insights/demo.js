@@ -197,9 +197,9 @@
   function renderHead() {
     var k = kpis(appliedIds());
     var helper;
-    if (!S.ran && !S.busy) helper = "214 stories on your 24 accounts since 18:00, unread.";
+    if (!S.ran && !S.busy) helper = "214 stories from your feeds since 18:00, unread.";
     else if (S.busy) helper = "Reading 214 stories against your 24 accounts…";
-    else if (S.sent) helper = "Sent: " + plural(MOVES.filter(function (m) { return status(m) === "approved"; }).length, "record", "records") + " for the CRM, one per account.";
+    else if (S.sent) helper = "In the CRM file: " + plural(MOVES.filter(function (m) { return status(m) === "approved"; }).length, "record", "records") + ", one per account.";
     else helper = plural(k.after.moves, "next move", "next moves") + " from 5 signals, waiting for your call.";
     $("#today-helper").textContent = helper;
     var run = $("#btn-run");
@@ -210,7 +210,7 @@
     var n = MOVES.filter(function (m) { var st = status(m); return st === "open" || st === "admitted"; }).length;
     rest.hidden = !S.ran;
     rest.disabled = !n;
-    rest.textContent = n ? "Approve the rest (" + n + ") and send" : (S.sent ? "Sent to the CRM file" : "Nothing left to approve");
+    rest.textContent = n ? "Approve the rest (" + n + ") and export" : (S.sent ? "Exported to the CRM file" : "Nothing left to approve");
   }
 
   function renderBook() {
@@ -218,10 +218,10 @@
     box.hidden = S.ran || S.busy;
     if (box.hidden) return;
     var rows = D.accounts.slice().sort(function (a, b) { return b.unread - a.unread; }).slice(0, 10);
-    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories since 18:00 on your book, unread. Most accounts are next reviewed weeks from now.</span></div>' +
+    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories from your feeds since 18:00, unread. Most accounts are next reviewed weeks from now.</span></div>' +
       '<div class="book-grid">' + rows.map(function (a) {
         return '<div class="book-row"><span class="acc">' + avatar(a.owner) + "<b>" + esc(a.name) + '</b></span><span class="unread">' +
-          plural(a.unread, "story", "stories") + '</span><span class="due">next review in ' + a.review + " days</span></div>";
+          plural(a.unread, "mention", "mentions") + '</span><span class="due">next review in ' + a.review + " days</span></div>";
       }).join("") + '</div><p class="book-foot">Showing the 10 busiest of 24 accounts.</p>';
   }
 
@@ -258,11 +258,10 @@
     var k = kpis(appliedIds()), b = k.before, a = k.after;
     var tiles = {
       moves: { before: String(b.moves), after: String(a.moves), delta: (a.moves - b.moves >= 0 ? "+" : "−") + Math.abs(a.moves - b.moves),
-        line: plural(a.missed, "move", "moves") + " on accounts the news never named · " + plural(a.protect, "renewal", "renewals") + " to protect" },
+        line: plural(a.missed, "move", "moves") + " on accounts the news never named · " + plural(a.protect, "account", "accounts") + " to protect" },
       time: { before: fmtDays(b.days), after: fmtDuration(a.minutes), delta: a.minutes < 24 * 60 ? "same day" : "",
         line: "By hand: the account's next review. Here: this morning." },
-      research: { before: fmtResearch(b.research), after: fmtResearch(a.research),
-        delta: b.research ? "−" + Math.round((1 - a.research / b.research) * 100) + "%" : "",
+      research: { before: fmtResearch(b.research), after: fmtResearch(a.research), delta: "",
         line: "Reaching the same list by hand, against reviewing it." }
     };
     ["moves", "time", "research"].forEach(function (id) {
