@@ -289,8 +289,12 @@
     if (S.kpi === "moves") cls.push(m.rel === "named" ? "is-dim" : "is-hit");
     var note = "";
     if (st === "rejected") note = '<span class="r-note">Rejected: ' + esc(S.decided[m.id].reason) + "</span>";
-    return '<li class="' + cls.join(" ") + '" data-move="' + m.id + '"><span class="r-main"><span class="r-name"><b>' + esc(a.name) + "</b>" + relChip(m) + kindChip(m) +
-      '</span><span class="r-sub">' + esc(lineName(m.line)) + " · " + esc(m.relNote) + '</span></span><span class="r-side">' + rowContext(m) + statusChip(m) + "</span>" + note + "</li>";
+    /* The status sits beside the name, so the row's left part (what a zoomed
+       product-page frame shows) carries the whole decision. An open move
+       needs no chip: the list is the review queue. */
+    var chip = st === "open" ? "" : statusChip(m);
+    return '<li class="' + cls.join(" ") + '" data-move="' + m.id + '"><span class="r-main"><span class="r-name"><b>' + esc(a.name) + "</b>" + relChip(m) + kindChip(m) + chip +
+      '</span><span class="r-sub">' + esc(lineName(m.line)) + " · " + esc(m.relNote) + '</span></span><span class="r-side">' + rowContext(m) + "</span>" + note + "</li>";
   }
   function renderGroups() {
     var work = $("#work");
