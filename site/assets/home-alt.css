@@ -473,6 +473,13 @@
 
 /* ——— widths ——————————————————————————————————————————————————————————— */
 
+/* Up to 1180 px the promise runs to three lines and the ask sits lower, by
+   the people at the scene's left, so the link goes under the ask. */
+@media (max-width: 1180px) {
+  .ahero-actions { flex-direction: column; align-items: flex-start; }
+  .ahero-actions .ahero-link { margin-bottom: -.26em; }
+}
+
 /* The diagram and the reasons stack, the diagram first, as it reads on the
    left. Below 1181 px the reasons' column wraps so tall that the diagram,
    stretched to its height, would open empty bands, and its pods would shrink
