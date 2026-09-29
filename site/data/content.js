@@ -2773,7 +2773,7 @@ window.SITE_CONTENT = {
       category: "forecasting-optimization",
       categoryChip: "Forecasting & optimization",
       facet: "oci-nvidia",
-      oneLiner: "Lowers the cost of every field visit: each van’s day re-planned on NVIDIA cuOpt around booked slots, skills and electric-van charging, and tested first on your own past days.",
+      oneLiner: "Lowers the cost of every field visit: each van’s day planned around booked slots, engineer skills and electric-van charging.",
       heroCaption: "What if the same fleet did more work for less?",
       tags: ["Forecasting & optimization", "OCI + NVIDIA NeMo"],
       hero: {
@@ -2785,7 +2785,7 @@ window.SITE_CONTENT = {
       },
       tile: {
         outcomes: [
-          "A lower cost per visit: fewer miles, less paid time at chargers, fewer second visits",
+          "Fewer miles, less paid time at chargers, fewer second visits",
           "More booked work from the same fleet, without new hires or vans",
           "The saving measured on your own past days before a live route changes"
         ]
