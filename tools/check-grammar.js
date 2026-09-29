@@ -1610,7 +1610,7 @@ if (!arr(C.products) || C.products.length !== 9) {
   cards.forEach(function (c, i) {
     var cw = "overview.caseStudies[" + i + "]";
     if (c.metricEyebrow !== undefined) {
-      fail(cw, "metricEyebrow is retired — the status chip carries the word once");
+      fail(cw, "metricEyebrow is retired — a home card carries no status word (Alex, 2026-09-29)");
     }
     ["id", "descriptor", "area", "industry", "status", "line"].forEach(function (k) {
       if (!str(c[k])) fail(cw, k + " missing");
@@ -1628,11 +1628,14 @@ if (!arr(C.products) || C.products.length !== 9) {
     else if (c.metric.value.length > 20) fail(cw, 'metric.value "' + c.metric.value + '" is too long to set large');
     /* Round 19 (Alex, 2026-09-29: the home case studies focus "on business value,
        not on technical details + no justifications for reviewer and unnecessary
-       disclaimers"). The chip is the card's one status word, so the footnote row
-       is retired; the card speaks the customer's problem and what changes, never
-       the engine or the engagement's mechanics. */
+       disclaimers"). The footnote row is retired, and since §62 the status chip
+       too (Alex: "remove 'Forecast', 'Proven' etc labels on the main page in
+       case studies"): the card speaks the customer's problem and what changes,
+       never the engine or the engagement's mechanics. `status` stays in the
+       data: it keeps the card and its product's case study telling one story,
+       and the product page's chip reads it. */
     if (c.footnote !== undefined) {
-      fail(cw, "footnote is retired in round 19 — no reviewer justification or disclaimer on a home card; the chip carries the status");
+      fail(cw, "footnote is retired in round 19 — no reviewer justification or disclaimer on a home card");
     }
     [["line", c.line], ["metric.label", (c.metric || {}).label]].forEach(function (pair) {
       if (!str(pair[1])) return;
@@ -3044,6 +3047,83 @@ if (/request a demo/i.test(raw)) {
   roles.forEach(function (r) {
     if (/or partner/i.test(r.label || "")) fail("forms.roles", '"' + r.label + '" lumps sellers and partners together');
   });
+  /* Alex, 2026-09-29: "order of options … should be Oracle seller -> SoftServe
+     seller -> Oracle partner -> Customer -> Other". */
+  var ROLE_ORDER = ["oracle-seller", "softserve", "oracle-partner", "customer", "other"];
+  if (roles.map(function (r) { return r.value; }).join(" ") !== ROLE_ORDER.join(" ")) {
+    fail("forms.roles", "must run " + ROLE_ORDER.join(" → ") + " (Alex, 2026-09-29), got " +
+      roles.map(function (r) { return r.value; }).join(" → "));
+  }
+
+  /* Alex, 2026-09-29: "As long as I input email with domain, option should be
+     auto-picked (Oracle, SS by domain, otherwise - Customer is the default).
+     Until domain is typed - nothing is selected. Company is autopopulated by
+     domain". The rules are SITE_CONFIG.formDomains; forms.js applies them, and
+     is run here on sample addresses so a rewrite cannot drop one. */
+  (function () {
+    var rules = CFG.formDomains || {};
+    var roleValues = roles.map(function (r) { return r.value; });
+    var known = rules.known || [];
+    if (!known.length) return fail("config.formDomains.known", "missing — the Oracle and SoftServe domains pick their sellers");
+    known.forEach(function (entry, i) {
+      var w = "config.formDomains.known[" + i + "]";
+      if (!str(entry.domain) || !str(entry.role) || !str(entry.company)) fail(w, "needs { domain, role, company }");
+      if (roleValues.indexOf(entry.role) === -1) fail(w, 'role "' + entry.role + '" is not a forms.roles value');
+    });
+    /* The seller domains are the kit's domains: whoever the kit goes to is the
+       seller the form picks, and no other domain is. */
+    var knownDomains = known.map(function (e) { return e.domain; }).sort().join(", ");
+    var gate = ((CFG.sellerGate || {}).allowedDomains || []).slice().sort().join(", ");
+    if (knownDomains !== gate) fail("config.formDomains.known", "domains [" + knownDomains + "] differ from sellerGate.allowedDomains [" + gate + "]");
+    if (rules.otherRole !== "customer") fail("config.formDomains.otherRole", 'must be "customer" — any other domain picks Customer (Alex, 2026-09-29)');
+
+    var formsCode = fs.readFileSync(path.join(root, "site/assets/forms.js"), "utf8");
+    var renderBody = formsCode.slice(formsCode.indexOf("function render("), formsCode.indexOf("function setError("));
+    if (/checked/.test(renderBody)) fail("site/assets/forms.js render()", "checks a role at render — nothing is picked until the email has a domain (Alex, 2026-09-29)");
+    var box = {
+      window: {
+        location: { hostname: "check.invalid", href: "" },
+        fetch: function () { return Promise.resolve({ ok: false }); },
+        SITE_CONFIG: CFG,
+        SITE_CONTENT: C
+      }
+    };
+    vm.createContext(box);
+    try {
+      vm.runInContext(formsCode, box, { filename: "site/assets/forms.js" });
+    } catch (error) {
+      return fail("site/assets/forms.js", "does not load: " + error.message);
+    }
+    var pick = box.window.FORMS && box.window.FORMS.fromEmail;
+    if (typeof pick !== "function") return fail("site/assets/forms.js", "FORMS.fromEmail is missing — the checker runs the domain rules through it");
+    [
+      ["dana", null],
+      ["dana@", null],
+      ["dana@oracle", null],
+      ["dana@oracle.c", null],
+      ["dana@oracle.com", { role: "oracle-seller", company: "Oracle" }],
+      ["Dana@US.Oracle.com", { role: "oracle-seller", company: "Oracle" }],
+      ["ivan@softserveinc.com", { role: "softserve", company: "SoftServe" }],
+      ["kim@acme.com", { role: "customer", company: "Acme" }],
+      ["kim@acme.co.uk", { role: "customer", company: "Acme" }],
+      ["kim@mail.acme.io", { role: "customer", company: "Acme" }],
+      ["kim@oracle.co", { role: "customer", company: "Oracle" }],
+      ["kim@gmail.com", { role: "customer", company: "" }]
+    ].forEach(function (sample) {
+      var got = pick(sample[0]);
+      var gotText = JSON.stringify(got ? { role: got.role, company: got.company } : null);
+      if (gotText !== JSON.stringify(sample[1])) {
+        fail("site/assets/forms.js fromEmail()", '"' + sample[0] + '" gives ' + gotText + ", expected " + JSON.stringify(sample[1]));
+      }
+    });
+    /* The visitor's own pick and own company are never overwritten. */
+    if (!/roleChosen = true/.test(formsCode) || !/company\.value === "" \|\| company\.value === filled/.test(formsCode)) {
+      fail("site/assets/forms.js bindDomain()", "must leave a role the visitor clicked and a company they typed as they are");
+    }
+    if (!/var applyDomain = bindDomain\(form\)/.test(formsCode) || !/applyDomain\(\);\s*var data = values\(form\)/.test(formsCode)) {
+      fail("site/assets/forms.js mount()", "must bind the email to the role and Company, and apply it before a submit reads the form");
+    }
+  })();
 
   if ((((C.site || {}).footer) || {}).sellersLink !== undefined) {
     fail("site.footer.sellersLink", "retired on 2026-09-29 with the #/sellers page (Alex: \"remove that link and page where it leads to\", §61)");
