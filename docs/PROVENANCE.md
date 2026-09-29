@@ -7386,6 +7386,12 @@ _A change between rounds, made in its own session while the Internal-panel remov
   - the hero's line at least 85 px clear of every word at 1280 and up;
   - the six group names on two lines, the figures on one line, *Built on Oracle.* on one line at 320;
   - the deny-list grep clean.
+- **Version 2.1, the same day** (Alex: *"I don't like the amount of spaces taken by texts + how metrics fall on each other … Review yourself with this feedback in mind"*). Opus reviewed the hero as a web designer, measured at 1333 × 820:
+  - **The H1** was sized as large as the photograph allowed: four long lines at 69 px filled 57 % of its height at .95 leading, and the spark nearly touched *agents*. It is now `clamp(38px, min(4.5vw, 7.4vh), 76px)` at 1.02 leading: 65 px at 1440 × 900, 60 at 1333, 49–55 % of the photograph's height. The copy column narrowed from 64 % to 58 %.
+  - **The figures** were fitted to fill equal columns, so *from 30 days* ran into *1,000+* (21 px apart) while *1,000+* stood 82 px from *30*. They are now sized with room to spare, `clamp(30px, 2.6vw, 40px)`, in seven columns instead of six, with a 28–48 px gap. The closest pair is at least 51 px apart at every two-column width.
+  - **The lead** was a third heavy block at 20–24 px. It is now body copy, 17–19 px at 1.45, on a 30rem measure, with a right margin so the promise and the proof never butt.
+  - **Phones:** the H1 is 40 / 38 / 36 px at 768 / 540 / 359, and the figures 34 px, so a phone's figures are no bigger than a laptop's.
+  - **Checks:** S2's heading is in view at 1280 × 800 through 1920 × 1080; the spark is 39–103 px clear of the H1; there is no overflow from 320 to 1920; the console is clean and `check-grammar` prints OK.
 - **Not published:** the shared link still shows version 1 (above). A shared link opens the home page anyway, because the artifact drops the route. Publishing is Alex's call.
 - **Open for Alex:**
   - the heading;

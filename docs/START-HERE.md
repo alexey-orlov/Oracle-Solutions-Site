@@ -164,6 +164,8 @@ carries no photograph · clean at 375, and the H1 still holds at 320.
   - The promise and the figures go on a band beneath, at display size (*"metrics look too tiny"*).
   - On a dark photograph the ask is the brand's white button and a second route an arrow link (*"the buttons … look weird on this background"*).
   - A drawn line may split the photograph in two, never into cells (*"divide content into … 4 cells"*).
+- **Size a hero's H1 as a block, not to the space** (Alex, the same day: *"I don't like the amount of spaces taken by texts"*). Four lines of the claim take about half the photograph's height, so the picture keeps its room.
+- **Figures in a row get room to spare** (*"how metrics fall on each other"*). A figure is sized with a margin in its column, never fitted to fill it: a fitted *from 30 days* ran into *1,000+* with 21 px between them. Measure the closest pair at the narrowest width the row holds.
 
 **On a product page: one grey step and one contrast plate per screen** (Alex, round 20: *"all blocks are too greyish"*; softserveinc.com's own rule, as measured in PROVENANCE §41.1). The grey step is one `#edf0f2` plate a viewport — the problem plate, the industry plate's copy half, the contact band — and never a grey tile in a grey card or a grey input on a grey surface. The contrast plate is one `#1a1a1a` plate with its own cut a tab view: *What changes* on the Overview, the case study on Use cases. The KPI band takes softserveinc.com's light gradient, its figures in Replica Light under an orange-75 dash. The contact band is a page's last grey, and the footer's grey spacer is not drawn after it (`SS26-THEME.md` §3, §5; `VISUAL-GRAMMAR.md` §8).
 
