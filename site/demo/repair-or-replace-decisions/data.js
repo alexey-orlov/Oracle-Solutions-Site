@@ -5,11 +5,14 @@
  * are EXAMPLE RULES, not any standard's or operator's wording. No customer,
  * geography or customer figure appears here.
  *
- * The KPIs are the pack spec's MODELLED rates (industry assumptions, not a
- * customer result): needless replacements 3.0% -> 2.4%, repeat visits
- * 1.5% -> 1.2% (each a 20% relative reduction), and unnecessary follow-on work
- * computed as the needless-replacement rate x the modelled 42% share of assets
- * whose replacement triggers dependent work.
+ * The KPIs are the pack spec's MODELLED figures (industry assumptions, not a
+ * customer result): wrong calls 45 -> 36 per 1,000 cases, split here into
+ * needless replacements 3.0% -> 2.4% and repeat visits 1.5% -> 1.2% (each a
+ * 20% relative reduction), and avoidable recalibrations computed as the
+ * needless-replacement rate x the modelled 42% share of assets whose
+ * replacement triggers one. `each` carries the spec's value per unit: about
+ * £460 per needless replacement avoided, $300-400 and 4 days per avoidable
+ * recalibration.
  *
  * Data model (references/demo-data-model.md): current state (the calls booked
  * at first contact) + named changes with additive KPI effects in rate points +
@@ -26,6 +29,7 @@ window.RRD = {
       def: "Replacements where a repair would have met the limit",
       whose: "Payer funds it · operator is measured on it",
       per: "decisions",
+      each: "about £460 kept on each",
       dp: 1
     },
     repeat: {
@@ -37,10 +41,11 @@ window.RRD = {
       dp: 1
     },
     followon: {
-      label: "Unnecessary follow-on work",
-      def: "Work such as recalibration, triggered only by a needless replacement",
+      label: "Avoidable recalibrations",
+      def: "Camera recalibrations triggered only by a needless replacement",
       whose: "Operator loses the slot · payer pays the line",
       per: "decisions",
+      each: "$300–400 and 4 days saved on each",
       dp: 2
     }
   },
@@ -118,7 +123,7 @@ window.RRD = {
         what: "Replace → Repair",
         why: "Measured at 14.2 mm; Aldmere's example rule allows a repair up to 25 mm.",
         effects: { needless: -0.20, repeat: 0 },
-        effect: "Needless replacements −0.20 pts; follow-on work falls with it"
+        effect: "Needless replacements −0.20 pts; avoidable recalibrations fall with it"
       }
     },
     {
@@ -154,7 +159,7 @@ window.RRD = {
         what: "Replace panel → Straighten",
         why: "Measured 28 mm deep with no crack or hole; the example matrix says straighten up to 35 mm.",
         effects: { needless: -0.20, repeat: 0 },
-        effect: "Needless replacements −0.20 pts; follow-on work falls with it"
+        effect: "Needless replacements −0.20 pts; avoidable recalibrations fall with it"
       }
     },
     {
