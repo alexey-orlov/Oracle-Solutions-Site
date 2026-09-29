@@ -217,6 +217,19 @@
     if (button) button.disabled = on;
   }
 
+  /* On the Contacts switch a confirmation takes its whole pane (2026-09-29):
+     the lead over the form asked for what was just sent, so it leaves with the
+     form and the confirmation opens the pane. `done` false brings the lead
+     back with a fresh form. #/sellers has no pane: its title and body are the
+     page's own and stay. */
+  function settle(block, done) {
+    var pane = block.closest ? block.closest(".contact-pane") : null;
+    if (!pane) return;
+    Array.prototype.forEach.call(pane.children, function (child) {
+      if (!child.contains(block)) child.hidden = done;
+    });
+  }
+
   function confirmation(block, outcome) {
     var UI = window.UI;
     var copy = content().forms.confirmations[outcome];
@@ -225,6 +238,7 @@
       '<h3 class="h3">' + UI.esc(copy.title) + "</h3>" +
       '<p class="body-text">' + fill(copy.body, { mailbox: mailboxLink() }) + "</p>" +
       "</div>";
+    settle(block, true);
     var heading = block.querySelector(".h3");
     if (heading) {
       heading.setAttribute("tabindex", "-1");
@@ -406,6 +420,7 @@
         ? UI.button({ label: content().salesKit.page.again, kind: "quiet", sm: true, attrs: { "data-kit-again": "1" } })
         : "") +
       "</div>";
+    settle(block, true);
 
     var heading = block.querySelector(".h3");
     if (heading) {
@@ -421,6 +436,7 @@
         holder.innerHTML = renderKit(options);
         var fresh = holder.firstChild;
         host.replaceChild(fresh, block);
+        settle(fresh, false);
         mountKit(fresh, options);
         var input = fresh.querySelector('input[name="email"]');
         if (input) input.focus();

@@ -2243,9 +2243,20 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .form-status.is-error .inline-link { color: inherit; border-bottom-color: currentColor; }
 .form-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
-.form-confirm { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; padding: clamp(1.75rem, 3vw, 2.5rem); border: 0; --cut: var(--cut-8); background: var(--surface-select); max-width: 40rem; }
-.form-confirm .h3 { outline: none; }
-.form-confirm-mark { width: 2.5rem; height: 2.5rem; --cut: var(--cut-4); background: #ffffff; display: inline-flex; align-items: center; justify-content: center; color: var(--action-pressed); }
+/* A confirmation takes its form's place and has no surface of its own: the
+   plate or panel under it is the surface (2026-09-29, Alex on the home
+   contact's: "a bit ugly"). It was a slab of the selected tint, 640px in a
+   720px column, holding a white square that read as a ticked checkbox and a
+   40px title one step under the section's 48px H2. Now the check sits in the
+   theme's icon well, the tint's one decorative use (as .gate-mark and
+   .step-index draw it), over a 28px title and the body at body size, on the
+   column's own left edge and at its full width. */
+.form-confirm { display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; width: 100%; max-width: none; padding: 0; border: 0; background: none; }
+.form-confirm .h3 { font-size: clamp(1.5rem, 1.2rem + .8vw, 1.75rem); outline: none; }
+.form-confirm .body-text { text-wrap: pretty; }
+.form-confirm .kit-next, .form-confirm .btn { margin-top: .5rem; }
+.form-confirm-mark { width: 3rem; height: 3rem; margin-bottom: .5rem; --cut: var(--cut-4); background: var(--surface-select); display: inline-flex; align-items: center; justify-content: center; color: var(--action-pressed); }
+.form-confirm-mark .icon { width: 1.5rem; height: 1.5rem; }
 
 /* ——— seller gate —————————————————————————————————————— */
 
@@ -2284,7 +2295,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .kit-field { display: flex; flex-direction: column; gap: .5rem; }
 .kit-route { color: var(--text-muted); }
 .kit-next { color: var(--text-body); }
-.kit-confirm { max-width: none; width: 100%; }
 .panel--kit .form-status:empty { display: none; }
 .field-error .inline-link { color: inherit; border-bottom-color: currentColor; }
 
