@@ -2048,7 +2048,7 @@ if (!arr(C.products) || C.products.length !== 9) {
     reqStr("overview.bespoke", bs, ["anchor", "eyebrow", "title", "lead"]);
     if (bs.eyebrow !== "Bespoke services") fail("overview.bespoke.eyebrow", 'must be "Bespoke services" — Alex\'s name for the offer (round 18)');
     if (str(bs.title) && !/\bAI factory\b/i.test(bs.title)) fail("overview.bespoke.title", 'must carry "AI factory" — Alex: the heading revolves around it');
-    if (str(bs.lead) && bs.lead.length > 220) fail("overview.bespoke.lead", "is " + bs.lead.length + " characters (max 220 — two sentences on the photograph's dark half)");
+    if (str(bs.lead) && bs.lead.length > 220) fail("overview.bespoke.lead", "is " + bs.lead.length + " characters (max 220 — two sentences over the band's four parts)");
     if (!arr(bs.points) || bs.points.length !== 4) {
       fail("overview.bespoke.points", "must hold exactly 4 — Alex's four elements, got " + (arr(bs.points) ? bs.points.length : "none"));
     } else {

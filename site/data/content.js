@@ -3,7 +3,6 @@ window.SITE_CONTENT = {
     name: "Oracle AI & Data Solutions",
     owner: "SoftServe",
     title: "Oracle AI & Data Solutions — SoftServe",
-    tagline: "AI agents and workflows on Oracle platforms",
     metaDescription: "AI agents that read your contracts, plan your field workforce and answer questions across your ERP. Built on Oracle by SoftServe, measured on your data first.",
     headerLockup: {
       wordmark: window.brandAsset("ssMark", "assets/img/softserve-wordmark-white.svg"),
@@ -511,11 +510,20 @@ window.SITE_CONTENT = {
 
   productsPage: {
     title: "PRODUCTS",
-    /* 2026-09-29 (Alex, on the lead it replaces: "looks like a justification
-       to reviewer, not a marketing copy"): the promise, not the conditions.
-       The hosting, the Jumpstart and its price live on each product's
-       Jumpstart tab; the rail and the search box name themselves. §52. */
-    intro: "Ready-made AI agents for the work your teams still do by hand, from reading contracts to planning field crews. Your people keep the decisions, and the difference shows in hours, costs and revenue.",
+    /* 2026-09-29 (Alex): his words, the home page's Products panel body, as
+       the lead of a photographic hero after softserveinc.com's About Us.
+       Still the promise, never the conditions (§52): the hosting, the
+       Jumpstart and its price live on each product's Jumpstart tab. §54. */
+    intro: "Ready-made AI agents and human-AI workflows that embody the know-how of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms.",
+    /* The hero's photograph: the SoftServe 2026 deck template's own, at full
+       resolution, the same oval of light as the Products panel on the home
+       page. Decorative on the page (alt=""); `alt` is the record. `focal` is
+       the desktop crop; phones take their own in site.css. */
+    image: {
+      file: "assets/img/heroes/products.jpg",
+      alt: "A tall oval of light open in a dark wall, an orange rim along its edge, its light running out across still water",
+      focal: "100% 46%"
+    },
     searchPlaceholder: "Search products or workflows…",
     /* Round 18 (Alex): the catalog's way out is its last tile, "Looking for
        other solution? Let's talk", into the home page's contact, with a product
