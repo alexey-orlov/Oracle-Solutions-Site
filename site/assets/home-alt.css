@@ -19,6 +19,8 @@
    is the photograph's own darkest tone, which is what a reader sees if the
    picture fails to load. */
 .ahero {
+  --foot-gap: clamp(2rem, 4vw, 4rem);
+  --stats-w: 36rem;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -74,27 +76,38 @@
 
 .ahero-line { display: block; text-wrap: balance; }
 
-/* The hairline, edge to edge, and the crossing on it. The line itself is the
-   ::before, so drawing it in never stretches the spark it carries. */
+/* The hairline and the crossing on it. The rule spans the copy's measure, so
+   the crossing can be placed against the copy; the line itself is the
+   ::before, drawn edge to edge, so drawing it in never stretches the spark. */
 .ahero-rule {
   position: relative;
   height: 1px;
   margin-block: clamp(1.5rem, 3.6vh, 2.5rem);
-  margin-inline: calc(50% - 50vw);
 }
 
 .ahero-rule::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
   background: rgba(255, 255, 255, .5);
   transform-origin: 0 50%;
 }
 
-/* The crossing sits at the oval's left rim. The second line runs at 25.5
-   degrees off vertical, the long axis of the spark glyph, so line and spark
-   read as one mark. */
-.ahero-cross { position: absolute; left: 67%; top: 0; width: 0; height: 0; }
+/* The second line runs at 25.5 degrees off vertical, the long axis of the
+   spark glyph, so line and spark read as one mark. The crossing sits over
+   the gap between the lead and the figures: above the hairline the line
+   clears the H1's line ends, below it the line falls through that gap and
+   touches no word. */
+.ahero-cross {
+  position: absolute;
+  left: calc(100% - var(--stats-w) - var(--foot-gap) / 2);
+  top: 0;
+  width: 0;
+  height: 0;
+}
 
 .ahero-diag {
   position: absolute;
@@ -120,8 +133,8 @@
    figures on the right, both ending on one line. */
 .ahero-foot {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--stats-w));
+  gap: var(--foot-gap);
   align-items: end;
 }
 
@@ -139,18 +152,20 @@
 .ahero-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
-.ahero-stat { min-width: 0; padding-left: 1rem; border-left: 1px solid rgba(255, 255, 255, .3); }
+.ahero-stat { min-width: 0; padding-left: .875rem; border-left: 1px solid rgba(255, 255, 255, .3); }
 
+/* Sized so "from 30 days" holds one line in a third of the figures' column
+   at every width the column stands beside the lead. */
 .ahero-stat-value {
   display: flex;
   align-items: baseline;
-  flex-wrap: wrap;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.75rem, 1rem + 1.4vw, 2.5rem);
+  font-size: clamp(1.625rem, .9rem + 1.3vw, 2.25rem);
   line-height: 1;
   letter-spacing: 0;
   color: #ffffff;
@@ -194,8 +209,19 @@
   to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
 }
 
+/* Below 1200 px the lead would be squeezed beside the figures, so the figures
+   move under the buttons. The crossing moves right, over the photograph's
+   light, and its line runs only upward from the spark, since below the
+   hairline every column now holds words. */
+@media (max-width: 1199px) {
+  .ahero-foot { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
+  .ahero-stats { max-width: 40rem; }
+  .ahero-cross { left: 80%; }
+  .ahero-diag { height: 150vh; transform-origin: 50% 100%; transform: translate(-50%, -100%) rotate(25.5deg); }
+}
+
 /* Below 1101 px the oval would stand behind the copy, so the picture shows
-   its dark half and the figures move under the buttons. */
+   its dark half. */
 @media (max-width: 1100px) {
   .ahero-img { object-position: 22% 50%; }
   .ahero-scrim {
@@ -203,9 +229,6 @@
       linear-gradient(0deg, rgba(3, 8, 18, .82) 0%, rgba(3, 8, 18, .4) 40%, rgba(3, 8, 18, .25) 100%),
       linear-gradient(90deg, rgba(3, 8, 18, .55) 0%, rgba(3, 8, 18, .15) 100%);
   }
-  .ahero-cross { left: 78%; }
-  .ahero-foot { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
-  .ahero-stats { max-width: 44rem; }
 }
 
 @media (max-width: 540px) {
