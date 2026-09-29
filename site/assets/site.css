@@ -1404,8 +1404,11 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   padding-block: 2rem .75rem;
 }
 
+/* Round 18: two link rows, SoftServe's then Oracle's, stacked on one left
+   edge with the social glyphs centred against the pair. */
+.footer-rows { display: flex; flex-direction: column; gap: .875rem; min-width: 0; }
 .footer-links, .social-row { list-style: none; margin: 0; padding: 0; }
-.footer-links { display: flex; flex-wrap: wrap; align-items: baseline; min-width: 0; font-size: .875rem; line-height: 1.2; }
+.footer-links { display: flex; flex-wrap: wrap; align-items: baseline; row-gap: .5rem; min-width: 0; font-size: .875rem; line-height: 1.2; }
 .footer-links a { font-weight: 400; color: #fafaf8; }
 .footer-links a:hover { text-decoration: underline; }
 .footer-sep { font-weight: 300; }
@@ -1436,6 +1439,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* The brand stacks the link row at 768 and centres both halves. */
 @media (max-width: 768px) {
   .footer-bar { flex-direction: column; }
+  .footer-rows { align-items: center; }
   .footer-links, .social-row { justify-content: center; }
 }
 
