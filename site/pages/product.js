@@ -85,21 +85,19 @@
     return "";
   }
 
-  /* The frame is promised before the file exists: `video: true` puts it on the
-     page, the `video` link decides whether the click plays a recording or says
-     when one is coming. Either way the hero keeps the same two-column shape, so
-     a product does not change layout the day its video lands. */
+  /* The frame is the recording: it renders only when links.json holds the
+     product's `video` link, and the click plays it. Round 18 (Alex: "no fake
+     and placeholder links"): the frame that promised a recording before one
+     existed, and its "being prepared" note, are gone, so a product without a
+     video has the single-column hero until its recording lands. */
   function heroMedia(product) {
     var UI = window.UI;
-    var conf = cfg(product.slug);
     var videoLink = lnk(product.slug).video;
-    if (!conf.video && !videoLink) return "";
+    if (!videoLink) return "";
     var poster = posterFor(product);
     var caption = C().shared.videoCaption;
-    var hook = videoLink
-      ? ' data-video="' + UI.esc(videoLink) + '"' +
-        ' data-video-title="' + UI.esc(product.name) + '"'
-      : ' data-video-pending="' + UI.esc(product.slug) + '"';
+    var hook = ' data-video="' + UI.esc(videoLink) + '"' +
+      ' data-video-title="' + UI.esc(product.name) + '"';
     return '<div class="hero-media">' +
       '<button class="video-card' + (poster ? "" : " video-card--plate") + '" type="button"' + hook +
         ' aria-label="' + UI.esc(caption + " — " + product.name) + '">' +
@@ -929,36 +927,6 @@
     });
   }
 
-  /* A frame with no recording behind it names the product, says the recording
-     is not ready, and offers a live demo instead — and, where the product has an
-     interactive walkthrough, that too, in a new tab. */
-  function bindPendingVideo(root, item) {
-    var UI = window.UI;
-    var pending = C().shared.videoPending;
-    var link = lnk(item.slug);
-    Array.prototype.forEach.call(root.querySelectorAll("[data-video-pending]"), function (button) {
-      button.addEventListener("click", function () {
-        var demo = link.interactiveDemo
-          ? UI.button({
-              label: C().shared.demoCta, href: demoHref(link),
-              kind: "secondary", icon: "cursor-click",
-              attrs: { target: "_blank", rel: "noopener" }
-            })
-          : "";
-        var panel = UI.modal.open('<h2 class="h3 modal-title">' + UI.esc(item.name) + "</h2>" +
-          '<p class="body-text">' + UI.esc(pending.body) + "</p>" +
-          '<div class="cta-row modal-cta">' + UI.button({
-            label: pending.cta,
-            href: contactsRoute(item.slug),
-            kind: "primary"
-          }) + demo + "</div>",
-          { label: item.name, className: "modal-panel--note" });
-        var cta = panel.querySelector(".modal-cta a");
-        if (cta) cta.addEventListener("click", function () { UI.modal.close(); });
-      });
-    });
-  }
-
   /* `axis` is "horizontal", "vertical" or "both". The stepper takes both: its
      heads are a horizontal strip on a desktop and a vertical accordion below
      901px, and one component may not answer to different keys at two widths. */
@@ -1104,7 +1072,6 @@
     }
 
     bindVideo(root, item);
-    bindPendingVideo(root, item);
     bindStepper(root);
     bindIndustryTabs(root);
     bindStack(root);

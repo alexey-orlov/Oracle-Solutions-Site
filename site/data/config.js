@@ -17,54 +17,50 @@ window.SITE_CONFIG = {
     "business-metrics-qa"
   ],
   /* Links to the walkthrough, the video and the kit documents are not here:
-     they live in links.json at the repo root (round 12, docs/CONFIG.md). */
+     they live in links.json at the repo root (round 12, docs/CONFIG.md).
+     Round 18 (Alex: "no fake and placeholder links"): the hero's video frame
+     renders only when links.json holds the recording, so the `video` switch
+     is retired, and `marketplace` may be true only with its listing URL. */
   products: {
     "account-insights": {
       marketplace: false,
       marketplaceUrl: "",
-      video: true,
       videoPoster: "",
       successStoryUrl: ""
     },
     "case-evidence-collection": {
       marketplace: false,
       marketplaceUrl: "",
-      video: false,
       videoPoster: "",
       successStoryUrl: ""
     },
     "plan-vs-actual-investigation": {
       marketplace: false,
       marketplaceUrl: "",
-      video: false,
       videoPoster: "",
       successStoryUrl: ""
     },
     "large-document-extraction": {
-      marketplace: true,
+      marketplace: false,
       marketplaceUrl: "",
-      video: true,
       videoPoster: "assets/img/posters/large-document-extraction.jpg",
       successStoryUrl: ""
     },
     "workforce-optimization": {
-      marketplace: true,
+      marketplace: false,
       marketplaceUrl: "",
-      video: true,
       videoPoster: "assets/img/posters/workforce-optimization.jpg",
       successStoryUrl: ""
     },
     "cross-system-erp-qa": {
       marketplace: false,
       marketplaceUrl: "",
-      video: false,
       videoPoster: "assets/img/posters/cross-system-erp-qa.jpg",
       successStoryUrl: ""
     },
     "business-metrics-qa": {
       marketplace: false,
       marketplaceUrl: "",
-      video: false,
       videoPoster: "",
       successStoryUrl: ""
     }
