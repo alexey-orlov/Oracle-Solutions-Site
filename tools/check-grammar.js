@@ -1821,6 +1821,41 @@ if (!arr(C.products) || C.products.length !== 9) {
       if (!str((c || {})[k])) fail("overview.hero.ctas[" + i + "]", k + " missing");
     });
   });
+
+  /* --- the #/alt hero's own H1 and lead (Alex, 2026-09-29, PROVENANCE §47) ---
+     Three sentences, one line each at every width: home-alt.css sizes the H1
+     so its longest sentence, "ROI proven in weeks." (9.8 em), fills the copy
+     column with 3 % to spare (--ahero-fit, divisor 10.1). A longer sentence
+     breaks that fit, so re-measure the divisor before raising the cap. The
+     lead is the live lead's promise on two lines from 1180 px up (35 em
+     measure) and obeys the same rules: the promise, never the procedure. */
+  var ah = (C.overviewAlt || {}).hero || {};
+  if (ah.headline !== undefined) {
+    var ahl = ah.headline || {};
+    if (!str(ahl.lead) || !str(ahl.accent) || !str(ahl.proof) || ahl.rest !== undefined) {
+      fail("overviewAlt.hero.headline", "needs { lead, accent, proof } — three sentences, one line each");
+    } else ["lead", "accent", "proof"].forEach(function (k) {
+      if (ahl[k].length > 21) {
+        fail("overviewAlt.hero.headline." + k, "is " + ahl[k].length + " characters (max 21 — each sentence holds one line at the H1's fitted size)");
+      }
+    });
+  }
+  if (ah.lead !== undefined) {
+    if (!str(ah.lead)) fail("overviewAlt.hero.lead", "is empty");
+    else {
+      if (ah.lead.length > 143) {
+        fail("overviewAlt.hero.lead", "is " + ah.lead.length + " characters (max 143 — two lines at a 35 em measure from 1180 px up)");
+      }
+      if (!/\btime to value\b/i.test(ah.lead)) {
+        fail("overviewAlt.hero.lead", 'must carry the promise, "time to value" — the lead is what the reader gets, not how');
+      }
+      var altProcedure = ah.lead.match(/Jumpstart|proof of value|Workshop|Integration|Scaling|tenancy|fixed-scope|fixed price/i);
+      if (altProcedure) {
+        fail("overviewAlt.hero.lead", 'names "' + altProcedure[0] + '" — the lead is the promise; the stages, the scope and the hosting belong to S4');
+      }
+    }
+  }
+
   /* Round 9: the stack is three layers read from the bottom up — Oracle's
      platforms, the SoftServe product groups built on them, the SoftServe
      services that prove, integrate and scale them. Only the services band is

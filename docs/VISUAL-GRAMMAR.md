@@ -65,7 +65,7 @@ A product without a recording never renders a frame, an empty frame, a greyed pl
 
 ### 1.1 The same image, as a Products-page tile
 
-**Copy sits on a photograph only where the component is a photograph by design, and always under a veil or scrim that carries its legibility**: the product heroes (a veil from the copy side), the home page's two ways in (a scrim, §9 S2), the home page's Bespoke band (a scrim heaviest at the left and the foot, §9 S4b), and the home case card's band, which carries the descriptor and the area and nothing else (a bottom-up veil, §9 S5). **A tile is never one of them** (round 3, D): every tile is **an image band over a solid body**, its copy on the body, and both halves are the same size on every tile — two per row, equal height.
+**Copy sits on a photograph only where the component is a photograph by design, and always under a veil or scrim that carries its legibility**: the product heroes (a veil from the copy side), the catalog's hero (a scrim from the copy side, §1.4), the home page's two ways in (a scrim, §9 S2), the home page's Bespoke band (a scrim heaviest at the left and the foot, §9 S4b), and the home case card's band, which carries the descriptor and the area and nothing else (a bottom-up veil, §9 S5). **A tile is never one of them** (round 3, D): every tile is **an image band over a solid body**, its copy on the body, and both halves are the same size on every tile — two per row, equal height.
 
 | Part | Content |
 |---|---|
@@ -146,6 +146,30 @@ see a demo today?"*, and hiding the question is not the same as answering it.
 **The `.rail-note` line under the platform group is gone**, with the
 `facets.footnote` string it printed: it existed to explain the platforms the
 rail no longer shows.
+
+**The search box opens the results bar** (§54): it sits over the grid it filters,
+with the results line at the bar's right. Up to 720 px, where the rail stacks over
+the grid, the bar is lifted above the rail, so the search box still comes first.
+
+### 1.4 The Products page's head — softserveinc.com's About Us hero (§54)
+
+Alex, 2026-09-29: *"think about styling it as https://www.softserveinc.com/en-us/about-us
+hero screen"*, then *"Full About us crossing"*. The head is one dark photograph
+(`productsPage.image`, the brand template's oval of light) carrying the page's
+name as the H1 and `productsPage.intro` as the lead, both white, over a scrim from
+the copy side, and nothing else: no eyebrow, no search box, no button.
+
+| Part | 1440 (About Us's own) | Up to 720 px |
+|---|---|---|
+| H1 | Azurio `--fs-hero`, .95 leading, 128 px under the header | the same size (48 px on a phone), 72 px under the header |
+| Lead | Replica Light 24/1.2, 56 px under the H1, measure min(684 px, 58vw − gutter), so it stops short of the oval | 18 px, full measure (36rem at most) |
+| The crossing | a 1 px white hairline 25 px under the H1 from the left edge into the spark's left tip and out of its right tip to the edge; one line on the spark's long axis, 25°, from the top edge into its top tip and out of its bottom tip to the foot | the hairline and the upper half of the axis line; the lower half would cross the lead |
+| Spark | 104 px wide, 40 px from the right edge, on the dark wall past the oval | 56 px wide, 20 px from the edge |
+| Photograph | the whole frame, `focal` `100% 30%` (the oval and its light strip) | widened to 160 %, its dark side, the oval's glow at the edge |
+
+Every position follows from three numbers, the top padding, the H1's size and the
+spark's width, so **the H1 is one word** (the checker holds it). The glyph's four
+tips are fractions of its width, written once in `site.css`.
 
 ---
 
