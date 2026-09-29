@@ -6835,7 +6835,7 @@ The big figure is unchanged on every card (Alex: *"short metric is good"*). The 
 
 ## 42. A new product: Repair-or-replace decisions, 2026-09-29
 
-_Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pack spec `packs/repair-or-replace-decisions/pack-spec.md` (Oracle-Packaging-Skills, origin/main 16add02). Two other sessions were reworking the home and product-page layouts at the time. Only this product's data, figure, walkthrough and images were written; no renderer, stylesheet or layout file was touched. Not published. Numbered §42 because §40.6 holds §41 and round 20 for the product-pages merge._
+_Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pack spec `packs/repair-or-replace-decisions/pack-spec.md` (Oracle-Packaging-Skills, origin/main 16add02). Two other sessions were reworking the home and product-page layouts at the time. Only this product's data, figure, walkthrough and images were written; no renderer, stylesheet or layout file was touched. Published the same day with the round-19 tree (*Publish*, below). Numbered §42 because §40.6 holds §41 and round 20 for the product-pages merge._
 
 - **The ask (Alex, 2026-09-29):** list the pack as a product, following the site's rules, while two sessions change the layouts. He then passed on earlier feedback on the case, *"there is not enough focus on business value"*, and asked to *"revise the messaging, metrics from that perspective and take that in account when preparing the website page"*. The pack spec was recast value-first and its four print documents rebuilt before the page was written from it.
 - **Clearance (Alex):** the source engagement's customer is never named and its logo never used, anywhere. The site's name gates already list the customer. The plugin's deny-list gained four related brand names (Oracle-Packaging-Skills 3c323d4). The one descriptive mention of the customer in this file (§40.6) was removed. The guards keep the name because they exist to catch it: the name pattern recorded in this file and `CUSTOMER_NAMES` in the checker.
@@ -6885,7 +6885,13 @@ _Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pac
   - The PoV price.
   - The kit links, once the approved finals are in OneDrive.
   - The solution line's *any recalibration listed*: the spec's feature table marks *Follow-on work and safety flags at decision* as roadmap, delivered in the proof of value, while the line states it as present.
-  - Publishing, which waits for his word and for the layout sessions.
+  - Sharing the two new walkthrough artifacts with anyone who has the link, as the other three are. Until then the *Interactive demo* button on *Fleet route optimization* and on *Repair-or-replace decisions* opens a page only he can see.
+- **Publish (Alex: *"publish the site"*, 2026-09-29):**
+  - The home-page and hyphen sessions confirmed a publishable point first. The product-pages session asked to go ahead without round 20.
+  - Gates: `check-grammar` OK at 9 products and nine home screens; the name grep empty; 48 routes swept (home, catalog, sellers, every product's five tabs) with no script error, broken image or failed request.
+  - The two walkthroughs were published as their own artifacts first: Repair-or-replace `DCgrK6RjucSP7LKBYTKdh3`, Fleet `6KeSmkVC5ASh7UeYXtQNFA`. `links.json` › `interactiveDemoArtifact` holds each, and `data/links.js` was built fresh for the publish.
+  - The site went to version 1790676289-ee3a with 39 map entries: the 13 files changed since the 2026-09-28 publish, 23 new files (the round-18 band photographs and ask tile, the two products' heroes, the Fleet poster, eight step images, both walkthrough folders), the fresh `data/links.js`, and `"pages/services.js": null`. Seven unreferenced new images under `assets/img/` stayed out.
+  - `list_files` shows 135 files, the new ones live, `services.js` gone, and nothing from the never-ship list.
 
 ## 43. A product name's hyphenated compound stays whole on phones, 2026-09-29
 
