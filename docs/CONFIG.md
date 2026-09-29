@@ -273,7 +273,7 @@ The interactive walkthrough — a self-contained guided demo of the product on p
 
 **It is the single source for everything that claims an interactive demo exists** (round 9). Non-empty → three things appear together:
 
-- the secondary **Interactive demo** button in the product hero (its label is `shared.demoCta` in `content.js`, the badge's own words and glyph since round 10), and the same button inside the panel the pending video frame opens;
+- the secondary **Interactive demo** button in the product hero (its label is `shared.demoCta` in `content.js`, the badge's own words and glyph since round 10);
 - the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
 - the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same link.
 
@@ -287,7 +287,7 @@ On a real host it is ignored and the relative path is used, so nothing has to ch
 
 ### `video`
 
-The demo video itself. Paste the link when the recording lands, **and set `video: true` in `config.js` in the same edit** — the link turns the frame on by itself, but the flag is the owner's statement that the recording is real (§3). A normal share link is fine: YouTube `watch?v=`, `youtu.be/`, `youtube.com/shorts/` and `vimeo.com/<id>` links are converted to their embed form before the player is framed, and links already in embed or player form pass through unchanged. Expected first for `workforce-optimization`, `large-document-extraction` and `account-insights`. Empty on all seven today.
+The demo video itself. Paste the link when the recording lands, and the hero's video frame appears with it on the next reload: since round 18 nothing else turns it on (§3, the retired `video` switch). A normal share link is fine: YouTube `watch?v=`, `youtu.be/`, `youtube.com/shorts/` and `vimeo.com/<id>` links are converted to their embed form before the player is framed, and links already in embed or player form pass through unchanged. Expected first for `workforce-optimization`, `large-document-extraction` and `account-insights`. Empty on all seven today.
 
 ### Retired in round 12
 
@@ -301,7 +301,6 @@ Hero background images are **not** in `config.js`. They are content, so they liv
 
 | Surface | Key |
 |---|---|
-| Services page | `services.hero.image` |
 | Each product page | `products[].hero.image` |
 
 **The home page has no hero image.** Round 5 replaced the photograph with the built-on stack visual; `overview.hero.image` is retired and `check-grammar.js` fails if it returns. `assets/img/heroes/overview.jpg` **stays on disk, unreferenced** — the same treatment the customer logos get (`ASSETS.md` §4), because the grade it was put through is the expensive half to redo — and its `heroes.json` entry stays with it, carrying `"unreferenced": true` and a one-line note. So nine files, eight of them referenced.
@@ -318,7 +317,7 @@ hero: {
 }
 ```
 
-- **`file`** — path relative to `site/index.html`. The files sit in `site/assets/img/heroes/`, named by product slug, plus `overview.jpg` and `services.jpg`.
+- **`file`** — path relative to `site/index.html`. The files sit in `site/assets/img/heroes/`, named by product slug, plus `overview.jpg` and `services.jpg`, the home page's two S2 panel photographs (`overview.twoWays.panels[].image`). The Bespoke band's two photographs sit in `site/assets/img/bands/` (round 18, `overview.bespoke.image`).
 - **`alt`** — a plain description of the picture, kept as a record of what the file actually shows. The hero image is decorative — the headline beside it carries the meaning — so it ships as `alt=""` and is hidden from assistive tech. Keep the description truthful anyway: it is how the next person knows which file is which without opening all nine.
 - **`focal`** — a CSS `object-position` value, e.g. `"55% 40%"`. This is the knob to turn when a crop clips the wrong part of the image on a wide screen; it changes nothing else.
 
@@ -354,7 +353,7 @@ The grade recipe and its constants are in `PROVENANCE.md` §11.1. Do not compens
 |---|---|---|---|
 | Step frames | `assets/img/steps/<slug>-<n>.<ext>` | product **and** step number | the How-it-works stepper on the Overview tab, one 16:10 frame per step — a real product screenshot where one exists, otherwise a designed illustration built to the same frame |
 | Industry photographs | `assets/img/industries/<key>.<ext>` | **industry**, not product | the industry use-case tabs; one file serves every product whose tabs include that industry |
-| The contact portrait | `assets/img/people/<name>.<ext>` | the one person in `shared.contact` | the contact card on every Contacts tab and above the Services form, as a circle. **None ships today** — `shared.contact.photo` is empty and the card renders an initials avatar until a portrait is confirmed to be the person named (`ASSETS.md` §3) |
+| The contact portrait | `assets/img/people/<name>.<ext>` | the one person in `shared.contact` | the contact card on every Contacts tab and on the home page's contact switch, as a circle. It ships filled since 2026-09-14, when Alex confirmed the headshot (`ASSETS.md` §3); an empty `photo` renders an initials avatar |
 
 All three are named in `content.js` (`overview.steps[].image`, `overview.industryCases[].image`, `shared.contact.photo`), not here — they are copy-side facts, not switches. A missing file is a warning from `check-grammar.js`, never a failure; the contact portrait degrades to an initials monogram, and the other two to an empty frame.
 
@@ -363,10 +362,10 @@ All three are named in `content.js` (`overview.steps[].image`, `overview.industr
 ## 4. Adding an eighth product
 
 1. Add the product object to `products[]` in `content.js` (see `SCHEMA.md` for every field).
-2. Add a matching `products["<new-slug>"]` block to `config.js` with all five keys (`marketplace`, `marketplaceUrl`, `video`, `videoPoster`, `successStoryUrl`). `video` and `marketplace` must both be real booleans — `check-grammar.js` rejects a missing one and a quoted `"false"`, which would be truthy and turn the frame or the badge on.
+2. Add a matching `products["<new-slug>"]` block to `config.js` with all four keys (`marketplace`, `marketplaceUrl`, `videoPoster`, `successStoryUrl`). `marketplace` must be a real boolean, `true` only with an https `marketplaceUrl` — `check-grammar.js` rejects a missing one, a quoted `"false"` (truthy, so it would turn the badge on) and a flag with no listing. **No `video` key**: it is retired in round 18, the frame follows the `video` link in `links.json`, and the checker fails the key by name (the packaging plugin's exemplar still carries it).
    Then add its entry to `links.json` with all six keys, `""` for whatever does not exist yet (§3a), and run `node tools/sync-links.js`: the checker fails a product with no entry, and the kit email names the product from `mail/catalog.json`, which that command writes.
 3. Add the slug to `productOrder` where you want it to appear. Skipping this step is not an error — the product lands at the end of every list instead — but the position is a judgement about what a seller should meet first, so make it deliberately rather than by omission.
-4. Set its `facet` to one of the **four canonical technology ids**, and nothing else: `oci-nvidia` (*OCI + NVIDIA*), `oracle-ai-data-platform` (*Oracle AI Data Platform*), `oracle-ai-lakehouse` (*Oracle Autonomous AI Lakehouse*), `oracle-ai-fusion` (*Oracle AI for Fusion Applications*). There is no fifth platform and no `other` catch-all; a new Oracle platform is a new facet, added to `facets.technology`, to `shared.tagFamilies.tech.icons`, to both platform-card lists and to `check-grammar.js` in one edit. If it lands on a facet that currently has no products, nothing else is needed — the facet is already declared and will stop rendering its empty state once a product carries it.
+4. Set its `facet` to one of the **four canonical technology ids**, and nothing else: `oci-nvidia` (*OCI + NVIDIA*), `oracle-ai-data-platform` (*Oracle AI Data Platform*), `oracle-ai-lakehouse` (*Oracle Autonomous AI Lakehouse*), `oracle-ai-fusion` (*Oracle AI for Fusion Applications*). There is no fifth platform and no `other` catch-all; a new Oracle platform is a new facet, added to `facets.technology`, to `shared.tagFamilies.tech.icons` and to `check-grammar.js` in one edit (and, if it has a public Oracle page, to the footer's `oracleLinks`). If it lands on a facet that currently has no products, nothing else is needed — the facet is already declared and will stop rendering its empty state once a product carries it.
 5. Give it a two-entry `tags` array: its `categoryChip`, then its facet's `label` **verbatim**. The engine it runs on — AI-Q, cuOpt, Select AI, a source system — goes in `technology`, never appended to the platform chip; `check-grammar.js` fails a third tag.
 
 If the config block is missing, the product page still renders; every optional control simply stays hidden, exactly as if all its URLs were empty.
