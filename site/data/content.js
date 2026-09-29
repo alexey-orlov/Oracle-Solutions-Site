@@ -508,14 +508,15 @@ window.SITE_CONTENT = {
        Still the promise, never the conditions (§52): the hosting, the
        Jumpstart and its price live on each product's Jumpstart tab. §54. */
     intro: "Ready-made AI agents and human-AI workflows that embody the know-how of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms.",
-    /* The hero's photograph: the SoftServe 2026 deck template's own, at full
-       resolution, the same oval of light as the Products panel on the home
-       page. Decorative on the page (alt=""); `alt` is the record. `focal` is
-       the desktop crop; phones take their own in site.css. */
+    /* The hero's photograph: softserveinc.com's own About Us photograph
+       (Alex, 2026-09-29: download it). It is used as no other background on
+       the site; the #/alt hero's oval is not repeated here. Decorative on the
+       page (alt=""); `alt` is the record. `focal` is the crop from 721 px up;
+       phones take their own in site.css. */
     image: {
       file: "assets/img/heroes/products.jpg",
-      alt: "A tall oval of light open in a dark wall, an orange rim along its edge, its light running out across still water",
-      focal: "100% 30%"
+      alt: "A team at work around a laptop in a dark room, one of them lit orange by a low sun, a window of blue sky at the right",
+      focal: "25% 0%"
     },
     searchPlaceholder: "Search products or workflows…",
     /* Round 18 (Alex): the catalog's way out is its last tile, "Looking for
