@@ -149,39 +149,40 @@ rail no longer shows.
 
 ---
 
-## 2. Overview tab — one column: the problem, the numbers, the screens
+## 2. Overview tab — a main column and the numbers beside it
 
-**Round 20** (Alex, 2026-09-29: *"all blocks are too greyish"*; How it works *"Can't fit the entire block to a single screen"*; *"More detail block - on Overview page - to be removed"*; the ROI block *"too wordy, and too boring"*). The tab is **one column at the wrap's width**, 1,248 px at 1440, with **no rail**, in the order of the argument:
+**Round 21** (Alex, 2026-09-29, choosing between two layouts: *"b) Problem solution and the How it works taking the central space (left; 4/7 to 2/3 of width); and ROI metrics look like widget on the right. I am more about b since problem solution should be central."*). **From 1240 px the tab is two columns**: a main column of two thirds (`minmax(0, 2fr)`, 800 px at 1440) holding the problem and what changes, then How it works; and **the numbers widget** in the other third (`minmax(0, 1fr)`, 400 px), 48 px apart, top-aligned with the problem plate. The grid is `"ps kpi" "hiw kpi"` on `.tab-body--overview:has(> .kpi-widget)`, 64 px between the rows.
 
-| Order | Block | Source | Section |
-|---|---|---|---|
-| 1 | **Problem → What changes**: two plates | `overview.problemSolution` | §2.1 |
-| 2 | **What changes in your numbers**: the KPI band | `overview.metrics` | §2.4 |
-| 3 | **How it works**: the step list beside one frame | `overview.steps` | §2.2 |
+| Order in the markup | Block | Where from 1240 px | Source | Section |
+|---|---|---|---|---|
+| 1 | **Problem → What changes**: two plates | main column, one over the other | `overview.problemSolution` | §2.1 |
+| 2 | **What changes in your numbers**: the widget | the right third, pinned | `overview.metrics` | §2.4 |
+| 3 | **How it works**: a row of step tabs, the open step's text, one frame | main column, under the plates | `overview.steps` | §2.2 |
 
-- **The number is the reason to look at the screens**, so the band comes before How it works. The checker holds the order (`problemSolution()` → `outcomesBlock()` → `howItWorks()` in `overviewTab()`); the reverse is one line there, and open for Alex (PROVENANCE §41.11).
-- **Spacing.** The blocks sit 64 px apart (40 on a phone; `.tab-body--overview`). The band is full-bleed with 64 px of padding (40 on a phone); the plates and the frame keep the wrap.
-- **One grey step and one contrast plate per screen** (`SS26-THEME.md` §3, §5): the problem plate is the tab's one `#edf0f2` surface, the What changes plate its one dark plate, and the band carries its own light gradient. Nothing on the tab is grey on grey.
-- **The screen budget.** How it works fits one 1440 × 900 screen under the 50 px header: the H2 (58 px) + 24 + the 545 px frame is **627 px, within 830**. At 1280 × 800 the frame is 744 × 465 and the block **547 px, within 750**. The plates are about 264 px tall at 1440 and the band about 480.
-- **Nothing else renders here.** More detail is removed (§2.7). `scope`, `features` and each step's `features` stay in the data, unrendered, and `scope` moves to the Jumpstart tab next round (`SCHEMA.md`). The industry tabs and the case study are the Use cases tab's (§2a), because they answer a different question: *where does this apply, and has it worked?*
-- **Breakpoints.** From 768 to 1099 px the plates keep two columns (padding 32, headline 24 px), the band two columns (a third tile full width under a rule), and How it works puts the frame over the list. Below 768 px everything stacks, and How it works becomes four cards (§2.2).
+- **The markup keeps round 20's order of the argument** (the problem, the numbers, the screens): it is the order below 1240 px and the order a screen reader reads, and the checker holds it (`problemSolution()` → `outcomesBlock()` → `howItWorks()` in `overviewTab()`).
+- **The widget is pinned** under the header and the tab bar (`top: calc(var(--nav-h) + var(--tabbar-h) + 1.5rem)`, 133 px), so the numbers stay in view beside How it works, and it leaves with the section's end. **Only while all of it fits the window**: `measureKpiWidget()` (product.js) adds `.is-tall` when its top plus its height plus 16 px passes the window's height, on mount, on resize and when the fonts arrive, and a tall widget scrolls with the page, so its foot is never cut off. Measured: two tiles are 567–659 px tall (pinned at 1440 × 900, 1280 × 800 and, for most products, 1366 × 768); three tiles, about 1,000 px, scroll.
+- **Spacing.** 64 px between the blocks (40 on a phone). No band is full-bleed any more.
+- **One grey step and one contrast plate per screen** (`SS26-THEME.md` §3, §5): the problem plate is the tab's one `#edf0f2` surface, the What changes plate its one dark plate, and the widget is white on a hairline. Nothing on the tab is grey on grey.
+- **The screen budget.** How it works fits one screen under the header and the tab bar: at 1440 × 900 the H2 (58) + 24 + the tab row + 16 + two lines of text + 16 + the 800 × 500 frame is **731 px, within 791**; at 1280 × 800 the frame is 693 × 433 and the block **664 px, within 691**. On a window 820 px tall or less the block gives up 26 px (the H2 at 40 px, tighter tabs), which brings 1366 × 768 to 674 px against 659. From 1100 to 1239 px the steps stand as a list beside the frame (§2.2) and the block is 595 px.
+- **Nothing else renders here.** More detail is removed (§2.7). `scope`, `features` and each step's `features` stay in the data, unrendered (`SCHEMA.md`). The industry tabs and the case study are the Use cases tab's (§2a), because they answer a different question: *where does this apply, and has it worked?*
+- **Breakpoints.** Below 1240 px the blocks stack in the markup's order: the plates side by side (padding 32 and a 24 px headline below 1100), the widget at the column's width with its tiles side by side (a third full width under a rule below 1100), then How it works. Below 768 px everything is one column, and How it works becomes cards (§2.2).
 - The Previous/Next pager was removed in round 3: the tab bar and the Products grid are the navigation.
 
 ### 2.1 Problem → What changes — two plates
 
 `overview.problemSolution` → `{ problem: { headline, text }, solution: { headline, text } }`
 
-Round 20 (Alex: *"too much text, heading indistinguishable from text, not sexy - have no motivation to read"*). Two plates side by side at one height, the problem on the left and what changes on the right:
+Round 20 (Alex: *"too much text, heading indistinguishable from text, not sexy - have no motivation to read"*). Two plates at one height, the problem first and what changes second: side by side below 1240 px, **one over the other in the main column** from 1240 px (round 21), where each plate is 800 px wide and the pair about 430 px tall at 1440:
 
 | Part | Rule |
 |---|---|
-| Grid | `.ps-pair`: two equal columns, gap 24, the plates stretched to one height. One column below 768 px (gap 16). |
+| Grid | `.ps-pair`: two equal columns, gap 24, the plates stretched to one height; from 1240 px one column, gap 16; one column below 768 px (gap 16). |
 | Plate | `.ps-plate`, a 12 px cut, padding 40 (32 from 768 to 1099 px, 24 on a phone). **The problem** sits on `#edf0f2` in ink: the tab's one grey step. **What changes** sits on the `#1a1a1a` plate in white: the tab's one dark plate. |
 | Eyebrow | 12 px uppercase at +.06em, read from `sectionLabels.problemEyebrow` and `solutionEyebrow`, the same on every product: `#4c5156` on grey, `#bdcbd7` on dark. |
 | Headline | the plate's heading (an `h2`), Replica 400 at 28 px (24 below 1100), ink or white: the claim itself, **at most 60 characters and two lines**, balanced so the two lines come out even (`text-wrap: balance`). |
 | Text | one paragraph, 18 px Light, **at most 30 words**: `#26292b` on grey, white at 82% on dark, wrapped to avoid a lone last word (`text-wrap: pretty`). |
 
-**No icon and no arrow.** The pair reads left to right on its own, and the contrast between the two plates carries the before → after. The pair is about 264 px tall at 1440.
+**No icon and no arrow.** The pair reads on its own, left to right or top to bottom, and the contrast between the two plates carries the before → after. The text keeps a 736 px measure (`max-width: 46rem`).
 
 **The copy** (Alex: *"preserve sharpness and focus around ROI, business value and clarity for the audience outside the specific industry"*). The problem headline names the role and what the situation costs them, in the nouns on their desk; the headline opposite says what changes in that person's work, and how much faster. Neither names a platform or an engine (round 19's rule: the checker fails `IMPLEMENTATION_TERMS` in both fields), and neither repeats the product's one-liner. The checker also holds the two budgets, and fails a plate's `title` or `icon` by name.
 
