@@ -1942,7 +1942,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .tab-body--overview > .kpi-widget {
     grid-area: kpi;
     position: sticky;
-    top: calc(var(--nav-h) + var(--tabbar-h) + 1.5rem);
+    top: calc(var(--nav-h) + var(--tabbar-h) + 1rem);
   }
   /* Taller than the window: it scrolls with the page, so its foot is never
      cut off. */
@@ -2110,7 +2110,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .tab-body--overview:has(> .kpi-widget) .hiw .ov-h2 { font-size: 2.5rem; }
   .kpi-widget { padding: 2.5rem 2rem 2rem; }
   .kpi-widget .kpi-grid { grid-template-columns: minmax(0, 1fr); }
-  .kpi-widget .kpi + .kpi { margin-top: 1.5rem; padding: 1.5rem 0 0; border-left: 0; border-top: 1px solid var(--border-panel); }
+  .kpi-widget .kpi + .kpi { margin-top: 1.25rem; padding: 1.25rem 0 0; border-left: 0; border-top: 1px solid var(--border-panel); }
+  .kpi-widget .kpi-head { margin-top: .75rem; }
   .kpi-widget .kpi-value { font-size: min(2.5rem, calc(100cqi / var(--fig-em-max, var(--fig-em, 4)))); }
 }
 

@@ -427,15 +427,6 @@
 
 /* ——— widths ——————————————————————————————————————————————————————————— */
 
-/* Below 1181 px a half row no longer holds the lead in three lines beside
-   the figures: the lead takes the full measure, the figures three across
-   under it. */
-@media (max-width: 1180px) {
-  .ahero-promise, .ahero-stats { grid-column: 1 / -1; }
-  .ahero-promise { padding-right: 0; }
-  .ahero-stats { max-width: 44rem; }
-}
-
 /* The diagram and the reasons stack, the diagram first, as it reads on the
    left. */
 @media (max-width: 1100px) {
@@ -444,11 +435,14 @@
 }
 
 /* The photograph takes its content's height, the oval becomes a glow at the
-   right edge, and the line moves right with it. */
+   right edge, and the line moves right with it, so the copy widens to the
+   line's side of it; the promise runs past two lines here. */
 @media (max-width: 768px) {
   .ahero-photo { height: auto; min-height: 440px; }
   .ahero-img { object-position: 56% 50%; }
-  .ahero-title { font-size: 40px; }
+  .ahero-copy { --ahero-share: .68; }
+  .ahero-title { font-size: min(40px, var(--ahero-fit)); }
+  .ahero-lead { text-wrap: pretty; }
   .ahero-line-desk { display: none; }
   .ahero-line-narrow { display: inline; }
   .ahero-spark { left: 80.56%; }
@@ -469,22 +463,20 @@
    figures become rows. */
 @media (max-width: 540px) {
   .ahero-img { object-position: 45% 50%; }
-  .ahero-copy { width: 100%; }
-  .ahero-title { max-width: none; font-size: 38px; }
+  .ahero-copy { --ahero-share: 1; }
+  .ahero-title { max-width: none; font-size: min(38px, var(--ahero-fit)); }
   .ahero-line, .ahero-spark { display: none; }
   .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
   .ahero-actions .btn { width: 100%; }
   .ahero-actions .ahero-link { align-self: flex-start; }
-  .ahero-lead { font-size: 18px; }
   .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
   .ahero-stat-value { font-size: 34px; }
   .ahero-stat-label { margin-top: 0; }
 }
 
-/* At 320 "Built on Oracle." holds one line only at 36 px. */
+/* At 320 the figures and their rows step down; the H1 follows its fit. */
 @media (max-width: 359px) {
-  .ahero-title { font-size: 36px; }
   .ahero-stat { grid-template-columns: 9.5rem minmax(0, 1fr); }
   .ahero-stat-value { font-size: 30px; }
 }
@@ -496,7 +488,6 @@
   .ahero-photo { height: auto; }
   .ahero-title, .ahero-stat-value { color: #111111 !important; }
   .ahero-lead, .ahero-stat-label, .ahero-stat-prefix { color: #333333 !important; }
-  .ahero-dash { background: #111111 !important; }
   .aoffer .way--photo { padding-top: 1.5rem; }
   .aoffer .way--photo .way-title { margin-top: 0; }
 }
