@@ -2754,6 +2754,65 @@ if (/request a demo/i.test(raw)) {
   }
 })();
 
+/* ---- §55 · the product hero: its frame and its ground (Alex, 2026-09-29) ----
+   "Make sure that this area has the video preview on the right … It should
+   link to the video, and the video link should be in the config file with all
+   other artifacts … If no video, but product has a walkthrough, it should be
+   opening instead of the video. Only if neither walkthrough, nor video is
+   available, slot should be empty." And the hero photographs, "very poor
+   quality … not aligned with how softserve uses these images": the ground is
+   softserveinc.com's detail-page gradient, with no photograph behind the copy. */
+(function () {
+  function fnSrc(src, name) {
+    var at = src.indexOf("function " + name + "(");
+    if (at < 0) return "";
+    var next = src.indexOf("\n  function ", at + 10);
+    return src.slice(at, next < 0 ? src.length : next);
+  }
+  var productSrc = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  var appSrc = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  var cssSrc = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
+  var media = fnSrc(productSrc, "heroMedia");
+
+  /* One resolver for the walkthrough, so the frame, the button and the badge
+     cannot open different things; one glyph per thing it opens (round 9). */
+  if (media.indexOf("demoHref(link)") === -1) {
+    fail("site/pages/product.js heroMedia()", "must read the walkthrough through demoHref(link), as the button and the badge do (§55)");
+  }
+  if (media.indexOf('UI.icon("play", "icon--solid")') === -1 || media.indexOf('UI.icon("cursor-click")') === -1) {
+    fail("site/pages/product.js heroMedia()", "the frame's glyph is play for a recording and the badge's cursor-click for the walkthrough (round 9, §55)");
+  }
+  /* A SharePoint or Stream page refuses to be framed on another site and
+     opens only for a signed-in viewer: it opens in its own tab. */
+  var plays = fnSrc(productSrc, "playsInPage");
+  if (!plays || /sharepoint|microsoftstream/i.test(plays) || /sharepoint|microsoftstream/i.test(fnSrc(productSrc, "bindVideo"))) {
+    fail("site/pages/product.js", "a SharePoint or Stream recording opens in its own tab, never in the modal's iframe (§55)");
+  }
+  /* The badge names the walkthrough, so it never plays the frame's recording. */
+  if (/video-card|\.click\(\)/.test(fnSrc(appSrc, "initDemoBadges"))) {
+    fail("site/assets/app.js initDemoBadges()", "must open the walkthrough, not click the hero frame, which plays the recording where there is one (§55)");
+  }
+  /* No photograph behind the copy; the ground is the brand's measured gradient. */
+  if (/heroBackdrop|class="hero-bg"/.test(productSrc) || /function heroBackdrop\(|class="hero-bg"/.test(appSrc)) {
+    fail("site/pages/product.js", "renders a hero photograph behind the copy — the product hero's ground is softserveinc.com's gradient (§55)");
+  }
+  if (!/\.product-hero\.has-hero-bg \{[^}]*background: linear-gradient\(0deg, #ffffff -24\.5%, #c1dff4 39\.38%, #458fdd 99\.67%\);/.test(cssSrc)) {
+    fail("site/assets/site.css .product-hero.has-hero-bg", "must carry softserveinc.com's detail-page hero gradient, linear-gradient(0deg, #ffffff -24.5%, #c1dff4 39.38%, #458fdd 99.67%) (§55)");
+  }
+  /* Every frame that renders shows the product's own screen: a still on disk,
+     never the tile's photograph. */
+  (C.products || []).forEach(function (p) {
+    var entry = LINKS[p.slug] || {};
+    if (!str(entry.video) && !str(entry.interactiveDemo)) return;
+    var poster = ((CFG.products || {})[p.slug] || {}).videoPoster;
+    var where = "config.products." + p.slug + ".videoPoster";
+    if (!str(poster)) return fail(where, "empty — the hero frame renders (links.json holds a video or a walkthrough), so it needs the product's own screen (§55)");
+    if (!/^assets\/img\/posters\/[a-z0-9-]+\.(jpg|png|webp)$/.test(poster)) fail(where, '"' + poster + '" is not assets/img/posters/<slug>.<ext>');
+    else if (!fs.existsSync(path.join(root, "site", poster))) fail(where, "not on disk: site/" + poster);
+    if (p.hero && p.hero.image && poster === p.hero.image.file) fail(where, "is the tile's photograph — the frame shows the product's own screen (VISUAL-GRAMMAR §1)");
+  });
+})();
+
 /* ---- round 7 · one proof-of-value duration (Alex, 2026-09-17) ----
    "Make sure that we always mention 4–8 weeks PoV, consistently across the
    site": every Jumpstart states it in its promise, its short form (which the
