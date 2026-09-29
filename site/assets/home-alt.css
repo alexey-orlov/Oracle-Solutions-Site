@@ -90,17 +90,20 @@
 .ahero-copy {
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  width: 64%;
+  gap: 28px;
+  width: 58%;
   padding-block: 28px;
 }
 
 /* Four lines: the first sentence breaks after "agents" (the em cap), the
-   other two stand on their own lines. */
+   other two stand on their own lines. Sized as a block, not as large as the
+   photograph allows (Alex, on the first cut: the texts took too much space):
+   about 45 % of the photograph's height, 65 px at 1440 x 900, 60 at 1333,
+   76 at most, so the oval and the spark keep their room. */
 .ahero-title {
   max-width: 11em;
-  font-size: clamp(40px, 5.2vw, 88px);
-  line-height: .95;
+  font-size: clamp(38px, min(4.5vw, 7.4vh), 76px);
+  line-height: 1.02;
   letter-spacing: .01em;
   color: #ffffff;
 }
@@ -141,37 +144,41 @@
 .ahero-band-inner {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 24px;
+  gap: 20px 24px;
   align-items: start;
-  padding-block: 24px;
+  padding-block: 28px;
 }
 
-.ahero-promise { grid-column: 1 / 7; min-width: 0; }
+/* Five columns for the promise, seven for the proof, and a margin on the
+   promise's right so the two groups never butt against each other. */
+.ahero-promise { grid-column: 1 / 6; min-width: 0; padding-right: clamp(16px, 2vw, 32px); }
 
 .ahero-dash { display: block; width: 62px; height: 2px; margin-bottom: 10px; background: #000000; }
 
+/* The promise reads as body copy under the claim, not a second headline. */
 .ahero-lead {
-  max-width: 36rem;
+  max-width: 30rem;
   font-weight: 300;
-  font-size: clamp(18px, 1.53vw, 24px);
-  line-height: 1.4;
+  font-size: clamp(17px, 1.3vw, 19px);
+  line-height: 1.45;
   color: #26292b;
   text-wrap: pretty;
 }
 
+/* Three equal columns and a wide gap. A figure is sized with room to spare
+   in its column, never fitted to fill it: a fitted "from 30 days" ran into
+   "1,000+" with 21 px between them, while "1,000+" stood 82 px from "30".
+   The narrowest two-column width, 1181 px, still leaves ~50 px between
+   figures. */
 .ahero-stats {
-  grid-column: 7 / 13;
+  grid-column: 6 / 13;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  column-gap: clamp(28px, 3vw, 48px);
   min-width: 0;
 }
 
-/* Each figure fits its third of the column: "30 days" is 3.54 em of Azurio
-   and "from" with its gap 41 px, so the size is 48 px from about 1640 px up,
-   ~42 at 1440, never under 30. The three stay one size, since their
-   columns are equal. */
-.ahero-stat { min-width: 0; container-type: inline-size; }
+.ahero-stat { min-width: 0; }
 
 .ahero-stat-value {
   display: flex;
@@ -180,8 +187,7 @@
   white-space: nowrap;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 48px;
-  font-size: clamp(30px, calc((100cqi - 44px) / 3.6), 48px);
+  font-size: clamp(30px, 2.6vw, 40px);
   line-height: 1;
   letter-spacing: 0;
   color: #000000;
@@ -195,10 +201,10 @@
 }
 
 .ahero-stat-label {
-  margin-top: 4px;
+  margin-top: 8px;
   font-weight: 300;
-  font-size: 15px;
-  line-height: 1.35;
+  font-size: 14px;
+  line-height: 1.4;
   color: #4c5156;
 }
 
@@ -440,7 +446,6 @@
 /* ——— widths ——————————————————————————————————————————————————————————— */
 
 @media (max-width: 1365px) {
-  .ahero-stat-label { font-size: 14px; }
   .amap-chips--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -477,7 +482,7 @@
 @media (max-width: 768px) {
   .ahero-photo { height: auto; min-height: 440px; }
   .ahero-img { object-position: 56% 50%; }
-  .ahero-title { font-size: 44px; }
+  .ahero-title { font-size: 40px; }
   .ahero-line-desk { display: none; }
   .ahero-line-narrow { display: inline; }
   .ahero-spark { left: 80.56%; }
@@ -489,7 +494,7 @@
 @media (max-width: 540px) {
   .ahero-img { object-position: 45% 50%; }
   .ahero-copy { width: 100%; }
-  .ahero-title { max-width: none; font-size: 40px; }
+  .ahero-title { max-width: none; font-size: 38px; }
   .ahero-line, .ahero-spark { display: none; }
   .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
   .ahero-actions .btn { width: 100%; }
