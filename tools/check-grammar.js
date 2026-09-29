@@ -1107,7 +1107,7 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (str(c.chip) && c.chip !== c.full) {
       fail(where, 'chip "' + c.chip + '" differs from full "' + c.full + '" — a group has one name, on the tile, the rail and the product chip');
     }
-    /* Round 18 (Alex, on the six tiles: "some headings now are 2 lines, some 1
+    /* PROVENANCE §44 (Alex, on the six tiles: "some headings now are 2 lines, some 1
        line, so content looks not so clean; fix line breaks (not allowed to do
        tile renaming)"): the home tile sets the name on two lines, broken before
        its last word, and site.css fits the size to the tile so the first line
@@ -1795,12 +1795,12 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (str(((o.bespoke || {}).cta || {}).label) && o.bespoke.cta.label !== (C.site.primaryCta || {}).label) {
     fail("overview.bespoke.cta.label", "must read site.primaryCta.label — one contact ask site-wide (round 10)");
   }
-  /* Round 18 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
+  /* PROVENANCE §44 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
      S3 renders each name on two lines, broken before its last word, never the
      name as one run left to wrap wherever the tile's width puts it. */
   var tilesSrc = overviewSrc.slice(overviewSrc.indexOf("function groupTiles("), overviewSrc.indexOf("function delivery("));
   if (!/"<br>"/.test(tilesSrc) || !/lastIndexOf\(" "\)/.test(tilesSrc) || /class="gtile-name">' \+ UI\.esc\(category\.full\)/.test(tilesSrc)) {
-    fail("site/pages/overview.js groupTiles()", "renders the group name as one run — it breaks before the last word, so every tile's name is two lines and the rows start level (round 18)");
+    fail("site/pages/overview.js groupTiles()", "renders the group name as one run — it breaks before the last word, so every tile's name is two lines and the rows start level (PROVENANCE §44)");
   }
 
   /* --- every icon the two new screens name is in the registry --- */
@@ -2553,72 +2553,21 @@ if (/assets\/img\/logos\//.test(raw)) {
   fail("content.js", "references assets/img/logos/ — customer marks stay on disk, unreferenced, pending customer approval");
 }
 
-/* The Internal review panel (2026-09-17, docs/START-HERE.md §8) is temporary,
-   for the prototype only. While index.html loads it, the list must be well
-   formed and name no customer, and every run warns, so it cannot reach a
-   launch unnoticed. */
-(function () {
-  var html = fs.readFileSync(path.join(root, "site/index.html"), "utf8");
-  var loadsData = html.indexOf('<script src="data/review.js"></script>') !== -1;
-  var loadsPanel = html.indexOf('<script src="assets/review.js"></script>') !== -1;
-  if (!loadsData && !loadsPanel) return;
-  if (loadsData !== loadsPanel) {
-    fail("index.html", "loads only one of data/review.js and assets/review.js — the Internal panel is added and removed as a pair");
-    return;
+/* The Internal review panel, a checklist of the brief's open assumptions that
+   anyone with the preview link could open, ran from 2026-09-17 until Alex had
+   it removed on 2026-09-29 (PROVENANCE §44). Nothing internal ships in the
+   site: the brief's record is docs/START-HERE.md §2, so the panel's files and
+   their script tags stay gone, from the archived theme too. */
+["site/data/review.js", "site/assets/review.js"].forEach(function (rel) {
+  if (fs.existsSync(path.join(root, rel))) {
+    fail(rel, "exists again — the Internal review panel was removed on 2026-09-29; the brief's open items live in docs/START-HERE.md §2");
   }
-  var reviewRaw = fs.readFileSync(path.join(root, "site/data/review.js"), "utf8");
-  var box = { window: {} };
-  vm.createContext(box);
-  try {
-    vm.runInContext(reviewRaw, box, { filename: "site/data/review.js" });
-  } catch (e) {
-    fail("data/review.js", "does not load: " + e.message);
-    return;
+});
+["site/index.html", "site/index-legacy.html"].forEach(function (rel) {
+  if (/review\.js/.test(fs.readFileSync(path.join(root, rel), "utf8"))) {
+    fail(rel, "loads a review.js — the Internal review panel was removed on 2026-09-29 (docs/START-HERE.md §8)");
   }
-  var R = box.window.SITE_REVIEW;
-  if (!R || !Array.isArray(R.groups) || !R.groups.length) {
-    fail("data/review.js", "window.SITE_REVIEW.groups must be a non-empty array");
-    return;
-  }
-  /* Alex, 2026-09-17: "much less verbose (1-2 line items)". An item is a
-     line to tick, not an analysis: id, text, and at most a short note on
-     where the site does not match yet. The ticks themselves live in each
-     viewer's browser, not in this file. */
-  var ITEM_KEYS = ["id", "text", "note"];
-  var TEXT_MAX = 70;
-  var TEXT_WITH_NOTE_MAX = 47;
-  var NOTE_MAX = 45;
-  var ids = {};
-  R.groups.forEach(function (group, gi) {
-    var where = "review.groups[" + gi + "]";
-    if (!group.title || !String(group.title).trim()) fail(where, "title is empty");
-    if (!Array.isArray(group.items) || !group.items.length) { fail(where, "has no items"); return; }
-    group.items.forEach(function (item, ii) {
-      var at = where + ".items[" + ii + "]";
-      Object.keys(item || {}).forEach(function (key) {
-        if (ITEM_KEYS.indexOf(key) === -1) fail(at, 'key "' + key + '" — an item is only ' + ITEM_KEYS.join(", ") + " (1–2 lines; detail belongs in the docs)");
-      });
-      if (!item.id || !/^[a-z0-9-]+$/.test(item.id)) fail(at, "id must be kebab-case");
-      else if (ids[item.id]) fail(at, 'duplicate id "' + item.id + '" — ticks are saved by id');
-      else ids[item.id] = true;
-      if (!item.text || !String(item.text).trim()) fail(at, "text is empty");
-      else if (item.text.length > (item.note ? TEXT_WITH_NOTE_MAX : TEXT_MAX)) {
-        fail(at, "text runs " + item.text.length + " characters — keep it to " + (item.note ? TEXT_WITH_NOTE_MAX + " beside a note (one line at the panel's width)" : TEXT_MAX));
-      }
-      if (item.note != null && (!String(item.note).trim() || item.note.length > NOTE_MAX)) {
-        fail(at, "note must be non-empty and " + NOTE_MAX + " characters at most");
-      }
-    });
-  });
-  CUSTOMER_NAMES.forEach(function (name) {
-    if (new RegExp("\\b" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b").test(reviewRaw)) {
-      fail("data/review.js", 'names the customer "' + name + '" — the panel is visible to anyone with the preview link');
-    }
-  });
-  if (R.enabled !== false) {
-    warn("Internal review panel", "on, " + Object.keys(ids).length + " items — delete data/review.js, assets/review.js and their script tags before launch");
-  }
-})();
+});
 
 /* ——— the live theme (site.css + index.html + content-case.js) ——————————
    The current-SoftServe-brand rules, asserted so a later rewrite cannot
@@ -2685,7 +2634,7 @@ if (/assets\/img\/logos\//.test(raw)) {
   if (/\.gtile-(stage|veil|window|band)\b/.test(css)) {
     fail(V2_CSS, "still styles the round-16 stage (.gtile-stage / -veil / -window / -band) — retired in round 17");
   }
-  /* Round 18: the two-line name holds only if its first line never wraps, so
+  /* PROVENANCE §44: the two-line name holds only if its first line never wraps, so
      the body is the name's container and the name's size is clamped to what
      that container's measure holds; and two across stops at 720, below which a
      half row holds the longest first line only under 20 px. */

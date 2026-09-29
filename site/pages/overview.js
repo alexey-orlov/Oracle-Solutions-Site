@@ -222,12 +222,12 @@
     var UI = window.UI;
     var block = C.overview.catalog;
 
-    /* Round 18 (Alex: "some headings now are 2 lines, some 1 line, so content
-       looks not so clean; fix line breaks (not allowed to do tile renaming)"):
-       every name sets on two lines, broken before its last word, so the kind of
-       work reads on the first line and the noun on the second, and the six
-       lines and arrows start level in every row. site.css sizes the name to its
-       tile, so the first line never wraps. */
+    /* Alex, after round 19: "some headings now are 2 lines, some 1 line, so
+       content looks not so clean; fix line breaks (not allowed to do tile
+       renaming)". Every name sets on two lines, broken before its last word, so
+       the kind of work reads on the first line and the noun on the second, and
+       the one-liners and arrows start level in every row. site.css sizes the
+       name to its tile, so the first line never wraps (PROVENANCE §44). */
     function twoLineName(name) {
       var cut = name.lastIndexOf(" ");
       if (cut === -1) return UI.esc(name);

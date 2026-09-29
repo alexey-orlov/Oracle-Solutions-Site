@@ -3314,7 +3314,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 /* Replica 400 at 28 px: the reference's card-title face, a step under its
-   32 because this tile also carries the one-liner. Round 18: the size never
+   32 because this tile also carries the one-liner. Since §44: the size never
    outgrows the tile. The longest first line, "Enterprise knowledge &", is
    10.43 em of glyphs and 11 px of letter-spacing, so (the measure - 12 px)
    / 10.6 is the largest size that holds it on one line. The clamp keeps the
@@ -3364,7 +3364,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    row leaves too little measure for a 28 px name, so the name's ceiling steps
    to 24 px; at 1024 three across left 261 px tiles, three-line names and
    seven-line one-liners, so two across takes over at 1100. Two across stops at
-   720, where the rest of the home page goes to one column (round 18): below
+   720, where the rest of the home page goes to one column (§44): below
    it, a half row holds "Enterprise knowledge &" on one line only at 20 px at
    640 and at 16 px at 561. */
 @media (max-width: 1279px) {
