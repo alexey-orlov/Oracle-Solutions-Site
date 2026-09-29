@@ -977,15 +977,14 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* Round 18 (Alex): the catalog's last tile is its way out, "Looking for
    another solution?", into the home page's contact. The product tile's
-   anatomy, band over body, so it holds its row: a flat Lviv blue 75 fill (the
-   fill that opens the home group tiles, so the ask reads as the site's own and
-   not as another product) with one ink, #1a1a1a, over everything on it, and
-   the family's line drawing in the band where a product carries its
-   photograph, cropped by the band's top and left edges. Only the drawing
-   moves on hover, as on the group tiles. */
-.ptile--ask { --tile-ink: #1a1a1a; background: #459fdd; }
-.ptile--ask:hover, .ptile--ask:focus-within { background: #459fdd; }
-.ptile-band--draw { background: none; }
+   anatomy, band over body, so it holds its row (the first cut, a flat fill
+   with a title and two lines, "looks too empty"). Where a product carries its
+   photograph, a band of Lviv blue 75, the fill that opens the home group
+   tiles, with the family's line drawing cropped by the band's top and left
+   edges, so the tile reads as the site's own rather than one more product;
+   below it, the body every tile has, on the same surface, stepping on hover
+   the same way. Only the drawing moves on hover, as on the group tiles. */
+.ptile-band--draw { background: #459fdd; }
 
 .ptile-draw {
   position: absolute;
@@ -1002,12 +1001,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 @media (hover: hover) {
   .ptile--ask:hover .ptile-draw, .ptile--ask:focus-within .ptile-draw { transform: scale(1.04); }
 }
-
-.ptile--ask .ptile-title, .ptile--ask .ptile-title a, .ptile--ask .ptile-desc,
-.ptile--ask .outcome-list li, .ptile--ask .outcome-list .icon, .ptile--ask .link-arrow { color: var(--tile-ink); }
-.ptile--ask .ptile-title a:hover, .ptile--ask .link-arrow:hover { color: var(--tile-ink); text-decoration: underline; text-underline-offset: .2em; }
-.ptile--ask .chip--tag { --fill: transparent; --ring: inset 0 0 0 1px var(--tile-ink); color: var(--tile-ink); cursor: default; }
-.ptile--ask :focus-visible { outline-color: var(--tile-ink); }
 
 @media (prefers-reduced-motion: reduce) {
   .ptile-draw { transition: none; }
