@@ -222,6 +222,18 @@
     var UI = window.UI;
     var block = C.overview.catalog;
 
+    /* Round 18 (Alex: "some headings now are 2 lines, some 1 line, so content
+       looks not so clean; fix line breaks (not allowed to do tile renaming)"):
+       every name sets on two lines, broken before its last word, so the kind of
+       work reads on the first line and the noun on the second, and the six
+       lines and arrows start level in every row. site.css sizes the name to its
+       tile, so the first line never wraps. */
+    function twoLineName(name) {
+      var cut = name.lastIndexOf(" ");
+      if (cut === -1) return UI.esc(name);
+      return UI.esc(name.slice(0, cut)) + "<br>" + UI.esc(name.slice(cut + 1));
+    }
+
     var tiles = (C.facets.categories || []).map(function (category) {
       var art = category.image
         ? '<img class="gtile-art" src="' + UI.esc(category.image) + '" alt="" loading="lazy" decoding="async">'
@@ -229,7 +241,7 @@
       return '<a class="gtile gtile--' + UI.esc(category.tone) + ' reveal" href="#/products?cat=' + UI.esc(category.id) + '">' +
         '<span class="gtile-draw">' + art + "</span>" +
         '<span class="gtile-body">' +
-          '<span class="gtile-name">' + UI.esc(category.full) + "</span>" +
+          '<span class="gtile-name">' + twoLineName(category.full) + "</span>" +
           '<span class="gtile-line">' + UI.esc(category.line) + "</span>" +
           '<span class="gtile-foot">' + UI.icon("arrow", "gtile-arrow") + "</span>" +
         "</span>" +

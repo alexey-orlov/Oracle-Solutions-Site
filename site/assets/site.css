@@ -938,6 +938,20 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
+/* A product on two platforms (2026-09-29): the plates share the lone plate's
+   corner and wrap onto a second line inside its 60%, clear of the badges. */
+.ptile-facets {
+  position: absolute;
+  top: .75rem;
+  left: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: .25rem .375rem;
+  max-width: 60%;
+}
+.ptile-facets .ptile-facet { position: static; max-width: none; }
+
 .ptile-badges { position: absolute; top: .75rem; right: 1rem; max-width: calc(100% - 2rem); justify-content: flex-end; }
 /* Over a photograph the badge becomes a white plate, so it reads as the same
    availability family it is in the hero without needing a scrim or a blur. */
