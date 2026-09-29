@@ -262,8 +262,8 @@
       return '<button class="hiw-tab' + (on ? " is-active" : "") + '" type="button" role="tab"' +
         ' id="' + base + "-tab-" + index + '" aria-controls="' + base + "-panel-" + index + '"' +
         ' aria-selected="' + (on ? "true" : "false") + '" tabindex="' + (on ? "0" : "-1") + '">' +
-        '<span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
-        '<span class="hiw-title">' + UI.esc(step.title) + "</span>" +
+        '<span class="hiw-tab-label"><span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
+        '<span class="hiw-title">' + UI.esc(step.title) + "</span></span>" +
         "</button>";
     }).join("");
 
@@ -285,6 +285,10 @@
               ' decoding="async" loading="' + (index === 0 ? "eager" : "lazy") + '">' +
           "</span></span>" +
           '<span class="hiw-open-mark" aria-hidden="true">' + UI.icon("expand") + "</span>" +
+          /* A phone has no hover, so the button says what it does under the
+             screen, as a link would (site.css shows it below 768px). */
+          '<span class="hiw-open-cue" aria-hidden="true">' + UI.icon("expand") +
+            "<span>" + UI.esc(label("shotOpen")) + "</span></span>" +
         "</button>" +
         "</figure>";
     }
@@ -523,7 +527,10 @@
     var metrics = product.overview.metrics;
     if (!metrics || !metrics.length) return "";
     var id = "kpi-" + product.slug;
-    return '<section class="kpi-widget reveal" aria-labelledby="' + id + '" data-kpi-widget>' +
+    /* One figure size per widget: every figure is sized to fit the longest,
+       so peers never stand at two sizes side by side (site.css .kpi-value). */
+    var widest = metrics.reduce(function (em, metric) { return Math.max(em, figureEm(metric.figure || {})); }, 1);
+    return '<section class="kpi-widget reveal" aria-labelledby="' + id + '" data-kpi-widget style="--fig-em-max: ' + widest + '">' +
       '<h2 class="kpi-widget-title" id="' + id + '">' + UI.esc(label("outcomes")) + "</h2>" +
       '<div class="kpi-grid kpi-grid--' + metrics.length + '">' +
         metrics.map(function (metric) { return kpiTile(metric); }).join("") +
@@ -1048,6 +1055,7 @@
         var UI = window.UI;
         var title = button.getAttribute("data-shot-title");
         UI.modal.open('<h2 class="h3 modal-title">' + UI.esc(title) + "</h2>" +
+          '<p class="modal-shot-hint">' + UI.esc(label("shotPan")) + "</p>" +
           '<div class="modal-shot-wrap"><img class="modal-shot" src="' + UI.esc(button.getAttribute("data-shot")) + '"' +
             ' alt="' + UI.esc(button.getAttribute("data-shot-alt")) + '"></div>',
           { label: title, className: "modal-panel--media modal-panel--shot" });

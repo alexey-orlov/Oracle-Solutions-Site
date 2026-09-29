@@ -227,6 +227,7 @@ window.SITE_CONTENT = {
       stateRoadmap: "Roadmap",
       howItWorks: "How it works",
       shotOpen: "Open the screen full size",
+      shotPan: "Drag to move around the screen.",
       industryCases: "By industry",
       caseProblem: "The problem",
       caseSolution: "The solution",
@@ -486,24 +487,20 @@ window.SITE_CONTENT = {
         alt: "An overhead field of interlocking hexagonal plates, with loose ones still settling into the pattern from above"
       }
     },
-    /* The portfolio diagram, on the left of "Why SoftServe on Oracle". Its
-       contents are read from the site's own lists (facets.categories,
-       overview.delivery.steps, facets.technology); only its labels, its
-       captions and the platforms' order here (Alex, 2026-09-29: AI Data
-       Platform first) live in this block. New micro-copy, for Alex's OK:
-       the two captions and "Built on". */
+    /* The portfolio diagram, on the left of "Why SoftServe on Oracle", in
+       Alex's layout (2026-09-29): packaged services over products, bespoke
+       services beside both, Oracle's platforms under all three. Each block is
+       a name and a line of two to four words; the pictures carry the rest.
+       The step count, the groups' fills and the platforms are read from the
+       site's own lists (overview.delivery.steps, facets.categories,
+       facets.technology), in the platforms' order here (AI Data Platform
+       first, Alex). New micro-copy, for Alex's OK: the three lines. */
     diagram: {
-      ariaLabel: "The portfolio in one picture: SoftServe's products and its services, packaged from workshop to managed service or bespoke as delivery pods, all built on Oracle's data and AI platforms",
-      softserveCaption: "Products, and the services that take them live",
-      productsLabel: "Products",
-      servicesLabel: "Services",
-      packagedLabel: "Packaged",
+      ariaLabel: "SoftServe's offer in one picture: ready-made products, packaged services that take them to production in fixed steps, and bespoke services from dedicated delivery pods, all built on Oracle's data and AI platforms",
+      packaged: { name: "Packaged services", line: "Fixed-scope path to production" },
+      products: { name: "Products", line: "Ready-made agents and workflows" },
+      bespoke: { name: "Bespoke services", line: "Custom scope, dedicated pods" },
       stageIcons: ["workshop", "spark", "network", "scale", "managed"],
-      optionalNote: "(optional)",
-      bespokeLabel: "Bespoke · AI factory",
-      bespokeCaption: "A standing team of delivery pods, sized per project and re-sized as it grows. Builds what the catalog does not hold.",
-      builtOn: "Built on",
-      oracleCaption: "The data and AI platforms everything runs on",
       platformOrder: ["oracle-ai-data-platform", "oracle-ai-lakehouse", "oracle-ai-fusion", "oci-nvidia"]
     }
   },
@@ -2049,7 +2046,7 @@ window.SITE_CONTENT = {
               unit: "percent",
               direction: "up",
               scale: { min: 0, max: 15 },
-              before: { value: 0, label: "today" },
+              before: { value: 0, label: "current rate" },
               range: { lo: 4, hi: 10, label: "+4 to +10%" }
             },
             line: "Visits completed per working day, on today's headcount."
@@ -3000,7 +2997,7 @@ window.SITE_CONTENT = {
               unit: "percent of cost per visit",
               direction: "down",
               scale: { min: 0, max: 15 },
-              before: { value: 0, label: "today" },
+              before: { value: 0, label: "current cost" },
               range: { lo: 5, hi: 10, label: "−5 to −10%" }
             },
             line: "Driving, charging time and overtime, at your own rates."
