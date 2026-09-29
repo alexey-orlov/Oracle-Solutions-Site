@@ -130,13 +130,13 @@ window.SITE_DIAGRAMS = {
     layout: "flow",
     sources: [
       { title: ["Capture channel"], sub: ["customer or", "technician media"] },
-      { title: ["Asset master record"], sub: ["identifier, geometry,", "prior condition"] }
+      { title: ["Asset record"], sub: ["identifier, geometry,", "prior condition"] }
     ],
     group: {
       label: ["Oracle Cloud Infrastructure", "media, audit, rules"],
       nodes: [
         { title: ["Repair-or-replace", "decisions by SoftServe"], sub: ["guided capture, review,", "rules, decision record"] },
-        { title: ["NVIDIA AI Blueprint for Video Search and", "Summarization (VSS) · NVIDIA AI-Q Blueprint · verdicts"], sub: ["Vision and", "reasoning engine"] }
+        { title: ["NVIDIA AI Enterprise", "· VSS and AI-Q"], sub: ["Vision and", "reasoning engine"] }
       ]
     },
     target: { title: ["Reviewer", "confirms"], sub: ["Confirm or overrule", "into the booking, dispatch or claims system"], accent: true },
