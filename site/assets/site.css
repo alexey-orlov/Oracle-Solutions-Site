@@ -1687,14 +1687,31 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   padding-bottom: clamp(1.75rem, 3vw, 2.75rem);
 }
 
+/* The ground is softserveinc.com's detail-page hero (2026-09-29, measured on
+   its Data Platform Engineering, Managed Services, Cybersecurity and industry
+   pages): Lviv blue at the top thinning to white at the foot, and no
+   photograph behind the copy. The one picture sits where the brand puts its
+   one sharp object, in the right column: here the product's own screen in the
+   frame. The brand's other hero family, the metallic grey of its AI pages, is
+   not used: it leans on a 3D render to carry the grey, and below the hero a
+   product page is grey plates already (round 20). */
 .product-hero.has-hero-bg {
   min-height: min(62vh, 42rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: linear-gradient(0deg, #ffffff -24.5%, #c1dff4 39.38%, #458fdd 99.67%);
 }
 
-.product-hero .hero-glow { top: -26rem; left: auto; right: -16rem; width: 48rem; height: 48rem; }
+/* Three marks drawn for a white ground, restated on the blue: the breadcrumb
+   in full ink, the outlined chip's hairline darker, and the badge on white,
+   because its blue tint is the gradient's own middle stop. */
+.product-hero .crumbs, .product-hero .crumbs a { color: var(--text); }
+.product-hero .crumbs a:hover { color: var(--text); border-bottom-color: currentColor; }
+.product-hero .chip--outline { --ring: inset 0 0 0 1px rgba(0, 0, 0, .42); }
+.product-hero .badge { --fill: #ffffff; }
+.product-hero .badge--action:hover { --fill: var(--surface-select); }
+
 .product-hero-inner {
   position: relative;
   z-index: 1;

@@ -7699,6 +7699,102 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
   - **Rights:** the photograph is the brand template's own title image, but §11.1's note on that deck imagery stands: it is generated art, to confirm with the deck's owner before the site goes public.
 - **The contract round stays 20:** the packaging plugin never writes the catalog's head, and it reads no `site.tagline`.
 
+## 56. Round 21: the Overview in two columns, charts that match their number, screenshots without callouts, 2026-09-29
+
+_Built in a session opened in AO-Personal-OS, on Opus, the session's own model: the layout and the chart and screenshot rules were Alex's own words, and the remaining design calls were made in-session and checked against renders at nine widths. One Opus subagent reviewed and recaptured the screenshots, and one fresh-context Fable review read the final renders (its findings are below). Touched: `site/pages/product.js` (`problemSolution` unchanged; `howItWorks`, `outcomesBlock`, `kpiTile` and the new `kpiChart`, `kpiRow`, `kpiBar` in place of `kpiVisual`, `kpiLabel`, `kpiPlace`, `kpiPos` and `pct`; `overviewTab`'s comment; `bindHowItWorks`, the new `bindKpiWidget` and `measureKpiWidget`; `ROVING_KEYS`), `site/assets/site.css` (the whole `Round 20 · Overview` block, the grouped cut list, a `--tabbar-h` token), `site/assets/app.js` (an `expand` icon), `site/data/content.js` (`sectionLabels`: `metricToday` now *Today*, `metricAfter` and `shotOpen` new, `metricToward` retired; every metric's chart labels; Complaints answered late's scale; Repair-or-replace's `gap`; every step's `shot` down to `{ full, alt }`; six new `alt`s), six recaptured `site/assets/img/steps/*.jpg`, the 36 `*-zoom.jpg` deleted, `tools/step-captures/` (new), `tools/step-frames.mjs` and the two `frames-preview` pages deleted, `tools/step-mocks/README.md`, `tools/check-grammar.js`, `site.manifest.json` (contract round 21), START-HERE §1 line, §3, §4, §9 and §10, VISUAL-GRAMMAR §2, §2.1, §2.2, §2.4 and three passing mentions, SCHEMA (`sectionLabels`, `overview`, `metrics`, `steps`, `Metric.visual`), ASSETS §1, SS26-THEME. In AO-Personal-OS: `.claude/references/interactive-demo-playbook.md` (*Product-page frames*) and `client-documents.md` (the metric rule)._
+
+- **The asks (Alex, 2026-09-29), in the order they came:**
+  1. *"For Overview tab: let's set it up, so that we have either: a) Problem <> Solution & ROI metrics on the left as a widget (taking 1/3 to 3/7 of width); and how it works takes the remaining space; b) Problem solution and the How it works taking the central space (left; 4/7 to 2/3 of width); and ROI metrics look like widget on the right. I am more about b since problem solution should be central. As a web designer, ensure layout has no issues from any perspective."*
+  2. *"and also, metrics are hard to understand from graphics. make sure to use easily recognizable, easy to read visualization dashboards for metrics; it should not puzzle the reader."* and, a minute later, *"now matching between number and the visual is absolutely unclear."*
+  3. *"and also, I don't like these blue highlights and callouts. Just have screenshots without those callouts. Maybe make sure the layout element is selected or highlighted natively (only if needed, not all screens need that), so that user can easily navigate the screenshot. This applies universally."*
+
+### 56.1 The layout (ask 1, option b)
+
+- **From 1240 px the tab is a grid**: `minmax(0, 2fr) minmax(0, 1fr)`, 48 px apart, areas `"ps kpi" "hiw kpi"`, 64 px between the rows. The main column is exactly two thirds of the columns (800 px at 1440, 693 at 1280, 901 at 1920), the top of Alex's 4/7 to 2/3, because How it works' frame is the thing that most needs width; the widget gets the other third (400, 347, 451 px).
+- **The plates stand one over the other in the main column** (430 px at 1440): side by side at 388 px each, their copy ran six lines; stacked, each is a two-line headline over three lines, and the pair ends near the widget's foot.
+- **The widget is pinned** under the header and the tab bar (125 px) and leaves with the section's end, **only while all of it fits the window**. `measureKpiWidget()` adds `.is-tall` when its top + height + 16 px passes the window, on mount, resize and font load, and a tall widget scrolls with the page. Measured after the review's changes: two-tile widgets about 600–640 px, pinned at 1440 × 900 and 1280 × 800; the three-tile Repair-or-replace widget about 960 px, scrolling; at 1366 × 768 the 639 px Cross-system ERP widget scrolls.
+- **The markup keeps round 20's order**, plates, numbers, screens: the one-column order below 1240 px and the order a screen reader hears. The checker holds it, the grid's areas, the main column's share inside Alex's range and the pin's fallback.
+- **Below 1240 px** the three stack: the plates side by side, the widget at the column's width with its tiles side by side (a third tile full width under a rule below 1100), How it works under it. Phones: one column.
+
+### 56.2 The charts (ask 2)
+
+- **Every chart is named rows of bars with their values printed**: *Today* and *After*, each a 10 px bar from one zero line, its value at the bar's end in a 92 px room; no legend, axis or scale. Round 20's four SVG forms (a compression pair with a legend, a tick and band on a track, a dumbbell, a filled track with a chevron) needed the reader to match colours to a legend and marks to an unlabeled axis, which is what Alex could not read.
+- **The figure is printed on its chart, in bold, on the mark it names**: the After label for a result (*5–15 min*), Today's label for a starting point (*from weeks* → *weeks*, then *hours* on After), the After bar's lighter span for a range (*+4 to +10%*, on bars indexed to today; a falling one draws After shorter), both labels for a pair (*3.0 → 2.4%*), and a third row, *Saving*, drawing the gap for Repair-or-replace's difference figure (*about $250* between *$350* and *$99*). A share (*72%*, *~40%*, *5.6%*) is a meter; *1 in 10* is ten dots; *from ~1 month* and *up to 1 h a day*, with no whole to fill, are their Today row alone, value and no bar.
+- **Data:** every label is now the value alone (*3–5 days before* → *3–5 days*), at most 12 characters; `range.label` equals the figure; a baseline's `before.label` equals the figure; Complaints answered late's scale went from 0–10 to 0–100, so it draws a share; `visual.gap: "Saving"` is new. `sectionLabels.metricToday` is *Today* (it was *today*) and `metricAfter` is new; `metricToward` is retired.
+- **Colour, checked with the dataviz validator**: Today `#9aa8b4`, After `#1485c4`, span `#8ec3e6`; normal-vision ΔE 17.3 and 21.1, CVD 13.6 and 19.7. All three sit under 3:1 on white (a WARN), which the printed value on every bar covers. The grey is a step darker than round 20's `#bdcbd7` so a Today bar reads on white; the validator's chroma FAIL on it is the de-emphasis grey by design.
+- **The widget** is a white card on a 1 px `#d1dae2` ring with a 12 px cut, its heading at 20 px, the figures at most 40 px in it and one size per widget (56 where the tiles stand side by side). Round 20's full-bleed band on softserveinc.com's KPI gradient went: beside the grey problem plate, a gradient card read as a second grey.
+
+### 56.3 How it works (asks 1 and 3)
+
+- **A row of step tabs over one frame** (`role="tablist"`, each step a `role="tab"`, each panel a `role="tabpanel"`; ← → ↑ ↓ Home End): in an 800 px column, round 20's list beside the frame would have left the frame about 480 px wide. The number and title at 18 px, the text at 16 between the tabs and the frame, so the description sits between the control and the screen (START-HERE §4). Every step's text and frame share two row tracks, so the frame never moves when a step changes. The block is 721 px at 1440 × 900 (791 available) and 638 at 1280 × 800 (691); a window 820 px tall or less gives up 16 px more, which leaves 1366 × 768 at 674 against 659. **From 1100 to 1239 px** the steps stand as a list beside the frame, round 20's shape, 595 px at 1239, because a frame at the column's full 1,047 px ran 862.
+- **Nothing is drawn over a screenshot**: the ring, the zoom inset, `shot.zoom`, `region` and `anchor`, the 36 zoom files, `tools/step-frames.mjs` and the two `frames-preview` pages are gone, on every product and width. Phones show the whole screen in each card.
+- **The frame opens full size** (a button, `zoom-in` cursor, accessible name *Open the screen full size: <step>*, an expand glyph on hover or focus only): the site's modal at up to 1,440 px, the step's number and title over it; on a phone the screen keeps 1,280 px and the reader pans across it. At 800 px a frame shows the screen's layout, not its text, so the detail needed a way in that is not an overlay.
+- **The screenshots** (one Opus subagent, 36 frames, one line per frame in its log): 30 kept, because their subject is already the foreground (a modal, a processing screen, an open panel) or natively selected in the walkthrough; **6 recaptured**, each with the product's own state and nothing added, their steps saved in `tools/step-captures/<slug>.json` and their `alt`s rewritten:
+
+| Frame | Why | Now |
+|---|---|---|
+| Workforce 3 | without their rings, steps 3 and 4 were one screen (304,138 and 304,139 bytes) | `final&focus=vacation`, scrolled to the map row: *What the solver changed*, the vacation card in the product's focus style |
+| Cross-system ERP 4 | it showed step 3's six tiles again, one action at its foot | `final&q=1`, scrolled: the causes and all four actions, each *Assigned as a task* |
+| Fleet 2 | the change cards sat under the KPI tiles step 3 is about | `changes`, scrolled: the *Changes* tab active, five rule-labelled cards |
+| Fleet 4 | the same scroll as step 2 | `final`: the *Send to Field Service* tab active, the import table |
+| Repair-or-replace 3 | the old frame showed the repeat-visits tile, not the confirm-or-overrule step, with £ and $ unit costs and a *Modelled on industry figures* line (round 20's open item) | `flagged`: RR-24826 selected, its rule, call, flags and *Overrule* · *Confirm*; its photograph is cut at the top (the panel is 990 px tall) |
+| Large docs 4 | step 3's yellow page-9 highlight stayed on the screen and was its strongest mark | *Approve all*, then the viewer back to page 7, the rate card |
+
+### 56.4 Before → after
+
+| | Round 20 | Round 21 |
+|---|---|---|
+| Overview at 1440 | one column: plates side by side, a 480 px full-bleed band, How it works | a 2/3 main column (plates stacked, How it works) and a 400 px widget beside it |
+| The numbers | a gradient band, four SVG chart forms with legends and ticks | a white widget, pinned while it fits; Today and After bars with values printed, the figure bold on its bar |
+| How it works | a list of steps beside an 872 × 545 frame | step tabs, the text, an 800 × 500 frame; a list from 1100 to 1239 px |
+| A screenshot | the screen, a blue ring and a 401 px zoom inset | the screen alone; the element natively selected where needed; opens full size |
+| A phone card | the zoom alone | the whole screen, which opens to pan |
+| Step data | `shot { full, zoom, region, anchor, alt }` | `shot { full, alt }` |
+
+### 56.5 The checker
+
+It now fails: an `outcomesBlock()` that renders no `.kpi-widget`; a `howItWorks()` whose steps are not a tablist or whose text does not sit between the tabs and the frame; a renderer or stylesheet that draws a ring or an inset (`.hiw-zoom`, `.hiw-region`, `shot.zoom`, `shot.region`) or keeps round 20's band, SVG chart, list or frame classes; a `measureKpiWidget()` without its `.is-tall` fallback; a `kpiChart()` without Today and After rows, without the figure on a range's span or the gap row, or with an SVG; an Overview grid missing `"ps kpi" "hiw kpi"`, its 1240 px start, its sticky widget or a main column outside 4/7–2/3; `shot.zoom`, `region` or `anchor`; a chart label over 12 characters or naming its row; a figure not printed on its chart; `gap` on another form; a 0–10 baseline that is not a whole count; `sectionLabels.metricAfter` or `shotOpen` missing, a row name over 6 characters, and `metricToward`. **Each guard was run against a scratch copy with its rule broken, and failed** (eight failures from one mutated copy: the ratio, a long label, a label naming its row, two figures off their charts, an inset, the pin, `metricToward`).
+
+### 56.6 Checks
+
+- `node --check` on every changed script; the name grep returns nothing. `check-grammar` passes every rule this round touches, with the one known warning (`overview.about.title`), on the tree and on the published files alike. What it fails is other sessions' unfinished work: in the tree, §55's hero frame (`heroMedia()` now opens the walkthrough where a product has no video); run against the published files, the rules that §54's catalog hero and the Bespoke band's re-cut added for changes not yet published.
+- Headless Chrome (`tools/step-mocks/cap.mjs` against `tools/serve.py`): the tab at 1920, 1440, 1366, 1280, 1240, 1239, 1024, 768 and 375, no horizontal overflow at any; all nine products at 1440, no broken image, `LOGS: none`; every chart form rendered and read; the pin held under the tab bar through the section and released at its end; the crossfade leaves one frame visible; the full-size view at 1440 and 375.
+- The browser pane at 1440 × 900: a step changes by click and by ← →, with `aria-selected` and the roving `tabindex` following; no console error.
+
+### 56.7 The fresh-eyes review
+
+One Fable reviewer read the renders cold, with Alex's three asks and the brand rules: the tab at 1440 for three products, one product at 1366, 1239, 768 and 375, the full-size view, and all nine widgets. It returned 14 findings.
+
+**Fixed before the publish:**
+- **A missing bar**: Cross-system ERP's *minutes* rounded to a share of 0 and drew nothing. Zero is now judged on the value, so any value above 0 draws its 3 px.
+- **A figure that read as the saving**: Fleet's *up to 1 h a day* had no chart and no *from*. A baseline with no whole now prints its Today row, value and no bar (Large docs' *~1 month* too).
+- **An unlabeled Today bar** on the two ranges: it now prints what it stands for (`before.label`: *current rate*, *current cost*).
+- **The hierarchy**: the plates' 28 px headlines were the smallest display type on a screen they are meant to lead. Beside the widget they are now 32 px, and the widget's figures and How it works' H2 40 px.
+- **Peers at two sizes**: one figure size per widget (`--fig-em-max`), the size its longest figure fits.
+- **The tab row**: balanced titles (no *Drop the document / in*), labels sitting on their underline, and unselected steps in `#4c5156`, the site's tab language, where all four had been black.
+- **The meter**: grey on a grey track became a white track on a hairline.
+- **The phone**: *Open the screen full size* under each screen (a phone has no hover), and *Drag to move around the screen.* in the full-size view.
+- **The widget's inset**: its text starts 40 px down, level with the plates' eyebrows.
+
+The Today row, the Today label and the new inset cost the widget 49 px. Tightening its inner gaps and the pin's top (16 px under the tab bar, from 24) won them back, so two tiles still pin at 1280 × 800.
+
+**Left for Alex** (START-HERE §9):
+- the *from X* headline shows today's number, by round 20's rule; the review would headline the After;
+- *Estimated* sits on a published benchmark;
+- the After bars keep round 20's blue; the review suggested the Solution plate's `#1a1a1a`;
+- bars for word values take their lengths from the data's estimates;
+- screenshots end mid-row where their screen ended.
+
+**Checked, no issue**: three tiles never leave an orphan at 1240–1439 px (they stack there), and the widget cut at the top of one render was the capture's crop.
+
+### 56.8 Contract, parallel sessions, open items
+
+- **The contract goes to round 21**: `shot` lost three keys, the metric chart has a new shape, and the checker fails round 20's by name, which the packaging plugin (`Oracle-Packaging-Skills`, `oracle-packs-web` listing and demo skills) still writes. It has to learn round 21 before its next listing.
+- **Parallel sessions:** the product-pages session (§55) edits the hero in `product.js`, `app.js` and `site.css` at the same time; the two footprints were exchanged and do not overlap. A catalog session cites §54 for the catalog hero, so this round is §56. §53's session published the About logo. The tree also held other sessions' unpublished work in the files this round ships (the #/alt v2 in `content.js`, a changed tagline and catalog lead, the Bespoke band's re-cut and the catalog hero in `site.css`, a `keepCompounds` export in `app.js`, §55's hero in `product.js`), so all four were published as their live copies plus this round's hunks, per START-HERE §6.
+- **Open for Alex:** START-HERE §9, under §56.
+
+- **Published** on 2026-09-29 as version 1790698379-7129 (version 21), on top of §53's 1790695649-2c4e, with the wrapper, `pages/product.js`, `assets/app.js`, `assets/site.css`, `data/content.js` and the six recaptured screenshots, and with the 36 `-zoom.jpg` files removed. Each of the four scripts and styles went out as its live copy plus this round's hunks, not as `main`'s (56.8); the screenshots are `main`'s. Every file it replaced or removed was read or listed at 1790695649-2c4e first, the version the staged copies were built on; a first attempt was refused because the images had not been (START-HERE §6, *A refused publish*). The file list holds 141 files, no zoom among them and none that should not ship, and the copy tested in 56.6 is byte-identical to the live files, those this round sent and those it left.
+
 ## 57. The Bespoke band re-cut: the copy on the right, the ask after its reasons, a ribbons render, 2026-09-29
 
 _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with no Fable pass: one band's layout and its picture. Touched: `bespoke()` in `site/pages/overview.js`, the S4b block in `site/assets/site.css` (and its print block), `overview.bespoke.image.alt` and its comment in `site/data/content.js`, `site/assets/img/bands/bespoke-wide.jpg` and `bespoke-tall.jpg` (replaced), `tools/check-grammar.js`, ASSETS §2c, VISUAL-GRAMMAR (§3's photograph rule, §9 S4b and the peek measurements), SCHEMA (a `bespoke` row, missing since round 18), SS26-THEME §5, README, START-HERE §1, §3, §4, §7, §9 and §10. `#/alt` renders the band through `overview.js`, so one edit changed both pages._
