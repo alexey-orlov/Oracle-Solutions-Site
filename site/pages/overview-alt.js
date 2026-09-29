@@ -13,13 +13,15 @@
      promise and the three figures sit there. It stops short of the viewport,
      so S2's heading shows under it.
 
-     S2 keeps the live page's two photographic panels, under the umbrella
-     heading, with a new photograph on the products panel (the hero carries
-     the oval now).
+     S2 keeps the live page's two ways in, under the umbrella heading, as
+     dark tiles after softserveinc.com's Solutions tile: the picture across
+     the tile's top at its own proportions, dissolving into black, and the
+     words on the black under it, never on the picture (home-alt.css). The
+     products tile takes a new picture, since the hero carries the oval now.
 
      "Why SoftServe on Oracle" gains the portfolio diagram on its left, the
-     three reasons on its right: products beside services, the services split
-     into packaged and bespoke, all built on Oracle's platforms.
+     three reasons on its right: packaged services over the products, bespoke
+     services beside both, all on Oracle's platforms.
 
      Everything else is rendered by overview.js and taken whole, so the two
      versions cannot drift while they are compared. Adopting this page moves
@@ -129,7 +131,7 @@
 
   /* One block of the diagram: its name, its line of two to four words, and
      its picture. */
-  function block(key, words, picture) {
+  function mapBlock(key, words, picture) {
     var UI = window.UI;
     return '<div class="amap-block amap-block--' + key + '">' +
       '<p class="amap-name">' + UI.esc(words.name) + "</p>" +
@@ -193,9 +195,9 @@
       '<div class="amap" aria-hidden="true">' +
         '<img class="amap-mark amap-mark--softserve" src="' + UI.esc(ssMark) + '" alt="" width="96" height="16" decoding="async">' +
         '<div class="amap-grid">' +
-          block("packaged", copy.packaged || {}, flow) +
-          block("products", copy.products || {}, tiles) +
-          block("bespoke", copy.bespoke || {}, pods) +
+          mapBlock("packaged", copy.packaged || {}, flow) +
+          mapBlock("products", copy.products || {}, tiles) +
+          mapBlock("bespoke", copy.bespoke || {}, pods) +
           '<div class="amap-block amap-block--oracle">' +
             '<img class="amap-mark amap-mark--oracle" src="' + UI.esc(oracleMark) + '" alt="" width="84" height="11" decoding="async">' +
             '<ul class="amap-chips">' + platforms + "</ul>" +
@@ -208,8 +210,9 @@
 
   /* overview.js renders the whole live page. Its hero and its proof strip
      (both now the alt hero) come out; S2 takes the umbrella heading and the
-     products panel's new photograph; the Why screen takes the diagram on its
-     left and keeps its three reasons on its right. */
+     products tile's new picture, and home-alt.css re-lays its two tiles; the
+     Why screen takes the diagram on its left and keeps its three reasons on
+     its right. */
   function liveScreens(C, params) {
     var template = document.createElement("template");
     template.innerHTML = window.PAGES.overview(params);
