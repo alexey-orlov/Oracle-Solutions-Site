@@ -3099,8 +3099,8 @@ window.SITE_CONTENT = {
   "hero": {
     "image": {
       "file": "assets/img/heroes/repair-or-replace-decisions.jpg",
-      "alt": "A sheet of laminated glass seen edge-on in low light, one fine crack catching the light across it",
-      "focal": "50% 50%"
+      "alt": "Fine glassy ribs sweeping over a curved form in the dark, a thin line of light caught along each ridge",
+      "focal": "60% 50%"
     }
   },
   "tile": {
