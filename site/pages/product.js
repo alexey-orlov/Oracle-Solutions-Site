@@ -269,37 +269,42 @@
         "</button>";
     }).join("");
 
-    var panels = steps.map(function (step, index) {
+    /* The frame is the screenshot and nothing drawn over it (Alex,
+       2026-09-29: "Just have screenshots without those callouts"): where a
+       step needs the eye led, the screen itself shows the element selected
+       or open, as the product would (docs/ASSETS.md §1). In the main column a
+       screen reads as a layout, not as text, so the frame is a button that
+       opens it full size. */
+    function frame(step, index, className) {
       var shot = step.shot || {};
-      var region = shotRegion(shot.region, shot.anchor);
-      var anchor = /^(tl|tr|bl|br)$/.test(shot.anchor || "") ? shot.anchor : "br";
-      return '<div class="hiw-panel' + (index === 0 ? " is-active" : "") + '" role="tabpanel"' +
-        ' id="' + base + "-panel-" + index + '" aria-labelledby="' + base + "-tab-" + index + '" tabindex="0">' +
-        '<p class="hiw-text">' + UI.esc(step.text) + "</p>" +
-        '<figure class="hiw-shot">' +
-          '<div class="hiw-canvas"><div class="hiw-pic">' +
+      var name = label("shotOpen") + ": " + step.title;
+      return '<figure class="' + className + '">' +
+        '<button class="hiw-open" type="button" aria-label="' + UI.esc(name) + '"' +
+          ' data-shot="' + UI.esc(shot.full) + '" data-shot-alt="' + UI.esc(shot.alt) + '"' +
+          ' data-shot-title="' + UI.esc(step.n + " · " + step.title) + '">' +
+          '<span class="hiw-canvas"><span class="hiw-pic">' +
             '<img class="hiw-full" src="' + UI.esc(shot.full) + '" alt="' + UI.esc(shot.alt) + '"' +
               ' decoding="async" loading="' + (index === 0 ? "eager" : "lazy") + '">' +
-            (region
-              ? '<span class="hiw-region" aria-hidden="true" style="left: ' + region.x + "%; top: " + region.y +
-                  "%; width: " + region.w + "%; height: " + region.h + '%"></span>' +
-                '<span class="hiw-zoom hiw-zoom--' + anchor + '" aria-hidden="true" style="--za: ' + region.za +
-                  "; --zfit: " + region.zfit + '">' +
-                  '<img src="' + UI.esc(shot.zoom) + '" alt="" decoding="async" loading="lazy"></span>'
-              : "") +
-          "</div></div>" +
-        "</figure>" +
+          "</span></span>" +
+          '<span class="hiw-open-mark" aria-hidden="true">' + UI.icon("expand") + "</span>" +
+        "</button>" +
+        "</figure>";
+    }
+
+    var panels = steps.map(function (step, index) {
+      return '<div class="hiw-panel' + (index === 0 ? " is-active" : "") + '" role="tabpanel"' +
+        ' id="' + base + "-panel-" + index + '" aria-labelledby="' + base + "-tab-" + index + '">' +
+        '<p class="hiw-text">' + UI.esc(step.text) + "</p>" +
+        frame(step, index, "hiw-shot") +
         "</div>";
     }).join("");
 
-    var cards = steps.map(function (step) {
-      var shot = step.shot || {};
+    var cards = steps.map(function (step, index) {
       return '<li class="hiw-card">' +
         '<h3 class="hiw-card-head"><span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
           '<span class="hiw-title">' + UI.esc(step.title) + "</span></h3>" +
         '<p class="hiw-text">' + UI.esc(step.text) + "</p>" +
-        '<figure class="hiw-card-shot"><img src="' + UI.esc(shot.zoom) + '" alt="' + UI.esc(shot.alt) + '"' +
-          ' decoding="async" loading="lazy"></figure>' +
+        frame(step, index + 1, "hiw-card-shot") +
         "</li>";
     }).join("");
 
@@ -311,39 +316,6 @@
       "</div>" +
       '<ol class="hiw-cards">' + cards + "</ol>" +
       "</section>";
-  }
-
-  /* The region is [x, y, w, h] in percent of the frame. `za` is the zoom's own
-     aspect: the frame is 16:10, so a region w% by h% is 1.6·w/h wide per unit
-     of height, which is what the inset's size is worked out from (site.css).
-     `zfit` is the widest the inset may grow, as a share of the frame's width,
-     and still clear its own ring by 1.5% of that width on one axis (round 21):
-     in the main column the frame is narrower than the 872px the zooms were
-     made for, and a zoom that has room grows back toward its 401px there
-     instead of shrinking with the frame. The inset sits in from its corner by
-     2.75% of the frame's width and 4.4% of its height, which is the same
-     distance (4.4% of 0.625), and its height is its width over `za`. */
-  var ZOOM_INSET = 0.0275;
-  var ZOOM_CLEAR = 0.015;
-
-  function zoomFit(r, za, anchor) {
-    var h = 0.625;
-    var o = ZOOM_INSET;
-    var m = ZOOM_CLEAR;
-    var left = r[0] / 100, right = (r[0] + r[2]) / 100;
-    var top = r[1] / 100 * h, bottom = (r[1] + r[3]) / 100 * h;
-    var byX = anchor.charAt(1) === "r" ? (1 - o) - (right + m) : (left - m) - o;
-    var byY = anchor.charAt(0) === "b" ? ((h - o) - (bottom + m)) * za : ((top - m) - o) * za;
-    return Math.max(0, Math.round(Math.max(byX, byY) * 1000) / 1000);
-  }
-
-  function shotRegion(region, anchor) {
-    if (!region || region.length !== 4) return null;
-    var r = region.map(Number);
-    if (r.some(function (v) { return !isFinite(v); }) || !(r[2] > 0 && r[3] > 0)) return null;
-    var za = Math.round(1.6 * r[2] / r[3] * 1000) / 1000;
-    var corner = /^(tl|tr|bl|br)$/.test(anchor || "") ? anchor : "br";
-    return { x: r[0], y: r[1], w: r[2], h: r[3], za: za, zfit: zoomFit(r, za, corner) };
   }
 
   /* Round 13 (Alex): the block prints no heading. It opens the Use cases tab,

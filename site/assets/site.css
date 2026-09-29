@@ -2532,7 +2532,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .site-footer::before { display: none !important; }
   .site-footer a, .site-footer p, .footer-sep, .light-band * { color: #111 !important; }
   .site-footer .social-row { display: none !important; }
-  .footer-mark { filter: invert(1) !important; }
+  .footer-mark, .about-logo { filter: invert(1) !important; }
   .section { padding-block: 1.5rem; }
   .js-reveal .reveal { opacity: 1 !important; transform: none !important; }
 
@@ -3401,6 +3401,21 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 #about .band-title { font-size: var(--fs-h3); }
 #about .eyebrow { color: rgba(232, 232, 232, .72); }
 #about .body-text, #about .lead { color: var(--text-on-dark-soft); }
+
+/* The tile's label is SoftServe's logo (2026-09-29), the brand's lockup of the
+   spark and the wordmark: 32 px tall, so the wordmark stands a step under the
+   title's capitals and the title stays the screen's headline. The eyebrow's
+   words stay in the label, for screen readers only. */
+.about-logo { display: block; height: 2rem; width: auto; }
+.about-label-text {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .about-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .about-stat { padding: 1.125rem 1.25rem; min-width: 0; }
