@@ -248,7 +248,7 @@ three screens white, the monotony he asked to break.
 |---|---|
 | `#/` | **`#bespoke-services`** (S4b, the AI factory: a dark band with a render on its left half and the copy in a column on its right, round 18, re-cut in §57) and **`#about`** (S6, "who builds it") |
 | `#/products`, `#/sellers` | none |
-| product pages | no dark screen: the photo hero carries the weight. **One dark plate per tab view** (round 20): *What changes* on the Overview and the case study on Use cases; Technology, Jumpstart and Contacts carry none |
+| product pages | no dark screen: the blue hero carries the weight (§55). **One dark plate per tab view** (round 20): *What changes* on the Overview and the case study on Use cases; Technology, Jumpstart and Contacts carry none |
 
 **A plate is not a band** (round 20, R1: softserveinc.com's AI page puts one dark card
 inside a white section). The product pages' `#1a1a1a` plate sits inside the wrap
@@ -274,10 +274,16 @@ the two themes, with a comment on the rule.
 
 **Heroes.** The home hero carries no photograph and no glow: a cool wash from the
 brand's own gradient family (`radial-gradient(70% 90% at 88% 12%, #c1dff4 …)`
-over `#f5f7f9 → #ffffff`), with the built-on stack as its graphic. The product
-heroes keep their photograph and **invert the veil to white** from
-the copy side; type goes black. The teal radial third layer is deleted, not
-recoloured — this system has no glow.
+over `#f5f7f9 → #ffffff`), with the built-on stack as its graphic. **A product
+hero is softserveinc.com's detail-page hero** (PROVENANCE §55, measured
+2026-09-29): `linear-gradient(0deg, #ffffff -24.5%, #c1dff4 39.38%, #458fdd 99.67%)`,
+the blue family of its service and industry pages, with no photograph behind the
+copy; type is black, the breadcrumb takes full ink, the outlined chip a 42 % black
+hairline and the badge a white fill, and the one picture is the product's own
+screen in the frame on the right. The brand's metallic family (`91deg, #D5E0EA …
+#8A97A2`, its AI pages) is not used: it leans on a chrome render to carry the
+grey. The teal radial third layer is deleted, not recoloured — this system has
+no glow.
 
 ## 6. Motion
 
