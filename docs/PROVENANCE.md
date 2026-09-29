@@ -7644,3 +7644,57 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
 - **Published** on 2026-09-29 as version 1790695649-2c4e (version 20), on top of 1790694190-6dc7, with the wrapper, `pages/overview.js`, `assets/site.css` and the new logo. The live `overview.js` and `index.html` differed from `main` by this change alone. `site.css` went out as the live file plus this change's two hunks, not as `main`'s: `main` also holds another session's unpublished product-page rebuild (round 21's `.kpi-widget`, `.hiw-tabs` and `.hiw-open-mark`, with the rules the live `product.js` still needs removed). The file list holds 177 files, the logo among them and none that should not ship, and on the shared link the tile opens on the logo.
 - **A publish step, from this one:** START-HERE §6 now says to diff every mapped file against its live copy, and to publish the live file plus your own hunks when the tree's copy also holds another session's unfinished work. It was the second such publish in a day (§52's `content.js`), and the old step, *"the working tree is the merge"*, would have shipped the rebuild.
 - **The contract round stays 20**, as for §50–§52: the new assertions guard the About tile, which the packaging plugin never writes.
+
+## 54. The catalog's head as softserveinc.com's About Us hero, with Alex's lead, 2026-09-29
+
+_A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with no Fable pass: the reference was measured and copied, and Alex settled the two open choices, the photograph and the lines. Touched: `productsPage.intro` and the new `productsPage.image` in `site/data/content.js`, `site.tagline` retired from it; `hero()` and the results bar in `site/pages/products.js`; `keepCompounds` exported from `site/assets/app.js`; the catalog block in `site/assets/site.css` and `site-legacy.css`; the new `site/assets/img/heroes/products.jpg` and its `heroes.json` entry; `tools/check-grammar.js`; SCHEMA, VISUAL-GRAMMAR, ASSETS, HANDOFF §3 and START-HERE. The code landed in autosync commits, beside other sessions' `#/alt` and product-page work._
+
+- **The ask (Alex, 2026-09-29):** *"Products page: replace "Ready-made AI agents for the work your teams still do by hand, …" with "Ready-made AI agents and human-AI workflows that embody the know-how of their industry, so adoption starts from a working product, not a blank page. Each one is built to draw on the full power of Oracle’s AI platforms." Also, think about styling it as https://www.softserveinc.com/en-us/about-us hero screen."*
+- **Two questions, and his answers:**
+  - Asked whether to download the About Us photograph from SoftServe's CDN: *"can use different photo, but should be sufficient resolution and brightness"*. Nothing was downloaded.
+  - Asked whether to draw the hairline only (his `#/alt` review had ruled out lines that cut a hero into *"4 cells"*, §47) or the whole crossing: *"Full About us crossing"*. Here the copy sits in the left two regions only.
+- **The reference, measured on softserveinc.com at 1440 on 2026-09-29:** a 536 px section under a fixed 50 px header, on softserveinc.com's own photograph (3840 × 1268, people at laptops in orange light). The H1 in Azurio 96/91.2 at 178 px from the top. The lead in Replica Light 24/28.8, 684 px measure, 56 px under the H1, 124 px over the foot. No eyebrow, no button. The spark is 104 × 119 at 90 % of the width, 219 px down. A 1 px white line runs 25 px under the H1 from the left edge into its left tip, a short one runs out of its right tip to the edge, and two lines at 24° run into its top and bottom tips from the top and bottom edges.
+- **Where the words come from:** Alex's line is, word for word, the home page's Products panel body (`overview.twoWays.panels[0].body`), which sits on the same oval photograph (below).
+- **The photograph:** the SoftServe 2026 deck template's own title image, `BEST_TEMPLATE_Oracle SoftServe EMEA Business Alignment July 2026.pptx`, `ppt/media/image35.png` (SoftServe OneDrive, `Presentation templates/`), 2912 × 1632. It is the ungraded original of `heroes/overview.jpg`, the home Products panel's picture: brighter, with an orange rim on the oval and an orange beam on the water. The other images at least 2400 px wide in the template and the AIDP Factory deck are two headshots, a customer's logo, a light metal render and a laboratory still life; none fits a catalog of all nine products. The dark left 437 px were cropped off (`sips`), so the oval stands at 63–89 % of the frame and a dark wall after it takes the spark, as the person's shoulder does on About Us. JPEG quality 74, 2475 × 1632, 241 KB. The deck name stays here: `heroes.json` is served and says *SoftServe deck imagery*.
+- **Decisions:**
+  - **The H1 is the page's name, *Products*,** as About Us's is. **No eyebrow:** the reference has none, Alex removed the `#/alt` one (§47), and his lead now says what *SoftServe · AI agents and workflows on Oracle platforms* said. `site.tagline`, its only reader gone, is retired.
+  - **One geometry from three numbers**, the top padding, the H1's size and the spark's width. The hairline sits 25 px under the one-line H1, and the glyph's four tips are fractions of its width. The axis line runs at 25°, the glyph's own tip-to-tip axis, where About Us draws 24° and offsets its two lines. At 1440 the spark lands at x 1296, About Us's own.
+  - **The spark sits 40 px from the right edge** (24 px at 769–1024, 20 px under that), so it stays on the dark wall past the oval at every width. At 820 its left arm reaches 13 px onto the oval's rim.
+  - **The lead's measure is min(684 px, 58vw − the gutter),** so it stops short of the oval at every width from 721 px (closest 26 px, at 820).
+  - **Up to 720 px** the lead takes the full measure, so the photograph is widened to 160 % and shows its dark side with the oval's glow at the right edge, and the line down from the spark is not drawn, because it would cross the lead.
+  - **The search box moved out of the head** into the results bar over the grid (*"a photographic hero carries the claim and the ask, nothing else"*, START-HERE §4), with the filter count at the bar's right. Up to 720 px, where the rail stacks, the bar is lifted above the rail, so a phone still finds the search box first.
+  - **Hyphenated words in the lead stay whole** (`UI.keepCompounds`, now exported): at 820 the lead broke *human- / AI*.
+  - **The not-found page** still prints the catalog's lead under *No such product*, as since §52.
+- **Before → after:**
+
+| | Before | After |
+|---|---|---|
+| The head | white; the eyebrow, *Products*, the lead, the search box | a dark photograph, 510 px at 1440: *Products* and the lead in white, the crossing and the spark |
+| `productsPage.intro` | *Ready-made AI agents for the work your teams still do by hand, from reading contracts to planning field crews. …* (33 words) | Alex's line (38 words) |
+| Lead lines | 3 at 1440 | 4 at 1440, 5 at 1024, 7 at 768, 6 at 375 |
+| The search box | under the lead | opens the results bar; first on a phone |
+| The archive | eyebrow, H1, lead, search | H1 and lead, no photograph; the search in the results bar |
+
+- **The checker:**
+  - §52's guard asking the lead for an hours, cost or revenue word is gone. His line sells the head start, not a metric, and that guard was §52's reading, not his rule. The cap is his line's 38 words.
+  - New: `hero()` renders the photograph, the scrim, the spark and the four lines, and no eyebrow and no search box. The search box opens the results bar. `productsPage.image` has `{ file, alt, focal }`, and its JPEG is on disk and at least 2400 px wide. The title is one word. The axis line runs at 25deg. `site.tagline` is a retired key.
+  - A scratch copy took eight faults one at a time: the tagline back, the down line gone, an eyebrow and a search field in the hero, a 1920 px photograph, a two-word title, 24deg, a 40-word lead. Each failed, and the clean copy passed.
+- **Checks:**
+  - `node --check` on `products.js`, `content.js` and `app.js`; `check-grammar` OK with the one known warning (`overview.about.title`).
+  - In the browser pane against `tools/serve.py`, measured at 1920, 1536, 1440, 1366, 1280, 1024, 820, 768, 721, 720, 540, 414, 375 and 320:
+    - no horizontal overflow;
+    - the lead 23 px or more clear of the oval;
+    - the spark 30 px or more clear of the H1, and 12 px over the lead where the lead runs under it;
+    - *Products* on one line down to 320;
+    - the hero 510 px at 1440, where About Us shows 486 under its header.
+  - The console clean on `#/`, `#/alt`, `#/products` (a group filter and a search), a product page, the not-found route and `#/sellers`.
+  - A search typed live kept its focus, printed *1 product* and updated the hash.
+  - The archive's catalog renders without the photograph. The deny-list sweep is empty.
+- **Open for Alex** (START-HERE §9, under §54):
+  - **The same picture twice.** The catalog's photograph is the home Products panel's scene, the panel his lead comes from. If `#/alt` becomes the home page, its hero carries that scene too, and the catalog should take another photograph.
+  - **The claim in three places:** the home Products panel, the catalog's hero and the not-found page, where the rule is two.
+  - ***AI* on the first screen:** three times in the lead (his words) and in the rail's platform names beside it.
+  - **Two SoftServe marks on one screen:** the header's wordmark and the hero's spark, as softserveinc.com shows them.
+  - **Phones:** the dark side of the photograph with the oval's glow at the edge, and three of the four lines.
+  - **Rights:** the photograph is the brand template's own title image, but §11.1's note on that deck imagery stands: it is generated art, to confirm with the deck's owner before the site goes public.
+- **The contract round stays 20:** the packaging plugin never writes the catalog's head, and it reads no `site.tagline`.

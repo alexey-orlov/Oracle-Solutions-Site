@@ -507,8 +507,11 @@
   .ahero-actions .ahero-link { align-self: flex-start; }
 }
 
-/* At 320 the figures and their rows step down; the H1 follows its fit. */
+/* At 320 the figures and their rows step down, the H1 follows its fit, and
+   the ask's label holds one line (it misses by 2 px at the brand's 24 px
+   sides). */
 @media (max-width: 359px) {
+  .ahero-actions .btn { padding-inline: 16px; }
   .ahero-stat { grid-template-columns: 9.5rem minmax(0, 1fr); }
   .ahero-stat-value { font-size: 30px; }
 }
