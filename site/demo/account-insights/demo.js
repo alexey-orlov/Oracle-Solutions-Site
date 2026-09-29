@@ -419,7 +419,7 @@
       (rows.length ? rows.map(function (m) {
         var a = acc(m.account), s = sig(m.signal);
         return '<tr><td class="nowrap"><b>' + esc(a.name) + "</b></td><td>" + a.id + '</td><td class="nowrap">' + esc(person(a.owner).name) + "</td><td>" + s.id +
-          "</td><td>" + REL[m.rel] + "</td><td>" + (m.kind === "sell" ? "Sell" : "Protect") + "</td><td>" + esc(lineName(m.line)) + "</td><td>" + esc(m.next) +
+          "</td><td>" + REL[m.rel] + "</td><td>" + (m.kind === "sell" ? "Sell" : "Protect") + "</td><td>" + esc(lineName(m.line)) + '</td><td class="wrap">' + esc(m.next) +
           "</td><td>" + m.m + "</td><td>" + m.c + "</td><td>" + m.sources.length + ' cited</td><td class="nowrap">Robin Hale</td></tr>';
       }).join("") : '<tr><td colspan="' + D.exportColumns.length + '"><span class="sub">Approve moves on the Today screen; they appear here.</span></td></tr>') + "</tbody>";
     $("#export-json").textContent = rows.length ? JSON.stringify(recordOf(rows[0]), null, 2) : "{}";
@@ -562,7 +562,7 @@
       body: "Open the number. Each story fans out to the accounts it reaches: the company named, its suppliers, its customers, its competitors.",
       target: function () { return $("#kpi-moves"); },
       auto: function () { selectKpi("moves"); tour.next(); } },
-    { id: "open", major: 4, side: "bottom",
+    { id: "open", major: 4, side: "bottom", scroll: "center",
       title: "Open a move nobody asked for",
       body: "Meridian Grocers is not in the story. It buys from Alder Foods, and its inbound contract with you ends next year.",
       target: function () { return $('li[data-move="MV-03"]'); },
@@ -574,7 +574,7 @@
       anchor: function () { return $("#brief .b-scores"); },
       avoid: function () { return $("#brief"); },
       auto: function () { tour.next(); } },
-    { id: "flagged", major: 5, side: "bottom",
+    { id: "flagged", major: 5, side: "bottom", scroll: "center",
       title: "Open the move already in hand",
       body: "Baltic Packaging's new lane is already in the Poland team's plan. The system cannot see your pipeline; you can.",
       target: function () { return $('li[data-move="MV-02"]'); },
@@ -597,6 +597,7 @@
       target: function () { return $("#btn-approve-rest"); },
       auto: function () { approveRest(); tour.next(); } },
     { id: "file", major: 6, passive: true, side: "top",
+      dock: window.innerWidth >= 1100 ? "right" : null,
       title: "Each record carries its evidence",
       body: "Account, owner, story, the move, both scores and the sources, ready to import. Rejected moves stay out, with their reasons kept.",
       target: function () { return $("#export-panel"); },

@@ -1,0 +1,476 @@
+/* ——————————————————————————————————————————————————————————————————————
+   home-alt.css — the alternative home page at #/alt (2026-09-29).
+
+   Only the two screens pages/overview-alt.js draws itself: the photographic
+   hero (.ahero) and the whole-offer screen (.aoffer). Every screen after them
+   is the live home page's, styled by site.css. Kept in its own file while the
+   two versions are compared; adopting this page folds it into site.css
+   (PROVENANCE §47). The theme's rules hold here too: Azurio 400 display in
+   sentence case, orange only as the H1's accent line, octagonal cuts, no
+   shadow, no radius, and the four home-tile fills only on the six groups.
+   —————————————————————————————————————————————————————————————————————— */
+
+/* ——— S1: the claim, on a photograph ——————————————————————————————— */
+
+/* softserveinc.com/en-us/services: a dark photograph edge to edge, the H1 in
+   white at display size, a hairline across it and the spark where a second
+   line crosses. Not a viewport high: the hero is its content's height, sized
+   so that at 1440 x 900 the next screen's heading shows under it. The ground
+   is the photograph's own darkest tone, which is what a reader sees if the
+   picture fails to load. */
+.ahero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #060d18;
+  color: #ffffff;
+}
+
+/* The oval of light sits in the right third; from 1101 px up it stays clear
+   of the copy, and below that the picture shows its dark left half. */
+.ahero-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 100% 50%;
+}
+
+/* Two layers: dark under the copy on the left, fading out before the oval,
+   and dark along the foot, where the figures sit over the light on the
+   water. */
+.ahero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(0deg, rgba(3, 8, 18, .86) 0%, rgba(3, 8, 18, .5) 24%, rgba(3, 8, 18, 0) 50%),
+    linear-gradient(90deg, rgba(3, 8, 18, .8) 0%, rgba(3, 8, 18, .62) 38%, rgba(3, 8, 18, .2) 60%, rgba(3, 8, 18, 0) 76%);
+}
+
+.ahero-inner {
+  position: relative;
+  padding-block: clamp(3rem, 7.5vh, 5.5rem) clamp(2rem, 4.5vh, 3rem);
+}
+
+.ahero-eyebrow { color: rgba(255, 255, 255, .76); }
+
+/* The brand's hero face and weight, as large as four lines allow and still
+   leave the next screen in view: 80 px at 1440 x 900, less on a short
+   window. The em cap breaks the first sentence after "agents", never after
+   "and"; each sentence opens its own line. */
+.ahero-title {
+  margin-top: 1.5rem;
+  max-width: 11em;
+  font-size: clamp(2.375rem, min(1.2rem + 4.2vw, 9.4vh), 5rem);
+  line-height: 1;
+  letter-spacing: .01em;
+  color: #ffffff;
+}
+
+.ahero-line { display: block; text-wrap: balance; }
+
+/* The hairline, edge to edge, and the crossing on it. The line itself is the
+   ::before, so drawing it in never stretches the spark it carries. */
+.ahero-rule {
+  position: relative;
+  height: 1px;
+  margin-block: clamp(1.5rem, 3.6vh, 2.5rem);
+  margin-inline: calc(50% - 50vw);
+}
+
+.ahero-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .5);
+  transform-origin: 0 50%;
+}
+
+/* The crossing sits at the oval's left rim. The second line runs at 25.5
+   degrees off vertical, the long axis of the spark glyph, so line and spark
+   read as one mark. */
+.ahero-cross { position: absolute; left: 67%; top: 0; width: 0; height: 0; }
+
+.ahero-diag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 300vh;
+  background: rgba(255, 255, 255, .38);
+  transform: translate(-50%, -50%) rotate(25.5deg);
+}
+
+.ahero-spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.5rem;
+  height: auto;
+  max-width: none;
+  transform: translate(-50%, -50%);
+}
+
+/* Under the hairline: the promise and the two buttons on the left, the three
+   figures on the right, both ending on one line. */
+.ahero-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: end;
+}
+
+.ahero-copy { min-width: 0; }
+.ahero-lead { max-width: 36rem; color: rgba(255, 255, 255, .86); text-wrap: pretty; }
+.ahero-cta { margin-top: clamp(1.25rem, 3vh, 2rem); }
+
+/* On the photograph the grey secondary would read as a disabled button. */
+.ahero .btn--secondary { --fill: rgba(255, 255, 255, .14); color: #ffffff; }
+.ahero .btn--secondary:hover { --fill: rgba(255, 255, 255, .24); }
+.ahero .btn--secondary:active { --fill: rgba(255, 255, 255, .3); }
+.ahero .btn:focus-visible::after { background: #ffffff; }
+.ahero :focus-visible { outline-color: #ffffff; }
+
+.ahero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.ahero-stat { min-width: 0; padding-left: 1rem; border-left: 1px solid rgba(255, 255, 255, .3); }
+
+.ahero-stat-value {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 1rem + 1.4vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: 0;
+  color: #ffffff;
+}
+
+/* "from 30 days" is one fact on one line, the word set small beside it. */
+.ahero-stat-prefix {
+  margin-right: .35em;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: .45em;
+  color: rgba(255, 255, 255, .76);
+}
+
+.ahero-stat-label {
+  margin-top: .625rem;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, .76);
+}
+
+/* On load the words rise line by line, the hairline draws from the left and
+   the spark lands last. Motion is never needed to read the hero. */
+@media (prefers-reduced-motion: no-preference) {
+  .ahero-eyebrow, .ahero-line, .ahero-foot { animation: ahero-rise .7s var(--ease-out) both; }
+  .ahero-line:nth-child(1) { animation-delay: .08s; }
+  .ahero-line:nth-child(2) { animation-delay: .18s; }
+  .ahero-line:nth-child(3) { animation-delay: .28s; }
+  .ahero-foot { animation-delay: .45s; }
+  .ahero-rule::before { animation: ahero-draw 1.1s var(--ease) .3s both; }
+  .ahero-diag { animation: ahero-fade 1s var(--ease) .85s both; }
+  .ahero-spark { animation: ahero-spark .8s var(--ease-out) 1.05s both; }
+}
+
+@keyframes ahero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes ahero-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ahero-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ahero-spark {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.35) rotate(-50deg); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+
+/* Below 1101 px the oval would stand behind the copy, so the picture shows
+   its dark half and the figures move under the buttons. */
+@media (max-width: 1100px) {
+  .ahero-img { object-position: 22% 50%; }
+  .ahero-scrim {
+    background:
+      linear-gradient(0deg, rgba(3, 8, 18, .82) 0%, rgba(3, 8, 18, .4) 40%, rgba(3, 8, 18, .25) 100%),
+      linear-gradient(90deg, rgba(3, 8, 18, .55) 0%, rgba(3, 8, 18, .15) 100%);
+  }
+  .ahero-cross { left: 78%; }
+  .ahero-foot { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
+  .ahero-stats { max-width: 44rem; }
+}
+
+@media (max-width: 540px) {
+  .ahero-title { margin-top: 1.25rem; }
+  .ahero-stats { gap: .75rem; }
+  .ahero-stat { padding-left: .75rem; }
+  .ahero-stat-value { font-size: 1.5rem; }
+  .ahero-stat-label { font-size: .8125rem; }
+  .ahero-spark { width: 2rem; }
+}
+
+/* ——— S2: the whole offer ——————————————————————————————————————————— */
+
+/* The screen follows a dark hero, so it needs no hairline over it, and a
+   shorter top so its heading shows under the hero at 1440 x 900. */
+.aoffer.home-screen { border-top: 0; padding-top: clamp(2.75rem, 5vw, 4.25rem); }
+
+/* Two columns, one per way in, each block over its own layer of the
+   diagram; the Oracle foundation spans both. The DOM runs block, layer,
+   connectors, block, layer, connectors, foundation, which is the reading
+   order on a phone. */
+.aoffer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "pb sb"
+    "pp sp"
+    "pl sl"
+    "ba ba";
+  column-gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.ablock--products { grid-area: pb; }
+.ablock--practice { grid-area: sb; }
+.apanel--products { grid-area: pp; }
+.apanel--services { grid-area: sp; }
+.alinks-cell--products { grid-area: pl; }
+.alinks-cell--services { grid-area: sl; }
+.abase { grid-area: ba; }
+
+/* The two blocks: the live S2's words, in ink on the white ground. Both
+   CTAs sit on one baseline, over their own layer. */
+.ablock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  padding-bottom: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.ablock-title {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 1.15rem + .9vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.ablock-body { max-width: 36rem; text-wrap: pretty; }
+.ablock-cta { margin-top: auto; padding-top: .25rem; }
+
+/* A layer: a black panel with a 12 px cut, its owner named in its top row.
+   The brand's Offers band sets its flat fills on black, and so does this. */
+.apanel, .abase {
+  --cut: var(--cut-12);
+  position: relative;
+  min-width: 0;
+  background: #000000;
+  color: #ffffff;
+  clip-path: polygon(
+    var(--cut) 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%,
+    0 calc(100% - var(--cut)), 0 var(--cut));
+}
+
+.apanel {
+  display: flex;
+  flex-direction: column;
+  gap: .875rem;
+  padding: 1rem;
+}
+
+.apanel-owner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-height: 1rem;
+}
+
+.apanel-label {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-xs);
+  line-height: 1.2;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .72);
+}
+
+/* The ink marks, turned white for the black panels. */
+.apanel-mark { height: .75rem; width: auto; filter: brightness(0) invert(1); }
+
+/* Both layers hold two rows of tiles, so the two panels end level. */
+.atiles { display: grid; gap: .5rem; grid-auto-rows: 1fr; flex: 1; }
+.atiles--products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.atiles--services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* One tile anatomy in both layers: the glyph at the top, the name at the
+   foot. A group tile takes its home tile's fill (a group keeps its colour
+   wherever it appears); a service tile is white and carries its step
+   number. Everything on a fill is #1a1a1a, as on the home tiles. */
+.atile {
+  --cut: var(--cut-8);
+  --tile-fill: #bdcbd7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 6.5rem;
+  padding: .875rem .875rem 1rem;
+  background: var(--tile-fill);
+  color: #1a1a1a;
+  clip-path: polygon(
+    var(--cut) 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%,
+    0 calc(100% - var(--cut)), 0 var(--cut));
+}
+
+.atile--blue { --tile-fill: #459fdd; }        /* Lviv blue 75 */
+.atile--orange { --tile-fill: #fe8d6b; }      /* Austin orange 75 */
+.atile--blue-light { --tile-fill: #c1dff4; }  /* Lviv blue 50 */
+.atile--neutral { --tile-fill: #bdcbd7; }     /* neutral 400 */
+.atile--service { --tile-fill: #ffffff; }
+
+.atile-mark { display: inline-flex; color: #1a1a1a; }
+.atile-mark .icon { width: 1.375rem; height: 1.375rem; }
+
+.atile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+.atile-index {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: .9;
+  color: #1a1a1a;
+}
+
+.atile-name {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: .9375rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #1a1a1a;
+  overflow-wrap: anywhere;
+}
+
+/* The connectors: one short line per tile column, down to the foundation. */
+.alinks-cell { height: 1.25rem; }
+.alinks { display: block; width: 100%; height: 100%; }
+
+.alink {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 0;
+}
+
+/* The foundation: Oracle's mark a step larger than the owners' above it,
+   and the four platforms in a row between hairlines. */
+.abase {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+}
+
+.abase .apanel-owner { flex-direction: column; align-items: flex-start; gap: .625rem; }
+.abase .apanel-mark { height: 1rem; }
+
+.aplats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.aplat {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  min-width: 0;
+  padding: .375rem 1rem;
+  border-left: 1px solid rgba(255, 255, 255, .22);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: .9375rem;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.aplat .icon { width: 1.375rem; height: 1.375rem; flex: none; color: rgba(255, 255, 255, .88); }
+.aplat-name { min-width: 0; }
+
+/* The diagram assembles from the bottom up when it scrolls in, the one thing
+   a still picture cannot say: the foundation first, then the lines up from
+   it, then the products, then the services. The resting state is visible
+   with no script; the page's reveal observer adds is-in. */
+.js-reveal .aoffer-grid.reveal { opacity: 1; transform: none; }
+.js-reveal .aoffer-grid.reveal .ablock { opacity: 0; transform: translateY(8px); transition: opacity .45s var(--ease-out), transform .45s var(--ease-out); }
+.js-reveal .aoffer-grid.reveal :is(.apanel, .abase) { opacity: 0; transition: opacity .45s var(--ease); }
+.js-reveal .aoffer-grid.reveal .aplat { opacity: 0; transition: opacity .4s var(--ease); transition-delay: calc(.15s + var(--i) * .07s); }
+.js-reveal .aoffer-grid.reveal .atile { opacity: 0; transform: translateY(6px); transition: opacity .4s var(--ease-out), transform .4s var(--ease-out); }
+.js-reveal .aoffer-grid.reveal .atiles--products .atile { transition-delay: calc(.6s + var(--i) * .06s); }
+.js-reveal .aoffer-grid.reveal .atiles--services .atile { transition-delay: calc(.95s + var(--i) * .07s); }
+.js-reveal .aoffer-grid.reveal .alink { stroke-dashoffset: 16; transition: stroke-dashoffset .9s var(--ease) .35s; }
+.js-reveal .aoffer-grid.reveal .apanel { transition-delay: .5s; }
+.js-reveal .aoffer-grid.reveal .ablock--practice { transition-delay: .1s; }
+
+.js-reveal .aoffer-grid.reveal.is-in :is(.ablock, .apanel, .abase, .aplat, .atile) { opacity: 1; transform: none; }
+.js-reveal .aoffer-grid.reveal.is-in .alink { stroke-dashoffset: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .aoffer-grid.reveal :is(.ablock, .apanel, .abase, .aplat, .atile, .alink) { transition: none; }
+}
+
+/* Two columns hold to 1024; below it the blocks and their layers stack,
+   each block over its own layer, and the connectors go: a line from the
+   products panel would point at the services block under it. */
+@media (max-width: 1023px) {
+  .aoffer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "pb"
+      "pp"
+      "sb"
+      "sp"
+      "ba";
+  }
+  .alinks-cell { display: none; }
+  .apanel--products, .apanel--services { margin-bottom: 2.5rem; }
+  .apanel--services { margin-bottom: .75rem; }
+}
+
+@media (max-width: 720px) {
+  .abase { grid-template-columns: minmax(0, 1fr); padding: 1.125rem 1rem; }
+  .abase .apanel-owner { flex-direction: row; align-items: center; justify-content: space-between; }
+  .aplats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: .5rem; }
+  .aplat { padding: .5rem .75rem; }
+  .aplat:nth-child(odd) { border-left: 0; padding-left: 0; }
+}
+
+@media (max-width: 560px) {
+  .atiles--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atile { min-height: 5.75rem; padding: .75rem .75rem .875rem; }
+}
+
+/* Paper keeps the words and drops the photograph and the black grounds. */
+@media print {
+  .ahero-img, .ahero-scrim, .ahero-rule { display: none !important; }
+  .ahero { background: #ffffff !important; color: #111111; }
+  .ahero-title, .ahero-stat-value { color: #111111 !important; }
+  .ahero-lead, .ahero-eyebrow, .ahero-stat-label, .ahero-stat-prefix { color: #333333 !important; }
+  .apanel, .abase { background: #ffffff !important; color: #111111; border: 1px solid #bbbbbb; }
+  .apanel-label, .aplat, .aplat .icon { color: #333333 !important; }
+  .apanel-mark { filter: none; }
+}
