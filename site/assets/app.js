@@ -1113,20 +1113,26 @@
     closeMobileMenu();
 
     if (parsed.anchor) {
-      var target = document.getElementById(parsed.anchor);
-      if (target) {
+      var anchorId = parsed.anchor;
+      if (document.getElementById(anchorId)) {
         var startedAt = window.pageYOffset;
-        /* A home screen lands with its top edge under the sticky header: its
-           own top padding is the breathing room, so a second 46 px of it would
-           only push what follows the screen off the bottom (round 18: the
-           header's "Services" lands on Packaged services with the Bespoke
-           band's top in view). Anything else — a form, a pane, a product tab —
-           keeps 96 px, the header plus air. */
-        var masthead = document.getElementById("masthead");
-        var offset = target.classList.contains("home-screen") && masthead
-          ? masthead.getBoundingClientRect().height
-          : 96;
+        /* The target is looked up afresh on every call. One hash navigation can
+           render the page twice (the browser fires both popstate and
+           hashchange), and a delayed call still holding the first render's
+           element read a detached node's zero rect, landing the page one header
+           height short (round 18). A home screen lands with its top edge under
+           the sticky header: its own top padding is the breathing room, so a
+           second 46 px of it would only push what follows the screen off the
+           bottom (round 18: the header's "Services" lands on Packaged services
+           with the Bespoke band's top in view). Anything else — a form, a pane,
+           a product tab — keeps 96 px, the header plus air. */
         var scrollToAnchor = function (force) {
+          var target = document.getElementById(anchorId);
+          if (!target || !target.isConnected) return;
+          var masthead = document.getElementById("masthead");
+          var offset = target.classList.contains("home-screen") && masthead
+            ? masthead.getBoundingClientRect().height
+            : 96;
           var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
           var smooth = !force && sameView && !document.hidden &&
             !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
