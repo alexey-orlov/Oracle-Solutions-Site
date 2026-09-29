@@ -463,11 +463,10 @@ window.SITE_CONTENT = {
 
   /* The alternative home page at #/alt (Alex, 2026-09-29), shown beside the
      live one until he picks. It keeps every word of `overview` and adds only
-     what is new: the hero's photograph, which the S2 products panel carried
-     until S2 lost its photographs, and S2's umbrella heading over the whole
-     offer — products and services, packaged and bespoke, on Oracle —
-     replacing "A head start that scales.", which named the packaged path
-     only. PROVENANCE §47. */
+     what is new: the hero's photograph, S2's umbrella heading over the whole
+     offer (replacing "A head start that scales.", which named the packaged
+     path only), the photograph that keeps S2's products panel from repeating
+     the hero's, and the portfolio diagram's labels. PROVENANCE §47. */
   overviewAlt: {
     hero: {
       image: {
@@ -477,37 +476,33 @@ window.SITE_CONTENT = {
     },
     offer: {
       title: "Everything to go live with AI.",
-      /* The two ways in keep their live words (overview.twoWays) and take
-         new photographs: the oval moved to the hero. */
-      images: {
-        products: {
-          file: "assets/img/heroes/workforce-optimization.jpg",
-          focal: "50% 60%",
-          alt: "An overhead field of interlocking hexagonal plates, with loose ones still settling into the pattern from above"
-        },
-        practice: {
-          file: "assets/img/heroes/services.jpg",
-          focal: "50% 40%",
-          alt: "An engineer seen from behind at a wall of code on dark monitors in a low-lit workspace"
-        }
-      },
-      /* The portfolio diagram beside the two tiles. Its lane contents are
-         read from the site's own lists (facets, overview.delivery.steps,
-         facets.technology); only its labels and captions live here. New
-         micro-copy, for Alex's OK: the three captions and the connector. */
-      diagram: {
-        ariaLabel: "What we offer, in one picture: SoftServe's products and the services that take them live — a packaged track from workshop to managed service, and bespoke delivery pods — all built on Oracle's data and AI platforms",
-        softserveCaption: "Products, and the services that take them live",
-        productsLabel: "Products",
-        link: "Services prove, integrate, scale and run the products",
-        packagedLabel: "Packaged services",
-        stageIcons: ["workshop", "spark", "network", "scale", "managed"],
-        optionalNote: "(optional)",
-        bespokeLabel: "Bespoke services · AI factory",
-        bespokeCaption: "A standing team of delivery pods, sized per project and re-sized as it grows. Builds what the catalog does not hold.",
-        builtOn: "Built on",
-        oracleCaption: "The data and AI platforms everything runs on"
+      /* S2 is the live page's two ways in; only the products panel's
+         photograph changes, because the hero now carries the oval. */
+      productsImage: {
+        file: "assets/img/heroes/workforce-optimization.jpg",
+        focal: "50% 60%",
+        alt: "An overhead field of interlocking hexagonal plates, with loose ones still settling into the pattern from above"
       }
+    },
+    /* The portfolio diagram, on the left of "Why SoftServe on Oracle". Its
+       contents are read from the site's own lists (facets.categories,
+       overview.delivery.steps, facets.technology); only its labels, its
+       captions and the platforms' order here (Alex, 2026-09-29: AI Data
+       Platform first) live in this block. New micro-copy, for Alex's OK:
+       the two captions and "Built on". */
+    diagram: {
+      ariaLabel: "The portfolio in one picture: SoftServe's products and its services, packaged from workshop to managed service or bespoke as delivery pods, all built on Oracle's data and AI platforms",
+      softserveCaption: "Products, and the services that take them live",
+      productsLabel: "Products",
+      servicesLabel: "Services",
+      packagedLabel: "Packaged",
+      stageIcons: ["workshop", "spark", "network", "scale", "managed"],
+      optionalNote: "(optional)",
+      bespokeLabel: "Bespoke · AI factory",
+      bespokeCaption: "A standing team of delivery pods, sized per project and re-sized as it grows. Builds what the catalog does not hold.",
+      builtOn: "Built on",
+      oracleCaption: "The data and AI platforms everything runs on",
+      platformOrder: ["oracle-ai-data-platform", "oracle-ai-lakehouse", "oracle-ai-fusion", "oci-nvidia"]
     }
   },
 
