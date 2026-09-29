@@ -15,7 +15,8 @@ window.SITE_CONFIG = {
     "case-evidence-collection",
     "cross-system-erp-qa",
     "business-metrics-qa",
-    "fleet-route-optimization"
+    "fleet-route-optimization",
+    "repair-or-replace-decisions"
   ],
   /* Links to the walkthrough, the video and the kit documents are not here:
      they live in links.json at the repo root (round 12, docs/CONFIG.md).
@@ -69,6 +70,12 @@ window.SITE_CONFIG = {
       marketplace: false,
       marketplaceUrl: "",
       videoPoster: "assets/img/posters/fleet-route-optimization.jpg",
+      successStoryUrl: ""
+    },
+    "repair-or-replace-decisions": {
+      marketplace: false,
+      marketplaceUrl: "",
+      videoPoster: "",
       successStoryUrl: ""
     }
   }

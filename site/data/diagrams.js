@@ -124,6 +124,23 @@ window.SITE_DIAGRAMS = {
     },
     target: { title: ["Answers across", "every source"], sub: ["No data movement"], accent: true },
     note: "Coexistence, not migration — the join happens at the catalog"
+  },
+
+  "repair-or-replace-decisions": {
+    layout: "flow",
+    sources: [
+      { title: ["Capture channel"], sub: ["customer or", "technician media"] },
+      { title: ["Asset master record"], sub: ["identifier, geometry,", "prior condition"] }
+    ],
+    group: {
+      label: ["Oracle Cloud Infrastructure", "media, audit, rules"],
+      nodes: [
+        { title: ["Repair-or-replace", "decisions by SoftServe"], sub: ["guided capture, review,", "rules, decision record"] },
+        { title: ["NVIDIA AI Blueprint for Video Search and", "Summarization (VSS) · NVIDIA AI-Q Blueprint · verdicts"], sub: ["Vision and", "reasoning engine"] }
+      ]
+    },
+    target: { title: ["Reviewer", "confirms"], sub: ["Confirm or overrule", "into the booking, dispatch or claims system"], accent: true },
+    note: "Nothing reaches the booking system until a person confirms it; unreviewed cases wait in a visible queue"
   }
 };
 
