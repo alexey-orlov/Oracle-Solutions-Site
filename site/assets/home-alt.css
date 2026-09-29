@@ -101,7 +101,9 @@
   display: flex;
   flex-direction: column;
   width: calc(var(--ahero-share) * 100%);
-  padding-block: 28px 40px;
+  /* The foot keeps the ask clear of the figures, so the proof reads as its
+     own row, not as part of the ask. */
+  padding-block: 20px clamp(44px, 6.5vh, 60px);
 }
 
 /* Three sentences, one line each, at every width (Alex, 2026-09-29). Sized
@@ -418,6 +420,7 @@
   font-size: 13.5px;
   line-height: 1.25;
   letter-spacing: 0;
+  text-wrap: balance;
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
     100% var(--cut), 100% calc(100% - var(--cut)),
