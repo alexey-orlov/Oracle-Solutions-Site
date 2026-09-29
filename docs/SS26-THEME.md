@@ -236,7 +236,9 @@ The old rule was *at most one light band per page*. It inverted to **at most one
 dark band**, and the footer's black block does not count. **Round 18 lets the home
 page carry two**, on Alex's instruction: he asked for the new *Bespoke services*
 screen *"on the image dark background to make page not so monotonous"*, after
-softserveinc.com's *Confidence earned* banner, which runs full-bleed. The two are
+softserveinc.com's *Confidence earned* banner, which runs full-bleed; since
+2026-09-29 the band is the render's own dark, with softserveinc.com's chrome-ribbons
+render on its left half and the copy in a column on its right (PROVENANCE §57). The two are
 never adjacent: the case studies, a white screen, stand between them. Lightening
 About instead to keep one band (the copy pass's recommendation) was declined: it
 changes a block Alex had asked only to strip of its logos, and it leaves the last
@@ -244,7 +246,7 @@ three screens white, the monotony he asked to break.
 
 | Page | The dark screens |
 |---|---|
-| `#/` | **`#bespoke-services`** (S4b, the AI factory, a full-bleed photograph under a scrim, round 18) and **`#about`** (S6, "who builds it") |
+| `#/` | **`#bespoke-services`** (S4b, the AI factory: a dark band with a render on its left half and the copy in a column on its right, round 18, re-cut in §57) and **`#about`** (S6, "who builds it") |
 | `#/products`, `#/sellers` | none |
 | product pages | no dark screen: the photo hero carries the weight. **One dark plate per tab view** (round 20): *What changes* on the Overview and the case study on Use cases; Technology, Jumpstart and Contacts carry none |
 

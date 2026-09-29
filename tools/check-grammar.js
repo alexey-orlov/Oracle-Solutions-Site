@@ -256,8 +256,10 @@ function checkHeroImage(where, image) {
 /* ---- shared heroes ----
    Round 5: the home page carries no hero photograph — the built-on stack visual
    is its only illustration — so `overview.hero.image` is retired, and the
-   home-page block below fails if it returns. All seven products keep theirs
-   (the Services page, which had one, left in round 18). */
+   home-page block below fails if it returns. Since 2026-09-29 no product hero
+   carries one either (§55, checked below): every product keeps `hero.image`,
+   because it is its catalog tile's photograph (the Services page, which had
+   one, left in round 18). */
 
 /* ---- products ---- */
 if (!arr(C.products) || C.products.length !== 9) {
