@@ -87,9 +87,11 @@
           : "") +
         '<span class="ahero-scrim" aria-hidden="true"></span>' +
         /* One line in the dark gap between the copy and the oval, the spark
-           on it, turned to the line's angle in mount(). */
+           on it, turned to the line's angle in mount(). Up to 768 px the
+           oval sits further right and the narrow line follows it. */
         '<svg class="ahero-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
-          '<line x1="54" y1="100" x2="66" y2="0"></line>' +
+          '<line class="ahero-line-desk" x1="54" y1="100" x2="66" y2="0"></line>' +
+          '<line class="ahero-line-narrow" x1="70" y1="100" x2="86" y2="0"></line>' +
         "</svg>" +
         '<img class="ahero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async" aria-hidden="true">' +
         '<div class="wrap ahero-inner">' +
@@ -294,7 +296,9 @@
 
   function alignSpark(photo) {
     var spark = photo.querySelector(".ahero-spark");
-    var line = photo.querySelector(".ahero-line line");
+    var line = Array.prototype.filter.call(photo.querySelectorAll(".ahero-line line"), function (candidate) {
+      return window.getComputedStyle(candidate).display !== "none";
+    })[0];
     if (!spark || !line) return;
     var box = photo.getBoundingClientRect();
     var dx = (Number(line.getAttribute("x2")) - Number(line.getAttribute("x1"))) / 100 * box.width;
