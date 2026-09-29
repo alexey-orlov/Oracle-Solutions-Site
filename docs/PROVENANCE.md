@@ -7392,6 +7392,26 @@ _A change between rounds, made in its own session while the Internal-panel remov
   - **The lead** was a third heavy block at 20–24 px. It is now body copy, 17–19 px at 1.45, on a 30rem measure, with a right margin so the promise and the proof never butt.
   - **Phones:** the H1 is 40 / 38 / 36 px at 768 / 540 / 359, and the figures 34 px, so a phone's figures are no bigger than a laptop's.
   - **Checks:** S2's heading is in view at 1280 × 800 through 1920 × 1080; the spark is 39–103 px clear of the H1; there is no overflow from 320 to 1920; the console is clean and `check-grammar` prints OK.
+- **Version 3, the same day (Alex):**
+  - the promise and the figures become *"part of the first screen (on dark background - the image transitions to a solid color, and those items show up there)"*;
+  - the diagram moves to *Why SoftServe on Oracle*, on its left with the three reasons on its right, and *"clearly splits, as earlier, products from services, and services are split in 2 (packed vs bespoke)"*;
+  - Oracle's platforms run *"AIDP, than AIL, than Fusion, than OCI"*;
+  - S2 *"turns to it's previous loook"*.
+- **Version 3 — what changed:**
+  - **The hero is one dark screen.** The photograph, its scrim, the line and the spark are one layer, masked to hold the top half and fade out over the bottom half. They dissolve into `#040d16`, a tone sampled from the photograph's own left edge (`#030e14`–`#030e17`), so there is no seam. The promise and the figures sit on that ground in white (the lead at 80 %, the labels at 64 %). The copy is set low in the photograph, 48 px above the promise.
+  - **A Chromium limit:** a masked layer at `z-index: -1` inside an isolated parent does not paint, and the first build showed no photograph. The layer stacks at 0 and the copy at 1.
+  - **S2** is the live page's own `#two-ways`, untouched but for its heading and the products panel's photograph (`workforce-optimization.jpg`, since the hero carries the oval). A 44 px top keeps its heading in view.
+  - **The Why screen** keeps its heading and its three rows, in their stacked form (48 px icons, 17 px text) in the right five columns. The diagram takes the left seven:
+    - one SoftServe mark and its caption;
+    - a Products panel of six bars in the groups' fills, beside a Services panel. The Services panel is split by a hairline into *Packaged* (the five steps down one line, the managed one dashed and marked *(optional)*) and *Bespoke · AI factory* (three pods, a dashed open one, the caption);
+    - *Built on*, then the Oracle card in Lviv blue 50, its platforms in Alex's order through `overviewAlt.diagram.platformOrder`.
+    - The two panels end level. Every group name holds one line from 1280 up. Below 1101 px the diagram stacks above the reasons, and below 561 px its panels stack.
+  - **The retired S2 layout** went, with its styles: the tiles stacked beside the diagram, and the connector *Services prove, integrate, scale and run the products*.
+- **Version 3 — checks:**
+  - S2's heading bottom at 719, 737, 813, 849 and 1038 px for 1366 × 768, 1280 × 800, 1536 × 864, 1440 × 900 and 1920 × 1080;
+  - figures at least 62 px apart;
+  - no overflow from 320 to 1920, the console clean, `check-grammar` OK, the deny-list grep clean.
+- **Open for Alex (version 3):** the platforms run AI Data Platform first only in the diagram, while the rail, the chips, the stack and the footer keep the site's canonical order, AI Lakehouse first (START-HERE §4 *Naming*). Whether the whole site should switch is his call.
 - **Not published:** the shared link still shows version 1 (above). A shared link opens the home page anyway, because the artifact drops the route. Publishing is Alex's call.
 - **Open for Alex:**
   - the heading;
