@@ -438,8 +438,7 @@
 @media (max-width: 768px) {
   .ahero-photo { height: auto; min-height: 440px; }
   .ahero-img { object-position: 56% 50%; }
-  .ahero-copy { --ahero-share: .68; }
-  .ahero-title { font-size: min(40px, var(--ahero-fit)); }
+  .ahero-copy { --ahero-share: .68; --ahero-h1: min(40px, var(--ahero-fit)); }
   .ahero-lead { text-wrap: pretty; }
   .ahero-line, .ahero-spark { display: none; }
 }
@@ -458,8 +457,8 @@
    link sits under it. */
 @media (max-width: 540px) {
   .ahero-img { object-position: 45% 50%; }
-  .ahero-copy { --ahero-share: 1; }
-  .ahero-title { max-width: none; font-size: min(38px, var(--ahero-fit)); }
+  .ahero-copy { --ahero-share: 1; --ahero-h1: min(38px, var(--ahero-fit)); }
+  .ahero-title { max-width: none; }
   .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
   .ahero-actions .btn { width: 100%; }
   .ahero-actions .ahero-link { align-self: flex-start; }
