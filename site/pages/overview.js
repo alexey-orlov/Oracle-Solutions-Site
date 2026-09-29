@@ -396,8 +396,8 @@
   /* ————— S5: the engagements behind the products ————— */
 
   /* The rail says what the four cards are; the cards carry the figures. The
-     rail ends on the NDA line: its link ("Ask for a reference call") left on
-     2026-09-29 (PROVENANCE §51). Measured,
+     rail is the head alone: its NDA line and its link ("Ask for a reference
+     call") left on 2026-09-29 (PROVENANCE §51). Measured,
      modeled and in preparation are three states of the same card, so no
      engagement has to be left out to keep the grid honest, and no customer is
      named on either side. */
@@ -410,7 +410,6 @@
       '<div class="cases">' +
         '<div class="cases-rail">' +
           head({ eyebrow: intro.eyebrow, title: intro.title, lead: intro.body }) +
-          '<p class="small cases-nda">' + UI.esc(intro.ndaLine) + "</p>" +
         "</div>" +
         '<div class="case-grid cases-grid">' + cards + "</div>" +
       "</div>" +

@@ -1902,7 +1902,8 @@ if (!arr(C.products) || C.products.length !== 9) {
   }
 
   /* --- S5 · the case-study rail (the cards themselves are checked in C2) --- */
-  reqStr("overview.caseStudiesIntro", o.caseStudiesIntro, ["eyebrow", "title", "body", "ndaLine"]);
+  reqStr("overview.caseStudiesIntro", o.caseStudiesIntro, ["eyebrow", "title", "body"]);
+  if ((o.caseStudiesIntro || {}).ndaLine !== undefined) fail("overview.caseStudiesIntro.ndaLine", "the rail has no NDA line since 2026-09-29 (PROVENANCE §51)");
   if ((o.caseStudiesIntro || {}).cta !== undefined) fail("overview.caseStudiesIntro.cta", "the rail has no link since 2026-09-29 (PROVENANCE §51)");
 
   /* --- S6 · about SoftServe, one of the page's two dark bands --- */

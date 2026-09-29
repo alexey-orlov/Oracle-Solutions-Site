@@ -3348,7 +3348,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* The rail opens on the same head as the other screens; the column's own gap
    carries the space to the lines under it, so the head keeps none of its own. */
 .cases-rail .home-head { margin-bottom: 0; }
-.cases-nda { color: var(--text-dim); }
 .cases-grid { grid-auto-rows: 1fr; }
 
 /* A card is not a link, but the link inside it answers when the card is. */
