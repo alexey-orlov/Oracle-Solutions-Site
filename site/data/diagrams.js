@@ -139,8 +139,8 @@ window.SITE_DIAGRAMS = {
         { title: ["NVIDIA AI Enterprise", "· VSS and AI-Q"], sub: ["Vision and", "reasoning engine"] }
       ]
     },
-    target: { title: ["Reviewer", "confirms"], sub: ["Confirm or overrule", "into the booking, dispatch or claims system"], accent: true },
-    note: "Nothing reaches the booking system until a person confirms it; unreviewed cases wait in a visible queue"
+    target: { title: ["Reviewer", "confirms"], sub: ["Confirm or overrule,", "then the job is booked"], accent: true },
+    note: "Nothing reaches the booking, dispatch or claims system until a person confirms it"
   }
 };
 
