@@ -7453,6 +7453,50 @@ _A change between rounds, made in its own session while the Internal-panel remov
 - **Open for Alex (version 4):**
   - the three lines;
   - the services photograph: the cube, or another.
+- **Version 4, the hero (the same evening, a second session).** Alex, on version 3's hero:
+  - *"Let's reduce text: Enterprise AI agents. Built on Oracle. ROI proven in weeks. - should be 3 lines"*;
+  - the lead to two lines *"so that you don't lose any substantial notion, just less room taken, no meaning vanished"*;
+  - *"Consider if placing this text above buttons is better than with the line and below, like now"*;
+  - *"The final layout should pass your web ui layout check"*.
+- **Version 4, the hero — the copy** (`overviewAlt.hero.headline` and `.lead`, read by `hero()`; the live `#/` keeps `overview.hero`):
+  - the H1 in his words, three sentences on three lines;
+  - the lead: *SoftServe’s leading AI practice and fast-track method, with the full power of Oracle’s data and cloud platforms, accelerate your time to value.* Only *combined* went (152 → 143 characters), since *with* says it. Every notion stays: SoftServe's, leading, the AI practice, the fast-track method, the full power of Oracle's data and cloud platforms, and your time to value. The second line comes from the layout: a 35 em measure under the H1, where version 3 had a 30 rem column beside the figures.
+- **Version 4, the hero — the order: the claim, the promise, the ask.** Setting the promise above the buttons was this session's call on his question:
+  - the reader gets the reason before the button, where version 3 put the ask between the claim and what explains it;
+  - softserveinc.com's own photographic hero (`/services`) sets its line directly under the H1;
+  - the band holds the proof alone: three figures across the page, the first on the H1's left edge, each label on two even lines. The dash that marked the promise went with it;
+  - with the H1 and the promise a line shorter each, the photograph holds the H1, two lines and the ask. Version 1, reviewed as *"overloaded"*, held an eyebrow, a four-line H1, the lead, the ask and the figures.
+- **Version 4, the hero — the fit:**
+  - the H1 is `min(version 3's clamp, --ahero-fit)`, the size at which *ROI proven in weeks.* (9.79 em, the longest sentence; *Enterprise AI agents.* is 9.75) fills the copy column with 3 % to spare. It is 76 px at 1920, 65 at 1440, 60 at 1333, 46 at 1024, 40 at 768, 34 at 375 and 28.5 at 320, three lines at every width;
+  - the copy column is 58 % of the page's column beside the oval, 68 % from 541 to 768 px and all of it on a phone;
+  - the lead is `clamp(17px, 1.35vw, 20px)` at 85 % white, balanced: two lines from 1180 px up, three at 1024 and 768, four or five on a phone, where *fast-track* stays whole (`UI.keepCompounds`). At 1024 its three lines end on phrases: *…fast-track method,* / *with the full power of Oracle’s data and cloud* / *platforms, accelerate your time to value.*;
+  - at 1333 × 820: 20 px from the H1 to the promise, 30 from the promise to the ask, 58 from the ask to the figures.
+- **Version 4, the hero — the line, and version 3 collisions fixed on the way:** measured against every word, version 3's line came within 10 px of *How we deliver* at 1024, and from 541 to 768 px it crossed the oval with the spark on the oval's face, against its own rule that it *crosses neither*. Now:
+  - from 1240 px up, version 3's line (54 → 66 %), at least 62 px from every word (84 at 1333, 96 at 1440);
+  - from 769 to 1239 px, a steeper line (60.5 → 64 %) with the spark moved onto it (62.81 %), at least 60 px clear;
+  - at 768 px and under, the copy meets the oval and no gap is left, so the line and the spark go, as they already did on a phone;
+  - the figures become rows under 681 px, not 541: three columns set *from 30 days* 35 px from *1,000+* at 600 and wrapped a label to three lines up to 680;
+  - at 320 the ask's label holds one line on 16 px sides (it missed by 2 px at 24).
+- **Version 4, the hero — before and after at 1333 × 820:**
+
+| | Version 3 | Version 4 |
+|---|---|---|
+| H1 | four lines, 245 px | three lines, 184 px |
+| The promise | on the band beside the figures, three lines under a dash | in the photograph between the H1 and the ask, two lines |
+| The band | the promise and the three figures | the three figures across the page |
+| S2's heading, bottom edge | 760 px | 752 px |
+
+- **Version 4, the hero — checks:**
+  - H1 on three lines, no horizontal overflow, and the figures at least 54 px apart wherever they stand in columns, at 1920 × 1080, 1536 × 864, 1440 × 900, 1366 × 768, 1333 × 820, 1280 × 800, 1280 × 720, 1240, 1239, 1180, 1024 × 768, 800, 769, 768 × 1024, 681, 680, 600, 541, 414, 375 and 320;
+  - the lead on two lines from 1180 up;
+  - S2's heading in view at every laptop size (1028 of 1080, 839 of 900, 752 of 820, 729 of 800, 710 of 768, 705 of 720);
+  - the console clean on `#/alt`, the live `#/` unchanged, and the deny-list grep clean;
+  - `check-grammar`: new assertions on `overviewAlt.hero` (each sentence at most 21 characters, the lead at most 143 with *time to value* and no procedure word) pass. Its one failure at the time was another session's unfinished product hero (§55).
+- **Open for Alex (version 4, the hero):**
+  - the order, with the promise above the ask;
+  - *ROI proven in weeks.* claims more than *Proven in weeks.*: a measured return, which delivery would stand behind together with *from 30 days*;
+  - the hero screen still carries *data* four times and *AI* three (the lead and the figures' labels, shared with the live page), against the three-times rule;
+  - on tablets in portrait the hero has no line and no spark.
 
 ## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
 
