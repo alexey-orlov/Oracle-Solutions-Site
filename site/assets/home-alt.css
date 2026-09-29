@@ -260,6 +260,11 @@
   .ahero-stat-label { margin-top: 0; font-size: .8125rem; }
 }
 
+/* At 320 "Proven in weeks." runs to within 30 px of the edge. */
+@media (max-width: 359px) {
+  .ahero-cross { left: 95%; }
+}
+
 /* ——— S2: the whole offer ——————————————————————————————————————————— */
 
 /* The screen follows a dark hero, so it needs no hairline over it, and a

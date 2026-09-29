@@ -294,7 +294,7 @@
        needs no chip: the list is the review queue. */
     var chip = st === "open" ? "" : statusChip(m);
     return '<li class="' + cls.join(" ") + '" data-move="' + m.id + '"><span class="r-main"><span class="r-name"><b>' + esc(a.name) + "</b>" + relChip(m) + kindChip(m) + chip +
-      '</span><span class="r-sub">' + esc(lineName(m.line)) + " · " + esc(m.relNote) + '</span></span><span class="r-side">' + rowContext(m) + "</span>" + note + "</li>";
+      '</span><span class="r-sub">' + esc(lineName(m.line)) + " · " + esc(m.relNote.split(" · ")[0]) + '</span></span><span class="r-side">' + rowContext(m) + "</span>" + note + "</li>";
   }
   function renderGroups() {
     var work = $("#work");
