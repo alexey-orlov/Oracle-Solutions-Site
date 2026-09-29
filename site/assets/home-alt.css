@@ -472,7 +472,7 @@
    platforms two by two. */
 @media (max-width: 560px) {
   .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "packaged" "products" "bespoke" "oracle"; }
-  .amap-block--bespoke .amap-pic { margin-top: 16px; }
+  .amap-block--bespoke .amap-pic { margin-top: 16px; padding-top: 0; }
   .amap-pods { grid-template-columns: repeat(6, minmax(0, 44px)); gap: 6px; }
   .amap-pod .amap-node .icon { width: 18px; height: 18px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
