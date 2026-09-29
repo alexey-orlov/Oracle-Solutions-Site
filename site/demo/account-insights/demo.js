@@ -218,7 +218,7 @@
     box.hidden = S.ran || S.busy;
     if (box.hidden) return;
     var rows = D.accounts.slice().sort(function (a, b) { return b.unread - a.unread; }).slice(0, 10);
-    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories from your feeds since 18:00, unread. Most accounts' next quarterly review is weeks away.</span></div>' +
+    box.innerHTML = '<div class="book-lead"><span class="big">214</span><span>stories from your feeds since 18:00, unread. Most accounts’ next quarterly review is weeks away.</span></div>' +
       '<div class="book-grid">' + rows.map(function (a) {
         return '<div class="book-row"><span class="acc">' + avatar(a.owner) + "<b>" + esc(a.name) + '</b></span><span class="unread">' +
           plural(a.unread, "mention", "mentions") + '</span><span class="due">quarterly review in ' + a.review + " days</span></div>";
