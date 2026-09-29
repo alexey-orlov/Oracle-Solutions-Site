@@ -7936,4 +7936,75 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
 
 ## 58. Round 22: the Technology tab as the one-pager's strip and an Oracle products widget, the Jumpstart tab as Delivery, 2026-09-29
 
-(In progress in a session opened in AO-Personal-OS; this section is being written.)
+### 58.1 The asks (Alex, 2026-09-29, verbatim)
+
+> I don't like current Technology tabs.
+> * remove Architecture subheading
+> * we have beautiful diagrams in one-pagers (see packahing skill and it's outputs); use or follow them for visualization; they are well organziaed, sized, etc. You can have some one-liner explainers etc added, but no more than that.
+> * oracle products: should be a structured widget-style block; should make distinction between platforms (OCI, AIDP, AI Lakehouse) and data sources or destinations. Name only most relevant data source and destination Oracle systems, not far fetched stuff. Smth like icon, name and 2-4 words naming the role of the system in the setup. Make sure to use same names and icons for these apps across all products, as this should feel like a widget.
+>
+> As for Jumpstart tab:
+> * Rename it to delivery;
+> * Content - should be same structure and content as we have in packaging table in our one-pager. Add approx. duration of phases (with very short footnote that it's confirmed at scoping); don't add prices.
+> * Everything else should be gone from this tab.
+
+With two pictures: a wireframe of two blocks side by side, **Diagram** (wider, left) and **Oracle products** (right), and the Workforce optimization *Tailored solution: packages (detailed)* slide (tiers across, a mark and a phrase per capability row, the legend under it).
+
+### 58.2 The split
+
+- **Opus (this session, opened in AO-Personal-OS):** the facts, the renderers, the CSS, the checker, QA, the publish and these docs.
+- **Fable, one pass** (`brief-tech-delivery.md` in the session scratchpad): the copy for all nine products: each widget role, the one line under each strip, the strips of the four products with no one-pager, and the four packages tables with no pack source. Its output was then reviewed by Opus (58.4).
+
+### 58.3 Sources
+
+| Product | Strip | Packages table |
+|---|---|---|
+| Account insights | pack one-pager (Oracle-Packaging-Skills, `packs/account-insights`) | pack spec, *How each capability area is handled per tier* |
+| Fleet route optimization | pack one-pager + `architecture.json` | pack spec, the same table |
+| Repair-or-replace decisions | pack one-pager | pack spec phrases, one-pager marks |
+| Workforce optimization | *Sales one-pager – Oracle* (OneDrive, the pack folder) | *Service packages – Oracle*, slide 10, the slide Alex attached |
+| Large docs processing and review | *Intelligent Document Extraction – Sales one-pager* (OneDrive `Projects/Oracle/Packs`) | its *Service packages deck*, the *Packages: detailed* slide (images, transcribed) |
+| Cross-system ERP Q&A, Business metrics Q&A, Plan vs actual investigation, Case evidence collection | derived from the site's own diagram and stack data | derived from the site's own Jumpstart copy: rows are each product's four stages plus Deployment; S from its Jumpstart scope, M from its Integration line, L from its Scaling line |
+
+Oracle product names follow the plugin's catalog, `Oracle-Packaging-Skills/shared/data/oracle-products.yaml`.
+
+### 58.4 Decisions
+
+- **Technology = strip + line + widget, nothing else.** The Architecture heading, the narrative, the SVG diagram (`data/diagrams.js`, deleted, and the top-level `media` map of its alt text), the five-layer solution-stack accordion and the Capabilities grid are gone, with their data keys and labels. The four-stage capability lists were not moved anywhere: the Delivery table's rows are the pack's capability areas, and the full feature list is the kit's feature-list document.
+- **The strip is HTML, not SVG** (`flowStrip()` in `pages/product.js`), so its words wrap and it can run top to bottom on a phone. It keeps the one-pager's composition and colours; the proportions are 22 : 24 : 54, the cloud a little wider than the one-pager's 51 % so its two boxes hold their names in fewer lines.
+- **Destinations for the four derived strips** are the people the site already names where no system receives the output: *Investigators* (Case evidence collection), *Planners* (Plan vs actual), *Business teams* (Cross-system ERP Q&A), *Analysts* (Business metrics Q&A). The copy pass had *Case file* and *Evidence pack*, artefacts rather than recipients.
+- **The widget's names are one registry** (`shared.oracleProducts`): *Oracle Cloud Infrastructure*, *Oracle AI Data Platform*, *Oracle Autonomous AI Lakehouse*, *Oracle Autonomous AI Database* (the data spelled the database four ways), *Oracle Fusion Field Service* (Workforce's data said *Oracle Field Service*), *Oracle Customer Experience (CX)* and *Oracle Fusion Cloud ERP*. The catalog platforms reuse their facet glyphs; three glyphs were drawn: database, field service (a wrench), CX (a contact card). Membership is the platform plus an Oracle application the product really reads from or writes to; no plumbing, no optional alternative, no NVIDIA.
+- **Delivery = the one-pager's table without its price rows**: the site's tier names (*Jumpstart proof of value · Integration · Scaling*, never *PoV* or *Roll-out*), S/M/L tags, each tier's scope line, a Duration row with the site's standing *4–8 weeks · 3–5 months · 3–12 months* under one footnote (*Durations are approximate and confirmed at scoping.*), then a mark and a phrase per area and tier, and the legend. Below 900 px one block per tier. The standing durations agree with the packs' own (Repair-or-replace's 12–20 and 12–52 weeks, Workforce's 3–5 and 3–12 months); the packs' 6–8 weeks and the older one-pagers' 2 months sit inside 4–8 weeks, the site's one proof-of-value duration since round 7.
+- **No price ships anywhere now.** The proof-of-value prices (Large docs, Workforce, the two Q&A products) and the two Integration prices left with the Jumpstart tab's investment card and next-tier cards; they are no longer in `content.js` either, which ships in view-source.
+- **The Jumpstart tab's other blocks went** (promise, the three pillars, *What you get*, *How it runs*, *What we need from you*, the investment card, *After the Jumpstart*, the CTA and the engage link). The `.pillar` CSS stays: the home page's Why rows use it.
+- **Routes:** `…/delivery`; `…/jumpstart` and `…/pov` redirect in place.
+- **The catalog search** read the narrative so a seller searching *cuOpt* or *AI-Q* finds the product; it now reads the strip's boxes, its line and the widget's names (`techWords()` in `pages/products.js`).
+- **Opus review of the copy pass:** a five-word role cut to four; *Oracle Fusion Cloud Applications* (no such catalog entry) became *Oracle Fusion Cloud ERP*; the app boxes carry the site's product names; Fleet's proof-of-value scope restored to the approved one-pager's line; empty "—" phrases dropped; scope lines end on a full stop.
+
+### 58.5 Before → after
+
+| | Before | After |
+|---|---|---|
+| Technology tab | *Architecture* heading, a 2–3 sentence narrative, an SVG flow figure, a five-layer accordion with wordmarks and Required / Optional tags, a four-stage Capabilities grid | the one-pager's strip, one line under it, the Oracle products widget (Platform · Sources & destinations) |
+| Oracle systems | named inside the accordion rows, four spellings of the database | one registry, one name and glyph per system, a 2–4-word role per product |
+| Tab 4 | *Jumpstart*: promise, pillars, outcomes, a week-by-week rail, needs, an investment card with prices, two next-tier cards, a CTA | *Delivery*: the packages table with durations and a footnote |
+| Prices on the site | four proof-of-value prices, two Integration prices | none |
+| `content.js` | 3,776 lines | 3,132 |
+
+### 58.6 Checks
+
+- `tools/check-grammar.js`: new assertions for `technology.line` (one sentence, ≤ 20 words), `technology.diagram` (every box named, notes and pipe labels within budget, an Oracle platform in the cloud box), `technology.oracle` (registry ids, 2–4-word roles, a platform listed, every facet platform listed), `delivery` (a scope line per tier, 4–8 rows of three cells, legal marks, a phrase unless the mark is none, no price, no duration in a phrase, no *PoV* or *Roll-out*), `shared.oracleProducts` (full Oracle names, no duplicate, an existing icon, every entry used, the database and Field Service spelled one way), `shared.delivery` (the three tiers, S/M/L, 4–8 weeks first, the footnote ≤ 10 words and naming scoping), the tab list with *Delivery* and its two legacy segments, no heading in `technologyTab()`, nothing but the table in `deliveryTab()`, and `data/diagrams.js` gone. The retired keys fail by name. It prints OK.
+- The browser, all nine products, both tabs, at 1440, 1280, 1024, 768 and 375: no page overflow and no box overflowing its text at any width; every line under a strip holds one line from 768 up; the strip runs top to bottom below 720 with its arrowheads drawn down and up; the table becomes tier blocks below 900. `…/jumpstart` and `…/pov` land on Delivery. The catalog search finds *cuOpt*. The console is clean on every route. The deny-list grep returns nothing.
+- **Published** as version 1790702708-a5ce, built on 1790700183-964e (§55's): the live `pages/product.js`, `pages/products.js`, `assets/app.js`, `assets/site.css` and `data/content.js` plus only this round's hunks, and `data/diagrams.js` mapped to `null`. The working tree's copies also held other sessions' unpublished work (the `#/alt` home, the catalog hero of §54, an app.js export) and were not published.
+
+### 58.7 Open for Alex
+
+- **The four derived tables** (Cross-system ERP Q&A, Business metrics Q&A, Plan vs actual, Case evidence) rest on the site's own Jumpstart copy, not a pack; their Integration and Scaling cells are short, and several are inferences from one line (the copy pass's notes list each). They want a pack's per-tier table, or delivery's word.
+- **The derived destinations** (*Investigators*, *Planners*, *Business teams*, *Analysts*) are people, where the packed products name a system.
+- **Oracle Fusion Cloud ERP** as the ERP Q&A source: the data says only "Oracle applications through prebuilt pipelines"; the product's copy speaks of ERP and CRM.
+- **Oracle Autonomous AI Database** everywhere: Plan vs actual's data said *Oracle AI Database 26ai*, which need not be the Autonomous service.
+- **Oracle AI Data Platform** is listed plainly on both Q&A products although it is where-in-place; the widget has no optional flag.
+- **Durations:** the standing ranges on every product; per-product overrides exist in the schema (`delivery.durations`) and no product uses one.
+- **The packaging plugin** (Oracle-Packaging-Skills, `oracle-packs-web:listing`) still writes `technology.narrative`, `stack`, `capabilities` and `jumpstart`, all build failures now: it has to learn `technology.line`, `oracle`, `diagram` and `delivery` before its next listing. Its `diagram_to_site.py` should emit the strip (the one-pager's `_flow_from_architecture` is the model) instead of a `diagrams.js` entry.
+- **The archive theme** (`index-legacy.html`) shares the renderers but not the new CSS, so its Technology and Delivery tabs render unstyled locally. It is frozen and never published.
+- **Round numbering:** §55 bumped `contract.round` to 22 without naming a docs round; round 22 here covers both.
