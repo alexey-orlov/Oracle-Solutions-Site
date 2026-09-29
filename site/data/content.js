@@ -447,7 +447,7 @@ window.SITE_CONTENT = {
      until S2 lost its photographs, and S2's umbrella heading over the whole
      offer — products and services, packaged and bespoke, on Oracle —
      replacing "A head start that scales.", which named the packaged path
-     only. PROVENANCE §44. */
+     only. PROVENANCE §47. */
   overviewAlt: {
     hero: {
       image: {
