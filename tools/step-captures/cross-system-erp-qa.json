@@ -1,0 +1,11 @@
+[
+ {"_run": "Step 4 of How it works, without callouts (2026-09-29). Serve site/ (python3 tools/serve.py <port> site; the URLs below use 51458, change the port to yours), then: PORT=95xx W=1280 H=800 DPR=2 STEPS=tools/step-captures/cross-system-erp-qa.json node tools/step-mocks/cap.mjs about:blank <outdir>; then sips --resampleWidth 1744 and sips -s format jpeg -s formatOptions 82 into site/assets/img/steps/ (docs/ASSETS.md §1.2). State: final (after the manager's override), the answer in Agent Hub, .wb-page scrolled so 'Why the lines are late' and all four proposed actions, each with its 'Assigned as a task' line, fill the frame; the six tiles (step 3's look) are scrolled off."},
+ {"size": {"w": 1280, "h": 800}},
+ {"goto": "http://127.0.0.1:51458/demo/cross-system-erp-qa/index.html?tour=off&ui=clean&state=final&q=1"},
+ {"sleep": 1300},
+ {"eval": "document.querySelector('#toast').hidden = true; true"},
+ {"eval": "var p=document.querySelector('.wb-page'); var b=[].slice.call(document.querySelectorAll('.an-box h4')).filter(function(x){return /late/.test(x.textContent);})[0].closest('.an-box'); p.scrollTop = b.getBoundingClientRect().top - p.getBoundingClientRect().top + p.scrollTop - 12; JSON.stringify({step: 4, scrollTop: p.scrollTop, bandBottom: Math.round(document.querySelector('.an-band').getBoundingClientRect().bottom), pageTop: Math.round(p.getBoundingClientRect().top)})"},
+ {"sleep": 600},
+ {"eval": "document.querySelector('#toast').hidden = true; true"},
+ {"shot": "cross-system-erp-qa-4"}
+]

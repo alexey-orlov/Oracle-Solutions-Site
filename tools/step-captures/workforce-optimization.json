@@ -1,0 +1,12 @@
+[
+ {"_run": "Step 3 of How it works, without callouts (2026-09-29). Serve site/ (python3 tools/serve.py <port> site; the URLs below use 51458, change the port to yours), then: PORT=95xx W=1280 H=800 DPR=2 STEPS=tools/step-captures/workforce-optimization.json node tools/step-mocks/cap.mjs about:blank <outdir>; then sips --resampleWidth 1744 and sips -s format jpeg -s formatOptions 82 into site/assets/img/steps/ (docs/ASSETS.md §1.2). State: plan v2 (final), the vacation change focused (its card in the list's is-focus style), the zone details closed, #screen scrolled so the map and 'What the solver changed' fill the frame and the KPI band (step 4) is off-screen."},
+ {"size": {"w": 1280, "h": 800}},
+ {"goto": "http://127.0.0.1:51458/demo/workforce-optimization/index.html?tour=off&ui=clean&state=final&focus=vacation"},
+ {"sleep": 1400},
+ {"eval": "document.querySelector('#toast').hidden = true; document.querySelector('#warn-toast').hidden = true; true"},
+ {"click": "[data-close-details]"},
+ {"sleep": 600},
+ {"eval": "var s=document.querySelector('#screen'); var pr=document.querySelector('#plan-row'); s.scrollTop = pr.getBoundingClientRect().top - s.getBoundingClientRect().top + s.scrollTop - 7; JSON.stringify({step: 3, scrollTop: s.scrollTop, focus: window.DEMO.state.focus, details: !!document.querySelector('.details')})"},
+ {"sleep": 700},
+ {"shot": "workforce-optimization-3"}
+]

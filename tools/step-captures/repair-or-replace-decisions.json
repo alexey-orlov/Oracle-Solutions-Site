@@ -1,0 +1,9 @@
+[
+ {"_run": "Step 3 of How it works, without callouts (2026-09-29). Serve site/ (python3 tools/serve.py <port> site; the URLs below use 51458, change the port to yours), then: PORT=95xx W=1280 H=800 DPR=2 STEPS=tools/step-captures/repair-or-replace-decisions.json node tools/step-mocks/cap.mjs about:blank <outdir>; then sips --resampleWidth 1744 and sips -s format jpeg -s formatOptions 82 into site/assets/img/steps/ (docs/ASSETS.md §1.2). State: flagged (RR-24826 open, its table row in the open style), the page scrolled so the case panel's review block ends 20 px above the viewport's foot: reading, cited rule, the call, the two flags, the reason kept with the decision, Overrule and Confirm. The before -> after band (with its unit costs) is off-frame."},
+ {"size": {"w": 1280, "h": 800}},
+ {"goto": "http://127.0.0.1:51458/demo/repair-or-replace-decisions/index.html?tour=off&ui=clean&state=flagged"},
+ {"sleep": 1300},
+ {"eval": "var t=document.querySelector('#toast'); if (t) t.hidden = true; var r=document.querySelector('#case .review'); window.scrollTo(0, r.getBoundingClientRect().bottom + scrollY - 780); JSON.stringify({step: 3, scrollY: scrollY, open: window.DEMO.state.open, bandBottom: Math.round(document.querySelector('#band').getBoundingClientRect().bottom)})"},
+ {"sleep": 600},
+ {"shot": "repair-or-replace-decisions-3"}
+]

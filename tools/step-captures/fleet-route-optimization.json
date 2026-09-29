@@ -1,0 +1,16 @@
+[
+ {"_run": "Steps 2 and 4 of How it works, without callouts (2026-09-29). Serve site/ (python3 tools/serve.py <port> site; the URLs below use 51458, change the port to yours), then: PORT=95xx W=1280 H=800 DPR=2 STEPS=tools/step-captures/fleet-route-optimization.json node tools/step-mocks/cap.mjs about:blank <outdir>; then sips --resampleWidth 1744 and sips -s format jpeg -s formatOptions 82 into site/assets/img/steps/ (docs/ASSETS.md §1.2). Both frames scroll the page so the tab bar sits 65 px from the top, under the sticky header: the active tab's content fills the right, the re-plan rules and the Result card the left, and the KPI tiles (step 3's subject) are off-frame. The left column's cut falls in the white space under 'The day as it ran' heading."},
+ {"size": {"w": 1280, "h": 800}},
+ {"goto": "http://127.0.0.1:51458/demo/fleet-route-optimization/index.html?tour=off&ui=clean&state=changes"},
+ {"sleep": 1200},
+ {"eval": "var t=document.querySelector('#toast'); if(t) t.hidden=true; var tb=document.querySelector('#tabs'); var y=Math.round(tb.getBoundingClientRect().top + scrollY - 65); document.documentElement.scrollTop = y; window.scrollTo({top: y, behavior: 'instant'}); true"},
+ {"sleep": 700},
+ {"eval": "JSON.stringify({step: 2, scrollY: scrollY, tabsTop: Math.round(document.querySelector('#tabs').getBoundingClientRect().top), tab: document.querySelector('.tabs button.on').textContent})"},
+ {"shot": "fleet-route-optimization-2"},
+ {"goto": "http://127.0.0.1:51458/demo/fleet-route-optimization/index.html?tour=off&ui=clean&state=final"},
+ {"sleep": 1400},
+ {"eval": "var t=document.querySelector('#toast'); if(t) t.hidden=true; var tb=document.querySelector('#tabs'); var y=Math.round(tb.getBoundingClientRect().top + scrollY - 65); document.documentElement.scrollTop = y; window.scrollTo({top: y, behavior: 'instant'}); true"},
+ {"sleep": 700},
+ {"eval": "JSON.stringify({step: 4, scrollY: scrollY, tabsTop: Math.round(document.querySelector('#tabs').getBoundingClientRect().top), tab: document.querySelector('.tabs button.on').textContent})"},
+ {"shot": "fleet-route-optimization-4"}
+]
