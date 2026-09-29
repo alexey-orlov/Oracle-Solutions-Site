@@ -3751,7 +3751,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    the band from its top edge to the plate's bottom, submit included, fits
    under the masthead on a 1512 × 850 laptop, and on a product page under the
    sticky tab bar too, so the paddings are 48/40px, the message box opens four
-   lines tall and the field rows sit 16px apart.
+   lines tall and the field rows sit 16px apart; on a screen 880px tall or
+   less the paddings are 32px and the box opens three lines tall.
    Grey on grey: the footer opens on the same #edf0f2 spacer, and a grey band
    right above it would merge with it into one grey mass. So the band is the
    page's last grey: the section that hosts it gives up its paddings (on a
