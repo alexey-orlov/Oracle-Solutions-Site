@@ -1952,9 +1952,9 @@ if (!arr(C.products) || C.products.length !== 9) {
       var aboutLogoSvg = fs.readFileSync(path.join(root, aboutLogo), "utf8");
       var aboutLogoFills = (aboutLogoSvg.match(/fill="[^"]*"/g) || []).filter(function (f, i, all) { return all.indexOf(f) === i; });
       if (aboutLogoFills.length !== 1 || aboutLogoFills[0] !== 'fill="#FFFFFF"') {
-        fail(aboutLogo, "must be one white ink on the dark tile, found " + (aboutLogoFills.join(" ") || "no fill"));
+        fail(aboutLogo, "must be one white ink on the dark tile, found " + (aboutLogoFills.join(" ") || "no fill") + " (PROVENANCE §53)");
       }
-      if (/<style|class=/.test(aboutLogoSvg)) fail(aboutLogo, "carries a style block or classes — the brand kit's file, cleaned (ASSETS.md)");
+      if (/<style|class=/.test(aboutLogoSvg)) fail(aboutLogo, "carries a style block or classes — the brand kit's lockup, cleaned (PROVENANCE §53)");
     }
     if (!ab.link || !str(ab.link.label) || !str(ab.link.url)) fail("overview.about.link", "needs { label, url }");
     else if (ab.link.url.indexOf("https://www.softserveinc.com") !== 0) {
