@@ -1672,7 +1672,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    under the old head: the bar is lifted out of its column and put first. */
 @media (max-width: 720px) {
   .catalog-body .rail-content { display: contents; }
-  .catalog-body .results-bar { order: -1; }
+  .catalog-body .results-bar { order: -1; margin-bottom: 0; }
 }
 
 .results-count { margin-left: auto; font-size: var(--fs-sm); color: var(--text-dim); letter-spacing: .06em; text-transform: uppercase; }

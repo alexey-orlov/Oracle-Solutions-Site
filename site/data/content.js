@@ -466,12 +466,25 @@ window.SITE_CONTENT = {
 
   /* The alternative home page at #/alt (Alex, 2026-09-29), shown beside the
      live one until he picks. It keeps every word of `overview` and adds only
-     what is new: the hero's photograph, S2's umbrella heading over the whole
-     offer (replacing "A head start that scales.", which named the packaged
-     path only), the photograph that keeps S2's products panel from repeating
-     the hero's, and the portfolio diagram's labels. PROVENANCE §47. */
+     what is new: the hero's H1, lead and photograph, S2's umbrella heading
+     over the whole offer (replacing "A head start that scales.", which named
+     the packaged path only), the photograph that keeps S2's products panel
+     from repeating the hero's, and the portfolio diagram's labels.
+     PROVENANCE §47. */
   overviewAlt: {
     hero: {
+      /* Alex, 2026-09-29: three sentences, one line each. */
+      headline: {
+        lead: "Enterprise AI agents.",
+        accent: "Built on Oracle.",
+        proof: "ROI proven in weeks."
+      },
+      /* His round-16 promise on two lines, every notion kept: SoftServe's
+         leading AI practice, its fast-track method, the full power of
+         Oracle's data and cloud platforms, and your time to value. Only
+         "combined" went, since "with" says it. Set under the H1, above the
+         ask. */
+      lead: "SoftServe’s leading AI practice and fast-track method, with the full power of Oracle’s data and cloud platforms, accelerate your time to value.",
       image: {
         file: "assets/img/heroes/overview.jpg",
         alt: "A tall oval of light standing open in a dark wall, its reflection running out across still water"

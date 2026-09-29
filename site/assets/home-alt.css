@@ -288,40 +288,36 @@
 
 /* ——— the portfolio diagram ———————————————————————————————————————————— */
 
-/* Light grounds only: white panels with a hairline, the groups' own fills,
-   outlined services, and Lviv blue 50 for Oracle's platforms. The type is
-   12–13 px, a deliberate exception for a schematic; nothing in it is a
+/* Alex's layout: the packaged services over the products, the bespoke
+   services beside both, Oracle's platforms under all three. Light grounds
+   only: white blocks with a hairline, the groups' own fills, outlined
+   services, and Lviv blue 50 for Oracle. Each block is a name in the display
+   face, one line in the body face and a picture; nothing in it is a
    control. */
-.amap { display: flex; flex-direction: column; min-width: 0; }
+.amap { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 
-.amap-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.amap > .amap-head { margin-bottom: 14px; }
-.amap-mark { flex: none; height: auto; }
+.amap-mark { display: block; flex: none; height: auto; }
 .amap-mark--softserve { width: 96px; }
 .amap-mark--oracle { width: 84px; }
-.amap-caption { font-weight: 300; font-size: 13px; line-height: 1.3; color: #4c5156; text-align: right; }
 
-.amap-label {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.2;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: #4c5156;
+.amap-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  grid-template-areas:
+    "packaged bespoke"
+    "products bespoke"
+    "oracle oracle";
+  gap: 12px;
 }
 
-/* Products beside services, the two things SoftServe sells, each its own
-   panel under the one SoftServe mark. */
-.amap-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 12px; align-items: stretch; }
-
-.amap-panel, .amap-oracle {
+.amap-block {
   --cut: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   min-width: 0;
-  padding: 16px;
+  padding: 18px 18px 20px;
+  background: #ffffff;
+  border: 1px solid #d1dae2;
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
     100% var(--cut), 100% calc(100% - var(--cut)),
@@ -329,23 +325,27 @@
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
-.amap-panel { background: #ffffff; border: 1px solid #d1dae2; }
+.amap-block--packaged { grid-area: packaged; }
+.amap-block--products { grid-area: products; }
+.amap-block--bespoke { grid-area: bespoke; }
+.amap-block--oracle { grid-area: oracle; gap: 14px; background: #c1dff4; border-color: #c1dff4; }
 
-/* The six groups as one list, each in its home tile's fill; the bars share
-   the panel's height, so both panels end level. */
-.amap-bars { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.amap-name { font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 1.15; letter-spacing: 0; color: #000000; }
+.amap-line { margin-top: 4px; font-family: var(--font-sans); font-weight: 300; font-size: 14px; line-height: 1.3; color: #4c5156; }
+.amap-pic { margin-top: 16px; }
 
-.amap-bar {
+/* The bespoke block is as tall as the two beside it; its pods stand at its
+   foot, level with the products' tiles. */
+.amap-block--bespoke .amap-pic { margin-top: auto; padding-top: 16px; }
+
+/* Products: the six groups' four fills, once each, and no names. */
+.amap-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+
+.amap-tile {
   --cut: 4px;
-  --bar-fill: #bdcbd7;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 38px;
-  padding: 8px 12px;
-  background: var(--bar-fill);
-  color: #000000;
+  --tile-fill: #bdcbd7;
+  aspect-ratio: 4 / 3;
+  background: var(--tile-fill);
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
     100% var(--cut), 100% calc(100% - var(--cut)),
@@ -353,95 +353,79 @@
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
-.amap-bar--blue { --bar-fill: #459fdd; }        /* Lviv blue 75 */
-.amap-bar--orange { --bar-fill: #fe8d6b; }      /* Austin orange 75 */
-.amap-bar--blue-light { --bar-fill: #c1dff4; }  /* Lviv blue 50 */
-.amap-bar--neutral { --bar-fill: #bdcbd7; }     /* neutral 400 */
+.amap-tile--blue { --tile-fill: #459fdd; }        /* Lviv blue 75 */
+.amap-tile--orange { --tile-fill: #fe8d6b; }      /* Austin orange 75 */
+.amap-tile--blue-light { --tile-fill: #c1dff4; }  /* Lviv blue 50 */
+.amap-tile--neutral { --tile-fill: #bdcbd7; }     /* neutral 400 */
 
-.amap-bar .icon { flex: none; width: 16px; height: 16px; color: #000000; }
-.amap-bar-name { min-width: 0; font-family: var(--font-sans); font-weight: 400; font-size: 13px; line-height: 1.25; letter-spacing: 0; }
-
-/* The services, split in two: the packaged track over the bespoke team, a
-   hairline between them, each named in ink under the panel's label. */
-.amap-sub { display: flex; flex-direction: column; gap: 8px; }
-.amap-sub--packaged { padding-bottom: 12px; border-bottom: 1px solid #e1e7eb; }
-.amap-sub--bespoke { padding-top: 2px; }
-
-.amap-sublabel { font-family: var(--font-sans); font-weight: 400; font-size: 13px; line-height: 1.2; letter-spacing: 0; color: #000000; }
-
-/* The outlined chips: a path, so the stroke follows the cut corners; dashed
-   where the thing is optional or still to come. */
-.amap-node { position: relative; display: inline-flex; flex: none; align-items: center; justify-content: center; }
-.amap-node--28 { width: 28px; height: 28px; }
-.amap-node--36 { width: 36px; height: 36px; }
+/* The outlined chips: a path, so the stroke follows the cut corners and
+   keeps its width at any size; dashed where the thing is optional or still
+   to come. */
+.amap-node { position: relative; display: flex; flex: none; align-items: center; justify-content: center; width: 36px; height: 36px; }
 .amap-node-shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.amap-node-shape path { fill: #ffffff; stroke: #000000; stroke-width: 1.5; }
-.amap-node--dashed .amap-node-shape path { stroke-dasharray: 3 2.5; }
-.amap-pods .amap-node--dashed .amap-node-shape path { stroke: #4c5156; }
-.amap-node .icon { position: relative; width: 16px; height: 16px; color: #000000; }
+.amap-node-shape path { fill: #ffffff; stroke: #000000; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.amap-node--dashed .amap-node-shape path { stroke: #4c5156; stroke-dasharray: 3 2.5; }
+.amap-node .icon { position: relative; width: 18px; height: 18px; color: #000000; }
+.amap-node--dashed .icon { color: #4c5156; }
 
-/* The packaged track: five steps down one line. */
-.amap-steps { position: relative; display: flex; flex-direction: column; gap: 6px; }
+/* Packaged services: the steps in one row, an arrow between each; the last
+   step and the arrow into it dashed. */
+.amap-flow { display: flex; align-items: center; }
+.amap-step { flex: none; }
+.amap-arrow { position: relative; flex: 1 1 0; min-width: 12px; height: 36px; }
 
-.amap-steps::before {
+.amap-arrow::before {
   content: "";
   position: absolute;
-  top: 14px;
-  bottom: 14px;
-  left: 13.25px;
-  width: 1.5px;
-  background: #bdcbd7;
+  top: 50%;
+  left: 5px;
+  right: 6px;
+  border-top: 1.5px solid #bdcbd7;
+  transform: translateY(-50%);
 }
 
-.amap-step { position: relative; display: flex; align-items: center; gap: 10px; min-width: 0; }
-.amap-step-name { min-width: 0; font-family: var(--font-sans); font-weight: 400; font-size: 12.5px; line-height: 1.25; letter-spacing: 0; color: #26292b; }
-.amap-optional { color: #4c5156; }
-
-/* The bespoke team: three pods and an open one, the team that grows. */
-.amap-pods-row { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-.amap-pods { display: flex; flex: none; gap: 6px; }
-.amap-pods-caption { font-weight: 300; font-size: 13px; line-height: 1.35; color: #4c5156; }
-
-.amap-builton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 36px;
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.2;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: #4c5156;
+.amap-arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-top: 1.5px solid #4c5156;
+  border-right: 1.5px solid #4c5156;
+  transform: translateY(-50%) rotate(45deg);
 }
 
-.amap-builton .icon { width: 14px; height: 14px; }
+.amap-arrow--dashed::before { border-top-style: dashed; }
 
-/* Oracle's platforms, the ground both panels stand on. */
-.amap-oracle { background: #c1dff4; }
+/* Bespoke services: a team of pods, three to a row, the last one open. */
+.amap-pods { display: grid; grid-template-columns: repeat(3, minmax(0, 60px)); gap: 8px; }
+.amap-pod .amap-node { width: 100%; height: auto; aspect-ratio: 1; }
+.amap-pod .amap-node .icon { width: 22px; height: 22px; }
+
+/* Oracle: its mark over its platforms, in the diagram's order. */
 .amap-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 
 .amap-chip {
   --cut: 4px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
+  align-items: center;
   min-width: 0;
-  padding: 10px;
+  min-height: 44px;
+  padding: 8px 12px;
   background: #ffffff;
   color: #000000;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.25;
+  letter-spacing: 0;
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
     100% var(--cut), 100% calc(100% - var(--cut)),
     calc(100% - var(--cut)) 100%, var(--cut) 100%,
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
-
-.amap-chip .icon { width: 16px; height: 16px; color: #000000; }
-.amap-chip-name { font-family: var(--font-sans); font-weight: 400; font-size: 13px; line-height: 1.25; letter-spacing: 0; }
 
 /* ——— widths ——————————————————————————————————————————————————————————— */
 
@@ -472,8 +456,13 @@
   .ahero-spark { left: 80.56%; }
 }
 
+/* A phone: the blocks stack in reading order, the pods in one row and the
+   platforms two by two. */
 @media (max-width: 560px) {
-  .amap-split { grid-template-columns: minmax(0, 1fr); }
+  .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "packaged" "products" "bespoke" "oracle"; }
+  .amap-block--bespoke .amap-pic { margin-top: 16px; }
+  .amap-pods { grid-template-columns: repeat(6, minmax(0, 44px)); gap: 6px; }
+  .amap-pod .amap-node .icon { width: 18px; height: 18px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -493,8 +482,6 @@
   .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
   .ahero-stat-value { font-size: 34px; }
   .ahero-stat-label { margin-top: 0; }
-  .amap-head { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .amap-caption { text-align: left; }
 }
 
 /* At 320 "Built on Oracle." holds one line only at 36 px. */
@@ -512,4 +499,6 @@
   .ahero-title, .ahero-stat-value { color: #111111 !important; }
   .ahero-lead, .ahero-stat-label, .ahero-stat-prefix { color: #333333 !important; }
   .ahero-dash { background: #111111 !important; }
+  .aoffer .way--photo { padding-top: 1.5rem; }
+  .aoffer .way--photo .way-title { margin-top: 0; }
 }
