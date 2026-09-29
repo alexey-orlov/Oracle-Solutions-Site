@@ -6571,9 +6571,111 @@ The list is repeated in START-HERE §9.
   2. *service(s)* is on S4 three times: the eyebrow *Services*, the heading and the stage *Managed services*. The screen rule allows two; the lightest fix is the eyebrow, *How we deliver* (the hero button's name for this screen).
 - **Checks.** The checker prints OK with the two known warnings; the console is clean; nothing overflows at any width.
 
-## 38. A new product: Fleet route optimization, 2026-09-29
+## 38. Round 18 — Services onto the home page, a Bespoke band, no placeholder links, 2026-09-29
 
-_Added by the `oracle-packs-web:listing` skill from the pack spec `packs/fleet-route-optimization/pack-spec.md` (Oracle-Packaging-Skills), while two other sessions were reworking the home and product-page layouts. Only this product's data was written; no renderer, stylesheet or layout file was touched. Not published. If round 18 takes this section number, renumber this one._
+**The ask** (Alex, in session, 2026-09-29):
+
+> * Kick off your AI adoption with accelerator apps. -> Ready-to-use solutions to kick-off your AI adoption
+> * Remove oracle and nvidia logos from About SoftServe block
+> * Contact us on the main page - make sure the form is equivalent (texts, CTAs, etc., flow) to what we have on per-product page (though logical difference to be preserved);
+> * Services (small subheading) -> Packaged services
+> * Under Packaged Services ("Service delivery that accelerates time to value.") block, add one more block called "Bespoke Services" (subheading) + full heading. It's layout should visually differ (probably be on the image dark background to make page not so monotonous; use https://www.softserveinc.com/en-us Confidence earned block as a reference; but it should have subheading and heading + content like others. Craft the message as a product marketer, with focus on key elements: Oracle experts; Decades of enterprsise experience in AI and Data; Proven governance and scalable POD-based delivery frameowrk; AI-enabled teams and software development lifecycle to get to value faster; Heading to revovle around 'AI factory term'. Stay close to these my instructions. For terms and 'meat', u can get inspired with attached slides, but they are very internal - don't try to deliver the message they do, as they're for different audience. numbers etc are all very internal. That's very surgical work.
+> * Services link at the header - to not link to a separate page, but scroll down to the Packaged services block on the main page. Services page to be fully removed.
+> * In the footer, add links to Oracle products: Oracle Cloud Infrastructure, Oracle AI Data Platform, Oracle AI Lakehouse + plus Oracle main page.
+> * Make sure the website has same site icon as softserveinc.com
+> * Make sure the minisite uses all the correct links (in emails, on pages) -as per config that we created recently and that I populated recently with fresh links. It applies to video links, interactive demo links + in-email links. No fake and placeholder links no longer allowed.
+> * Products list page: convert the Have a workflow in mind? block into a "last tile" attached at the end of the search results; it should speak like "Looking for other solution? Let's talk" -> Link to contact form on the main page.
+> * Product search page: make sure tiles look more similar to softserveinc.com reference (i.e. boundary between image and block underneath should not be blured)
+
+Three internal slides came with it (*Partnership structure*, *AI factory as service*, *Oracle practice setup & investments*): terms only; their org names, headcounts, pod counts and prices stay off the site. Mid-round, on the first cut of the catalog's last tile: *"looks too empty, note this"* (38.2, 38.7).
+
+**Split.** Fable: one copy pass, from an Opus brief with the reference measured and the slides reduced to terms — the Bespoke band's copy, the S7 head, the catalog tile's copy (and, after Alex's note, its anatomy), and three design calls. Opus (this session): the brief, the measurements, the build, the checker, QA and these docs. Where the build departs from the Fable pass is 38.3.
+
+### 38.1 What changed
+
+| Where | Before (round 17) | After |
+|---|---|---|
+| S3 H2 | *Kick off your AI adoption with accelerator apps.* | *Ready-to-use solutions to kick off your AI adoption.* (Alex; *kick-off* set as the verb; 52 characters, held at its own length) |
+| S4 eyebrow | *Services* | *Packaged services* (Alex) |
+| S4's end | a primary button, *See the full method* → `#/services#how-we-engage` | the Why list closes the screen; no button |
+| Why list, *Agentic AI expertise* | *…with evaluation, guardrails and governance on every engagement.* | *…with evaluation and guardrails built into every engagement.* (115 characters) |
+| S2, the practice panel's third bullet | *Decades of enterprise adoption of AI and advanced technology* | *One team, all the way to your own AI factory* |
+| S4b (new) | — | **Bespoke services**: a full-bleed dark photograph (softserveinc.com's *Confidence earned* banner, `bands/bespoke-*.jpg`); eyebrow *Bespoke services*, H2 *Your AI factory on Oracle.*, a two-sentence lead, a filled *Talk to us*, and four points — *Oracle experts* · *Enterprise AI and data* · *Governed pod-based delivery* · *AI-enabled teams* |
+| S6 About | *Built with* + the Oracle and NVIDIA wordmarks under the figures | no marks |
+| S7 | H2 *Talk to our team* + a lead; the card under a *Contacts* heading beside one form headed *SEND A REQUEST*, submit *Send the request* | eyebrow *Contact*, H2 *Start with one conversation.*; **the product Contacts switch** (`UI.contactSwitch`): *Talk to us* (the form, *Not sure yet*) · *Get the sales kit* (*Kit for*: all offers or one product) |
+| Header | *Services* → `#/services`; *Talk to us* → `#/services#contact` | *Services* → `#/#how-we-deliver`; *Talk to us* → `#/#request-a-demo` |
+| Services page | `#/services`, three screens and a contact form | removed; `MOVED` rewrites an old link to the home screen that took over its section |
+| Footer | one link row | a second row: *Oracle Autonomous AI Lakehouse* · *Oracle AI Data Platform* · *Oracle Cloud Infrastructure* · *Oracle website* |
+| Favicon | a white S on a Lviv-blue octagon | softserveinc.com's: the white spark on black |
+| Product hero | `video: true` put a *Watch the demo* frame on Account insights, Large docs and Workforce optimization with no recording behind it; a click opened *"The demo recording is being prepared."* | the frame renders only with a `video` link in `links.json`; none has one, so all eight heroes are single-column |
+| Marketplace badge | on Large docs and Workforce optimization, inert (flag true, no URL) | none; `true` needs the listing's URL |
+| Demo badge, on a product page with no frame | read the walkthrough link from `config.js`, which has held none since round 12, so it re-rendered the page instead of opening the walkthrough | reads `links.json`, like the hero button |
+| Catalog tiles | the photograph faded into the grey body under a veil; the platform label in black with a dark shadow on the photograph | a clean edge; the label on the brand's translucent card-chip plate |
+| Catalog's way out | a band under the grid: *HAVE A WORKFLOW IN MIND?*, *Request a scoping call*, *See the services* | the last tile of every result: *Looking for another solution?* — a line drawing where a product has its photograph, one line, three check lines, *Talk to us* |
+| Data retired (all fail the build) | — | `services`, `forms.contact`, `forms.labels.submitRequest` / `submitContact`, `forms.demo.secondaryHeading`, `forms.confirmations.contactPosted`, `shared.videoPending`, `overview.about.partners` / `partnerLine`, `overview.delivery.ctas`, `overview.contact.sub`, `productsPage.bottomBlock`, `config.js` `video` |
+| Data added | — | `overview.bespoke`, `overview.contact.eyebrow`, `productsPage.askTile`, `site.footer.oracleLabel` / `oracleLinks` |
+| Files | — | `pages/services.js` deleted; `assets/img/bands/bespoke-wide.jpg`, `bespoke-tall.jpg` and `assets/img/groups/ask.svg` added; 243 lines of Services CSS and the About partner strip's CSS deleted |
+| Manifest | contract round 17 | 18 |
+
+### 38.2 Decisions
+
+- **The links audit found the placeholders on the pages, not in the emails.** Every kit email renders its links from `links.json` alone (checked with `mail-preview.js` on the real file: 16 distinct hrefs, all from it, a missing piece left out). On the pages, the placeholders were the three *Watch the demo* frames with no recording and the two inert Marketplace badges, plus one broken link path (the demo badge's fallback). The root rule, *a control that looks like a link renders only when the link it opens exists*, is now a checker block (38.4), which retires `config.video` and ties `marketplace` to its URL. The one known email limitation stays open: product-page links land on the home page while the site is a claude.ai artifact (open since round 12).
+- **The Bespoke copy follows Alex's four elements in his order**, each angled off the Why list above it rather than restating it: *Oracle experts* is who designs, scopes, builds and runs (the Why list's *Platform depth* is who owns the architecture); *Governed pod-based delivery* is the team's shape (the Why list's *Fixed-scope delivery* is a Jumpstart's scope). *Decades* is his word, so the S2 bullet that also said it gave way, keeping the claim in two places (the band and About). The speed is the engineering's, *so releases ship sooner*, because *time to value* already sits three times on the page. *POD* is written *pod*: a team, not an acronym. The slides supplied the terms (pods sized per project, a core team setting standards, AI-driven SDLC); nothing of their org chart, counts or prices ships, and AI-Q and cuOpt are not named here as Oracle's.
+- **The band follows the reference, measured** (softserveinc.com's `.image-banner`, 2026-09-29): full-bleed up to a 1700 px viewport, 466 px tall at 1024, the copy on the photograph's dark left half, a 28 px Replica heading, a 20 px Light line at 80% white. This band keeps the home screens' own head sizes and adds the four points in a row at its foot. The photograph is the reference's own image, SoftServe's (`ASSETS.md` §2c).
+- **One component for both contacts** (Alex: *"equivalent … though logical difference to be preserved"*): `UI.contactSwitch` renders the home screen and every product's Contacts tab, and the checker fails either if it renders a form of its own. The differences are data (`VISUAL-GRAMMAR.md` §8).
+- **The catalog tile keeps Alex's noun and the site's one ask**: *Looking for another solution?* (his *other solution*, set grammatically; *solution* is also his S3 word now), with *Talk to us*, the label his round-10 rule puts on every contact ask. His *Let's talk* is one key away (38.6).
+- **Footer**: the three platforms in the site's canonical order under Oracle's full names, then *Oracle website*, named as the SoftServe row names its site. Each URL is the page Oracle calls canonical, read in the browser on 2026-09-29.
+- **The Services page's route survives as a redirect** (`MOVED`), so a seller's saved link or an old email still lands. A publish must map `pages/services.js` to `null`, or the artifact keeps serving the deleted file.
+- **The catalog tile, "too empty"**: its first cut was a title and two lines on a flat fill, stretched by the grid's equal rows to a product tile's ~650 px. The fix is structural, the product tile's anatomy (38.7), and the rule went into START-HERE §4, VISUAL-GRAMMAR §1.1, AO-Personal-OS `slide-design.md` rule 14, and the checker.
+
+### 38.3 Decided differently from the Fable pass
+
+1. **About stays dark, so the home page carries two dark screens.** Fable recommended lightening About to keep the theme's one-dark-band rule. Declined: Alex asked only to strip About of its logos; the rule is the theme's, not his, and his ask was a darker band to break the monotony; a light About leaves the last three screens white. The two are never adjacent (`SS26-THEME.md` §5). Reversible in one CSS block.
+2. **The tile's title keeps *solution*** (Fable: *Looking for something else?*, because the catalog says *products*). Alex's S3 heading now says *solutions*, and his noun is positioning.
+3. **On a phone the Bespoke band stacks** — copy on black, then the photograph as its own row, then the points — where Fable put the heading and lead over the tall crop. The crop's dark strip is ~90 px at 375, too short for an eyebrow, a two-line H2 and a five-line lead.
+4. **The S2 bullet is *One team, all the way to your own AI factory*** (Fable: *…from the first use case to your AI factory*, which repeated *first use case* from the same panel's body).
+5. **The tile's second line is *A new one, scoped to your own data and systems*** (Fable: *A solution scoped…*, which, with the title keeping *solution*, put the word twice in one tile).
+
+### 38.4 The checker
+
+- **Services is gone:** `services` fails; `pages/services.js` on disk or in either `index.html` fails; `#/services` in `content.js` or a renderer fails; `MOVED` must carry `/services`; every `#/#…` route (nav, CTAs, links, the ask tile, the kit route) must name an id the home page renders. The old Services-page block and the 4–8-weeks-on-Services lines are gone.
+- **No placeholder links:** `config.video` fails by name; `marketplace: true` without an https `marketplaceUrl` fails; `shared.videoPending` fails; `heroMedia()` must return nothing without a video link; the Marketplace badge must go through `hasListing()`; the demo badge must read `links(slug)`.
+- **Home:** the S3 H2 held at 52; `overview.bespoke` (eyebrow *Bespoke services*, *AI factory* in the H2, a lead ≤ 220, four one-sentence points with titles ≤ 4 words and bodies within 15 characters of each other, the two photographs under `assets/img/bands/`, the filled *Talk to us*, no provisional copy, rendered between delivery and the case studies); S4 renders no button and `delivery.ctas` fails; About renders no Oracle or NVIDIA mark; S7's `closing()` and the product `contactsTab()` both render `UI.contactSwitch` and neither renders a form of its own; the S7 heading held to 30.
+- **Catalog:** `bottomBlock` fails; `askTile` needs title, one-sentence body, exactly three outcomes ≤ 60, a drawing that passes the group-drawing rules, a route into the home contact; `askTile()` must render the band, title, outcomes and link; `resultsHtml()` must end on it; no `.ptile-veil` in the renderer or the CSS.
+- **Footer:** `oracleLinks` exactly the four labels and URLs, in order.
+- **Favicon:** `index.html`'s icon must be softserveinc.com's spark, and `brand/favicon.svg` must equal the data URI.
+- **Retired:** the About partner-strip requirement, `forms.demo.secondaryHeading`'s requirement, the S4 1–2 button rule, and the success line's hard-coded count (it now prints the real one).
+
+### 38.5 Checks
+
+- `node --check` on every changed script; the checker prints **OK — 8 products** (the Fleet listing, §39, landed mid-round) with the two known warnings (the About H2's length, the Internal panel).
+- **In the browser**, on `tools/serve.py`: no horizontal overflow at 1440, 1280, 1024, 768, 375 or 320 on eight routes (home, the catalog and a filtered view, a product page, two Contacts tabs one on `#kit`, `#/sellers`, and `#/services` redirecting); a clean console across 21 routes, including every redirect and `#/#kit`; screenshots of the Bespoke band at 1440 and 375, the contact screen at 1440 and 375, About, S2, the catalog's last tile at 1440 and 375, and the footer at 1024, 1440 and 375.
+- **Gates:** the customer-name sweep is empty; `sync-links.js --check` is OK.
+- **Not published.** The next publish carries `pages/services.js: null`, `assets/img/bands/*`, `assets/img/groups/ask.svg` and the usual changed files (`START-HERE.md` §6).
+- **Commits:** git-autosync swept the round into `autosync:` commits between 10:49 and the end of the session.
+
+### 38.6 Open for Alex
+
+1. **Publish** round 18 with the Fleet listing (§39), on your word.
+2. **The tile's link says *Talk to us*** (your one-ask rule); *Let's talk*, your word in the ask, is a one-key change (`productsPage.askTile.cta.label`).
+3. **Two dark screens** (S4b and About). If you prefer the theme's one, About goes light in one CSS block (38.3).
+4. **The Bespoke photograph is softserveinc.com's own banner.** Swap both crops if the band should not repeat the corporate site.
+5. **The Bespoke copy makes claims new to the site** (from the internal slides): pods sized to each project and re-sized, senior leads setting standards across them, AI assistants across the lifecycle, a standing team. Confirm they are sayable externally.
+6. **The Oracle Marketplace filter now reads 0**, disabled, on every visit, because no listing exists. Keep the rail's shape, or hide the box until a listing lands.
+7. **What left with the Services page**: the 81% accuracy stat, the *Ends with* result per stage, the *Not a project. A proof.* band and the four full-name platform cards. Anything to bring back to the home page?
+8. **The packaging plugin** (Oracle-Packaging-Skills, `oracle-packs-web:listing`): its switch card and exemplar still write `video` and `marketplace: true` with no URL, both of which now fail the site's checker, and the Fleet session reports its insert tool needs `assets/brand.js` loaded first.
+9. **`marketplaceUrl` is the last link stored outside `links.json`.** Moving it there changes the links contract the plugin shares.
+10. **Words the round leaves standing:** *service(s)* three times on S4 (your *Packaged services*, your heading, the *Managed services* stage), and S3 says *solutions* under an eyebrow and link that say *Products*.
+
+The list is repeated in START-HERE §9.
+
+### 38.7 The rule behind "looks too empty"
+
+A tile in an equal-height grid takes its tallest peer's height. A sparse tile stretched to it reads as empty; shrinking it breaks the row, and padding it with air is what Alex rejected. So a peer that holds less than its row-mates gets their anatomy, each slot filled with its own content: here, a drawing in the photograph's slot, three lines in the outcomes' slot, the link where *Learn more* sits. Recorded in START-HERE §4 (Design), VISUAL-GRAMMAR §1.1, the checker (the tile's anatomy and its three outcomes), and AO-Personal-OS `.claude/references/slide-design.md` rule 14, which until now let peer height win over a half-empty box.
+
+## 39. A new product: Fleet route optimization, 2026-09-29
+
+_Added by the `oracle-packs-web:listing` skill from the pack spec `packs/fleet-route-optimization/pack-spec.md` (Oracle-Packaging-Skills), while two other sessions were reworking the home and product-page layouts. Only this product's data was written; no renderer, stylesheet or layout file was touched. Not published. Written as §38 and renumbered §39 when round 18 took §38, as this note asked._
 
 - **The ask (Alex, 2026-09-29):** list the Sky-derived fleet routing pack as a product, following the site's rules. Mid-build he added: *"not enough focus on business value — revise the messaging and metrics"*. The pack spec and its four print artifacts were recast first, and the page was written from them.
 - **What it is:** each van's day re-planned on NVIDIA cuOpt around booked slots, skills and electric-van charging, and tested first on the operator's own past days. It is kept apart from Workforce optimization (zone allocation) by the use-case map decision of 2026-09-17. Group: *Forecasting & optimization*. Platform chip: *OCI + NVIDIA NeMo*. Contact: Alex.
@@ -6592,8 +6694,8 @@ _Added by the `oracle-packs-web:listing` skill from the pack spec `packs/fleet-r
 - **Checker:**
   - The product count went 7 → 8.
   - `DEMO_SLUGS` gained the slug.
-  - The success message still says *7 products*; it is a literal in the checker, left for the round-18 session.
-- **Plugin gap:** the listing plugin's insert tool evaluates `content.js` without `assets/brand.js`, which round 18 made a dependency (`window.brandAsset`). The insert ran from a patched copy that loads `brand.js` first. The plugin needs the same fix.
+  - The success message printed a literal *7 products*; round 18 made it print the real count.
+- **Plugin gap:** the listing plugin's insert tool evaluates `content.js` without `assets/brand.js`, which `content.js` has needed since the SS26 theme (`window.brandAsset`), not since round 18. The insert ran from a patched copy that loads `brand.js` first. The plugin needs the same fix.
 - **Checks:**
   - `check-grammar` OK, with the two known warnings.
   - The console is clean on every route, with no overflow at 1440 and 375.
