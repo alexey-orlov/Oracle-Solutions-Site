@@ -1292,16 +1292,20 @@ if (!arr(C.products) || C.products.length !== 9) {
         fail(CSS_FILE, 'Round 20 · Contacts styles "' + sel + '" — every rule there is scoped to the contact component, so #/sellers keeps its own form');
       }
     });
-    need(contacts, ".contact-band", /var\(--bg-raised\)[\s\S]*100vw/, "the component wraps itself in a full-bleed #edf0f2 band");
+    /* 2026-09-29 (Alex: "contacts appear on grey background, while other tabs
+       are white - all should be white"): the band is white, and the plate
+       stands on it as the numbers widget does, white on the panel hairline. */
+    never(contacts, ".contact-band", /bg-raised|border-image|background/, "the band carries a ground — it is white, as every other tab is (Alex, 2026-09-29)");
     need(contacts, ".contact-plate", /background:\s*#ffffff/i, "the band holds one white plate");
+    need(contacts, ".contact-plate::before", /var\(--border-panel\)[\s\S]*evenodd/, "the white plate on white carries the panel hairline, a ring on its cut");
     need(contacts, ".contact-plate", /--cut:\s*var\(--cut-12\)/, "the white plate takes the 12px cut");
     /* 2026-09-29 (Alex, "weird blue frame"): the square brand tile behind the
        round portrait is gone; an office photograph is not a cut-out team shot. */
     if (/\.contact-tile\b/.test(contacts)) {
       fail(CSS_FILE, "Round 20 · Contacts styles a .contact-tile — the portrait stands on the plate; a brand tile behind it read as a blue frame (Alex, 2026-09-29)");
     }
-    /* The home screen is one grey band from its first pixel, and the ask fits
-       one screen under the masthead (Alex, 2026-09-29). */
+    /* The band opens the home screen, and the ask fits one screen under the
+       masthead (Alex, 2026-09-29). */
     need(contacts, ".home-contact", /padding-block:\s*0/, "the home contact's section gives up both paddings — the band is the screen's ground");
     need(contacts, ".contact-intro", /flex-direction:\s*column/, "the section's eyebrow and H2 open the plate's left column");
     /* Q1: blue 125, the kit pane's link style (.inline-link), 7:1 on white. */
@@ -1314,8 +1318,8 @@ if (!arr(C.products) || C.products.length !== 9) {
     need(contacts, ".contact-tabs :is(.input, .select, .textarea)", /background:\s*#ffffff/i, "the fields are white");
     need(contacts, ".contact-tabs :is(.input, .select, .textarea)", /border:\s*1px solid var\(--border\)/, "the fields carry a 1px #bdcbd7 border");
     need(contacts, ".contact-tabs .field-label", /text-transform:\s*none/, "a field label is 14px Replica 400 in ink, sentence case");
-    if (!/\n#app:has\(> :last-child \.contact-band\) \+ \.site-footer::before \{ display: none; \}/.test(contacts)) {
-      fail(CSS_FILE, "the footer's #edf0f2 spacer is still drawn after a page that ends on the contact band — two greys back to back read as one grey mass");
+    if (/\.site-footer::before/.test(contacts)) {
+      fail(CSS_FILE, "the footer's spacer is hidden after the contact band — the band is white now, so the footer follows it as it follows every other tab");
     }
     if (grouped.indexOf(".contact-plate") === -1) {
       fail(CSS_FILE, "the grouped cut declaration does not list .contact-plate");
