@@ -1989,7 +1989,8 @@ if (/request a demo/i.test(raw)) {
   /* Round 14 (Alex, 2026-09-24): softserveinc.com's footer, cut down. A link
      row — For sellers, the brand's two legal pages, the SoftServe website —
      with the brand's eight social glyphs, then the copyright row with the
-     spark. No partner marks, no hot links, no office, no contact block. */
+     spark. No partner marks, no hot links, no office, no contact block.
+     Round 18 added one row of text links to Oracle's pages (below). */
   (function () {
     var f = ((C.site || {}).footer) || {};
     ["heading", "description", "contactCta", "builtWith", "trademarkLine", "legalLine"].forEach(function (k) {
@@ -2023,6 +2024,27 @@ if (/request a demo/i.test(raw)) {
     if (f.copyright !== "© Copyright {year} SoftServe Inc.") {
       fail("site.footer.copyright", 'must read "© Copyright {year} SoftServe Inc." — the brand\'s line, the year filled at render');
     }
+    /* Round 18 (Alex): "In the footer, add links to Oracle products: Oracle
+       Cloud Infrastructure, Oracle AI Data Platform, Oracle AI Lakehouse +
+       plus Oracle main page". A second text row: the three platforms the
+       practice builds on in the site's canonical order, under their full
+       Oracle names, then Oracle's home page. Each URL is the one Oracle's own
+       page calls canonical (checked 2026-09-29). Words, never marks. */
+    var ORACLE = [
+      { label: FACET_FULL["oracle-ai-lakehouse"], url: "https://www.oracle.com/autonomous-database/autonomous-ai-lakehouse/" },
+      { label: FACET_FULL["oracle-ai-data-platform"], url: "https://www.oracle.com/ai-data-platform/" },
+      { label: "Oracle Cloud Infrastructure", url: "https://www.oracle.com/cloud/" },
+      { label: "Oracle website", url: "https://www.oracle.com/" }
+    ];
+    if (!str(f.oracleLabel)) fail("site.footer.oracleLabel", "missing — the Oracle row's accessible name");
+    if (!arr(f.oracleLinks) || f.oracleLinks.length !== ORACLE.length) {
+      fail("site.footer.oracleLinks", "must hold exactly " + ORACLE.length + ": " + ORACLE.map(function (x) { return x.label; }).join(" · "));
+    } else ORACLE.forEach(function (want, i) {
+      var got = f.oracleLinks[i] || {};
+      if (got.label !== want.label || got.url !== want.url) {
+        fail("site.footer.oracleLinks[" + i + "]", 'expected "' + want.label + '" → ' + want.url);
+      }
+    });
     var src = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
     var glyphs = src.match(/var SOCIAL_GLYPHS = \{([\s\S]*?)\n  \};/);
     if (!glyphs) {
