@@ -1452,12 +1452,6 @@ if (!arr(C.products) || C.products.length !== 7) {
         reqStr("overview.delivery.why.pillars[" + i + "]", p, ["icon", "title", "body"]);
       });
     }
-    if (!arr(d.ctas) || d.ctas.length < 1 || d.ctas.length > 2) {
-      fail("overview.delivery.ctas", "must hold 1 or 2 — the screen ends on one action, got " +
-        (arr(d.ctas) ? d.ctas.length : "none"));
-    } else d.ctas.forEach(function (c, i) {
-      reqCta("overview.delivery.ctas[" + i + "]", c);
-    });
   }
 
   /* --- S5 · the case-study rail (the cards themselves are checked in C2) --- */
@@ -1655,15 +1649,29 @@ if (!arr(C.products) || C.products.length !== 7) {
   });
 
   /* Round 16 (Alex): "Why SoftServe on Oracle" sits below the timeline, not
-     beside it, and the screen ends on its one button. */
+     beside it. Round 18: the list closes the screen — the button that followed
+     it led to the Services page, and the services' one ask is now the Bespoke
+     band's, directly below. */
   var overviewSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
   var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function bespoke("));
   var deliveryHtml = deliverySrc.slice(deliverySrc.lastIndexOf("return '<section"));
   var atTrack = deliveryHtml.indexOf('class="ladder3');
   var atWhy = deliveryHtml.indexOf('class="deliver-why"');
-  var atCta = deliveryHtml.indexOf('class="cta-row deliver-cta"');
-  if (!(atTrack > -1 && atWhy > atTrack && atCta > atWhy)) {
-    fail("site/pages/overview.js", "delivery() must render the track, then the Why SoftServe list, then the button — the list sits below the timeline");
+  if (!(atTrack > -1 && atWhy > atTrack)) {
+    fail("site/pages/overview.js", "delivery() must render the track, then the Why SoftServe list — the list sits below the timeline");
+  }
+  if (/deliver-cta|UI\.button\(/.test(deliveryHtml)) {
+    fail("site/pages/overview.js", "delivery() renders a button — the screen ends on the Why list; the services' ask is the Bespoke band's (round 18)");
+  }
+  if ((o.delivery || {}).ctas !== undefined) {
+    fail("overview.delivery.ctas", "retired in round 18 — its button led to the Services page; the services' ask closes the Bespoke band");
+  }
+  var bespokeSrc = overviewSrc.slice(overviewSrc.indexOf("function bespoke("), overviewSrc.indexOf("function caseStudies("));
+  if (str(((o.bespoke || {}).cta || {}).label) && !/kind: "primary"/.test(bespokeSrc)) {
+    fail("site/pages/overview.js bespoke()", "the band's ask is a filled button — the one between the hero and the contact (round 18)");
+  }
+  if (str(((o.bespoke || {}).cta || {}).label) && o.bespoke.cta.label !== (C.site.primaryCta || {}).label) {
+    fail("overview.bespoke.cta.label", "must read site.primaryCta.label — one contact ask site-wide (round 10)");
   }
 
   /* --- every icon the two new screens name is in the registry --- */

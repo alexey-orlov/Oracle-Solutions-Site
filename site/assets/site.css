@@ -3466,13 +3466,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .ladder3-dot { top: .3125rem; left: -.1875rem; margin-top: 0; }
 }
 
-/* Round 16: the stacked S4. The track takes the full width, five across; the
-   reasons follow it as a list, and the button closes the screen. */
+/* Round 16: the stacked S4. The track takes the full width, five across, and
+   the reasons follow it as a list, which closes the screen since round 18 (its
+   button led to the Services page; the services' ask is the Bespoke band's). */
 .deliver.deliver--stacked { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
-.deliver--stacked .deliver-cta { align-self: flex-start; }
 .deliver--stacked .deliver-note { margin-top: 1.5rem; }
 .deliver--stacked .deliver-why { margin-top: 4rem; gap: 1.5rem; }
-.deliver--stacked .deliver-cta { margin-top: 3rem; }
 
 .ladder3--five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 
@@ -3594,7 +3593,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .home-bespoke .bespoke-eyebrow { color: rgba(255, 255, 255, .72); }
 .home-bespoke .bespoke-title { color: #ffffff; text-wrap: balance; }
 .home-bespoke .bespoke-lead { margin-top: .25rem; color: rgba(255, 255, 255, .82); text-wrap: pretty; }
-.bespoke-cta { margin-top: .5rem; }
+.bespoke-cta { margin-top: 1rem; }
 .home-bespoke .link-arrow { color: #ffffff; }
 .home-bespoke .link-arrow:hover { color: var(--surface-select); }
 .home-bespoke :focus-visible { outline-color: #ffffff; }
