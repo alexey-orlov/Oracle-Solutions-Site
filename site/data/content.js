@@ -2763,7 +2763,341 @@ window.SITE_CONTENT = {
         ],
         cta: { label: "Start a Jumpstart conversation", route: "#/products/business-metrics-qa/contacts" }
       }
-    }
+    },
+
+    {
+      slug: "fleet-route-optimization",
+      name: "Fleet route optimization",
+      contactPerson: "oleksii-orlov",
+      headline: { accent: "Fleet route", rest: "optimization" },
+      category: "forecasting-optimization",
+      categoryChip: "Forecasting & optimization",
+      facet: "oci-nvidia",
+      oneLiner: "Lowers the cost of every field visit: each van’s day re-planned on NVIDIA cuOpt around booked slots, skills and electric-van charging, and tested first on your own past days.",
+      heroCaption: "What if the same fleet did more work for less?",
+      tags: ["Forecasting & optimization", "OCI + NVIDIA NeMo"],
+      hero: {
+        image: {
+          file: "assets/img/heroes/fleet-route-optimization.jpg",
+          alt: "A perforated metal lattice rolling away in long waves, rows of open cells running off toward the horizon",
+          focal: "50% 50%"
+        }
+      },
+      tile: {
+        outcomes: [
+          "A lower cost per visit: fewer miles, less paid time at chargers, fewer second visits",
+          "More booked work from the same fleet, without new hires or vans",
+          "The saving measured on your own past days before a live route changes"
+        ]
+      },
+      overview: {
+        problemSolution: {
+          problem: {
+            title: "The problem",
+            text: "Field-service planners route hundreds of vans a day around booked slots, engineer skills and traffic, and now around charging for the electric ones. The operator pays for every extra mile, every hour an engineer waits at a charger and every second visit after a missed slot.",
+            icon: "alert"
+          },
+          solution: {
+            title: "The solution: see the saving before you change a route",
+            text: "NVIDIA cuOpt re-plans every van’s day in one GPU solve: the right jobs, in the right order, with the charging stop where it costs no visit. It is tested first on your own past days, so operations and finance see the cost per visit before anything reaches the field.",
+            icon: "spark"
+          }
+        },
+        metrics: [
+          { value: null, label: "Cost per completed visit", qualifier: "Driving, paid charging time and overtime, priced at your own unit costs", icon: "roi" },
+          { value: null, label: "Visits per engineer per day", qualifier: "More booked work from the same fleet, without new hires", icon: "gauge" },
+          { value: null, label: "Missed appointments", qualifier: "Each one a second visit, and often a compensation payment", icon: "calendar" }
+        ],
+        metricsNote: "Each measure is computed the same way for the day as it ran and for the re-planned day, on your own past days. Your finance team prices the driving, charging and overtime at your own unit costs.",
+        roi: {
+          icon: "roi",
+          text: "The saving lands in the field: fewer miles, less paid time at chargers and fewer second visits. Each visit costs less, and the same fleet takes on more booked work."
+        },
+        features: [
+          "Real past days replayed from Field Service, telematics and charging records",
+          "Replay checked against actual visits, journey times and outcomes",
+          "Booked slots, engineer skills and job priorities in one GPU solve",
+          "Electric and combustion vans planned together",
+          "Charging stops placed where they cost no visit, every route battery-checked",
+          "Visits that cannot be served returned with the reason",
+          "The day as it ran beside the re-plan, down to each engineer’s route",
+          "Approved routes and charging stops sent to Oracle Fusion Field Service *"
+        ],
+        featuresNote: "* Write-back to Oracle Fusion Field Service comes with the Integration package; the Jumpstart works on files.",
+        featuresDetail: [
+          { title: "Replay of real past days", body: "Bookings, engineers, skills and slots from Oracle Fusion Field Service, aligned with telematics, GPS traces and charging history, rebuilt engineer by engineer and checked against what really happened." },
+          { title: "One GPU solve for the whole region", body: "Booked slots, skills including multi-skill jobs, job priorities weighed against travel, and electric and combustion vans in one NVIDIA cuOpt run." },
+          { title: "Charging planned in", body: "Battery level and the range the remaining work needs, charging stops placed by location, connector, speed and listed availability, home-charging policy with its exceptions, and every electric route checked leg by leg against a battery reserve." },
+          { title: "Unserved visits with a reason", body: "A visit no engineer can serve comes back unassigned with the reason, and is checked for real infeasibility rather than cost." },
+          { title: "The saving, side by side", body: "The day as it ran against the re-plan: cost per visit, visits per engineer and missed appointments, down to each engineer’s route and visit." },
+          { title: "Dispatcher approval", body: "A dispatcher reviews and approves every change; the approved routes and charging stops go to Oracle Fusion Field Service in its own import format." }
+        ],
+        industriesNote: "Any van fleet that visits customers against booked slots, above all one going electric.",
+        steps: [
+          {
+            n: 1,
+            title: "Replay the real day",
+            text: "Past days come in from Oracle Fusion Field Service, telematics and charging records, rebuilt engineer by engineer and checked against what really happened.",
+            image: "assets/img/steps/fleet-route-optimization-1.jpg",
+            features: [
+              "Real past days replayed from Field Service, telematics and charging records",
+              "Replay checked against actual visits, journey times and outcomes"
+            ]
+          },
+          {
+            n: 2,
+            title: "Plan every route",
+            text: "NVIDIA cuOpt re-plans every van in one GPU solve, around booked slots, skills, priorities and charging, and checks every electric route against the battery.",
+            image: "assets/img/steps/fleet-route-optimization-2.jpg",
+            features: [
+              "Booked slots, engineer skills and job priorities in one GPU solve",
+              "Electric and combustion vans planned together",
+              "Charging stops placed where they cost no visit, every route battery-checked",
+              "Visits that cannot be served returned with the reason"
+            ]
+          },
+          {
+            n: 3,
+            title: "See what it saves",
+            text: "Operations see the day as it ran beside the re-plan: cost per visit, visits per engineer and missed appointments, down to each engineer’s route.",
+            image: "assets/img/steps/fleet-route-optimization-3.jpg",
+            features: ["The day as it ran beside the re-plan, down to each engineer’s route"]
+          },
+          {
+            n: 4,
+            title: "Send it to dispatch",
+            text: "A dispatcher approves the changes, and the approved routes and charging stops go to Oracle Fusion Field Service in its own import format.",
+            image: "assets/img/steps/fleet-route-optimization-4.jpg",
+            features: ["Approved routes and charging stops sent to Oracle Fusion Field Service *"]
+          }
+        ],
+        industryCases: [
+          {
+            industry: "telecom",
+            label: "Telecom & cable",
+            image: "assets/img/industries/telecom.jpg",
+            problem: "Engineers installing and repairing broadband and TV lose hours between booked slots. A late arrival means a customer who took the day off, and often a second visit.",
+            solution: "Each engineer’s day is ordered around booked slots and the skills each job needs, with charging fitted where it costs no visit: fewer miles and fewer second visits per engineer."
+          },
+          {
+            industry: "utilities",
+            label: "Utilities",
+            image: "assets/img/industries/utilities.jpg",
+            problem: "Meter fitters and repair crews work to booked or regulated windows, and gas or electrical work can only go to an engineer holding the right certificate.",
+            solution: "Jobs go to certified engineers inside their windows, and depot and home charging for electric vans is planned in, so crews spend the day on jobs rather than on the road."
+          },
+          {
+            industry: "construction",
+            label: "Facilities maintenance",
+            image: "assets/img/industries/construction.jpg",
+            problem: "Technicians covering lifts, heating and fire systems across many sites juggle contract response times with planned maintenance.",
+            solution: "Call-outs and planned visits are routed together, weighted by each contract’s response time, so urgent work lands first without breaking the day’s plan."
+          },
+          {
+            industry: "logistics",
+            label: "Last-mile delivery",
+            image: "assets/img/industries/logistics.jpg",
+            problem: "Drivers run electric vans against promised delivery windows, and a route that misjudges range ends at a charger instead of a doorstep.",
+            solution: "Routes carry the delivery windows and a battery check on every leg, so each van finishes its drops with the reserve intact."
+          }
+        ],
+        scope: {
+          in: [
+            "A few real past days of one region, replayed and checked against what happened",
+            "Route planning with booked slots, skills and job priorities",
+            "One charging stop per shift, with the battery check on every electric route",
+            "Cost per visit, visits per engineer and missed appointments, for the day as it ran and the re-plan",
+            "Sandboxed deployment on your own tenancy"
+          ],
+          out: [
+            "Write-back to Oracle Fusion Field Service — delivered after the Jumpstart",
+            "Re-planning during the day as jobs overrun — delivered at Scaling",
+            "Queueing at shared chargers — on the roadmap"
+          ]
+        },
+        moreDetail: [
+          { title: "Today", body: "Planners build the day from the scheduling system’s rules and patch the rest by hand. Charging an electric van is left to the engineer, and nobody can say what a better plan would have saved." },
+          { title: "Tomorrow", body: "Each day is planned on GPU with slots, skills, priorities and charging stops in one solve, and every electric route is checked against the battery. Operations see what it is worth before any live schedule changes." },
+          { title: "Paid time on the road", body: "Fuel, wear and an engineer who is not on a job." },
+          { title: "Second visits", body: "A missed slot costs a repeat visit and often a compensation payment." },
+          { title: "Paid time at chargers", body: "A badly timed charge takes an engineer off the job." },
+          { title: "How the measures are defined", body: "Cost per completed visit: driving, in-day charging and overtime, priced at your own unit costs, over completed visits. Visits per engineer: completed visits per engineer per working day. Missed appointments: missed or late booked appointments per day. Each is computed identically for the day as it ran and the re-planned day." },
+          { title: "Delivered after the Jumpstart", body: "Live read from Oracle Fusion Field Service, dispatcher review and write-back of approved routes and charging stops, live traffic and charger data, several charging stops per shift, and sign-in, roles and audit for production use." },
+          { title: "On the roadmap", body: "Queueing and contention at shared chargers · van load capacity · the saving worked out in money and carbon inside the product." }
+        ],
+        caseStudy: {
+          descriptor: "A large home-services operator",
+          area: "Home-service engineers on a fleet going electric",
+          industry: "telecom",
+          status: "in-preparation",
+          metrics: [
+            { value: "Own past days", label: "replayed and re-planned before any live schedule changes" },
+            { value: "Cost per visit", label: "priced by the operator’s own finance team, with visits per engineer and missed appointments" }
+          ],
+          story: "A first engagement is starting on the operator’s own history: Oracle Fusion Field Service bookings, telematics and charging records, with NVIDIA cuOpt on Oracle Cloud Infrastructure. Real days are replayed, checked against what happened and re-planned around slots, skills and charging, then the day as it ran and the re-plan are compared on the operator’s own business measures.",
+          scope: [
+            { label: "Stage", value: "Proof of value starting" },
+            { label: "Data footprint", value: "Field Service bookings, telematics, charging records" },
+            { label: "Human gate", value: "A dispatcher approves every change" }
+          ],
+          ndaLine: "Customer under NDA · results follow at the end of the proof of value",
+          downloadLabel: "Download the case summary"
+        }
+      },
+      technology: {
+        narrative: "Oracle Fusion Field Service is the source and, after the Jumpstart, the destination. NVIDIA cuOpt re-plans the routes on an OCI GPU instance, and nothing reaches the field until a dispatcher approves it.",
+        stack: [
+          {
+            key: "application",
+            label: "Application / accelerator",
+            summary: "The SoftServe pack: replay and calibration, charging stops and the battery check, and the side-by-side review.",
+            vendors: ["softserve"],
+            items: [
+              { name: "Replay and calibration of past days", required: true },
+              { name: "Charging stops and the leg-by-leg battery check", required: true },
+              { name: "Side-by-side review with dispatcher approval", required: true },
+              { name: "Write-back to Oracle Fusion Field Service", required: false, note: "After the Jumpstart" }
+            ]
+          },
+          {
+            key: "ai-engine",
+            label: "AI engine",
+            summary: "NVIDIA cuOpt solves every van’s route on GPUs, charging stops included.",
+            vendors: ["nvidia"],
+            items: [
+              { name: "NVIDIA cuOpt, the GPU-accelerated route solver", required: true }
+            ]
+          },
+          {
+            key: "data-platform",
+            label: "Data & platform",
+            summary: "Oracle Fusion Field Service holds the work; storage and the database hold the replayed days and results.",
+            vendors: ["oracle"],
+            items: [
+              { name: "Oracle Fusion Field Service, as source and destination", required: true },
+              { name: "OCI Object Storage and Oracle AI Database for the replayed days and results", required: true }
+            ]
+          },
+          {
+            key: "infrastructure",
+            label: "Infrastructure",
+            summary: "A GPU instance in your own tenancy, with Kubernetes, networking and IAM.",
+            vendors: ["oracle"],
+            items: [
+              { name: "An OCI GPU instance (one NVIDIA A10 at the Jumpstart)", required: true },
+              { name: "Kubernetes, API gateway, networking and IAM", required: true }
+            ]
+          },
+          {
+            key: "custom",
+            label: "Configuration & integrations",
+            summary: "Your rules and the data that comes in and goes back.",
+            vendors: ["softserve"],
+            items: [
+              { name: "From Oracle Fusion Field Service: bookings, engineers, skills and slots", required: true, direction: "inbound" },
+              { name: "Telematics and charging history", required: true, direction: "inbound" },
+              { name: "Traffic and charger data", required: true, direction: "inbound" },
+              { name: "To Oracle Fusion Field Service: approved routes and charging stops", required: false, direction: "outbound", note: "After the Jumpstart" },
+              { name: "Objective weights, skills rules and charging policy", required: true }
+            ]
+          }
+        ],
+      capabilities: [
+        {
+          stage: "Replay the real day",
+          items: [
+            { name: "Field Service history read from exports — jobs, windows, engineers, skills, shifts, start points", state: "partial" },
+            { name: "Telematics, GPS traces and charging history aligned to each engineer-day", state: "partial" },
+            { name: "Live read from Field Service over its API", state: "partial" },
+            { name: "Real operating days rebuilt engineer by engineer", state: "partial" },
+            { name: "Replay calibrated against actual visits, journey times and appointment outcomes", state: "partial" },
+            { name: "Traffic-aware travel times per departure window", state: "partial" }
+          ]
+        },
+        {
+          stage: "Plan every route",
+          items: [
+            { name: "Booked appointment windows kept", state: "partial" },
+            { name: "Jobs matched to engineer skills, including multi-skill jobs", state: "partial" },
+            { name: "Job priorities weighed against travel", state: "partial" },
+            { name: "Electric and combustion vans planned in one run", state: "partial" },
+            { name: "Van load capacity respected", state: "roadmap" },
+            { name: "A region's whole day solved in one GPU run", state: "partial" },
+            { name: "Visits that cannot be served returned with the reason", state: "partial" },
+            { name: "Check that a dropped visit is truly infeasible, not just expensive", state: "partial" },
+            { name: "Battery level and range needed for the remaining work tracked per van", state: "partial" },
+            { name: "Every electric route checked leg by leg against a battery reserve" },
+            { name: "Charging stop placed by location, connector, speed and listed availability", state: "partial" },
+            { name: "Home-charging policy, with exceptions for engineers without a charger", state: "partial" },
+            { name: "A second charging stop in one shift", state: "partial" },
+            { name: "Queueing and contention at shared chargers", state: "roadmap" }
+          ]
+        },
+        {
+          stage: "See what it saves",
+          items: [
+            { name: "Actual, replayed and re-planned days side by side on the agreed metrics", state: "partial" },
+            { name: "Route maps and drill-down to each engineer-day and visit", state: "partial" },
+            { name: "Decision pack — each metric against its pass threshold, go or stop", state: "partial" },
+            { name: "Savings in money and carbon worked out from travel and charging", state: "roadmap" }
+          ]
+        },
+        {
+          stage: "Send it to dispatch",
+          items: [
+            { name: "Dispatcher asks for a re-plan and reviews it in Field Service", state: "partial" },
+            { name: "Approved routes and charging stops written back to Field Service", state: "partial" },
+            { name: "Re-plan during the day as jobs overrun or vans break down", state: "roadmap" },
+            { name: "Every run kept with its inputs and results" },
+            { name: "Sign-in, roles and audit trail for production use", state: "roadmap" }
+          ]
+        }
+      ]
+      },
+      jumpstart: {
+        title: "Jumpstart Proof-of-Value",
+        promise: "See what a GPU-planned day saves on your own past days in 6–8 weeks, and take away cost per visit, visits per engineer and missed appointments measured against your own actuals.",
+        durationShort: "6–8 weeks",
+        pillars: [
+          { key: "fast", title: "Fast", text: "6–8 weeks from kickoff to a before/after readout on real past days of one region." },
+          { key: "low-risk", title: "Low-risk", text: "Past days only, on files, in a sandbox on your own tenancy. No live schedule changes, and a dispatcher approves every change." },
+          { key: "tangible", title: "Tangible", text: "Cost per visit, visits per engineer and missed appointments for the day as it ran and the re-plan, priced at your own unit costs." }
+        ],
+        outcomes: [
+          "Your own past days replayed from Oracle Fusion Field Service and telematics exports, checked against what actually happened.",
+          "The same days re-planned on GPU with your slots, skills, priorities and charging stops.",
+          "The day as it ran beside the re-plan, down to each engineer’s route, with the three business measures.",
+          "A costed plan for the next step: integration scope, regions, timeline."
+        ],
+        timeline: [
+          { label: "Week 0 · Gate", text: "Sponsor named; the three measures, their pass thresholds and your unit costs signed; the exports approved in writing." },
+          { label: "Weeks 1–3 · Replay", text: "The chosen days loaded, rebuilt engineer by engineer and checked against what really happened." },
+          { label: "Weeks 4–6 · Re-plan", text: "Every route re-planned on GPU with slots, skills, priorities and charging; operations review the changes." },
+          { label: "Weeks 7–8 · Decision", text: "The measures for the day as it ran and the re-plan, priced by your finance team, and a costed proposal for the next step." }
+        ],
+        needs: [
+          "Oracle Fusion Field Service exports for the chosen days — bookings, engineers, skills, shifts, start locations",
+          "Telematics and charging history for the same days, and which van each engineer drove",
+          "An operations owner who signs the measures and a finance contact who supplies the unit costs"
+        ],
+        investment: {
+          price: "Scoped per engagement",
+          duration: "6–8 weeks",
+          includes: [
+            "Replay and calibration of real past days in one region",
+            "Route planning with slots, skills, priorities and one charging stop per shift",
+            "The side-by-side review with dispatcher approval",
+            "Sandboxed deployment on your own tenancy"
+          ],
+          footnote: "The proof-of-value environment runs at about €3.4K a month of OCI, indicative, at list price; figures are confirmed in scoping."
+        },
+        next: [
+          { tier: "Integration", text: "Wired into dispatch: live read from Oracle Fusion Field Service, dispatcher review and write-back of approved routes and charging stops, live traffic and charger data, several charging stops per shift, sign-in, roles and audit.", duration: "3–5 months", price: "Scoped per engagement" },
+          { tier: "Scaling", text: "Every region, every day: re-planning as jobs overrun or vans break down, queueing at shared chargers, and the saving worked out in money.", duration: "3–12 months", price: "Scoped per engagement" }
+        ],
+        cta: { label: "Start a Jumpstart conversation", route: "#/products/fleet-route-optimization/contacts" }
+      }
+}
 
   ],
 

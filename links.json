@@ -65,6 +65,14 @@
       "interactiveDemo": "",
       "interactiveDemoArtifact": "",
       "video": ""
+    },
+    "fleet-route-optimization": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "demo/fleet-route-optimization/index.html",
+      "interactiveDemoArtifact": "",
+      "video": ""
     }
   }
 }

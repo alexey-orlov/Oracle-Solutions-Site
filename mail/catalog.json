@@ -42,6 +42,12 @@
       "name": "Business metrics Q&A",
       "oneLiner": "Answers plain-language questions about business metrics from one governed gold layer over the catalogs and databases you already run — consistent definitions, no data moved.",
       "group": "Enterprise knowledge & analytics"
+    },
+    {
+      "slug": "fleet-route-optimization",
+      "name": "Fleet route optimization",
+      "oneLiner": "Lowers the cost of every field visit: each van’s day re-planned on NVIDIA cuOpt around booked slots, skills and electric-van charging, and tested first on your own past days.",
+      "group": "Forecasting & optimization"
     }
   ],
   "roles": [

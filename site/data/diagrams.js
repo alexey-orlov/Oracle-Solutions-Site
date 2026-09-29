@@ -64,6 +64,23 @@ window.SITE_DIAGRAMS = {
     note: "Human in the loop by design — unattended extraction is out of scope"
   },
 
+  "fleet-route-optimization": {
+    layout: "flow",
+    sources: [
+      { title: ["Oracle Fusion", "Field Service"], sub: ["The scheduling system", "the jobs come from"] },
+      { title: ["Fleet telematics"], sub: ["trips, battery state,", "charging events"] }
+    ],
+    group: {
+      label: ["Oracle Cloud Infrastructure", "GPU instance and Kubernetes"],
+      nodes: [
+        { title: ["Fleet route optimization", "by SoftServe"], sub: ["replay, charging stops,", "battery check, compare"] },
+        { title: ["NVIDIA cuOpt"], sub: ["GPU route solve,", "charging stops included"] }
+      ]
+    },
+    target: { title: ["Reviewer", "approves"], sub: ["Send it to dispatch", "into Oracle Fusion Field Service"], accent: true },
+    note: "In the proof of value nothing is written back; write-back is the Integration tier, and the dispatcher approves every change before it lands"
+  },
+
   "workforce-optimization": {
     layout: "flow",
     sources: [

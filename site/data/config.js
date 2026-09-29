@@ -14,7 +14,8 @@ window.SITE_CONFIG = {
     "plan-vs-actual-investigation",
     "case-evidence-collection",
     "cross-system-erp-qa",
-    "business-metrics-qa"
+    "business-metrics-qa",
+    "fleet-route-optimization"
   ],
   /* Links to the walkthrough, the video and the kit documents are not here:
      they live in links.json at the repo root (round 12, docs/CONFIG.md).
@@ -62,6 +63,12 @@ window.SITE_CONFIG = {
       marketplace: false,
       marketplaceUrl: "",
       videoPoster: "",
+      successStoryUrl: ""
+    },
+    "fleet-route-optimization": {
+      marketplace: false,
+      marketplaceUrl: "",
+      videoPoster: "assets/img/posters/fleet-route-optimization.jpg",
       successStoryUrl: ""
     }
   }
