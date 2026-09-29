@@ -477,7 +477,38 @@ window.SITE_CONTENT = {
       }
     },
     offer: {
-      title: "Everything to go live with AI."
+      title: "Everything to go live with AI.",
+      /* The two ways in keep their live words (overview.twoWays) and take
+         new photographs: the oval moved to the hero. */
+      images: {
+        products: {
+          file: "assets/img/heroes/workforce-optimization.jpg",
+          focal: "50% 60%",
+          alt: "An overhead field of interlocking hexagonal plates, with loose ones still settling into the pattern from above"
+        },
+        practice: {
+          file: "assets/img/heroes/services.jpg",
+          focal: "50% 40%",
+          alt: "An engineer seen from behind at a wall of code on dark monitors in a low-lit workspace"
+        }
+      },
+      /* The portfolio diagram beside the two tiles. Its lane contents are
+         read from the site's own lists (facets, overview.delivery.steps,
+         facets.technology); only its labels and captions live here. New
+         micro-copy, for Alex's OK: the three captions and the connector. */
+      diagram: {
+        ariaLabel: "What we offer, in one picture: SoftServe's products and the services that take them live — a packaged track from workshop to managed service, and bespoke delivery pods — all built on Oracle's data and AI platforms",
+        softserveCaption: "Products, and the services that take them live",
+        productsLabel: "Products",
+        link: "Services prove, integrate, scale and run the products",
+        packagedLabel: "Packaged services",
+        stageIcons: ["workshop", "spark", "network", "scale", "managed"],
+        optionalNote: "(optional)",
+        bespokeLabel: "Bespoke services · AI factory",
+        bespokeCaption: "A standing team of delivery pods, sized per project and re-sized as it grows. Builds what the catalog does not hold.",
+        builtOn: "Built on",
+        oracleCaption: "The data and AI platforms everything runs on"
+      }
     }
   },
 
