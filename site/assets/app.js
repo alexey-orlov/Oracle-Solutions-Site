@@ -429,6 +429,110 @@
       "</div>";
   }
 
+  /* ————— the contact switch —————
+     One row, one form on the screen (round 10b): the contact card on the left
+     and, on the right, a two-tab switch on the theme's segmented control, the
+     ask first and the seller's kit behind the second tab. The selected segment
+     is the column's heading, so neither pane repeats it. Round 18 (Alex: the
+     home page's form "equivalent (texts, CTAs, etc., flow)" to a product's):
+     one function renders it on a product's Contacts tab and on the home page's
+     last screen, and only data differs. A product names its lead on the card,
+     preselects itself in the ask and fixes its own kit; the home page names
+     Karsten alone, starts on "Not sure yet" and lets a seller pick any kit.
+     The two ids are fixed: `#talk` lands on the ask, `#kit` on an open kit. */
+  var CONTACT_ANCHORS = { talk: "talk", kit: "kit" };
+
+  function contactSwitch(options) {
+    var opts = options || {};
+    var ask = C.site.primaryCta.label;
+    var kit = C.salesKit;
+    var base = "contact-" + (opts.key || "site");
+    var talkTab = base + "-tab-talk";
+    var kitTab = base + "-tab-kit";
+    var talkPane = base + "-pane-talk";
+    var forms = window.FORMS;
+
+    function segment(id, controls, text, on) {
+      return '<button class="segment" type="button" role="tab" id="' + id + '"' +
+        ' aria-controls="' + controls + '" aria-selected="' + (on ? "true" : "false") + '"' +
+        ' tabindex="' + (on ? "0" : "-1") + '">' + esc(text) + "</button>";
+    }
+
+    var pick = '<div class="segmented contact-segmented" role="tablist" aria-label="' +
+      esc(sectionLabel("contacts")) + '">' +
+        segment(talkTab, talkPane, ask, true) +
+        segment(kitTab, CONTACT_ANCHORS.kit, kit.tab.title, false) +
+      "</div>";
+
+    var talkPanel = '<div class="contact-pane" role="tabpanel" id="' + talkPane + '"' +
+      ' aria-labelledby="' + talkTab + '">' +
+        '<p class="body-text contact-split-sub">' + esc(C.forms.demo.sub) + "</p>" +
+        (forms
+          ? '<div class="contact-talk-form">' + forms.render("demo", {
+              product: opts.product, heading: false, submitLabel: ask
+            }) + "</div>"
+          : "") +
+      "</div>";
+
+    var kitPanel = '<div class="contact-pane" role="tabpanel" id="' + CONTACT_ANCHORS.kit + '"' +
+      ' aria-labelledby="' + kitTab + '" hidden>' +
+        '<p class="eyebrow eyebrow--accent">' + esc(kit.page.eyebrow) + "</p>" +
+        '<p class="body-text">' + esc(opts.kitBody) + "</p>" +
+        (forms && forms.renderKit ? forms.renderKit(opts.kitOptions) : "") +
+      "</div>";
+
+    return contactSplit({
+      formId: CONTACT_ANCHORS.talk,
+      people: opts.people || [],
+      form: '<div class="contact-tabs" data-contact-tabs="' + esc(opts.key || "site") + '">' +
+        pick + talkPanel + kitPanel + "</div>"
+    });
+  }
+
+  /* Mounts both forms whether their pane is open or not, so a switch never
+     lands on an unbound field, then binds the switch. The anchor decides which
+     tab opens, and it decides it here: a page's mount runs before the router
+     scrolls to the anchor, so a kit link from anywhere lands on an open kit
+     pane, and every other entry, `#talk` included, lands on the ask. */
+  function mountContactSwitch(root, options, anchor) {
+    var opts = options || {};
+    var block = root && root.querySelector("[data-contact-tabs]");
+    if (!block) return;
+    var forms = window.FORMS;
+    if (forms) {
+      var talk = block.querySelector(".contact-talk-form");
+      if (talk) forms.mount(talk, "demo", { product: opts.product });
+      if (forms.mountKit) forms.mountKit(block.querySelector("#" + CONTACT_ANCHORS.kit), opts.kitOptions);
+    }
+
+    var tabs = Array.prototype.slice.call(block.querySelectorAll(".segment"));
+    if (!tabs.length) return;
+    function select(index) {
+      tabs.forEach(function (tab, i) {
+        var on = i === index;
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.setAttribute("tabindex", on ? "0" : "-1");
+        var pane = document.getElementById(tab.getAttribute("aria-controls"));
+        if (pane) pane.hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener("click", function () { select(index); });
+      tab.addEventListener("keydown", function (event) {
+        var next = null;
+        if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+        else if (event.key === "ArrowLeft") next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = tabs.length - 1;
+        if (next === null) return;
+        event.preventDefault();
+        select(next);
+        tabs[next].focus();
+      });
+    });
+    select(anchor === CONTACT_ANCHORS.kit ? 1 : 0);
+  }
+
   function heroBackdrop(image, options) {
     var opts = options || {};
     if (!image || !image.file) return "";
@@ -694,6 +798,10 @@
     industryLabel: industryLabel,
     contactCard: contactCard,
     contactSplit: contactSplit,
+    contactSwitch: contactSwitch,
+    mountContactSwitch: mountContactSwitch,
+    contactAnchors: CONTACT_ANCHORS,
+    hasListing: hasListing,
     sectionLabel: sectionLabel,
     heroBackdrop: heroBackdrop,
     modal: { open: openModal, close: closeModal }
