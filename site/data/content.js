@@ -2183,11 +2183,11 @@ window.SITE_CONTENT = {
       headline: { accent: "CROSS-SYSTEM", rest: "ERP Q&A" },
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
-      facet: "oracle-ai-lakehouse",
+      facet: ["oracle-ai-lakehouse", "oracle-ai-data-platform"],
       oneLiner: "Managers get answers across the ERP and CRM on their own, while the decision is still open, instead of weeks later in a report.",
       heroLine: "Which late orders hurt our best accounts?",
       badges: ["ERP + CRM + THE SYSTEMS AROUND THEM", "PREBUILT PIPELINES", "ANSWERS IN MINUTES"],
-      tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
+      tags: ["Enterprise knowledge & analytics", "AI Lakehouse", "AI Data Platform"],
       hero: {
         image: {
           file: "assets/img/heroes/cross-system-erp-qa.jpg",
@@ -2333,7 +2333,7 @@ window.SITE_CONTENT = {
         caseStudy: null
       },
       technology: {
-        narrative: "Oracle Autonomous AI Lakehouse is the governed layer. Data from Oracle applications arrives through pipelines that ship with the products, one or two other sources are linked alongside, and Select AI answers in plain language over that model.",
+        narrative: "Oracle Autonomous AI Lakehouse is the governed layer. Data from Oracle applications arrives through pipelines that ship with the products, one or two other sources are linked alongside, and Select AI answers in plain language over that model. Where Oracle AI Data Platform is in place, its catalog registers that model without a copy, and the platform’s agents read the same certified views.",
         stack: [
           {
             key: "application",
@@ -2350,7 +2350,7 @@ window.SITE_CONTENT = {
           {
             key: "data-platform",
             label: "Data & platform",
-            summary: "Oracle Autonomous AI Lakehouse is the governed layer, with Select AI answering over it.",
+            summary: "Oracle Autonomous AI Lakehouse is the governed layer, with Select AI answering over it, on its own or inside Oracle AI Data Platform.",
             vendors: ["oracle"],
             items: [
               { name: "Oracle Autonomous AI Database 26ai as the governed layer", required: true },
@@ -2358,7 +2358,8 @@ window.SITE_CONTENT = {
               { name: "Data Studio for ELT", required: true },
               { name: "Database links for federation", required: true },
               { name: "Apache Iceberg", required: false },
-              { name: "Vector search", required: false }
+              { name: "Vector search", required: false },
+              { name: "Oracle AI Data Platform — the governed layer registered in its catalog, so its agents reuse the certified views", required: false }
             ]
           },
           {
@@ -2479,11 +2480,11 @@ window.SITE_CONTENT = {
       headline: { accent: "BUSINESS", rest: "METRICS Q&A" },
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
-      facet: "oracle-ai-lakehouse",
+      facet: ["oracle-ai-lakehouse", "oracle-ai-data-platform"],
       oneLiner: "Every team asks in plain words and gets the same number for the same metric, wherever the data sits.",
       heroLine: "Answers in seconds, not a week of extracts.",
       badges: ["MULTI-CLOUD", "ON-PREM TOO", "NO MIGRATION"],
-      tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
+      tags: ["Enterprise knowledge & analytics", "AI Lakehouse", "AI Data Platform"],
       hero: {
         image: {
           file: "assets/img/heroes/business-metrics-qa.jpg",
@@ -2629,7 +2630,7 @@ window.SITE_CONTENT = {
         caseStudy: null
       },
       technology: {
-        narrative: "Bronze and silver stay where they are. Oracle Autonomous AI Lakehouse becomes the governed gold layer — existing catalogs mounted, other databases linked — and Select AI answers across all of them with no data movement.",
+        narrative: "Bronze and silver stay where they are. Oracle Autonomous AI Lakehouse becomes the governed gold layer — existing catalogs mounted, other databases linked — and Select AI answers across all of them with no data movement. Where Oracle AI Data Platform is in place, its catalog registers that gold layer without a copy, and the platform’s agents read the same definitions.",
         stack: [
           {
             key: "application",
@@ -2645,7 +2646,7 @@ window.SITE_CONTENT = {
           {
             key: "data-platform",
             label: "Data & platform",
-            summary: "Oracle Autonomous AI Lakehouse becomes the governed gold layer; bronze and silver stay where they are.",
+            summary: "Oracle Autonomous AI Lakehouse becomes the governed gold layer, on its own or inside Oracle AI Data Platform; bronze and silver stay where they are.",
             vendors: ["oracle"],
             items: [
               { name: "Oracle Autonomous AI Database 26ai as the governed gold layer", required: true },
@@ -2654,7 +2655,8 @@ window.SITE_CONTENT = {
               { name: "Database links", required: true },
               { name: "Vector search", required: false },
               { name: "Data Studio", required: false },
-              { name: "Exadata", required: false }
+              { name: "Exadata", required: false },
+              { name: "Oracle AI Data Platform — the gold layer registered in its catalog, so its agents reuse the same definitions", required: false }
             ]
           },
           {

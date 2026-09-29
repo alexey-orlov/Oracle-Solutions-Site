@@ -3300,22 +3300,32 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .gtile:hover .gtile-art, .gtile:focus-visible .gtile-art { transform: scale(1.04); }
 }
 
-/* The name sits under the drawing, so the names line up across a row; the
-   arrow is pinned to the foot, so six tiles of different line counts still
-   end level. */
+/* The name sits under the drawing on two lines in every tile (overview.js
+   breaks it before its last word), so the names, the lines under them and the
+   arrows start level across a row; the arrow is pinned to the foot, so the
+   one-liners' own lengths never move it. The body is the name's container,
+   so the name can size itself to the tile. */
 .gtile-body {
   display: flex;
   flex: 1;
   flex-direction: column;
   padding: 1rem 2rem 2rem;
+  container-type: inline-size;
 }
 
 /* Replica 400 at 28 px: the reference's card-title face, a step under its
-   32 because this tile also carries the one-liner. */
+   32 because this tile also carries the one-liner. Round 18: the size never
+   outgrows the tile. The longest first line, "Enterprise knowledge &", is
+   10.43 em of glyphs and 11 px of letter-spacing, so (the measure - 12 px)
+   / 10.6 is the largest size that holds it on one line; the clamp keeps the
+   design's size wherever the tile is wide enough, which is from 1366 up and
+   in every two-across and one-column tile but a 320 px phone's. */
 .gtile-name {
+  --name-fit: calc((100cqi - 12px) / 10.6);
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 1.75rem;
+  font-size: clamp(1.25rem, var(--name-fit), 1.75rem);
   line-height: 1.1;
   color: var(--tile-ink);
 }
@@ -3350,12 +3360,14 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 /* Three across down to 1100, then two, then one: six tiles stay a rectangle at
-   every width — 3 × 2, 2 × 3, then a single column on a phone. Below 1280 a
-   third of the row leaves too little measure for a 28 px name in two lines,
-   so the name steps to 24 px; at 1024 three across left 261 px tiles, three-
-   line names and seven-line one-liners, so two across takes over at 1100. */
+   every width — 3 × 2, 2 × 3, then a single column. Below 1280 a third of the
+   row leaves too little measure for a 28 px name, so the name's ceiling steps
+   to 24 px; at 1024 three across left 261 px tiles, three-line names and
+   seven-line one-liners, so two across takes over at 1100. Two across stops at
+   720, the site's phone step (round 18): narrower, a half row holds
+   "Enterprise knowledge &" on one line only at 20 px at 640 and 16 px at 561. */
 @media (max-width: 1279px) {
-  .gtile-name { font-size: 1.5rem; }
+  .gtile-name { font-size: 1.5rem; font-size: clamp(1.25rem, var(--name-fit), 1.5rem); }
   .gtile-body { padding: 1rem 1.5rem 1.5rem; }
 }
 
@@ -3363,7 +3375,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .gtiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 720px) {
   .gtiles { grid-template-columns: minmax(0, 1fr); }
 }
 
