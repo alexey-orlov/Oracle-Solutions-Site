@@ -733,9 +733,6 @@ window.SITE_CONTENT = {
             text: "Announcements, filings and market news are picked up on a schedule or submitted by hand, and matched against your customer list.",
             shot: {
               full: "assets/img/steps/account-insights-1.jpg",
-              zoom: "assets/img/steps/account-insights-1-zoom.jpg",
-              region: [20.3, 39.6, 29.7, 29.6],
-              anchor: "br",
               alt: "The morning check: stories read, noise dropped, repeats merged, accounts matched."
             },
             features: ["Signal ingestion grounded in CRM context, service catalog and public filings"]
@@ -746,9 +743,6 @@ window.SITE_CONTENT = {
             text: "One story becomes one signal, and each account it reaches gets its own read: the company named, its suppliers, its competitors, its customers.",
             shot: {
               full: "assets/img/steps/account-insights-2.jpg",
-              zoom: "assets/img/steps/account-insights-2-zoom.jpg",
-              region: [21.2, 7.7, 34.1, 36.3],
-              anchor: "br",
               alt: "One story reaching four accounts: named, supplier, customer and competitor."
             },
             features: [
@@ -762,9 +756,6 @@ window.SITE_CONTENT = {
             text: "For each one: what the change means, the service you could sell, how big and how certain, with the source article or filing linked.",
             shot: {
               full: "assets/img/steps/account-insights-3.jpg",
-              zoom: "assets/img/steps/account-insights-3-zoom.jpg",
-              region: [67.0, 29.0, 31.1, 28.4],
-              anchor: "bl",
               alt: "A move for Meridian Grocers: both scores and what changes, with citations."
             },
             features: [
@@ -778,9 +769,6 @@ window.SITE_CONTENT = {
             text: "The reviewer works the list top down, accepts or rejects with a comment, and only approved items reach the CRM.",
             shot: {
               full: "assets/img/steps/account-insights-4.jpg",
-              zoom: "assets/img/steps/account-insights-4-zoom.jpg",
-              region: [21.2, 12.7, 34.1, 26.5],
-              anchor: "br",
               alt: "The review: moves approved, one rejected with its reason kept."
             },
             features: [
@@ -1080,9 +1068,6 @@ window.SITE_CONTENT = {
             text: "A complaint, an alert or a batch of cases starts the clock, in the category agreed for your team.",
             shot: {
               full: "assets/img/steps/case-evidence-collection-1.jpg",
-              zoom: "assets/img/steps/case-evidence-collection-1-zoom.jpg",
-              region: [64.4, 18.8, 33.8, 36.4],
-              anchor: "bl",
               alt: "Case list: a complaint on day 3 of 56, four sources connected."
             },
             features: ["Case categories scoped and configured per engagement"]
@@ -1093,9 +1078,6 @@ window.SITE_CONTENT = {
             text: "Tickets, correspondence, operational records and scans are read together, and every item is tied to the file it belongs to.",
             shot: {
               full: "assets/img/steps/case-evidence-collection-2.jpg",
-              zoom: "assets/img/steps/case-evidence-collection-2-zoom.jpg",
-              region: [20.4, 39.5, 33.6, 17.3],
-              anchor: "br",
               alt: "The timeline being assembled: twelve dated events from four source systems."
             },
             features: ["Multi-source evidence assembly across systems, correspondence and documents"]
@@ -1106,9 +1088,6 @@ window.SITE_CONTENT = {
             text: "A summary, a dated timeline and draft response sections, each statement pointing to the exact source sentence or field.",
             shot: {
               full: "assets/img/steps/case-evidence-collection-3.jpg",
-              zoom: "assets/img/steps/case-evidence-collection-3-zoom.jpg",
-              region: [52.5, 46.1, 32.8, 33.3],
-              anchor: "bl",
               alt: "Case file summary with one citation opened to its billing row."
             },
             features: [
@@ -1123,9 +1102,6 @@ window.SITE_CONTENT = {
             text: "Amend, approve or flag, with every decision written to the audit log, so the handling stands up later.",
             shot: {
               full: "assets/img/steps/case-evidence-collection-4.jpg",
-              zoom: "assets/img/steps/case-evidence-collection-4-zoom.jpg",
-              region: [64.4, 37.3, 33.8, 35.5],
-              anchor: "bl",
               alt: "Review screen: amend, approve or flag, and a five-entry audit log."
             },
             features: [
@@ -1408,9 +1384,6 @@ window.SITE_CONTENT = {
             text: "Schedule, cost and progress exports and the scanned contracts are loaded as they are, with every file's origin kept.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-1.jpg",
-              zoom: "assets/img/steps/plan-vs-actual-investigation-1-zoom.jpg",
-              region: [64.8, 48.1, 33.8, 33.4],
-              anchor: "bl",
               alt: "The imports screen: four sources loaded, 96% resolved, 4% listed as gaps."
             },
             features: ["Ingest and profile approved static exports, preserving lineage"]
@@ -1421,9 +1394,6 @@ window.SITE_CONTENT = {
             text: "Every line is resolved to project, zone and unit of work; whatever cannot be resolved is listed as a gap, with the reason.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-2.jpg",
-              zoom: "assets/img/steps/plan-vs-actual-investigation-2-zoom.jpg",
-              region: [19.8, 17.9, 33.0, 27.3],
-              anchor: "br",
               alt: "The packages table: façade package 38% over cost and nine weeks late."
             },
             features: [
@@ -1437,9 +1407,6 @@ window.SITE_CONTENT = {
             text: "Plan and actual are compared on cost and schedule, and each gap comes with its candidate causes: a change order, weather days, rework, each cited.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-3.jpg",
-              zoom: "assets/img/steps/plan-vs-actual-investigation-3-zoom.jpg",
-              region: [64.8, 21.9, 33.8, 30.4],
-              anchor: "br",
               alt: "The façade package's causes: change order CO-22 cited to contract page 31."
             },
             features: [
@@ -1453,9 +1420,6 @@ window.SITE_CONTENT = {
             text: "Your planners confirm or reject each one, and the causes that recur across packages surface as the lesson.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-4.jpg",
-              zoom: "assets/img/steps/plan-vs-actual-investigation-4-zoom.jpg",
-              region: [64.8, 17.9, 33.8, 34.3],
-              anchor: "bl",
               alt: "Causes confirmed or rejected; the pattern recurs in 7 of 32 packages."
             },
             features: [
@@ -1755,9 +1719,6 @@ window.SITE_CONTENT = {
             text: "A supplier agreement or lease goes in as a PDF, scanned or native. It is recognized by type and every page is read against the rules for that type.",
             shot: {
               full: "assets/img/steps/large-document-extraction-1.jpg",
-              zoom: "assets/img/steps/large-document-extraction-1-zoom.jpg",
-              region: [17.9, 30.2, 30.2, 21.8],
-              anchor: "br",
               alt: "A 48-page agreement being processed: pages routed, fields being extracted."
             },
             features: ["Document-type gate, then page-level routing to the right extractor"]
@@ -1768,9 +1729,6 @@ window.SITE_CONTENT = {
             text: "Every rate, tier and term becomes a line in the cost system's own layout, with the page it came from beside it.",
             shot: {
               full: "assets/img/steps/large-document-extraction-2.jpg",
-              zoom: "assets/img/steps/large-document-extraction-2-zoom.jpg",
-              region: [56.4, 46.6, 29.4, 28.4],
-              anchor: "bl",
               alt: "Routine cleaning rates as rows, each with its source page cited."
             },
             features: [
@@ -1784,9 +1742,6 @@ window.SITE_CONTENT = {
             text: "A value that breaks a business rule, or reads poorly, is flagged with the fix suggested and the source shown, so the reviewer looks only where it matters.",
             shot: {
               full: "assets/img/steps/large-document-extraction-3.jpg",
-              zoom: "assets/img/steps/large-document-extraction-3-zoom.jpg",
-              region: [56.8, 65.7, 29.6, 30.9],
-              anchor: "bl",
               alt: "A flagged tier: the validator's finding, suggested fix 22, source page 9."
             },
             features: [
@@ -1801,9 +1756,6 @@ window.SITE_CONTENT = {
             text: "The reviewer signs off the rows, and only approved data leaves for the cost or ERP system, in its own import format.",
             shot: {
               full: "assets/img/steps/large-document-extraction-4.jpg",
-              zoom: "assets/img/steps/large-document-extraction-4-zoom.jpg",
-              region: [58.6, 40.9, 29.4, 31.6],
-              anchor: "bl",
               alt: "After Approve all: the agreement and every rate group approved."
             },
             features: [
@@ -2112,9 +2064,6 @@ window.SITE_CONTENT = {
             text: "Bookings, technicians, skills, absences and zones come in from the field-service system, with the rules that apply: who may do what, where, and which appointments cannot move.",
             shot: {
               full: "assets/img/steps/workforce-optimization-1.jpg",
-              zoom: "assets/img/steps/workforce-optimization-1-zoom.jpg",
-              region: [31.3, 56.9, 34.0, 19.9],
-              anchor: "tr",
               alt: "The Run optimization dialog with the four-week planning file uploaded."
             },
             features: [
@@ -2131,9 +2080,6 @@ window.SITE_CONTENT = {
             text: "Every technician, zone and job is planned against all the rules at once, weighing travel, waiting time and workload balance.",
             shot: {
               full: "assets/img/steps/workforce-optimization-2.jpg",
-              zoom: "assets/img/steps/workforce-optimization-2-zoom.jpg",
-              region: [31.3, 52.0, 34.0, 15.6],
-              anchor: "br",
               alt: "The solver mid-run: input checked, rules loaded, GPU solve running."
             },
             features: ["Multi-objective optimization with hard and soft rule weighting"]
@@ -2144,9 +2090,6 @@ window.SITE_CONTENT = {
             text: "Each change carries its reason: a vacation covered, a sick day split, a postcode picked up. The dispatcher keeps or undoes it.",
             shot: {
               full: "assets/img/steps/workforce-optimization-3.jpg",
-              zoom: "assets/img/steps/workforce-optimization-3-zoom.jpg",
-              region: [66.8, 70.3, 31.4, 26.0],
-              anchor: "bl",
               alt: "What the solver changed: a vacation covered, a sick day split."
             },
             features: ["Dispatcher review UI: map and table views, approve, reject, re-run"]
@@ -2157,9 +2100,6 @@ window.SITE_CONTENT = {
             text: "The dispatcher approves it and sends it to the field. Jobs per technician, capacity used and wait time are read on the same formulas as today's.",
             shot: {
               full: "assets/img/steps/workforce-optimization-4.jpg",
-              zoom: "assets/img/steps/workforce-optimization-4-zoom.jpg",
-              region: [6.6, 23.3, 34.0, 22.8],
-              anchor: "br",
               alt: "Plan v2 against today: jobs per technician +4.5%, capacity +3 pts."
             },
             features: ["KPIs and analytics: productivity, utilization, travel, workload balance"]
@@ -2465,9 +2405,6 @@ window.SITE_CONTENT = {
             text: "An operations lead types the question as they would ask a colleague: which orders are at risk this week, and what they are worth.",
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-1.jpg",
-              zoom: "assets/img/steps/cross-system-erp-qa-1-zoom.jpg",
-              region: [19.2, 45.5, 34.0, 20.9],
-              anchor: "br",
               alt: "The question asked in Agent Hub; the order agent reads three ERPs."
             },
             features: ["Plain-English question answering over the governed schema"]
@@ -2478,9 +2415,6 @@ window.SITE_CONTENT = {
             text: "Order lines, customer tiers, stock, credit holds and carrier scans are read together from the systems that hold them, as they are.",
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-2.jpg",
-              zoom: "assets/img/steps/cross-system-erp-qa-2-zoom.jpg",
-              region: [17.8, 22.5, 32.8, 32.0],
-              anchor: "br",
               alt: "Data Studio's Live Feed: the sources feeding the lakehouse, with freshness."
             },
             features: [
@@ -2494,9 +2428,6 @@ window.SITE_CONTENT = {
             text: "Late lines come back as one ranked list with the cause, the revenue at risk and the accounts exposed, on definitions the business signed off.",
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-3.jpg",
-              zoom: "assets/img/steps/cross-system-erp-qa-3-zoom.jpg",
-              region: [66.1, 28.9, 33.0, 21.5],
-              anchor: "br",
               alt: "Recommendations: revenue at risk USD 4.18 M, 9 tier-A accounts exposed."
             },
             features: [
@@ -2510,9 +2441,6 @@ window.SITE_CONTENT = {
             text: "Each proposed action becomes a task for its owner; sensitive fields stay hidden by role, and every answer is logged.",
             shot: {
               full: "assets/img/steps/cross-system-erp-qa-4.jpg",
-              zoom: "assets/img/steps/cross-system-erp-qa-4-zoom.jpg",
-              region: [18.5, 62.3, 34.0, 30.5],
-              anchor: "tr",
               alt: "The answer after the override: why lines are late, and proposed actions."
             },
             features: [
@@ -2791,9 +2719,6 @@ window.SITE_CONTENT = {
             text: "A finance lead asks for revenue by product line, all regions, this month against plan. The catalogs and databases already in place are connected as they are.",
             shot: {
               full: "assets/img/steps/business-metrics-qa-1.jpg",
-              zoom: "assets/img/steps/business-metrics-qa-1-zoom.jpg",
-              region: [65.8, 7.3, 32.5, 35.3],
-              anchor: "br",
               alt: "The Ask bar with the revenue question and three connected sources."
             },
             features: [
@@ -2808,9 +2733,6 @@ window.SITE_CONTENT = {
             text: "Net revenue means one thing, signed off by group finance, and every result uses it, so two dashboards stop disagreeing.",
             shot: {
               full: "assets/img/steps/business-metrics-qa-2.jpg",
-              zoom: "assets/img/steps/business-metrics-qa-2-zoom.jpg",
-              region: [17.3, 19.6, 33.8, 31.3],
-              anchor: "br",
               alt: "The net revenue definition, version 3, signed off by Group FP&A."
             },
             features: [
@@ -2824,9 +2746,6 @@ window.SITE_CONTENT = {
             text: "The table and chart come back in seconds, showing each person only the regions and fields their role allows.",
             shot: {
               full: "assets/img/steps/business-metrics-qa-3.jpg",
-              zoom: "assets/img/steps/business-metrics-qa-3-zoom.jpg",
-              region: [17.3, 41.4, 33.0, 36.3],
-              anchor: "br",
               alt: "The answer as table and chart, two columns masked for this role."
             },
             features: ["Plain-English question answering via Select AI over that layer"]
@@ -2837,9 +2756,6 @@ window.SITE_CONTENT = {
             text: "Who asked, what was read and how it was computed are kept, so an auditor can retrace any answer and the next question runs on the same foundation.",
             shot: {
               full: "assets/img/steps/business-metrics-qa-4.jpg",
-              zoom: "assets/img/steps/business-metrics-qa-4-zoom.jpg",
-              region: [64.5, 25.4, 33.8, 36.4],
-              anchor: "bl",
               alt: "The audit entry: who asked, the sources read, the query, 4 s."
             },
             features: ["Role-scoped answers and a full audit trail, enforced in the data layer"]
@@ -3113,9 +3029,6 @@ window.SITE_CONTENT = {
             text: "A past day is rebuilt van by van from the field-service, telematics and battery records, and checked against what actually happened.",
             shot: {
               full: "assets/img/steps/fleet-route-optimization-1.jpg",
-              zoom: "assets/img/steps/fleet-route-optimization-1-zoom.jpg",
-              region: [27.7, 36.8, 25.9, 9.3],
-              anchor: "br",
               alt: "The replayed day checked: 72 of 72 visits matched, journeys within 6%."
             },
             features: [
@@ -3129,9 +3042,6 @@ window.SITE_CONTENT = {
             text: "It is planned again: every booked slot kept, every job on someone with the right skills, and the charging stop where it costs nothing.",
             shot: {
               full: "assets/img/steps/fleet-route-optimization-2.jpg",
-              zoom: "assets/img/steps/fleet-route-optimization-2-zoom.jpg",
-              region: [27.6, 53.9, 31.6, 25.8],
-              anchor: "tr",
               alt: "The Changes tab: each re-plan change with its rule and effect."
             },
             features: [
@@ -3147,9 +3057,6 @@ window.SITE_CONTENT = {
             text: "The day as it ran sits beside the re-plan: cost per visit, visits per engineer, missed slots, down to each engineer and the reason for each change.",
             shot: {
               full: "assets/img/steps/fleet-route-optimization-3.jpg",
-              zoom: "assets/img/steps/fleet-route-optimization-3-zoom.jpg",
-              region: [27.1, 23.3, 34.0, 19.6],
-              anchor: "br",
               alt: "Cost per visit €64.41 to €56.96, visits per engineer 5.50 to 5.92."
             },
             features: ["The day as it ran beside the re-plan, route by route"]
@@ -3160,9 +3067,6 @@ window.SITE_CONTENT = {
             text: "A dispatcher approves the changes, and the routes and charging stops go to the field-service system in its own import format.",
             shot: {
               full: "assets/img/steps/fleet-route-optimization-4.jpg",
-              zoom: "assets/img/steps/fleet-route-optimization-4-zoom.jpg",
-              region: [27.6, 53.9, 25.2, 25.3],
-              anchor: "tr",
               alt: "The Field Service import: 10 approved changes, 71 visits, 3 charging stops."
             },
             features: ["Approved routes and charging stops sent to Oracle Fusion Field Service *"]
@@ -3475,9 +3379,6 @@ window.SITE_CONTENT = {
         "text": "The photos identify the item, locate each damage and measure it against the limit that governs it; unusable pictures are sent back for a retake.",
         "shot": {
           "full": "assets/img/steps/repair-or-replace-decisions-1.jpg",
-          "zoom": "assets/img/steps/repair-or-replace-decisions-1-zoom.jpg",
-          "region": [67.6, 18.4, 30.5, 32.4],
-          "anchor": "bl",
           "alt": "Case RR-24811: the windscreen photo with the chip measured at 14.2 mm."
         },
         "features": [
@@ -3494,9 +3395,6 @@ window.SITE_CONTENT = {
         "text": "The size, the position and the market's limits give the call: repair, replace or refer, with the dependent work a replacement would trigger.",
         "shot": {
           "full": "assets/img/steps/repair-or-replace-decisions-2.jpg",
-          "zoom": "assets/img/steps/repair-or-replace-decisions-2-zoom.jpg",
-          "region": [67.6, 50.3, 30.5, 28.9],
-          "anchor": "bl",
           "alt": "Brisca case: 11 mm chip in zone A, the rule says replace."
         },
         "features": [
@@ -3509,9 +3407,6 @@ window.SITE_CONTENT = {
         "text": "The reviewer sees the photo, the measurement and the cited rule beside the recommendation, and confirms it or overrules it with a reason that is kept.",
         "shot": {
           "full": "assets/img/steps/repair-or-replace-decisions-3.jpg",
-          "zoom": "assets/img/steps/repair-or-replace-decisions-3-zoom.jpg",
-          "region": [33.9, 50.3, 32.1, 19.3],
-          "anchor": "tr",
           "alt": "Before and after, same cases: repeat visits 1.5% to 1.2%."
         },
         "features": [
@@ -3524,9 +3419,6 @@ window.SITE_CONTENT = {
         "text": "The approved call goes to booking or claims with its scope resolved: the part, the skill, the slot, and the recalibration if one is needed.",
         "shot": {
           "full": "assets/img/steps/repair-or-replace-decisions-4.jpg",
-          "zoom": "assets/img/steps/repair-or-replace-decisions-4-zoom.jpg",
-          "region": [64.5, 18.0, 33.2, 29.3],
-          "anchor": "br",
           "alt": "Booking import, 6 sent and 1 held: rule, measurement, who authorized."
         },
         "features": [

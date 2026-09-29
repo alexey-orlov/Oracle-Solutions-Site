@@ -84,7 +84,6 @@ var CASE_STATUS_CHIPS = ["Proven", "Forecast", "Estimated"];
 var METRIC_KINDS = ["proven", "forecast", "estimated"];
 var METRIC_KIND_CHIPS = ["Proven", "Forecast", "Estimated"];
 var METRIC_FORMS = ["compression", "range", "dumbbell", "baseline"];
-var SHOT_ANCHORS = ["tl", "tr", "bl", "br"];
 /* What round 20 took off the Overview. Nothing renders these keys, and one
    that comes back fails by name. */
 var RETIRED_OVERVIEW_KEYS = [
@@ -640,24 +639,20 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (str(s.title) && s.title.length > 26) fail(sw, "title is " + s.title.length + " characters (max 26 — one line in the step list)");
     if (str(s.text) && words(s.text) > 30) fail(sw, "text is " + words(s.text) + " words (max 30)");
     if (s.image !== undefined) {
-      fail(sw, "image is retired in round 20 — the step's picture is shot { full, zoom, region, anchor, alt }");
+      fail(sw, "image is retired in round 20 — the step's picture is shot { full, alt }");
     }
     var shot = s.shot;
-    if (!shot || typeof shot !== "object") return fail(sw, "shot missing — { full, zoom, region, anchor, alt }");
+    if (!shot || typeof shot !== "object") return fail(sw, "shot missing — { full, alt }");
     var stem = "assets/img/steps/" + p.slug + "-" + (i + 1);
     if (shot.full !== stem + ".jpg") fail(sw, 'shot.full "' + shot.full + '" must be ' + stem + ".jpg");
     else checkAsset(sw, "step frame", shot.full);
-    if (shot.zoom !== stem + "-zoom.jpg") fail(sw, 'shot.zoom "' + shot.zoom + '" must be ' + stem + "-zoom.jpg");
-    else checkAsset(sw, "step zoom", shot.zoom);
-    var rg = shot.region;
-    if (!arr(rg) || rg.length !== 4 || rg.some(function (v) { return typeof v !== "number" || !(v >= 0 && v <= 100); })) {
-      fail(sw, "shot.region must be four numbers [x, y, w, h], each 0–100 (percent of the frame)");
-    } else {
-      if (!(rg[2] > 0 && rg[3] > 0)) fail(sw, "shot.region has no area — w and h must be above 0");
-      if (rg[0] + rg[2] > 100) fail(sw, "shot.region runs off the frame: x + w = " + (rg[0] + rg[2]) + " (max 100)");
-      if (rg[1] + rg[3] > 100) fail(sw, "shot.region runs off the frame: y + h = " + (rg[1] + rg[3]) + " (max 100)");
-    }
-    if (SHOT_ANCHORS.indexOf(shot.anchor) === -1) fail(sw, 'shot.anchor "' + shot.anchor + '" is not ' + SHOT_ANCHORS.join(" / "));
+    /* Round 21 (Alex, 2026-09-29: "Just have screenshots without those
+       callouts"): no zoom inset and no ring, so nothing to crop, place or
+       anchor. Where the eye needs leading, the screenshot shows the element
+       selected natively (docs/ASSETS.md §1). */
+    ["zoom", "region", "anchor"].forEach(function (k) {
+      if (shot[k] !== undefined) fail(sw, "shot." + k + " is retired in round 21 — a frame is the whole screen with nothing drawn over it; delete the key");
+    });
     if (!str(shot.alt)) fail(sw, "shot.alt missing — the frame's text equivalent");
   });
 
