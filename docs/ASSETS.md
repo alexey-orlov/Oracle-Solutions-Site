@@ -212,17 +212,22 @@ content as much as possible here: https://career.softserveinc.com/en-us/about-us
 
 | Tile | File | Source | Focal |
 |---|---|---|---|
-| Products | `heroes/offer-products.jpg` | the careers page's *Data & Analytics* focus tile, `app-images/about-us/focus1.webp`: two monitors, one with a line chart, and a laptop on a dark desk under a beam of warm light | `50% 50%` |
-| Services | `heroes/offer-services.jpg` | its *Research & Development* tile, `focus3.webp`: three engineers working together over hardware in a clear case, in cool blue light | `50% 30%` (the faces clear of the fade) |
+| Products | `heroes/offer-products.jpg` | softserveinc.com's *SoftServe Content Creator Solution* card on its AI services page (`/en-us/services/artificial-intelligence`), from the site's asset store (`softserve-content-creator-solution.jpg`, the JPEG variant): crossing ribbons of ridged glass and chrome, silver-blue with a touch of warm light. Alex's pick, replacing the careers page's *Data & Analytics* tile the same evening (*"don't like agents photo"*) | `50% 50%` |
+| Services | `heroes/offer-services.jpg` | the careers page's *Research & Development* focus tile, `app-images/about-us/focus3.webp`: three engineers working together over hardware in a clear case, in cool blue light | `50% 30%` (the faces clear of the fade) |
 
-Both originals are 800 × 452, the largest the site serves. Each was upscaled 4× with
-Real-ESRGAN (`realesrgan-x4plus`, the build §60 used) and saved at **2400 × 1356**,
-JPEG q84 progressive (140 KB and 240 KB). A tile draws the picture at 2 : 1 and at most
-612 CSS px wide on a desktop, so a 2× screen gets 3.9 file pixels per screen pixel
-(7 at 375); the heading starts at 88–93 % of the picture's height, where the fade is
-near black. The hero already shows the careers page's *AI & ML* tile (`focus0`), so no
-picture repeats on the page. Licence: the careers site's own imagery, likely stock, as
-§60's (START-HERE §9).
+Both originals are 800 × 452, the largest their sites serve. Each was upscaled 4× with
+Real-ESRGAN (`realesrgan-x4plus`, the build §60 used), which keeps the render's fine
+ridges crisp where a Lanczos resize blurred and stair-stepped them. Saved as JPEG q80–84
+progressive: the products render at **2000 × 1130** (443 KB; its ridges weigh more than
+a photograph), the services photograph at **2400 × 1356** (240 KB). A tile draws its
+picture at 2 : 1 and at most 612 CSS px wide on a desktop, so a 2× screen gets 3.3 and
+3.9 file pixels per screen pixel; the heading starts at 88–93 % of the picture's height,
+where the fade is near black (the brightest pixel under the products heading is 0.23
+grey, about 11 : 1 to the white heading). The hero shows the careers page's *AI & ML*
+tile (`focus0`), so no picture repeats on the page; **the products render shares its
+chrome-ribbon look with the Bespoke band's**, a different softserveinc.com render further
+down the page (START-HERE §9). Licence: SoftServe's own web imagery, likely stock, as
+§60's.
 
 ### Two hero photographs behind the two ways in, before §62 (round 11)
 
