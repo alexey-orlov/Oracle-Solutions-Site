@@ -3512,6 +3512,94 @@ if (/assets\/img\/logos\//.test(raw)) {
   }
 }());
 
+
+/* ---- round 22 · the Technology and Delivery tabs (Alex, 2026-09-29) ----
+   The Oracle products registry the widget reads, the Delivery tab's shared
+   tiers and footnote, and the renderers: no heading on the Technology tab,
+   nothing but the table on the Delivery tab, and no SVG diagram file. */
+(function () {
+  var sh = C.shared || {};
+  var reg = sh.oracleProducts || {};
+  var app22 = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  if (!str(reg.title)) fail("shared.oracleProducts.title", "missing — the widget's one heading");
+  ORACLE_GROUPS.forEach(function (g) {
+    if (!str((reg.groups || {})[g])) fail("shared.oracleProducts.groups." + g, "missing — the group's label");
+  });
+  var seenNames = [];
+  Object.keys(reg.items || {}).forEach(function (id) {
+    var item = reg.items[id];
+    var iw = "shared.oracleProducts.items[" + id + "]";
+    if (!str(item.name) || item.name.indexOf("Oracle ") !== 0) fail(iw, 'name "' + item.name + '" must be the full Oracle product name');
+    else if (seenNames.indexOf(item.name) !== -1) fail(iw, 'name "' + item.name + '" is used twice — one system, one entry');
+    seenNames.push(item.name);
+    if (ORACLE_GROUPS.indexOf(item.group) === -1) fail(iw, 'group "' + item.group + '" is not ' + ORACLE_GROUPS.join(" / "));
+    if (!str(item.icon) || app22.indexOf('"' + item.icon + '":') === -1) fail(iw, 'icon "' + item.icon + '" is not in assets/app.js ICONS');
+    var used = (C.products || []).some(function (p) {
+      return ((p.technology || {}).oracle || []).some(function (pick) { return pick && pick.id === id; });
+    });
+    if (!used) fail(iw, "no product lists it — the registry holds only what a page shows");
+  });
+  /* One system, one name, in the strip's words too: the data once spelled the
+     database four ways and Field Service two. */
+  (C.products || []).forEach(function (p) {
+    var odd = JSON.stringify(p.technology || {}).match(/Oracle (AI Database 26ai|Autonomous Database|Field Service|ADB)\b/);
+    if (odd) fail("products[" + p.slug + "].technology", 'spells "' + odd[0] + '" — the registry names it one way on every page');
+  });
+
+  var dls = sh.delivery || {};
+  var tiers = dls.tiers || [];
+  if (tiers.map(function (x) { return x.name; }).join("|") !== DELIVERY_TIERS.join("|")) {
+    fail("shared.delivery.tiers", "names are " + tiers.map(function (x) { return x.name; }).join(" · ") + " — expected " + DELIVERY_TIERS.join(" · "));
+  }
+  tiers.forEach(function (tier, i) {
+    var tw = "shared.delivery.tiers[" + i + "]";
+    if (tier.size !== DELIVERY_SIZES[i]) fail(tw, 'size is "' + tier.size + '", expected "' + DELIVERY_SIZES[i] + '"');
+    if (!str(tier.id)) fail(tw, "id missing — the header's fill keys on it");
+    if (!str(tier.duration)) fail(tw, "duration missing — Alex: an approximate duration for every phase");
+    else if (/[€$£]/.test(tier.duration)) fail(tw, "duration carries a price");
+  });
+  if (!str(dls.durationLabel)) fail("shared.delivery.durationLabel", "missing");
+  if (!str(dls.footnote) || !/scoping/.test(dls.footnote) || words(dls.footnote) > 10) {
+    fail("shared.delivery.footnote", "one very short line saying the durations are confirmed at scoping (Alex), ≤ 10 words");
+  }
+  DELIVERY_MARKS.forEach(function (m) {
+    if (!str((dls.marks || {})[m])) fail("shared.delivery.marks." + m, "missing — the legend's word for the mark");
+  });
+
+  var prod22 = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  function body(name) {
+    var a = prod22.indexOf("function " + name + "(");
+    if (a < 0) return null;
+    var b = prod22.indexOf("\n  function ", a + 10);
+    var c = prod22.indexOf("\n  /* ————— tab:", a + 10);
+    var end = [b, c].filter(function (x) { return x > 0; }).sort(function (x, y) { return x - y; })[0] || prod22.length;
+    return prod22.slice(a, end).replace(/\/\*[\s\S]*?\*\//g, "");
+  }
+  var techFn = body("technologyTab");
+  if (!techFn) fail("site/pages/product.js", "technologyTab() missing");
+  else {
+    if (/blockHead\(|<h2|<h3/.test(techFn)) fail("site/pages/product.js technologyTab()", "renders a heading — Alex took the Architecture subheading off (round 22)");
+    if (/stack|capabilit|narrative|figure\(/.test(techFn)) fail("site/pages/product.js technologyTab()", "renders a retired block — the tab is the strip, its line and the widget");
+  }
+  var delFn = body("deliveryTab");
+  if (!delFn) fail("site/pages/product.js", "deliveryTab() missing");
+  else if (/price|investment|pillar|timeline|button|linkArrow|promise|outcomes|needs/i.test(delFn)) {
+    fail("site/pages/product.js deliveryTab()", 'renders more than the packages table — "Everything else should be gone from this tab" (Alex, round 22)');
+  }
+  if (/jumpstartTab|function solutionStack|function capabilities\(/.test(prod22)) fail("site/pages/product.js", "still carries a retired Technology or Jumpstart renderer");
+  if (fs.existsSync(path.join(root, "site/data/diagrams.js"))) {
+    fail("site/data/diagrams.js", "retired in round 22 — the strip is HTML in product.js, its words are content.js technology.diagram");
+  }
+  ["site/index.html", "site/index-legacy.html"].forEach(function (rel) {
+    if (fs.readFileSync(path.join(root, rel), "utf8").indexOf("data/diagrams.js") !== -1) fail(rel, "loads the retired data/diagrams.js");
+  });
+  var label22 = (sh.sectionLabels || {});
+  ["architecture", "stack", "capabilities", "jumpstartOutcomes", "jumpstartInvestment", "jumpstartNext"].forEach(function (k) {
+    if (label22[k] !== undefined) fail("shared.sectionLabels." + k, "labels a retired block (round 22) — nothing renders it");
+  });
+  if (C.media !== undefined) fail("media", "held the SVG diagrams' alt text, retired in round 22 — the strip is text");
+}());
+
 if (warnings.length) {
   console.warn("check-grammar: " + warnings.length + " warning(s)");
   warnings.forEach(function (x) { console.warn("  ! " + x); });
