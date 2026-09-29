@@ -1189,9 +1189,8 @@ if (!arr(C.products) || C.products.length !== 7) {
         " does — peer cards side by side each make their own claim");
     } else openers[first] = i;
   });
-  /* Services no longer restates the engagements, one line each: since round 6
-     the case-study footnotes here carry each engagement's evidence, and
-     `services.proof` is checked with the rest of the Services page below. */
+  /* The case-study footnotes carry each engagement's evidence; nothing else
+     restates the engagements (the Services page, which once did, is gone). */
 })();
 
 /* ---- round 5 · the home page ----
@@ -1220,14 +1219,18 @@ if (!arr(C.products) || C.products.length !== 7) {
   });
   /* Two items and no "Overview": the logo is the home link. Case studies left
      the header on 2026-09-17 (Alex) — the home page still carries its
-     case-study screen, and Services links to it. For sellers took the slot in
-     round 8 and left it the same day (Alex): #/sellers stays, reached from the
-     footer's link row and from the Get the full kit link in a product kit
-     confirmation. */
+     case-study screen. For sellers took the slot in round 8 and left it the
+     same day (Alex): #/sellers stays, reached from the footer's link row and
+     from the Get the full kit link in a product kit confirmation. Round 18
+     (Alex): the Services page is gone, and "Services" lands on the home page's
+     Packaged services screen, as the header's ask lands on its contact. */
   var NAV = [
     { label: "Products", route: "#/products" },
-    { label: "Services", route: "#/services" }
+    { label: "Services", route: "#/#how-we-deliver" }
   ];
+  if (!s.navCta || s.navCta.route !== "#/#request-a-demo") {
+    fail("site.navCta", 'route must be "#/#request-a-demo" — the header\'s ask lands on the home page\'s contact (round 18)');
+  }
   if (!arr(s.nav) || s.nav.length !== NAV.length) {
     fail("site.nav", "must hold exactly " + NAV.length + " items (Products · Services), got " +
       (arr(s.nav) ? s.nav.length : "none"));
