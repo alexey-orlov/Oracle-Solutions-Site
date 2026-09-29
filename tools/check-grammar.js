@@ -621,10 +621,11 @@ if (!arr(C.products) || C.products.length !== 9) {
 
   /* E2 · How it works (round 20, Alex: the block did not fit one screen, the
      step heads were poorly lined up, too many fonts, the screenshots too small
-     to read). A vertical list of steps beside one frame: each step is a
-     one-line title and a short text, and its shot is the walkthrough's full
-     screen at 16:10 plus the zoom of one region, which is also the phone's
-     picture. `features` stays in the data, unrendered.
+     to read; round 21: the block in the main column, and screenshots without
+     callouts). A row of step tabs over one frame: each step is a title of one
+     or two lines and a short text, and its shot is the walkthrough's whole
+     screen at 16:10, nothing drawn over it. `features` stays in the data,
+     unrendered.
      The feature-coverage invariant (every overview.features item under exactly
      one step) is retired with the tick-lists: neither list renders any more,
      so the invariant has no surface to keep in step. */
