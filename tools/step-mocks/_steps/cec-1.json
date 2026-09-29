@@ -1,0 +1,7 @@
+[
+  {"sleep": 500},
+  {"eval": "(()=>{document.querySelectorAll('.toast,.tour,[data-overlay]').forEach(e=>e.remove()); document.documentElement.style.cursor='none'; return true;})()"},
+  {"eval": "(()=>{const r=document.querySelector('[data-region]').getBoundingClientRect(); return {x:r.x,y:r.y,w:r.width,h:r.height};})()"},
+  {"shot": "step-1-full"},
+  {"rectshot": {"name": "step-1-zoom", "x": 824, "y": 150, "w": 432, "h": 291}}
+]

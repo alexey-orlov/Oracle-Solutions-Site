@@ -146,11 +146,13 @@
    opens a tooltip, puts it on ::before instead, so the focus ring and the
    tooltip are not cut off at the box edge. */
 .cut,
-.ptile, .case-card, .ways, .way-mark, .pillar, .contact-card, .contact-photo,
-.panel--gate, .panel--kit, .panel--cta, .stat-tile, .stat-tile-mark,
+.ptile, .case-card, .ways, .way-mark, .pillar,
+.panel--gate, .panel--kit, .panel--cta,
 .bo-band, .bo-tile, .bo-tile-mark, .gtile, .modal-panel, .empty, .segmented, .fact-row,
-.step-frame, .video-card, .stack-tag, .cap-tag, .case-medallion, .step-index,
-.stepper-num, .gate-mark, .form-confirm-mark, .media-figure, .case-callout,
+.video-card, .stack-tag, .cap-tag, .case-medallion, .step-index,
+.gate-mark, .form-confirm-mark, .media-figure, .case-callout,
+.ps-plate, .hiw-canvas, .hiw-pic, .hiw-zoom, .hiw-zoom img, .hiw-card-shot, .hiw-card-shot img,
+.ind-panel, .contact-plate, .contact-tile,
 .light-band-media, .modal-panel--media, .way--photo, .tip::after {
   border-radius: 0;
   clip-path: polygon(
@@ -161,9 +163,9 @@
 }
 
 /* Cards and panels take the 8px cut; the big plates take 12px. */
-.ptile, .case-card, .ways, .pillar, .contact-card, .contact-photo,
-.panel--gate, .panel--kit, .panel--cta, .stat-tile, .bo-tile, .gtile, .modal-panel,
-.empty, .segmented, .fact-row, .step-frame, .video-card {
+.ptile, .case-card, .ways, .pillar,
+.panel--gate, .panel--kit, .panel--cta, .bo-tile, .gtile, .modal-panel,
+.empty, .segmented, .fact-row, .video-card {
   --cut: var(--cut-8);
 }
 
@@ -1075,21 +1077,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   transition: background-color var(--t-slow) var(--ease);
 }
 
-.case-medallion {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  --cut: var(--cut-4);
-  border: 0;
-  background: var(--surface-select);
-  color: var(--action-pressed);
-}
-
-.case-medallion .icon { width: 1.375rem; height: 1.375rem; }
-
-.case-head-copy { display: flex; flex-direction: column; gap: .1875rem; min-width: 0; }
+/* The medallion and the head beside it are the product callout's alone: the
+   Round 20 · Use cases block. */
 .case-descriptor { font-family: var(--font-body); font-size: 1.0625rem; font-weight: 700; line-height: 1.25; color: var(--text); text-transform: none; }
 .case-area { font-size: var(--fs-xs); line-height: 1.5; color: var(--text-dim); }
 
@@ -1749,10 +1738,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .outcome-list li, .tick-list li { display: flex; gap: .625rem; font-size: var(--fs-sm); line-height: 1.55; color: var(--text-body); }
 .outcome-list .icon, .tick-list .icon { width: .875rem; height: .875rem; color: var(--text-body); flex: none; margin-top: .3125rem; }
 
-.dash-list { display: flex; flex-direction: column; gap: .625rem; }
-.dash-list li { position: relative; padding-left: 1.25rem; font-size: var(--fs-sm); line-height: 1.6; color: var(--text-body); }
-.dash-list li::before { content: ""; position: absolute; left: 0; top: .75rem; width: .5rem; height: 1px; background: var(--decor-dim); }
-
 .split-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--border-subtle); border: 1px solid var(--border-subtle); border-radius: 0; overflow: hidden; }
 .split-col { background: var(--bg); padding: clamp(1.5rem, 2.5vw, 2rem); display: flex; flex-direction: column; gap: .75rem; }
 .split-col--accent { background: var(--bg-inset); }
@@ -1769,21 +1754,10 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   max-width: 54rem;
 }
 
-.disclosure { border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
-.disclosure summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; cursor: pointer; font-size: var(--fs-sm); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--text); list-style: none; }
-.disclosure summary::-webkit-details-marker { display: none; }
-.disclosure summary:hover { color: var(--action); }
-.disclosure summary .icon { transition: transform var(--t-base) var(--ease); }
-.disclosure[open] summary .icon { transform: rotate(180deg); }
-.disclosure .body-text { padding-bottom: 1.25rem; max-width: 52rem; }
-
 .fact-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1px; background: var(--border-subtle); border: 1px solid var(--border-subtle); border-radius: 0; overflow: hidden; }
 .fact { background: var(--bg); padding: 1.25rem; display: flex; flex-direction: column; gap: .5rem; }
 .fact-label { font-size: var(--fs-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); }
 .fact-value { font-size: var(--fs-sm); line-height: 1.55; color: var(--text); }
-
-.scope-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3.5rem); }
-.scope-col { display: flex; flex-direction: column; gap: 1rem; }
 
 .media-figure {
   margin: 0;
@@ -1794,264 +1768,266 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 .media-figure img { width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 
-/* ——— case study: a dark callout (VISUAL-GRAMMAR §2.6) ——— */
+/* The product page's case study (the dark callout on the Use cases tab) is
+   styled in the Round 20 · Use cases block. */
 
-/* A raised plate with 12px corner cuts and no rule: no customer is named, no
-   logo is rendered, no header photograph — the industry tabs directly above
-   already carry the industry image, and repeating it read as a template
-   filling itself in. The medallion sits where the mark used to. The status
-   chip alone says whether the figures are measured. */
-.case-callout {
-  border: 0;
-  background: var(--bg-raised);
-  overflow: hidden;
-}
-
-.case-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.125rem;
-  padding: clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.5rem, 2.4vw, 2rem) clamp(1.5rem, 2.4vw, 2rem);
-}
-
-.case-head { display: flex; align-items: center; gap: 1rem; }
-.case-callout .case-descriptor { font-size: 1.1875rem; }
-.case-callout .case-medallion { width: 3rem; height: 3rem; }
-.case-callout .case-medallion .icon { width: 1.5rem; height: 1.5rem; }
-
-/* The chip sits directly above the figures, so the block carries the breathing
-   room itself rather than crowding the number against the label that qualifies
-   it. */
-.case-metrics { align-self: stretch; margin-top: .75rem; }
-
-/* Peer figures share two rows, so the captions sit on one baseline even when
-   a value wraps to two lines. */
-.case-figures {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: auto auto;
-  gap: 0 2rem;
-}
-
-/* One real figure is one column: padding the row out to two would leave the
-   slot to be filled with a capability restatement. */
-.case-figures--single { grid-template-columns: minmax(0, 1fr); }
-.case-figures--single .case-figure-label { max-width: 34rem; }
-
-.case-figure { display: contents; }
-.case-figure-value { grid-row: 1; }
-.case-figure-label { grid-row: 2; }
-.case-callout .case-figure-value { font-size: clamp(1.75rem, 3.2vw, 2.5rem); line-height: 1; letter-spacing: -.02em; }
-.case-callout .case-figure-label { margin-top: .5rem; }
-
-.case-text { font-size: var(--fs-sm); line-height: 1.7; color: var(--text-body); max-width: 62rem; }
-
-/* Three external-safe facts, label above value — no contract value, no
-   contract duration, no headcount. */
-.case-scope {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem 1.5rem;
-  align-self: stretch;
-  margin: 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.case-scope dt { font-size: var(--fs-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); }
-.case-scope dd { margin: .3125rem 0 0; font-size: var(--fs-sm); line-height: 1.5; color: var(--text); }
-
-.case-nda { font-size: var(--fs-xs); line-height: 1.5; color: var(--text-dim); }
-.case-link { margin-top: .25rem; }
-
-@media (max-width: 720px) {
-  .case-scope { grid-template-columns: 1fr; gap: .875rem; }
-}
-
-/* A descriptor that wraps to three lines leaves a vertically centred medallion
-   floating beside line 2, so the head reverts to icon-then-title reading. */
-@media (max-width: 767px) {
-  .case-head { align-items: flex-start; }
-  .case-callout .case-medallion { width: 2.5rem; height: 2.5rem; }
-  .case-callout .case-medallion .icon { width: 1.25rem; height: 1.25rem; }
-}
-
-@media (max-width: 560px) {
-  .case-figures { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 1.25rem 0; }
-  .case-figure { display: block; }
-}
-
-/* ——— the wide case study (round 10) ———————————————————
-   On the Use cases tab the callout sits in the full 1,248px column instead of
-   the Overview's 803px main, so it splits in two: the narrative on the left,
-   the evidence on the right behind a hairline — chip, then the figures it
-   qualifies, then the scope facts. Below 901px the two stack, main then side,
-   and the rule becomes a top rule. */
-.case-main, .case-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.125rem;
-  min-width: 0;
-}
-
-@media (min-width: 901px) {
-  .case-callout--wide .case-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    column-gap: clamp(1.5rem, 2.4vw, 2rem);
-    align-items: start;
-  }
-
-  .case-callout--wide .case-side {
-    align-self: start;
-    border-left: 1px solid var(--border-subtle);
-    padding-left: clamp(1.5rem, 2.4vw, 2rem);
-  }
-
-  /* One evidence column, so a 40px figure is never squeezed into half a rail
-     and a long scope label never sets in a 140px cell. */
-  .case-callout--wide .case-figures { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 1.25rem 0; }
-  .case-callout--wide .case-figure { display: block; }
-  .case-callout--wide .case-scope { grid-template-columns: minmax(0, 1fr); gap: .875rem; }
-}
-
-@media (max-width: 900px) {
-  .case-callout--wide .case-side {
-    margin-top: .375rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--border-subtle);
-    align-self: stretch;
-  }
-}
-
-.panel--tight { gap: 1rem; }
 .panel--flat { gap: 0; }
 
-/* ——— one visual grammar: overview / technology / POV ——— */
+/* ===== Round 20 · Overview ===== */
+/* One column at the wrap's width and no rail (D-design §2): the problem and
+   what changes, what changes in your numbers (the KPI band), how it works,
+   64px apart. One grey step (the problem plate), one dark plate (what
+   changes) and the band's own gradient. Blue is the selected row and each
+   chart's coloured mark; orange 75 is the fact dash over each figure and
+   nothing else. Every cut shape here is in the grouped clip-path declaration
+   at the top of the file and sets its --cut in this block. A line on a cut
+   shape is either a ring (polygon evenodd) or an inset child with a smaller
+   cut (c - t(2 - √2)), so the diagonal corners carry the line too. */
 
-.tab-body--compact { gap: clamp(1.5rem, 2.1vw, 1.875rem); }
+.tab-body--overview { gap: 4rem; }
 
-/* problem → solution strip */
-.ps-strip {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: stretch;
-  gap: clamp(1rem, 2vw, 1.5rem);
+/* — 1 · the problem → what changes: two plates, equal height — */
+.ps-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; align-items: stretch; }
+.ps-plate { --cut: var(--cut-12); display: flex; flex-direction: column; gap: 1rem; min-width: 0; padding: 2.5rem; }
+.ps-plate--problem { background: var(--bg-raised); }
+.ps-plate--solution { background: var(--surface-dark-raised); }
+.ps-plate--solution .ps-eyebrow { color: var(--surface-fact); }
+.ps-headline { font-weight: 400; font-size: 1.75rem; line-height: 1.2; letter-spacing: 0; color: var(--text); }
+.ps-plate--solution .ps-headline { color: #ffffff; }
+.ps-copy { font-weight: 300; font-size: 1.125rem; line-height: 1.3; letter-spacing: .5px; color: var(--text-body); }
+.ps-plate--solution .ps-copy { color: rgba(255, 255, 255, .82); }
+
+/* — 2 · what changes in your numbers: the KPI band — */
+/* Full-bleed without leaving the wrap: the band's ground is a border-image
+   painted 100vw past each side. That is ink overflow, so the page never
+   scrolls sideways, and the tiles keep the wrap's width. The tiles share row
+   tracks (subgrid), so every figure and every chart sits on one line across
+   the band whatever a title wraps to. */
+.kpi-band {
+  padding-block: 4rem;
+  border-image: linear-gradient(to top, #edf1f6, #fafaf8) fill 0 / 0 / 0 100vw;
 }
-
-.ps-panel {
+.kpi-band .ov-h2 { margin-bottom: 2.5rem; }
+.kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 3rem; }
+.kpi-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.kpi { display: grid; grid-row: span 7; grid-template-rows: subgrid; row-gap: 0; align-content: start; min-width: 0; }
+.kpi + .kpi { border-left: 1px solid var(--border-panel); padding-left: 3rem; }
+@supports not (grid-template-rows: subgrid) {
+  .kpi { display: flex; flex-direction: column; grid-row: auto; }
+  .kpi .kpi-figure { align-self: stretch; }   /* in a flex column, `end` would shrink the figure's container to nothing */
+}
+.kpi-dash { width: 2rem; height: .25rem; background: #fe8d6b; }
+.kpi-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; margin-top: 1rem; }
+.kpi-title { min-width: 0; font-weight: 400; font-size: 1rem; line-height: 1.25; letter-spacing: 0; color: var(--text); }
+.kpi-kind {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: .875rem;
-  padding: clamp(1.5rem, 2.4vw, 2rem);
-  border: 1px solid var(--border-subtle);
-  border-radius: 0;
-  background: var(--bg-raised);
+  flex: none;
+  padding: .25rem .5rem;
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text);
+  cursor: default;
 }
-
-.ps-panel--solution { background: var(--bg-inset); border-color: var(--border); }
-.ps-panel--solution::before {
+/* The chip's 1px outline, cut at 4px: a ring, so the corners carry it. */
+.kpi-kind::before {
   content: "";
   position: absolute;
-  left: -1px;
-  top: 1.5rem;
-  bottom: 1.5rem;
-  width: 2px;
-  border-radius: 2px;
-  background: var(--action);
+  inset: 0;
+  pointer-events: none;
+  background: var(--border);
+  clip-path: polygon(evenodd,
+    4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px, 4px 0,
+    4.41px 1px, 1px 4.41px, 1px calc(100% - 4.41px), 4.41px calc(100% - 1px),
+    calc(100% - 4.41px) calc(100% - 1px), calc(100% - 1px) calc(100% - 4.41px),
+    calc(100% - 1px) 4.41px, calc(100% - 4.41px) 1px, 4.41px 1px);
 }
-
-.ps-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem; height: 2.5rem;
-  --cut: var(--cut-4);
-  background: var(--surface-select);
-  color: var(--action-pressed);
-}
-
-.ps-mark .icon { width: 1.25rem; height: 1.25rem; }
-.ps-text { font-size: var(--fs-sm); line-height: 1.65; color: var(--text-body); }
-.ps-arrow { align-self: center; display: inline-flex; color: var(--decor-dim); }
-.ps-arrow .icon { width: 1.5rem; height: 1.5rem; }
-
-/* metric tiles */
-.stat-tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
-  gap: 1px;
-  background: var(--border-subtle);
-  border: 1px solid var(--border-subtle);
-  border-radius: 0;
-  overflow: hidden;
-}
-
-.stat-tile { background: var(--bg-inset); padding: 1.125rem 1.125rem 1.25rem; display: flex; flex-direction: column; gap: .5rem; }
-.stat-tile-top { display: flex; align-items: flex-end; min-height: 2.5rem; }
-.stat-tile-value {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.375rem, 2.1vw, 1.875rem);
-  line-height: 1;
-  letter-spacing: -.02em;
+/* The figure is 56px Light, never Azurio. A long one shrinks to its tile and
+   a short one never does: --fig-em is the figure's width in ems of its own
+   size (pages/product.js figureEm), so 100cqi / --fig-em is the largest size
+   that still fits on one line. */
+.kpi-figure {
+  container-type: inline-size;
+  display: flex;
+  align-items: baseline;
+  gap: 0 .375rem;
+  margin-top: .75rem;
+  align-self: end;
+  white-space: nowrap;
   color: var(--text);
 }
-
-.stat-tile-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.375rem; height: 2.375rem;
-  --cut: var(--cut-4);
-  background: var(--surface-select);
-  color: var(--action-pressed);
+.kpi-prefix { flex: none; font-weight: 300; font-size: 1.25rem; line-height: 1.05; color: var(--text-muted); }
+.kpi-value { font-weight: 300; font-size: min(3.5rem, calc(100cqi / var(--fig-em, 4))); line-height: 1.05; letter-spacing: -.01em; color: var(--text); }
+.kpi-viz { height: 2.5rem; margin-top: .75rem; }
+.kpi-viz--dumbbell { padding-inline: 7px; }   /* half a dot, so a dot at either end stays inside the tile */
+.kpi-svg { display: block; width: 100%; height: 2.5rem; overflow: visible; }
+.kv-track { fill: var(--border-panel); }
+.kv-before, .kv-fill, .kv-dot--before { fill: var(--border); }
+.kv-after, .kv-band, .kv-dot--after { fill: var(--action); }
+.kv-tick { stroke: var(--surface-dark-raised); stroke-width: 2; }
+.kv-link { stroke: var(--action-hover); stroke-width: 4; }
+.kv-chevron { fill: none; stroke: var(--action); stroke-width: 2; }
+.kpi-labels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .25rem 1rem;
+  margin-top: .5rem;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--text-body);
 }
+.kpi-label { display: inline-flex; align-items: center; gap: .375rem; min-width: 0; }
+.kpi-swatch { flex: none; width: 10px; height: 10px; }
+.kpi-swatch--before, .kpi-swatch--fill, .kpi-swatch--dot-before { background: var(--border); }
+.kpi-swatch--after, .kpi-swatch--band, .kpi-swatch--dot-after { background: var(--action); }
+.kpi-swatch--tick { width: 2px; background: var(--surface-dark-raised); }
+.kpi-swatch--dot-before, .kpi-swatch--dot-after { border-radius: 50%; }
+.kpi-line { margin-top: .75rem; font-weight: 300; font-size: 1rem; line-height: 1.3; color: var(--text-body); }
+.kpi-owner { margin-top: .75rem; font-size: .875rem; font-weight: 400; line-height: 1.3; letter-spacing: 0; color: var(--text-muted); }
 
-.stat-tile-mark .icon { width: 1.25rem; height: 1.25rem; }
-.stat-tile-label { display: flex; align-items: flex-start; gap: .5rem; font-size: var(--fs-sm); font-weight: 500; line-height: 1.4; color: var(--text); }
-.stat-tile-label .icon { width: .875rem; height: .875rem; color: var(--text-dim); flex: none; margin-top: .1875rem; }
-.stat-tile-qual { margin-top: auto; padding-top: .25rem; font-size: var(--fs-xs); line-height: 1.5; color: var(--text-note); }
-.stat-tiles-note { max-width: none; }
-
-/* ROI / governance callout band */
-.roi-band {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 1.25rem;
-  align-items: start;
-  padding: clamp(1.25rem, 1.9vw, 1.625rem);
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: var(--bg-inset);
-}
-
-.roi-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem; height: 2.75rem;
-  border-radius: 50%;
+/* — 3 · how it works: the step list beside one frame — */
+/* The budget (D-design §2.3): at 1440 the H2 (58) + 24 + a 872 × 545 frame is
+   627px; at 1280 the frame is 744 × 465 and the block 547px. The list is
+   shorter than the frame, so the frame sets the height. */
+.hiw { display: flex; flex-direction: column; gap: 1.5rem; }
+.hiw-body { display: grid; grid-template-columns: 20rem minmax(0, 1fr); grid-template-areas: "list frame"; column-gap: 1.5rem; align-items: start; }
+.hiw-list { grid-area: list; display: flex; flex-direction: column; }
+.hiw-step { border-bottom: 1px solid var(--border-panel); transition: box-shadow var(--t-base) var(--ease); }
+.hiw-step.is-active { box-shadow: inset 2px 0 0 var(--action); }
+/* Two sizes and no more: 20 for the row, 16 for its text. */
+.hiw-head {
+  display: flex;
+  align-items: baseline;
+  gap: .75rem;
+  width: 100%;
+  padding: 1rem 0 1rem 1.25rem;
   border: 0;
-  background: var(--surface-select);
-  color: var(--action-pressed);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.hiw-head:focus-visible { outline-offset: -2px; }
+.hiw-step.is-active .hiw-head { padding-bottom: .5rem; cursor: default; }
+.hiw-num { flex: none; width: 1rem; color: var(--text-muted); transition: color var(--t-base) var(--ease); }
+.hiw-step.is-active .hiw-num { color: var(--action); }
+.hiw-title { min-width: 0; transition: color var(--t-base) var(--ease); }
+.hiw-step:not(.is-active) .hiw-head:hover .hiw-title { color: var(--action); }
+.hiw-text { padding: 0 0 1rem 3rem; font-weight: 300; font-size: 1rem; line-height: 1.35; color: var(--text-muted); }
+.hiw-step:not(.is-active) .hiw-text { display: none; }
+
+/* The frames stack in one cell. The incoming one fades in on top over 200ms
+   while the outgoing one holds, then drops out: a crossfade with no dip. */
+.hiw-frame { grid-area: frame; display: grid; min-width: 0; }
+.hiw-shot { grid-area: 1 / 1; min-width: 0; margin: 0; opacity: 0; visibility: hidden; transition: opacity 0s linear .2s, visibility 0s linear .2s; }
+.hiw-shot.is-active { z-index: 1; opacity: 1; visibility: visible; transition: opacity .2s var(--ease); }
+/* The frame is the screenshot itself: 12px cut, 1px #bdcbd7 hairline. */
+.hiw-canvas { --cut: var(--cut-12); padding: 1px; background: var(--border); }
+.hiw-pic { --cut: 11.41px; position: relative; aspect-ratio: 16 / 10; background: var(--bg-raised); }
+.hiw-full { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* The step's region, outlined 2px blue with a 4px cut (a ring). */
+.hiw-region {
+  position: absolute;
+  pointer-events: none;
+  background: var(--action);
+  clip-path: polygon(evenodd,
+    4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px, 4px 0,
+    4.83px 2px, 2px 4.83px, 2px calc(100% - 4.83px), 4.83px calc(100% - 2px),
+    calc(100% - 4.83px) calc(100% - 2px), calc(100% - 2px) calc(100% - 4.83px),
+    calc(100% - 2px) 4.83px, calc(100% - 4.83px) 2px, 4.83px 2px);
+}
+/* The zoom of that region, 24px in from its anchor corner: 46% of the frame
+   wide, or narrower where that would take it past half the frame's height
+   (the frame is 16:10, so half its height is 31.25% of its width, and --za is
+   the zoom's own aspect). A 2px blue outline and an 8px cut. */
+.hiw-zoom {
+  --cut: var(--cut-8);
+  position: absolute;
+  z-index: 1;
+  width: min(46%, calc(31.25% * var(--za, 1.6)));
+  aspect-ratio: var(--za, 1.6);
+  padding: 2px;
+  background: var(--action);
+}
+.hiw-zoom img { --cut: 6.83px; display: block; width: 100%; height: 100%; object-fit: cover; background: #ffffff; }
+.hiw-zoom--tl { top: 1.5rem; left: 1.5rem; }
+.hiw-zoom--tr { top: 1.5rem; right: 1.5rem; }
+.hiw-zoom--bl { bottom: 1.5rem; left: 1.5rem; }
+.hiw-zoom--br { bottom: 1.5rem; right: 1.5rem; }
+
+/* The phone's four cards; hidden until 767px. */
+.hiw-cards { display: none; }
+
+@media (min-width: 1400px) {
+  .hiw-body { grid-template-columns: 21.5rem minmax(0, 1fr); column-gap: 2rem; }
 }
 
-.roi-mark .icon { width: 1.375rem; height: 1.375rem; }
-.roi-copy { display: flex; flex-direction: column; gap: .5rem; }
-.roi-text { font-size: var(--fs-sm); line-height: 1.7; color: var(--text-body); max-width: 62rem; }
+@media (max-width: 1099px) {
+  .ps-plate { padding: 2rem; }
+  .ps-headline { font-size: 1.5rem; }
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi-grid--3 .kpi:nth-child(3) {
+    grid-column: 1 / -1;
+    margin-top: 2rem;
+    padding: 2rem 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--border-panel);
+  }
+  /* The frame at the wrap's full width, then the same list under it. */
+  .hiw-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "frame" "list"; row-gap: 1.5rem; }
+}
 
-/* more-detail disclosure */
-.disclosure--detail summary { padding-block: 1.125rem; }
-.detail-wrap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem var(--gap); padding-bottom: 1.75rem; }
-.detail-entry { display: flex; flex-direction: column; gap: .5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); }
-.detail-title { font-family: var(--font-body); font-size: 1rem; font-weight: 700; line-height: 1.35; color: var(--text); text-transform: none; }
-.detail-text { font-size: var(--fs-sm); line-height: 1.65; color: var(--text-muted); }
-.detail-sub { grid-column: 1 / -1; margin-top: .75rem; }
-.detail-wrap--stack { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+@media (max-width: 767px) {
+  .ps-pair { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .ps-plate { padding: 1.5rem; }
+  .tab-body--overview { gap: 2.5rem; }
+  .kpi-band { padding-block: 2.5rem; }
+  .kpi-band .ov-h2 { margin-bottom: 1.5rem; }
+  .kpi-grid { grid-template-columns: minmax(0, 1fr); }
+  .kpi + .kpi, .kpi-grid--3 .kpi:nth-child(3) {
+    grid-column: auto;
+    margin-top: 2rem;
+    padding: 2rem 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--border-panel);
+  }
+  .kpi-value { font-size: min(2.75rem, calc(100cqi / var(--fig-em, 4))); }
+  /* No frame on a phone: each step is a card ending on its zoom, which holds
+     the part of the screen that reads at this width. */
+  .hiw-body { display: none; }
+  .hiw-cards { display: flex; flex-direction: column; gap: 2rem; }
+  .hiw-card { display: flex; flex-direction: column; gap: .5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-panel); }
+  .hiw-card-head { display: flex; align-items: baseline; gap: .75rem; font-weight: 400; font-size: 1.25rem; line-height: 1.2; letter-spacing: 0; color: var(--text); }
+  .hiw-card-head .hiw-num { color: var(--action); }
+  .hiw-card .hiw-text { padding: 0; }
+  .hiw-card-shot { --cut: var(--cut-8); margin: .5rem 0 0; padding: 1px; background: var(--border); }
+  .hiw-card-shot img { --cut: 7.41px; display: block; width: 100%; height: auto; background: #ffffff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw-shot, .hiw-shot.is-active, .hiw-step, .hiw-num, .hiw-title { transition: none; }
+}
+
+@media print {
+  .kpi-band { border-image: none; }
+  .ps-plate--solution { background: #ffffff !important; }
+  .ps-plate--solution :is(.ps-eyebrow, .ps-headline, .ps-copy) { color: #111111 !important; }
+  .hiw-cards { display: none !important; }
+}
+/* ===== end Round 20 · Overview ===== */
 
 /* ——— architecture diagrams ———————————————————————————— */
 
@@ -2094,236 +2070,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .layer-name { font-size: var(--fs-sm); font-weight: 700; color: var(--text); }
 .layer-by { font-size: var(--fs-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); }
 
-/* ——— overview: two columns, main + sticky rail ————————— */
-
-.ov-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: clamp(1.75rem, 3vw, 3rem);
-  align-items: stretch;
-}
-
-.ov-main { display: flex; flex-direction: column; gap: clamp(1.75rem, 2.6vw, 2.5rem); min-width: 0; }
-
-/* The outcomes card is too tall to pin at 900 px, so the card that pins is the
-   compact one under it — and because it is the last child, nothing scrolls
-   underneath it while it is held. */
-.ov-rail {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  min-width: 0;
-  height: 100%;
-}
-
-.rail-card--pin { position: sticky; top: calc(var(--nav-h) + 1.25rem); }
-
-.rail-card {
-  padding: clamp(1.125rem, 1.8vw, 1.5rem);
-  border: 1px solid var(--border-subtle);
-  border-radius: 0;
-  background: var(--bg-raised);
-}
-
-.rail-card .block-title { font-size: 1.125rem; }
-.rail-card .stat-tile { padding: .875rem 1rem; gap: .25rem; }
-.rail-card .stat-tile-value { font-size: 1.75rem; }
-.rail-card .stat-tile-qual { margin-top: .125rem; }
-.stat-tiles--stack { grid-template-columns: minmax(0, 1fr); }
-.roi-band--compact { grid-template-columns: minmax(0, 1fr); gap: .75rem; padding: 1rem; }
-.roi-band--compact .roi-mark { width: 2.25rem; height: 2.25rem; }
-.roi-band--compact .roi-mark .icon { width: 1.125rem; height: 1.125rem; }
-.roi-band--compact .roi-text { font-size: var(--fs-xs); line-height: 1.65; }
-
-/* ——— how it works: the workflow stepper ———————————————— */
-
-/* Two layouts, one markup (round 10). Up to 900px it is the accordion it has
-   always been: a hairline-ruled list, each body under its own head, the frame
-   after the list. From 901px the frame becomes the block — a strip of step
-   heads across the top, the frame spanning the whole row beneath them at the
-   MAIN column's full width, and the open step's body under that. The switch is
-   `display: contents` on the list and the steps, which promotes the heads, the
-   open body and `.step-frames` to children of the one grid; `--steps` (set by
-   the renderer) cuts it into one column per step. */
-.stepper {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.25rem, 2.4vw, 2rem);
-}
-
-.stepper-list { display: flex; flex-direction: column; }
-.stepper-step { border-top: 1px solid var(--border-subtle); }
-.stepper-step:last-child { border-bottom: 1px solid var(--border-subtle); }
-
-.stepper-head {
-  display: flex;
-  align-items: center;
-  gap: .875rem;
-  width: 100%;
-  padding: .9375rem .25rem;
-  background: none;
-  border: 0;
-  text-align: left;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: color var(--t-base) var(--ease);
-}
-
-.stepper-head:hover { color: var(--action); }
-.stepper-step.is-active .stepper-head { color: var(--text); }
-
-.stepper-num {
-  width: 1.75rem; height: 1.75rem;
-  flex: none;
-  --cut: var(--cut-4);
-  box-shadow: inset 0 0 0 1px var(--border);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  color: var(--text-dim);
-  transition: border-color var(--t-base) var(--ease), background-color var(--t-base) var(--ease), color var(--t-base) var(--ease);
-}
-
-.stepper-step.is-active .stepper-num { box-shadow: inset 0 0 0 1px var(--action-pressed); background: var(--action-pressed); color: #ffffff; }
-.stepper-title { font-size: 1rem; font-weight: 700; line-height: 1.3; }
-.stepper-body { display: flex; flex-direction: column; gap: .75rem; padding: 0 .25rem 1.125rem 2.625rem; }
-.stepper-text { font-size: var(--fs-sm); line-height: 1.6; color: var(--text-muted); }
-.stepper-features li { font-size: var(--fs-xs); line-height: 1.5; }
-.stepper-features .icon { margin-top: .25rem; }
-
-.step-frames { display: flex; min-width: 0; }
-.step-frame {
-  position: relative;
-  flex: 1 1 auto;
-  align-self: flex-start; /* the frame is its image's 16:10, never stretched to the step list's height — a taller list left a black band under the picture */
-  min-width: 0;
-  margin: 0;
-  border: 1px solid var(--border-subtle);
-  border-radius: 0;
-  overflow: hidden;
-  background: var(--bg-inset);
-}
-/* The step figures are 1600x1000 information graphics: contain, never crop —
-   a sliced diagram loses its edge labels. The two photographic steps opt back
-   into cover, where letterboxing would read as a mistake. */
-.step-frame img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: contain; display: block; }
-.step-frame img[src$=".jpg"] { object-fit: cover; }
-.step-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .07);
-  border-radius: inherit;
-}
-
-/* The desktop stepper: heads in row 1, the open body in row 2 directly under
-   the step it belongs to, and the frame last, in row 3. Round 10b: the body sat
-   under the picture, too far from its own head for the reader to connect the
-   two, and at footnote size it read as a caption rather than the step's
-   description. A hidden body carries the `hidden` attribute, so it takes no
-   cell at all. */
-@media (min-width: 901px) {
-  .stepper {
-    display: grid;
-    grid-template-columns: repeat(var(--steps, 4), minmax(0, 1fr));
-    column-gap: 0;
-    row-gap: 1rem;
-    align-items: start;
-  }
-
-  .stepper-list, .stepper-step { display: contents; }
-
-  /* One continuous 2px rail under the strip, in the site's tab language: the
-     active head owns its segment of it. Every cell stretches to the tallest, so
-     a two-line title does not drop its rule below its neighbours'. */
-  .stepper-head {
-    grid-row: 1;
-    align-items: flex-start;
-    align-self: stretch;
-    width: auto;
-    padding: .75rem 1rem .875rem 0;
-    box-shadow: inset 0 -2px 0 var(--border-subtle);
-  }
-
-  .stepper-step.is-active .stepper-head { box-shadow: inset 0 -2px 0 var(--action); }
-
-  /* .25rem on top of the grid's 1rem row gap: 1.25rem between the description
-     and the picture it describes. */
-  .step-frames { grid-row: 3; grid-column: 1 / -1; align-self: start; margin-top: .25rem; }
-  .step-frame { width: 100%; }
-
-  /* One column, at body weight — the description of the step, not a caption of
-     the picture. Every body is placed in the same cell, so the row is as tall
-     as the tallest step and the picture under it never moves when the reader
-     switches steps; the closed ones keep their space but go invisible, which
-     also takes them out of the tab order and the accessibility tree. A floor of
-     5.5rem holds the row where every step is short. */
-  .stepper-body {
-    grid-row: 2;
-    grid-column: 1 / -1;
-    gap: .75rem;
-    padding: .25rem 0 0;
-    min-height: 5.5rem;
-  }
-
-  /* The one place where a closed panel keeps its cell. Every body is placed in
-     the same grid cell, so the row is as tall as the tallest step and the
-     picture under it never moves when the reader switches; `visibility` keeps
-     the closed ones out of the tab order and the accessibility tree, which the
-     `hidden` attribute did before. It has to out-shout the global
-     `[hidden] { display: none !important }` above, and it is scoped tightly
-     enough — one component, one breakpoint — to be worth it. The accordion
-     below 901px is untouched, and so is the archive theme, which never sees
-     this rule and still hides the panel outright. */
-  .stepper-body[hidden] { display: flex !important; visibility: hidden; }
-
-  .stepper-text { font-size: var(--fs-body); line-height: 1.35; color: var(--text); max-width: 44rem; }
-  .stepper-features li { font-size: var(--fs-sm); line-height: 1.5; color: var(--text-body); }
-  .stepper-features .icon { width: 1rem; height: 1rem; }
-}
-
-/* ——— industry use cases: the tab component ————————————— */
-
-.ind-tablist { display: flex; flex-wrap: wrap; gap: .5rem; }
-
-.ind-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  padding: .5rem .875rem;
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: var(--bg-inset);
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-  cursor: pointer;
-  transition: color var(--t-base) var(--ease), border-color var(--t-base) var(--ease), background-color var(--t-base) var(--ease);
-}
-
-.ind-tab .icon { width: 1rem; height: 1rem; color: var(--text-dim); flex: none; transition: color var(--t-base) var(--ease); }
-.ind-tab:hover { color: var(--text);  }
-.ind-tab.is-active { background: var(--surface-select); border-color: var(--action); color: var(--text); font-weight: 400; }
-.ind-tab.is-active .icon { color: var(--action-pressed); }
-
-.ind-panel {
-  display: grid;
-  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-  gap: clamp(1.25rem, 2.4vw, 2rem);
-  align-items: start;
-  margin-top: 1.25rem;
-}
-
-.ind-panel:focus-visible { outline: 2px solid var(--action); outline-offset: 4px; }
-.ind-figure { align-self: stretch; display: block; margin: 0; border: 1px solid var(--border-subtle); border-radius: 0; overflow: hidden; }
-.ind-figure img { width: 100%; height: 100%; min-height: 15.5rem; object-fit: cover; display: block; }
-.ind-case { display: flex; flex-direction: column; gap: .5rem; }
-.ind-case-name { font-family: var(--font-sans); font-weight: 400; font-size: 1.125rem; text-transform: uppercase; line-height: 1.15; color: var(--text); }
-.ind-case .eyebrow { margin-top: .5rem; }
-.ind-case-text { font-size: var(--fs-sm); line-height: 1.65; color: var(--text-body); }
-.ind-note { margin-top: 1.25rem; }
+/* The industry tabs of the Use cases tab are styled in the Round 20 · Use
+   cases block. */
 
 /* ——— solution stack: one accordion, top to bottom ————— */
 
@@ -2404,79 +2152,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .stack-dir { display: flex; align-items: center; gap: .5rem; margin-top: .75rem; }
 .stack-dir .icon { width: .875rem; height: .875rem; }
 
-/* ——— the contact card ————————————————————————————————— */
-
-.contact-card {
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(1.25rem, 2vw, 1.75rem);
-  padding: clamp(1.5rem, 2.4vw, 2rem);
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: var(--bg-inset);
-}
-
-.contact-card--form { margin-bottom: 2rem; }
-.contact-card--lead { max-width: 48rem; }
-
-.contact-photo {
-  position: relative;
-  flex: none;
-  width: 5.5rem; height: 5.5rem;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--surface-fact);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.contact-initials { font-family: var(--font-sans); font-weight: 700; font-size: 1.5rem; letter-spacing: 0; color: var(--text); }
-.contact-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.contact-card-copy { display: flex; flex-direction: column; gap: .3125rem; min-width: 0; }
-.contact-name { font-size: 1.125rem; font-weight: 700; line-height: 1.3; color: var(--text); }
-.contact-title { font-size: var(--fs-sm); color: var(--text-muted); }
-
-/* An address is a link, not a call to action. It is read at body size with a
-   rule under it, so it stays an obvious target while the one filled button on
-   the screen remains the thing that asks the reader to act. */
-.contact-mail {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  align-self: flex-start;
-  max-width: 100%;
-  margin-top: .375rem;
-  font-size: var(--fs-body);
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--text);
-  border-bottom: 1px solid var(--border-hairline);
-  transition: color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
-}
-
-.contact-mail span { min-width: 0; overflow-wrap: anywhere; }
-.contact-mail .icon { width: .875rem; height: .875rem; flex: none; }
-.contact-mail:hover, .contact-mail:focus-visible { color: var(--action-hover); border-bottom-color: var(--action-hover); }
-
-.contact-social {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  align-self: flex-start;
-  margin-top: .375rem;
-  font-size: var(--fs-sm);
-  color: var(--action);
-  border-bottom: 1px solid transparent;
-}
-
-.contact-social:hover { color: var(--action-hover); border-bottom-color: var(--action-hover); }
-.contact-social .icon { width: 1rem; height: 1rem; flex: none; }
-.contact-blurb { margin-top: .5rem; font-size: var(--fs-sm); line-height: 1.6; color: var(--text-body); max-width: 40rem; }
-
-.detail-full { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 1rem; }
-.detail-note { max-width: none; }
+/* The contact card, the switch and the form fields inside them are styled in
+   the Round 20 · Contacts block. */
 
 /* ——— POV tab —————————————————————————————————————————— */
 
@@ -2598,9 +2275,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 @media (max-width: 1100px) {
   .def-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ov-layout { grid-template-columns: minmax(0, 1fr); }
-  .ov-rail { height: auto; }
-  .rail-card--pin { position: static; }
   .tier-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
   .tier { grid-row: auto; display: flex; flex-direction: column; }
   .tier-body { flex: 1; }
@@ -2617,16 +2291,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     background:
       linear-gradient(to bottom, rgba(255, 255, 255, .62) 0%, rgba(255, 255, 255, .80) 34%, rgba(255, 255, 255, .90) 72%, var(--bg) 100%);
   }
-  .ps-strip { grid-template-columns: minmax(0, 1fr); }
-  .ps-arrow { transform: rotate(90deg); justify-self: center; }
-  .ind-panel { grid-template-columns: minmax(0, 1fr); }
-  .ind-figure img { height: auto; min-height: 0; aspect-ratio: 16 / 10; }
   .stack-row { grid-template-columns: auto minmax(0, 1fr) auto; min-height: 4.5rem; }
   .stack-summary { grid-column: 1 / -1; grid-row: 2; }
-  .contact-card { flex-direction: column; }
-  .detail-wrap { grid-template-columns: minmax(0, 1fr); }
   .split-two { grid-template-columns: 1fr; }
-  .scope-grid { grid-template-columns: 1fr; }
   .layer-row { grid-template-columns: 1fr; gap: .375rem; }
   .product-title { max-width: none; }
 }
@@ -2737,46 +2404,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .next-tier-facts dt { font-size: var(--fs-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); }
 .next-tier-facts dd { margin: 0; font-size: var(--fs-sm); line-height: 1.5; color: var(--text); }
 
-/* ——— contacts: one component, two columns ——————————————— */
-
-/* Round 10: the columns start level and each ends where its own content ends.
-   Stretching the card to the form's height left a person's name floating above
-   a field of empty inset — a card is not a container to fill. */
-.contact-split { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(2rem, 3.5vw, 3.5rem); align-items: start; }
-.contact-split-card { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; }
-.contact-split-form { display: flex; flex-direction: column; gap: 1rem; min-width: 0; scroll-margin-top: calc(var(--nav-h) + 5rem); }
-.contact-split-form .site-form { max-width: none; }
-.contact-split-sub { max-width: 40rem; margin-bottom: .5rem; }
-
-.contact-card--panel { flex-direction: column; align-items: stretch; gap: 1.25rem; flex: 0 0 auto; }
-.contact-card--panel .contact-photo { width: 5rem; height: 5rem; }
-
-/* Round 13: a product's Contacts card names two people over one address. Each
-   person is a row, the photo beside the name and title, so the pair reads as
-   one team and the mailbox under them is plainly shared rather than one
-   person's. */
-.contact-people { display: flex; flex-direction: column; gap: 1rem; margin: 0; padding: 0; list-style: none; }
-.contact-person { display: flex; align-items: center; gap: 1rem; min-width: 0; }
-.contact-person-copy { display: flex; flex-direction: column; gap: .25rem; min-width: 0; }
-.contact-card--team .contact-photo { width: 4.5rem; height: 4.5rem; }
-.contact-card--team .contact-mail { margin-top: 0; }
-
-/* ——— contacts: the switch, one form on the screen ——————— */
-
-/* Round 10b: the kit moved from a second row into the second tab of a switch,
-   so it is reachable without scrolling and only one form is ever open. The
-   selected segment is the column's heading, which is why neither panel repeats
-   it. The control is capped so two uppercase labels do not stretch across the
-   whole column and stop reading as a switch. */
-.contact-tabs { display: flex; flex-direction: column; min-width: 0; }
-.contact-segmented { max-width: 30rem; }
-.contact-pane { display: flex; flex-direction: column; gap: 1rem; min-width: 0; margin-top: 1.25rem; }
-
-/* The kit form fills its panel here, like the ask form in the other tab: two
-   tabs of one switch may not print two form widths. */
-.contact-pane .kit-form { display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 0; }
-.contact-pane .form-status:empty { display: none; }
-
 @media (max-width: 1100px) {
   .cap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -2785,7 +2412,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .pillar-row { grid-template-columns: minmax(0, 1fr); }
   .js-split, .js-split--invest { grid-template-columns: minmax(0, 1fr); }
   .next-grid { grid-template-columns: minmax(0, 1fr); }
-  .contact-split { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 640px) {
@@ -2847,8 +2473,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .ptile, .gtile, .tier, .case-card, .plat-card, .panel, .split-col, .layer-band,
   .light-band, .light-band-media, .light-band-copy, .form-confirm,
   .case-callout, .media-figure, .pillar, .invest-card, .next-tier,
-  .ps-panel, .stat-tiles, .stat-tile, .roi-band, .cap-stage,
-  .video-card, .rail-card, .step-frame, .ind-figure,
+  .ps-plate, .kpi, .cap-stage,
+  .video-card, .hiw-shot, .ind-figure,
   .stack-accordion, .stack-row, .stack-body, .contact-card {
     background: #fff !important;
     border-color: #bbb !important;
@@ -3795,3 +3421,433 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .js-reveal .bo.reveal .bo-band { opacity: 1; transform: none; transition-delay: 0s; }
   .js-reveal .bo.reveal .bo-link { stroke-dashoffset: 0; transition-delay: 0s; }
 }
+
+/* ===== Round 20 · Use cases ===== */
+/* D-design §1 and §3, after Alex's "all blocks are too greyish" (2026-09-29).
+   The tab carries one grey step and one dark plate. The industry tabs are
+   text on white over one hairline, the selected one in ink on a 2px blue
+   underline, the site's own tab language; a row too long for its width
+   scrolls sideways like the tab bar above it, and fades at its end only while
+   it overflows (pages/product.js). The selected industry is one split plate,
+   softserveinc.com's "Client Voice": the copy on #edf0f2, the problem and the
+   solution each a 20px heading over 18px Light text, the photograph edge to
+   edge, an 8px cut; below 901px the photograph stacks on top. The case study
+   is the tab's one dark plate, #1a1a1a with a 12px cut: the narrative left,
+   the evidence right behind a light rule, each figure 64px Replica Light (no
+   Azurio) under the orange-75 fact dash. Every selector here is .ind-* or
+   inside .case-callout, so the home page's case cards (UI.caseCard) keep
+   their look; the checker holds it. */
+
+.ind-block { gap: 0; }
+
+.ind-tablist {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  box-shadow: inset 0 -1px 0 var(--border-hairline);
+}
+
+.ind-tablist::-webkit-scrollbar { display: none; }
+
+.ind-tablist.is-scrolling {
+  padding-right: 3rem;
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 3rem), rgba(0, 0, 0, .12) 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 3rem), rgba(0, 0, 0, .12) 100%);
+}
+
+/* The tab bar's own padding, so the first label sits under the tab bar's
+   first label and the underline runs the width of the tab. */
+.ind-tab {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .875rem 1.5rem 1rem;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--text-muted);
+  box-shadow: inset 0 -2px 0 transparent;
+  cursor: pointer;
+  transition: color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+}
+
+.ind-tab .icon { width: 1rem; height: 1rem; flex: none; }
+.ind-tab:hover { color: var(--text); }
+.ind-tab.is-active { color: var(--text); box-shadow: inset 0 -2px 0 var(--action); }
+/* Inside the tab: the row scrolls, and a scroller clips what lies outside it. */
+.ind-tab:focus-visible { outline: 2px solid var(--action); outline-offset: -2px; }
+
+.ind-panels { margin-top: 2rem; }
+
+.ind-panel {
+  --cut: var(--cut-8);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+
+/* The plate's cut clips anything drawn outside it, so the focus ring is drawn
+   inside, over the photograph too. */
+.ind-panel:focus-visible { outline: none; }
+.ind-panel:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  box-shadow: inset 0 0 0 2px var(--action);
+  pointer-events: none;
+}
+
+.ind-case { display: flex; flex-direction: column; gap: 2rem; min-width: 0; padding: 2.5rem; }
+.ind-case-part { display: flex; flex-direction: column; gap: .5rem; }
+.ind-case-title { font-family: var(--font-sans); font-weight: 400; font-size: 1.25rem; line-height: 1.2; letter-spacing: 0; color: var(--text); }
+.ind-case-text { max-width: 40rem; font-size: 1.125rem; font-weight: 300; line-height: 1.4; color: var(--text-body); text-wrap: pretty; }
+
+/* The photograph fills its half at any height the copy takes, and never sets
+   that height itself. */
+.ind-figure { position: relative; min-height: 22.5rem; margin: 0; background: var(--surface-fact); }
+.ind-figure img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+
+.ind-note { margin-top: 1rem; max-width: 52rem; font-size: .875rem; line-height: 1.5; color: var(--text-muted); }
+
+/* — the case study: the tab's one dark plate — */
+.case-callout { background: var(--surface-dark-raised); color: #ffffff; overflow: hidden; }
+
+.case-callout .case-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  padding: 3rem;
+}
+
+.case-callout .case-main,
+.case-callout .case-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.case-callout .case-main { padding-right: 3rem; }
+.case-callout .case-side { align-self: stretch; padding-left: 3rem; border-left: 1px solid rgba(255, 255, 255, .2); }
+
+.case-callout .eyebrow { color: var(--surface-fact); }
+
+.case-callout .case-head { display: flex; align-items: flex-start; gap: 1rem; }
+.case-callout .case-head-copy { display: flex; flex-direction: column; gap: .375rem; min-width: 0; }
+/* Greedy wrapping, not the headings' balance: balancing split "home-appliance"
+   at its hyphen. */
+.case-callout .case-descriptor { font-family: var(--font-sans); font-size: 1.75rem; font-weight: 400; line-height: 1.2; letter-spacing: 0; color: #ffffff; text-wrap: wrap; }
+.case-callout .case-area { font-size: 1rem; line-height: 1.4; color: var(--surface-fact); }
+
+/* The medallion and the status chip are white line on the plate: a 1px ring
+   cut at 4px (polygon evenodd), so the diagonal corners carry the line too. */
+.case-callout .case-medallion {
+  --cut: var(--cut-4);
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  color: #ffffff;
+}
+
+.case-callout .case-medallion .icon { width: 1.5rem; height: 1.5rem; }
+
+.case-callout .case-medallion::before,
+.case-callout .case-status::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: rgba(255, 255, 255, .6);
+  clip-path: polygon(evenodd,
+    4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px, 4px 0,
+    4.41px 1px, 1px 4.41px, 1px calc(100% - 4.41px), 4.41px calc(100% - 1px),
+    calc(100% - 4.41px) calc(100% - 1px), calc(100% - 1px) calc(100% - 4.41px),
+    calc(100% - 1px) 4.41px, calc(100% - 4.41px) 1px, 4.41px 1px);
+}
+
+.case-callout .case-status,
+.case-callout .case-status--in-preparation { --fill: transparent; --ring: none; color: #ffffff; }
+.case-callout .case-status-dot { background: #ffffff; }
+.case-callout .case-status--modeled .case-status-dot { background: linear-gradient(to right, #ffffff 0 50%, transparent 50% 100%); box-shadow: inset 0 0 0 1px #ffffff; }
+.case-callout .case-status--in-preparation .case-status-dot { background: transparent; box-shadow: inset 0 0 0 1px #ffffff; }
+
+.case-callout .case-text { max-width: 40rem; font-size: 1rem; font-weight: 300; line-height: 1.55; color: rgba(255, 255, 255, .85); text-wrap: pretty; }
+.case-callout .case-nda { font-size: .875rem; line-height: 1.45; color: var(--surface-fact); }
+.case-callout .case-link { margin-top: .25rem; }
+.case-callout .link-arrow { color: #ffffff; }
+.case-callout .link-arrow:hover { color: var(--surface-select); }
+.case-callout :focus-visible { outline-color: #ffffff; }
+
+/* Each figure under its own fact dash, stacked: the evidence column is too
+   narrow for two 64px figures side by side. */
+.case-callout .case-metrics { align-self: stretch; margin-top: .5rem; }
+.case-callout .case-figures { display: flex; flex-direction: column; gap: 2rem; }
+.case-callout .case-figure { display: block; }
+.case-callout .case-figure::before { content: ""; display: block; width: 2rem; height: .25rem; margin-bottom: 1rem; background: #fe8d6b; }
+.case-callout .case-figure-value {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: #ffffff;
+  text-wrap: balance;
+}
+.case-callout .case-figure-label { max-width: 30rem; margin-top: .75rem; font-size: 1rem; font-weight: 300; line-height: 1.4; color: rgba(255, 255, 255, .85); }
+
+/* Three external-safe facts, label above value — no contract value, no
+   contract duration, no headcount. */
+.case-callout .case-scope {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  align-self: stretch;
+  margin: .5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, .2);
+}
+.case-callout .case-scope dt { font-size: var(--fs-xs); line-height: 1.3; letter-spacing: .06em; text-transform: uppercase; color: var(--surface-fact); }
+.case-callout .case-scope dd { margin: .3125rem 0 0; font-size: 1rem; line-height: 1.4; color: #ffffff; }
+
+@media (max-width: 900px) {
+  .ind-panel { grid-template-columns: minmax(0, 1fr); }
+  .ind-figure { order: -1; min-height: 0; aspect-ratio: 16 / 9; }
+  .ind-case { gap: 1.5rem; padding: 2rem; }
+  .case-callout .case-body { grid-template-columns: minmax(0, 1fr); padding: 2rem; }
+  .case-callout .case-main { padding-right: 0; }
+  .case-callout .case-side { margin-top: 2rem; padding: 2rem 0 0; border-left: 0; border-top: 1px solid rgba(255, 255, 255, .2); }
+  .case-callout .case-figure-value { font-size: clamp(2.5rem, 1.25rem + 5vw, 4rem); }
+}
+
+@media (max-width: 720px) {
+  .ind-tab { padding: .875rem 1rem 1rem; }
+}
+
+@media (max-width: 540px) {
+  .ind-case { padding: 1.5rem; }
+  .case-callout .case-body { padding: 1.5rem; }
+  .case-callout .case-descriptor { font-size: 1.5rem; }
+}
+
+/* At 320 a 40px "productivity" fills the column to the pixel; one step down
+   keeps a margin for a wider rendering of the face. */
+@media (max-width: 360px) {
+  .case-callout .case-figure-value { font-size: 2.25rem; }
+}
+
+@media print {
+  .ind-tablist { box-shadow: none; -webkit-mask-image: none; mask-image: none; }
+  .ind-panel { background: #ffffff !important; border: 1px solid #bbbbbb; }
+  .case-callout :is(.case-descriptor, .case-figure-value, .case-scope dd, .case-status, .case-medallion) { color: #111111 !important; }
+  .case-callout :is(.eyebrow, .case-area, .case-text, .case-nda, .case-figure-label, .case-scope dt) { color: #333333 !important; }
+  .case-callout .case-status-dot { background: #111111 !important; }
+  .case-callout .case-medallion::before, .case-callout .case-status::after { background: #bbbbbb !important; }
+}
+/* ===== end Round 20 · Use cases ===== */
+
+/* ===== Round 20 · Contacts ===== */
+/* D-design §4, after Alex's "all blocks are too greyish" (2026-09-29): the one
+   contact component, UI.contactSwitch, on both of its surfaces (a product's
+   Contacts tab and the home page's closing screen), set as softserveinc.com
+   sets a contact form (R1 §5): a full-bleed #edf0f2 band holding one white
+   plate, 12px cut. The card at the left: the people as rows, each round
+   portrait on a square brand-fill tile (blue 75, then orange 75), then the one
+   mailbox as a blue link, never a filled button, and the one line. At the
+   right the switch, two text tabs over a hairline, and the form in white
+   fields with a hairline border; the blue submit is the plate's one filled
+   control. From 1100px down the plate stacks, card over form.
+   Grey on grey: the footer opens on the same #edf0f2 spacer, and a grey band
+   right above it would merge with it into one grey mass. So the band is the
+   page's last grey: the section that hosts it gives up its bottom padding (and
+   on a product tab its top one too, so the band meets the tab bar), the band
+   runs into the black footer, and the footer's spacer is not drawn after a
+   page that ends on it; the band's own 64px is the breathing room the spacer
+   gave. Every field rule is scoped to .contact-tabs, so #/sellers keeps its
+   own form. */
+
+/* Full-bleed without leaving the wrap: the ground is a border-image painted
+   100vw past each side, ink overflow, so the page never scrolls sideways. */
+.contact-band {
+  padding-block: 4rem;
+  border-image: linear-gradient(var(--bg-raised), var(--bg-raised)) fill 0 / 0 / 0 100vw;
+}
+
+.contact-plate { --cut: var(--cut-12); padding: 3rem; background: #ffffff; }
+
+.section--tabs:has(.contact-band) { padding-block: 0; }
+.home-contact { padding-bottom: 0; }
+#app:has(> :last-child .contact-band) + .site-footer::before { display: none; }
+
+/* The columns start level and each ends where its own content ends. */
+.contact-split { display: grid; grid-template-columns: 22rem minmax(0, 1fr); gap: 3rem; align-items: start; }
+.contact-split-card { display: flex; flex-direction: column; min-width: 0; }
+.contact-split-form { display: flex; flex-direction: column; min-width: 0; scroll-margin-top: calc(var(--nav-h) + 5rem); }
+.contact-split-form .site-form { max-width: none; }
+.contact-split-sub { max-width: 40rem; }
+
+/* The card has no surface of its own: the plate is the surface. */
+.contact-card { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; padding: 0; border: 0; background: none; }
+.contact-people { display: flex; flex-direction: column; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+.contact-person { display: flex; align-items: center; gap: 1.25rem; min-width: 0; }
+
+/* A 96px brand fill, 4px cut, holding the 80px round portrait: Lviv blue 75
+   for the first person, Austin orange 75 for the second. */
+.contact-tile {
+  --cut: var(--cut-4);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 6rem;
+  height: 6rem;
+  background: #459fdd;
+}
+
+.contact-person:nth-child(even) .contact-tile { background: #fe8d6b; }
+
+.contact-photo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--surface-fact);
+}
+
+.contact-initials { font-family: var(--font-sans); font-weight: 400; font-size: 1.5rem; letter-spacing: 0; color: var(--text); }
+.contact-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.contact-person-copy { display: flex; flex-direction: column; gap: .25rem; min-width: 0; }
+.contact-name { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 400; line-height: 1.2; letter-spacing: 0; color: var(--text); }
+.contact-title { font-size: 1rem; font-weight: 300; line-height: 1.35; color: var(--text-muted); }
+.contact-card-copy { display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
+
+/* An address is a link, never a filled button: blue, its glyph, no fill. */
+.contact-mail {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  align-self: flex-start;
+  max-width: 100%;
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--action);
+  transition: color var(--t-base) var(--ease);
+}
+
+.contact-mail span { min-width: 0; overflow-wrap: anywhere; }
+.contact-mail .icon { width: 1.125rem; height: 1.125rem; flex: none; }
+.contact-mail:hover, .contact-mail:focus-visible { color: var(--action-pressed); text-decoration: underline; text-underline-offset: .2em; }
+
+.contact-social { display: inline-flex; align-items: center; gap: .5rem; align-self: flex-start; font-size: var(--fs-sm); color: var(--action); }
+.contact-social:hover { color: var(--action-pressed); }
+.contact-social .icon { width: 1rem; height: 1rem; flex: none; }
+.contact-blurb { max-width: 40rem; font-size: 1rem; font-weight: 300; line-height: 1.5; color: var(--text-body); }
+
+/* The switch: two text tabs over one hairline, the selected one in ink on a
+   2px blue underline, the site's own tab language. The markup stays the
+   segmented control's (a tablist of two .segment tabs); this component only
+   takes its fill, its frame and its cut away. */
+.contact-tabs { display: flex; flex-direction: column; min-width: 0; }
+
+.contact-segmented {
+  gap: 2rem;
+  width: 100%;
+  max-width: none;
+  border: 0;
+  background: none;
+  overflow: visible;
+  clip-path: none;
+  box-shadow: inset 0 -1px 0 var(--border-hairline);
+}
+
+.contact-segmented .segment {
+  --fill: transparent;
+  --ring: none;
+  flex: none;
+  padding: .75rem 0 .875rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  text-align: left;
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+.contact-segmented .segment + .segment { box-shadow: none; }
+.contact-segmented .segment:hover { --fill: transparent; color: var(--text); }
+.contact-segmented .segment[aria-selected="true"] { --fill: transparent; --ring: inset 0 -2px 0 var(--action); color: var(--text); }
+/* With no fill, the pressable's ring pseudo would show as a solid block: the
+   tab takes a plain outline instead. */
+.contact-segmented .segment:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.contact-segmented .segment:focus-visible::after { content: none; }
+
+.contact-pane { display: flex; flex-direction: column; gap: 1rem; min-width: 0; margin-top: 1.5rem; }
+
+/* The kit form fills its pane, like the ask form in the other tab: two tabs of
+   one switch may not print two form widths. */
+.contact-pane .kit-form { display: flex; flex-direction: column; gap: 1.25rem; width: 100%; margin-top: 0; }
+.contact-pane .form-status:empty { display: none; }
+
+/* The fields: labels 14px Replica 400 in ink, sentence case; white inputs 48px
+   tall with a 1px #bdcbd7 border and no radius, blue on focus. Both panes. */
+.contact-tabs .site-form { gap: 1.5rem; }
+.contact-tabs .form-grid { gap: 1.25rem 1.5rem; }
+.contact-tabs .field-label { padding: 0; font-family: var(--font-sans); font-size: .875rem; font-weight: 400; line-height: 1.3; letter-spacing: 0; text-transform: none; color: var(--text); }
+.contact-tabs :is(.input, .select, .textarea) { border: 1px solid var(--border); border-radius: 0; background: #ffffff; font-size: 1rem; font-weight: 300; color: var(--text); }
+.contact-tabs :is(.input, .select) { height: 3rem; padding: 0 .75rem; }
+.contact-tabs .textarea { min-height: 10rem; padding: .75rem; }
+.contact-tabs :is(.input, .select, .textarea):hover { background: #ffffff; border-color: var(--text-muted); }
+.contact-tabs :is(.input, .select, .textarea):focus { outline: none; background: #ffffff; border-color: var(--action); box-shadow: inset 0 0 0 1px var(--action); }
+
+/* The plate stacks, card over form, from 1100 down rather than 900: at 1024
+   the 352px card left the form 336px, two fields of 156px and a clipped
+   product select. Stacked, the people sit side by side while two fit. */
+@media (max-width: 1100px) {
+  .contact-split { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .contact-split .contact-split-form { padding-top: 2rem; border-top: 1px solid var(--border-hairline); }
+  .contact-people { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: 1.25rem 2.5rem; }
+}
+
+@media (max-width: 900px) {
+  .contact-band { padding-block: 2.5rem; }
+  .contact-plate { padding: 2rem; }
+}
+
+@media (max-width: 540px) {
+  .contact-band { padding-block: 1.5rem; }
+  .contact-plate { padding: 1.5rem 1.25rem; }
+  .contact-person { gap: 1rem; }
+  .contact-tile { width: 5rem; height: 5rem; }
+  .contact-photo { width: 4rem; height: 4rem; }
+}
+
+@media print {
+  .contact-band { padding-block: 0; border-image: none; }
+  .contact-plate { padding: 0; }
+}
+/* ===== end Round 20 · Contacts ===== */

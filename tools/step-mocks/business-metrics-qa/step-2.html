@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Business metrics Q&amp;A — Definitions</title>
+<link rel="stylesheet" href="../shell-b.css">
+<style>
+  .grid2 { display: grid; grid-template-columns: 420px 1fr; gap: 20px; }
+  .row2 { margin-top: 20px; }
+  .def { padding: 17px 20px 14px; }
+  .formula { font-size: 17px; font-weight: 500; color: var(--ink); margin: 7px 0 0; line-height: 1.6; white-space: nowrap; }
+  .formula b { font-weight: 600; }
+  .formula .op { color: var(--muted); margin: 0 1px; }
+  .tok { font-family: var(--mono); font-size: 13.5px; font-weight: 500; background: #eef2ff; color: #3730a3; border-radius: 5px; padding: 2px 6px; }
+  .signed { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .signed .by { font-size: 13.5px; color: var(--txt-2); margin-top: 7px; }
+  .def .kv { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--line); grid-template-columns: 78px 1fr; font-size: 13.5px; gap: 5px 12px; }
+  .terms { padding: 16px 20px 8px; }
+  .terms .card-head { margin-bottom: 6px; }
+  .terms .tbl td { padding: 5px 10px 5px; vertical-align: top; white-space: nowrap; }
+  .terms .tbl tbody tr:first-child td { padding-top: 8px; }
+  .terms .tbl td:first-child, .terms .tbl th:first-child { padding-left: 0; }
+  .terms .tbl th { background: transparent; }
+  .terms .tbl .t { font-weight: 600; color: var(--ink); }
+  .terms .tbl .src-n { display: block; font-weight: 500; color: var(--ink); }
+  .terms .tbl .mono { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .hist, .used { padding: 16px 20px; }
+  .hist h3, .used h3 { font-size: 16px; }
+  .ver { display: grid; grid-template-columns: 34px 1fr; gap: 2px 10px; padding: 10px 0; border-top: 1px solid var(--row); }
+  .card-head + .ver { border-top: 0; }
+  .ver .v { grid-row: 1 / span 2; font-family: var(--mono); font-size: 12.5px; font-weight: 600; color: var(--c-grey); background: var(--c-grey-bg); border-radius: 5px; height: 22px; display: grid; place-items: center; }
+  .ver.is-cur .v { background: var(--c-green-bg); color: var(--c-green); }
+  .ver b { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .ver span { font-size: 13px; color: var(--muted); }
+  .used .tbl td { padding: 9px 10px; }
+  .used .tbl td:first-child, .used .tbl th:first-child { padding-left: 0; }
+  .used .tbl th { background: transparent; }
+  .used-note { font-size: 13px; color: var(--txt-2); margin-top: 10px; display: flex; gap: 8px; align-items: center; }
+  .used-note svg.i { color: var(--c-green); }
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3.5 8 4.2v8.6l-8 4.2-8-4.2V7.7z"/><path d="m4 7.7 8 4.3 8-4.3M12 12v8.5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5.5 4.5h10a3 3 0 0 1 3 3v13h-10a3 3 0 0 1-3-3z"/><path d="M5.5 17.5a3 3 0 0 1 3-3h10"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5.8" rx="6.8" ry="2.6"/><path d="M5.2 5.8v12.4c0 1.45 3.05 2.6 6.8 2.6s6.8-1.15 6.8-2.6V5.8"/><path d="M5.2 12c0 1.45 3.05 2.6 6.8 2.6s6.8-1.15 6.8-2.6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5.5 6v5.2c0 4.3 2.8 7.8 6.5 9.3 3.7-1.5 6.5-5 6.5-9.3V6z"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><circle cx="5.5" cy="6" r="2"/><circle cx="5.5" cy="18" r="2"/><circle cx="18.5" cy="12" r="2"/><path d="M7.5 6h3a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M7.5 18h3a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4.5 19.5h4l10-10-4-4-10 10z"/><path d="m13 7 4 4"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3.2-3.2a4 4 0 0 0-5.7-5.7L12 6.3"/><path d="M14 10a4 4 0 0 0-5.7 0L5.1 13.2a4 4 0 0 0 5.7 5.7L12 17.7"/></symbol>
+</svg>
+
+<div class="frame">
+  <header class="wsb">
+    <div class="wsb-id">
+      <span class="wsb-cube"></span>
+      <span class="wsb-name"><b>Arvane Group</b> workspace</span>
+      <span class="wsb-ctx">Group finance · Tue 29 Sep 2026</span>
+    </div>
+    <nav class="wsb-tabs">
+      <span class="wsb-tab"><i class="glyph glyph--hub"></i><span class="wsb-lab"><b>AI Data Platform</b><em>Agent Hub</em></span></span>
+      <span class="wsb-tab is-active"><i class="glyph glyph--lh"></i><span class="wsb-lab"><b>Autonomous AI Lakehouse</b><em>Catalog</em></span></span>
+      <span class="wsb-tab"><i class="glyph glyph--au"></i><span class="wsb-lab"><b>Audit</b><em>lineage &amp; access</em></span></span>
+    </nav>
+    <div class="wsb-right">
+      <span class="wsb-syn">Synthetic data</span>
+      <span class="wsb-av">EM</span>
+    </div>
+  </header>
+
+  <div class="body">
+    <nav class="side">
+      <div class="side-app"><span class="tile tile--lh"><svg class="i"><use href="#i-grid"/></svg></span><div><b>Catalog</b><span>Gold layer · finance</span></div></div>
+      <span class="side-item"><svg class="i"><use href="#i-grid"/></svg>Overview</span>
+      <span class="side-item"><svg class="i"><use href="#i-box"/></svg>Data products</span>
+      <span class="side-item is-active"><svg class="i"><use href="#i-book"/></svg>Definitions<span class="cnt">14</span></span>
+      <span class="side-item"><svg class="i"><use href="#i-db"/></svg>Sources<span class="cnt">3</span></span>
+      <span class="side-item"><svg class="i"><use href="#i-shield"/></svg>Access policies</span>
+      <span class="side-item"><svg class="i"><use href="#i-flow"/></svg>Lineage</span>
+      <div class="side-cap">Finance definitions</div>
+      <span class="side-rec" style="font-weight:600;color:var(--ink)">Net revenue</span>
+      <span class="side-rec">Gross margin</span>
+      <span class="side-rec">Returns rate</span>
+      <span class="side-rec">Inventory days</span>
+      <span class="side-rec">Customer churn</span>
+      <div class="side-foot"><span class="av">EM</span><div><b>Elena Marsh</b><span>Finance lead</span></div></div>
+    </nav>
+
+    <main class="main">
+      <div class="crumbs"><a>Catalog</a><span class="sep">›</span><a>Business definitions</a><span class="sep">›</span><b>Net revenue</b></div>
+      <div class="page-head">
+        <div>
+          <h1>Net revenue <span class="title-chips"><span class="chip chip--green"><svg class="i"><use href="#i-check"/></svg>Certified</span><span class="chip chip--grey">Finance · group</span></span></h1>
+          <p class="sub">The one meaning of net revenue that every answer, dashboard and report in the group uses.</p>
+        </div>
+        <div class="acts">
+          <span class="btn"><svg class="i"><use href="#i-edit"/></svg>Propose a change</span>
+          <span class="btn btn--primary">Ask with this definition <svg class="i"><use href="#i-send"/></svg></span>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <section class="card def" id="region">
+          <div class="eyebrow">Definition · version 3</div>
+          <p class="formula"><b>Net revenue</b> <span class="op">=</span> <span class="tok">invoiced</span> <span class="op">−</span> <span class="tok">credits</span> <span class="op">−</span> <span class="tok">returns</span></p>
+          <div class="signed">
+            <span class="chip chip--green chip--lg"><svg class="i"><use href="#i-check"/></svg>Signed off by Group FP&amp;A · v3</span>
+            <p class="by">Tomas Reyes, Group FP&amp;A · 12 Aug 2026</p>
+          </div>
+          <dl class="kv">
+            <dt>Effective</dt><dd>From 1 Aug 2026, all entities</dd>
+            <dt>Currency</dt><dd>EUR at group monthly rates</dd>
+          </dl>
+        </section>
+
+        <section class="card terms">
+          <div class="card-head"><h3>How each term is computed</h3><span class="chip chip--blue r">3 sources · read in place</span></div>
+          <table class="tbl">
+            <thead><tr><th style="width:92px">Term</th><th style="width:236px">Read from</th><th>Rule</th></tr></thead>
+            <tbody>
+              <tr><td class="t">Invoiced</td><td><span class="src-n">Snowflake (AWS)</span><span class="mono">sales.invoice_lines.net_amount</span></td><td>Posted, intercompany excluded</td></tr>
+              <tr><td class="t">Credits</td><td><span class="src-n">On-premises Oracle</span><span class="mono">fin.credit_notes.amount</span></td><td>Approved, by invoice date</td></tr>
+              <tr><td class="t">Returns</td><td><span class="src-n">Databricks (Azure)</span><span class="mono">ops.returns.value_at_invoice</span></td><td>At invoice price, not list</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="grid2 row2">
+        <section class="card hist">
+          <div class="card-head"><h3>Version history</h3></div>
+          <div class="ver is-cur"><span class="v">v3</span><b>Current · signed off 12 Aug 2026</b><span>Returns valued at invoice price, not list price</span></div>
+          <div class="ver"><span class="v">v2</span><b>Superseded 12 Aug 2026</b><span>Credit notes counted by invoice date</span></div>
+          <div class="ver"><span class="v">v1</span><b>Retired 3 Mar 2026</b><span>Invoiced less credits; returns left out</span></div>
+        </section>
+
+        <section class="card used">
+          <div class="card-head"><h3>Where it is used</h3><span class="chip chip--green r">All on v3</span></div>
+          <table class="tbl">
+            <thead><tr><th>Used by</th><th>Kind</th><th>Version</th><th class="r">Last read</th></tr></thead>
+            <tbody>
+              <tr><td>Group revenue dashboard</td><td class="muted">Dashboard</td><td><span class="chip chip--green">v3</span></td><td class="r muted">07:40 today</td></tr>
+              <tr><td>Regional P&amp;L pack</td><td class="muted">Report</td><td><span class="chip chip--green">v3</span></td><td class="r muted">1 Sep</td></tr>
+              <tr><td>Board pack, monthly</td><td class="muted">Report</td><td><span class="chip chip--green">v3</span></td><td class="r muted">2 Sep</td></tr>
+              <tr><td>Metrics Q&amp;A answers</td><td class="muted">Agent Hub</td><td><span class="chip chip--green">v3</span></td><td class="r muted">38 this month</td></tr>
+            </tbody>
+          </table>
+          <p class="used-note"><svg class="i"><use href="#i-check"/></svg>The revenue dashboard and the P&amp;L pack moved from v2 to v3 on 12 Aug.</p>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

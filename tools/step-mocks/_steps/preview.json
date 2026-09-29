@@ -1,0 +1,5 @@
+[
+  {"sleep": 300},
+  {"eval": "(()=>{const el=document.querySelector('[data-region]'); const r=el?el.getBoundingClientRect():null; const over=[...document.querySelectorAll('body *')].filter(e=>{const b=e.getBoundingClientRect(); return b.width>0 && (b.right>1280.5 || b.bottom>800.5);}).slice(0,6).map(e=>e.tagName+'.'+e.className+' '+Math.round(e.getBoundingClientRect().right)+'x'+Math.round(e.getBoundingClientRect().bottom)); return {region: r?{x:r.x,y:r.y,w:r.width,h:r.height}:null, sw: document.documentElement.scrollWidth, sh: document.documentElement.scrollHeight, over};})()"},
+  {"shot": "preview"}
+]

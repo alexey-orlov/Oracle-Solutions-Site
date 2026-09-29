@@ -1,0 +1,5 @@
+[
+  {"eval": "document.fonts.ready.then(() => true)"},
+  {"eval": "(() => { const r = document.querySelector('#region').getBoundingClientRect(); const mk = [...document.querySelector('.mark').getClientRects()]; const top = Math.min(...mk.map(b => b.top)), bot = Math.max(...mk.map(b => b.bottom)); const m = 6; const rw = Math.ceil(r.width) + 2 * m, rh = Math.ceil(r.height) + 2 * m; const insetTopCss = (521 - rh * 401 / rw) / 0.68125; return { region: [Math.floor(r.x) - m, Math.floor(r.y) - m, rw, rh], markTop: Math.round(top), markBottom: Math.round(bot), blInsetTopCss: Math.round(insetTopCss) }; })()"},
+  {"shot": "measure"}
+]

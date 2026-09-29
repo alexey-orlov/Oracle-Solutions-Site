@@ -198,15 +198,28 @@ window.SITE_CONTENT = {
         tooltip: "Estimated for an engagement now being prepared, against the way the work is done today."
       }
     },
+    /* Round 20: the kind chip on each KPI tile of a product's Overview, in the
+       case study's own three words. */
+    metricKinds: {
+      proven: {
+        chip: "Proven",
+        tooltip: "Measured end to end during a completed proof of value, on the customer's own data."
+      },
+      forecast: {
+        chip: "Forecast",
+        tooltip: "Modeled on the customer's own history; not yet measured in production."
+      },
+      estimated: {
+        chip: "Estimated",
+        tooltip: "Set against published industry rates or the way the work is done today; the proof of value measures the real change."
+      }
+    },
     sectionLabels: {
-      metrics: "Metrics improved",
-      metricsPlanned: "What the proof of value measures",
-      roi: "ROI",
+      /* `scope` and its two columns rendered inside More detail, which round
+         20 removed; they stay for the Jumpstart tab next round. */
       scope: "Scope",
       scopeIn: "In scope",
       scopeOut: "Out of scope",
-      moreDetail: "More detail",
-      moreDetailFeatures: "Every feature, in full",
       architecture: "Architecture",
       stack: "Solution stack",
       capabilities: "Capabilities",
@@ -217,7 +230,15 @@ window.SITE_CONTENT = {
       industryCases: "By industry",
       caseProblem: "The problem",
       caseSolution: "The solution",
-      outcomes: "Outcomes & ROI",
+      /* Round 20, the Overview: the KPI band's one heading, the two plates'
+         eyebrows, the owner line under a tile, the tick of a range chart and
+         the words a baseline chart gives a screen reader before its end. */
+      outcomes: "What changes in your numbers",
+      problemEyebrow: "The problem",
+      solutionEyebrow: "The solution",
+      metricOwner: "Owner",
+      metricToday: "today",
+      metricToward: "improves toward",
       caseStudy: "Case study",
       layerRequired: "Required",
       layerOptional: "Optional",
@@ -605,27 +626,47 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Commercial teams work out by hand what a market development means for each account — slow, inconsistent, and blind to second-order effects across the portfolio.",
-            icon: "alert"
+            headline: "Sales teams hear about a customer's big move too late",
+            text: "A plant opening, a merger, a new market: the sales manager hears when the work is already scoped by somebody else, and nobody knows which other customers the news reaches."
           },
           solution: {
-            title: "THE SOLUTION",
-            text: "One signal becomes a scored, cited brief of the opportunities and risks it creates for every affected account, each mapped to a service line, including the ripple onto neighboring accounts.",
-            icon: "spark"
+            headline: "The next move for each account, in hours, with the evidence",
+            text: "One story becomes a scored, cited brief for each account it reaches, suppliers and competitors included: what to sell and what to protect. A seller approves what enters the CRM."
           }
         },
         metrics: [
-          { value: null, label: "Reviewer accept rate", qualifier: "The share of generated opportunities a reviewer approves", icon: "check" },
-          { value: null, label: "Confidence calibration", qualifier: "Scores checked against reviewer approve/reject decisions", icon: "gauge" },
-          { value: null, label: "Time to a qualified opportunity", qualifier: "Hours, rather than the next quarterly review", icon: "clock" },
-          { value: null, label: "Coverage of the account base", qualifier: "Every in-scope account a signal touches", icon: "network" }
+          {
+            key: "time-to-move",
+            title: "From an account's news to a next move",
+            kind: "estimated",
+            owner: "Head of sales",
+            figure: { text: "Hours" },
+            visual: {
+              form: "compression",
+              unit: "elapsed time",
+              direction: "down",
+              scale: { min: 0, max: 2184 },
+              before: { value: 2184, label: "the next quarterly review before" },
+              after: { value: 24, label: "hours after" }
+            },
+            line: "Reviewed by a seller and ready to act on, the day the news lands."
+          },
+          {
+            key: "week-not-selling",
+            title: "A seller's week not spent selling",
+            kind: "estimated",
+            owner: "Head of key-account management",
+            figure: { prefix: "from", text: "72%" },
+            visual: {
+              form: "baseline",
+              unit: "percent of the working week",
+              direction: "down",
+              scale: { min: 0, max: 100 },
+              before: { value: 72, label: "72% of the week today" }
+            },
+            line: "Research and briefing time handed back, customer by customer."
+          }
         ],
-        metricsNote: "The first engagement measures accuracy and confidence calibration, against the approve and reject decisions reviewers make on the generated opportunities.",
-        roi: {
-          icon: "roi",
-          text: "The unit of value is a qualified opportunity a seller would not otherwise have seen, and a material risk surfaced before it becomes a renewal conversation. Because the output is scored and cited, the proof of value can measure what matters: the share of generated opportunities a reviewer accepts."
-        },
         features: [
           "Signal ingestion grounded in CRM context, service catalog and public filings",
           "Relevance filter and de-duplication: one story becomes one signal",
@@ -635,28 +676,32 @@ window.SITE_CONTENT = {
           "Magnitude and confidence scored 0–10, with a configurable threshold",
           "Reviewer UI with citations, approve or reject with a comment"
         ],
-        featuresDetail: [
-          { title: "Signal ingestion and grounding", body: "News, filings and disclosures as the trigger, grounded in first-party CRM context, a service-line capability catalog and public filings." },
-          { title: "Relevance filter, de-duplication and account fan-out", body: "One story becomes one signal, and one JSON per affected account." },
-          { title: "Opportunity and risk reasoning", body: "The \"so what\" per account, with each opportunity mapped to a real service line." },
-          { title: "Cross-account ripple reasoning", body: "Descriptive second-order effects across suppliers, customers and competitors, up to two levels." },
-          { title: "Magnitude and confidence scoring", body: "0–10 per item, with a configurable threshold that filters low-confidence output." },
-          { title: "Reviewer UI with citations and the reasoning behind every item", body: "Read the opportunities, follow the source links, approve or reject with a comment." }
-        ],
         industriesNote: "Any business that needs to turn market and customer developments into pursuable opportunities across its account base, quickly.",
         steps: [
           {
             n: 1,
-            title: "Bring in the signal",
-            text: "News, filings and disclosures arrive on a scheduled scan or by manual submit, grounded in your CRM context, service catalog and public filings.",
-            image: "assets/img/steps/account-insights-1.svg",
+            title: "The news comes in",
+            text: "Announcements, filings and market news are picked up on a schedule or submitted by hand, and matched against your customer list.",
+            shot: {
+              full: "assets/img/steps/account-insights-1.jpg",
+              zoom: "assets/img/steps/account-insights-1-zoom.jpg",
+              region: [20.4, 29.1, 33.0, 12.4],
+              anchor: "br",
+              alt: "Signals inbox: five news items, each with source, time and accounts affected."
+            },
             features: ["Signal ingestion grounded in CRM context, service catalog and public filings"]
           },
           {
             n: 2,
-            title: "Filter it, then fan it out",
-            text: "One story across many sources is de-duplicated into a single signal, and every in-scope account it touches gets its own record.",
-            image: "assets/img/steps/account-insights-2.svg",
+            title: "One read per account",
+            text: "One story becomes one signal, and each account it reaches gets its own read: the company named, its suppliers, its competitors, its customers.",
+            shot: {
+              full: "assets/img/steps/account-insights-2.jpg",
+              zoom: "assets/img/steps/account-insights-2-zoom.jpg",
+              region: [64.4, 43.8, 33.8, 16.0],
+              anchor: "br",
+              alt: "One signal fanned out to four accounts, each with its service line."
+            },
             features: [
               "Relevance filter and de-duplication: one story becomes one signal",
               "Account fan-out — one JSON per affected account"
@@ -664,9 +709,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 3,
-            title: "Reason the “so what” per account",
-            text: "Opportunities and material risks are derived for each account and mapped to a real service line, with ripples traced across suppliers, customers and competitors.",
-            image: "assets/img/steps/account-insights-3.svg",
+            title: "Scored and cited",
+            text: "For each one: what the change means, the service you could sell, how big and how certain, with the source article or filing linked.",
+            shot: {
+              full: "assets/img/steps/account-insights-3.jpg",
+              zoom: "assets/img/steps/account-insights-3-zoom.jpg",
+              region: [64.4, 18.8, 33.8, 36.5],
+              anchor: "bl",
+              alt: "Opportunity brief for Alder Foods: magnitude 8/10, confidence 7/10, three cited sources."
+            },
             features: [
               "Opportunity and risk reasoning, mapped to a real service line",
               "Cross-account ripples across suppliers, customers and competitors"
@@ -674,9 +725,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 4,
-            title: "Score, cite, review",
-            text: "Every item carries a magnitude and confidence score and a citation to its evidence; a reviewer approves or rejects before anything moves downstream.",
-            image: "assets/img/steps/account-insights-4.svg",
+            title: "A seller approves",
+            text: "The reviewer works the list top down, accepts or rejects with a comment, and only approved items reach the CRM.",
+            shot: {
+              full: "assets/img/steps/account-insights-4.jpg",
+              zoom: "assets/img/steps/account-insights-4-zoom.jpg",
+              region: [20.4, 24.3, 33.6, 12.0],
+              anchor: "br",
+              alt: "Reviewer queue: one brief approved and exported to the CRM, one rejected."
+            },
             features: [
               "Magnitude and confidence scored 0–10, with a configurable threshold",
               "Reviewer UI with citations, approve or reject with a comment"
@@ -723,12 +780,6 @@ window.SITE_CONTENT = {
             "Native multilingual processing — single-language primary; more languages are a future extension"
           ]
         },
-        moreDetail: [
-          { title: "How the reasoning is grounded", body: "For each in-scope account it reasons \"so what\" for that account’s business, derives candidate opportunities and flags material risks (each mapped to a specific client service line where relevant), foresees descriptive second-order and cross-account ripples — suppliers, customers, competitors, up to two levels — scores each item by magnitude and confidence, and cites the source evidence. The reasoning is grounded in the client’s own data: CRM and account framing, capability catalog, public filings, with a human review step. Output is one JSON per affected account that flows into downstream sales systems." },
-          { title: "What the system does not do", body: "The system produces scored, cited reasoning — both opportunities and risks — for a human to review; it informs decisions and downstream systems, it does not act on them." },
-          { title: "Evaluation is part of the work", body: "The engine is a non-deterministic reasoning system, so a dedicated evaluation plan — correctness and confidence calibration — is part of the work." },
-          { title: "Private equity funds", body: "A market or regulatory signal turned into thesis-relevant opportunities across portfolio companies; event-driven screening of pipeline targets." }
-        ],
         caseStudy: {
           descriptor: "A global logistics and supply-chain operator",
           area: "Account planning across a global enterprise account base",
@@ -922,27 +973,47 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Investigators rebuild the same case file by hand out of systems never designed to be read together — tickets, correspondence, operational records, scans. It is slow, it varies by investigator, and the evidence trail is hard to reconstruct.",
-            icon: "alert"
+            headline: "Most of a complaint's clock goes on finding the file",
+            text: "An investigator rebuilds each case by hand from tickets, emails, billing records and call notes while the statutory deadline runs, and two people build two different versions."
           },
           solution: {
-            title: "THE SOLUTION",
-            text: "Per case: a summary, a chronological timeline and draft response sections, every statement cited to the exact source sentence or field — presented in an investigator UI for amendment and approval.",
-            icon: "spark"
+            headline: "A finished, cited file on day one",
+            text: "Each case opens with a summary, a dated timeline and a drafted response, every sentence linked to the record it came from. The investigator amends, approves or flags."
           }
         },
         metrics: [
-          { value: null, label: "Time to an equivalent case file", qualifier: "Elapsed time and person-hours, measured before and after", icon: "clock" },
-          { value: null, label: "Findings your experts confirm", qualifier: "The share a subject-matter expert accepts on review", icon: "check" },
-          { value: null, label: "Evidence coverage", qualifier: "Material findings linked to sufficient source evidence", icon: "link" },
-          { value: null, label: "Assembling versus judging", qualifier: "How investigator time splits between gathering and deciding", icon: "gauge" }
+          {
+            key: "file-ready",
+            title: "Time to a complete case file",
+            kind: "estimated",
+            owner: "Head of investigations",
+            figure: { text: "Day one" },
+            visual: {
+              form: "compression",
+              unit: "time to a complete, cited case file",
+              direction: "down",
+              scale: { min: 0, max: 21 },
+              before: { value: 21, label: "weeks of gathering before" },
+              after: { value: 1, label: "day one after" }
+            },
+            line: "Summary, timeline and draft response ready when the case opens."
+          },
+          {
+            key: "late-answers",
+            title: "Complaints answered late",
+            kind: "estimated",
+            owner: "Head of complaints",
+            figure: { prefix: "from", text: "1 in 18" },
+            visual: {
+              form: "baseline",
+              unit: "share of complaints",
+              direction: "down",
+              scale: { min: 0, max: 10 },
+              before: { value: 5.6, label: "5.6% past the eight-week clock today" }
+            },
+            line: "Late answers on the regulator's own count, across UK financial services."
+          }
         ],
-        metricsNote: "The proof of value measures elapsed time and person-hours against an equivalent case file today, the share of assembled findings a subject-matter expert confirms, and the share of material findings linked to sufficient source evidence.",
-        roi: {
-          icon: "roi",
-          text: "Investigation cost is almost entirely person-hours spent gathering, not deciding. The proof of value measures that ratio before and after, on real historical cases the customer’s own experts have already adjudicated."
-        },
         features: [
           "Multi-source evidence assembly across systems, correspondence and documents",
           "Chronological case timeline with timestamps and clickable source references",
@@ -952,35 +1023,45 @@ window.SITE_CONTENT = {
           "Full audit log of every review decision",
           "Case categories scoped and configured per engagement"
         ],
-        featuresDetail: [
-          { title: "Multi-source evidence assembly", body: "Across operational systems, correspondence and documents." },
-          { title: "Chronological case timeline", body: "With timestamps and clickable source references." },
-          { title: "Sentence- and field-level citation", body: "On every statement." },
-          { title: "Draft response sections", body: "Generated for review rather than for sending." },
-          { title: "Investigator UI", body: "Navigate to source, amend, approve or flag." },
-          { title: "Full audit log", body: "Of every review decision." }
-        ],
         industriesNote: "The pattern is the same wherever an event opens a case and the evidence sits in several systems at once.",
         steps: [
           {
             n: 1,
             title: "A case opens",
-            text: "An event — or a batch sweep over many at once — opens a case in one of the categories agreed for your engagement.",
-            image: "assets/img/steps/case-evidence-collection-1.svg",
+            text: "A complaint, an alert or a batch of cases starts the clock, in the category agreed for your team.",
+            shot: {
+              full: "assets/img/steps/case-evidence-collection-1.jpg",
+              zoom: "assets/img/steps/case-evidence-collection-1-zoom.jpg",
+              region: [64.4, 18.8, 33.8, 36.4],
+              anchor: "bl",
+              alt: "Case list: a complaint on day 3 of 56, four sources connected."
+            },
             features: ["Case categories scoped and configured per engagement"]
           },
           {
             n: 2,
-            title: "Assemble the evidence",
-            text: "Exports from operational systems, correspondence and document stores are read together, and every piece is bound to the case it belongs to.",
-            image: "assets/img/steps/case-evidence-collection-2.svg",
+            title: "Evidence gathered",
+            text: "Tickets, correspondence, operational records and scans are read together, and every item is tied to the file it belongs to.",
+            shot: {
+              full: "assets/img/steps/case-evidence-collection-2.jpg",
+              zoom: "assets/img/steps/case-evidence-collection-2-zoom.jpg",
+              region: [20.4, 39.5, 33.6, 17.3],
+              anchor: "br",
+              alt: "The timeline being assembled: twelve dated events from four source systems."
+            },
             features: ["Multi-source evidence assembly across systems, correspondence and documents"]
           },
           {
             n: 3,
-            title: "Build the case file",
-            text: "A summary, a chronological timeline and draft response sections — every statement cited to the exact source sentence or field.",
-            image: "assets/img/steps/case-evidence-collection-3.svg",
+            title: "The file, built and cited",
+            text: "A summary, a dated timeline and draft response sections, each statement pointing to the exact source sentence or field.",
+            shot: {
+              full: "assets/img/steps/case-evidence-collection-3.jpg",
+              zoom: "assets/img/steps/case-evidence-collection-3-zoom.jpg",
+              region: [52.5, 46.1, 32.8, 33.3],
+              anchor: "bl",
+              alt: "Case file summary with one citation opened to its billing row."
+            },
             features: [
               "Chronological case timeline with timestamps and clickable source references",
               "Sentence- and field-level citation on every statement",
@@ -990,8 +1071,14 @@ window.SITE_CONTENT = {
           {
             n: 4,
             title: "Investigate and decide",
-            text: "The investigator navigates to source, amends, approves or flags — and every decision is written to the audit log.",
-            image: "assets/img/steps/case-evidence-collection-4.svg",
+            text: "Amend, approve or flag, with every decision written to the audit log, so the handling stands up later.",
+            shot: {
+              full: "assets/img/steps/case-evidence-collection-4.jpg",
+              zoom: "assets/img/steps/case-evidence-collection-4-zoom.jpg",
+              region: [64.4, 37.3, 33.8, 35.5],
+              anchor: "bl",
+              alt: "Review screen: amend, approve or flag, and a five-entry audit log."
+            },
             features: [
               "Investigator UI: navigate to source, amend, approve or flag",
               "Full audit log of every review decision"
@@ -1044,18 +1131,6 @@ window.SITE_CONTENT = {
             "Additional case categories and source systems — at scale"
           ]
         },
-        moreDetail: [
-          { title: "The pattern", body: "An event or a batch sweep opens a case → evidence assembled across systems and documents → an evidence file with a draft finding. A person decides the outcome; the system only retrieves and assembles." },
-          { title: "Case summary", body: "A concise narrative of the case, the key facts and an investigative overview, with every claim cited to the exact source sentence or document field." },
-          { title: "Chronological event timeline", body: "All recorded actions, communications and decisions from intake to resolution, with timestamps and clickable source references." },
-          { title: "Draft response sections", body: "Draft text for the sections of the formal response, with clear citations and provenance for every statement, presented for review, amendment and approval before any use." },
-          { title: "The investigator UI is the deliverable", body: "The central deliverable is a human-in-the-loop investigator UI through which investigators interact with the outputs, navigate to cited source evidence, amend content, and record approval decisions." },
-          { title: "Scope boundary", body: "The system assembles and drafts; a person decides. Anonymization and masking of source records are a data-supply precondition: historical, non-production data is supplied already fit for processing." },
-          { title: "Case investigator", body: "A new complaint triggers evidence collection and summary from multiple systems, presented for approval." },
-          { title: "Financial-crime analyst", body: "A flagged transaction or AML alert investigated across parties, accounts and linked cases into one file, with the regulatory filing drafted for review." },
-          { title: "Employee-relations partner", body: "A grievance intake builds a chronology from tickets, mail and policy references." },
-          { title: "Quality manager", body: "A customer complaint triggers a batch-record and supplier-history review with a draft root-cause report." }
-        ],
         caseStudy: null
       },
       technology: {
@@ -1226,27 +1301,47 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Historical performance records sit in incompatible systems — a schedule tool, cost reports, progress reports, scanned contracts — at inconsistent granularity. Nobody can say reliably which units of work deviated from plan, by how much, and why.",
-            icon: "alert"
+            headline: "One overrun takes weeks of expert time to explain",
+            text: "A project controller holds the schedule tool, the cost reports, the progress reports and the scanned contracts, none of them joined. One closed package takes a week to reconstruct."
           },
           solution: {
-            title: "THE SOLUTION",
-            text: "Reconstruct the records into a consistent unit-level performance view: plan versus actual on cost and schedule, supported variances, recurring patterns and candidate drivers — each material finding tied to source evidence and validated by your own experts.",
-            icon: "spark"
+            headline: "Every variance traced to its record, in hours",
+            text: "Each package's plan and actual are set side by side, and every cost or schedule gap comes back with its likely causes and the document behind each. Your experts confirm."
           }
         },
         metrics: [
-          { value: null, label: "Operational efficiency", qualifier: "Elapsed time and person-hours for an equivalent unit-level analysis", icon: "clock" },
-          { value: null, label: "Output validation rate", qualifier: "Variances, patterns and drivers confirmed by ground truth or your experts", icon: "check" },
-          { value: null, label: "Evidence coverage", qualifier: "Material findings linked to sufficient source evidence, with a review status", icon: "link" },
-          { value: null, label: "Coverage gaps reported", qualifier: "Every unresolved record surfaced, with the reason it could not be resolved", icon: "alert" }
+          {
+            key: "expert-hours",
+            title: "Expert hours to explain an overrun",
+            kind: "estimated",
+            owner: "Head of project controls",
+            figure: { text: "Hours" },
+            visual: {
+              form: "compression",
+              unit: "expert time per completed project",
+              direction: "down",
+              scale: { min: 0, max: 480 },
+              before: { value: 480, label: "weeks before" },
+              after: { value: 8, label: "hours after" }
+            },
+            line: "One completed project, every variance with its cause and its source."
+          },
+          {
+            key: "projects-reviewed",
+            title: "Closed projects that get a real review",
+            kind: "estimated",
+            owner: "PMO director",
+            figure: { prefix: "from", text: "1 in 10" },
+            visual: {
+              form: "baseline",
+              unit: "organizations",
+              direction: "up",
+              scale: { min: 0, max: 10 },
+              before: { value: 1, label: "about 1 organization in 10 follows its own lessons-learned process today" }
+            },
+            line: "Every one reviewed against its plan, not the one somebody had time for."
+          }
         ],
-        metricsNote: "The proof of value measures elapsed time and expert hours against an equivalent analysis today, the share of findings an expert validates, and how much of the record the evidence covers — with the thresholds agreed at discovery.",
-        roi: {
-          icon: "roi",
-          text: "The output is a standing ability to ask which completed units went wrong and what the record says about why, with sources attached, across all of them."
-        },
         features: [
           "Ingest and profile approved static exports, preserving lineage",
           "Configuration-driven mapping to project, zone and unit level",
@@ -1256,28 +1351,32 @@ window.SITE_CONTENT = {
           "An evidence layer over documents: extraction, embeddings, entity retrieval",
           "A purpose-built lightweight review app for findings, citations and gaps"
         ],
-        featuresDetail: [
-          { title: "Ingest and profile", body: "Approved static exports from the available source systems, preserving lineage." },
-          { title: "Configuration-driven mapping layer", body: "Resolves records to project, zone and unit at the lowest reliable level, and reports whatever stays unresolved as a coverage gap with its reason." },
-          { title: "Plan-versus-actual comparison", body: "At unit level, on cost and schedule." },
-          { title: "Supported variances, recurring patterns and candidate drivers", body: "Each one carries the evidence a reviewer needs to confirm or reject it." },
-          { title: "An evidence layer over documents", body: "Text extraction, chunking, embeddings and entity extraction, with semantic, lexical and entity retrieval routed per question." },
-          { title: "A purpose-built lightweight application", body: "Where the results are presented and reviewed." }
-        ],
         industriesNote: "Wherever completed units of work — projects, work packages, orders, engagements, campaigns — have to be compared against what was planned for them.",
         steps: [
           {
             n: 1,
-            title: "Ingest the exports",
-            text: "Approved static exports from the available source systems are landed and profiled, with lineage preserved from the file through to the finding.",
-            image: "assets/img/steps/plan-vs-actual-investigation-1.svg",
+            title: "Exports come in",
+            text: "Schedule, cost and progress exports and the scanned contracts are loaded as they are, with every file's origin kept.",
+            shot: {
+              full: "assets/img/steps/plan-vs-actual-investigation-1.jpg",
+              zoom: "assets/img/steps/plan-vs-actual-investigation-1-zoom.jpg",
+              region: [64.8, 48.1, 33.8, 33.4],
+              anchor: "bl",
+              alt: "The imports screen: four sources loaded, 96% resolved, 4% listed as gaps."
+            },
             features: ["Ingest and profile approved static exports, preserving lineage"]
           },
           {
             n: 2,
-            title: "Resolve records to the unit",
-            text: "A configuration-driven mapping layer resolves records to project, zone and unit at the lowest reliable level. Anything left unresolved is reported as a coverage gap, with its reason.",
-            image: "assets/img/steps/plan-vs-actual-investigation-2.svg",
+            title: "Package by package",
+            text: "Every line is resolved to project, zone and unit of work; whatever cannot be resolved is listed as a gap, with the reason.",
+            shot: {
+              full: "assets/img/steps/plan-vs-actual-investigation-2.jpg",
+              zoom: "assets/img/steps/plan-vs-actual-investigation-2-zoom.jpg",
+              region: [19.8, 17.9, 33.0, 27.3],
+              anchor: "br",
+              alt: "The packages table: façade package 38% over cost and nine weeks late."
+            },
             features: [
               "Configuration-driven mapping to project, zone and unit level",
               "Unresolved records reported as coverage gaps, with their reason"
@@ -1285,9 +1384,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 3,
-            title: "Compare plan against actual",
-            text: "Cost and schedule are compared at unit level, and variances, recurring patterns and candidate drivers are assembled as evidence-backed candidates.",
-            image: "assets/img/steps/plan-vs-actual-investigation-3.svg",
+            title: "The record says why",
+            text: "Plan and actual are compared on cost and schedule, and each gap comes with its candidate causes: a change order, weather days, rework, each cited.",
+            shot: {
+              full: "assets/img/steps/plan-vs-actual-investigation-3.jpg",
+              zoom: "assets/img/steps/plan-vs-actual-investigation-3-zoom.jpg",
+              region: [64.8, 21.9, 33.8, 30.4],
+              anchor: "br",
+              alt: "The façade package's causes: change order CO-22 cited to contract page 31."
+            },
             features: [
               "Plan-versus-actual comparison at unit level, on cost and schedule",
               "Variances, recurring patterns and candidate drivers as evidence-backed candidates"
@@ -1295,9 +1400,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 4,
-            title: "Review the evidence",
-            text: "An evidence layer over the documents backs each finding, and a purpose-built review app presents findings, citations and the coverage-gap report.",
-            image: "assets/img/steps/plan-vs-actual-investigation-4.svg",
+            title: "Experts confirm",
+            text: "Your planners confirm or reject each one, and the causes that recur across packages surface as the lesson.",
+            shot: {
+              full: "assets/img/steps/plan-vs-actual-investigation-4.jpg",
+              zoom: "assets/img/steps/plan-vs-actual-investigation-4-zoom.jpg",
+              region: [64.8, 17.9, 33.8, 34.3],
+              anchor: "bl",
+              alt: "Causes confirmed or rejected; the pattern recurs in 7 of 32 packages."
+            },
             features: [
               "An evidence layer over documents: extraction, embeddings, entity retrieval",
               "A purpose-built lightweight review app for findings, citations and gaps"
@@ -1343,16 +1454,6 @@ window.SITE_CONTENT = {
             "Contracting or packaging decisions taken on the proof’s output"
           ]
         },
-        moreDetail: [
-          { title: "What this covers", body: "Completed units of work — projects, work packages, orders, engagements, campaigns — swept and compared plan versus actual, with variances and candidate drivers assembled from fragmented sources. Ledger-only budget-versus-actual commentary stays with your EPM system; this is the layer that explains the number." },
-          { title: "\"Evidence-backed\" has a testable definition", body: "Every finding carries: the project and unit context · a traceable source file and version, plus the supporting record or passage · the analytical basis · a confidence and review status · and the visible gaps. A reviewer must be able to trace any finding independently." },
-          { title: "Decision ownership stays with you", body: "Reconstruct historical records into a consistent unit-level performance view: plan versus actual cost and schedule per unit, supported variances, recurring patterns, candidate drivers and execution outcomes — each material finding tied to source evidence and validated by a subject-matter expert. The system does not make planning or execution-model decisions." },
-          { title: "Explicit exclusions", body: "The system assembles evidence; it does not rank suppliers, select vendors, or make planning decisions. Normalization is scoped to the sample and designed for extension — not enterprise-wide normalization or master-data remediation." },
-          { title: "Project controller", body: "Completed projects and work packages swept and compared plan-versus-actual; each cost or schedule variance and its candidate drivers cited to source records, reviewed with planning experts before use." },
-          { title: "Operations manager, order portfolios", body: "Completed orders compared against what was planned for them, with the cost and schedule gaps traced back to the records that explain them." },
-          { title: "Delivery lead, client engagements", body: "Closed engagements swept for where effort and schedule diverged from the plan, and what the record says about why." },
-          { title: "Campaign owner", body: "Completed campaigns measured against plan, with the candidate drivers assembled from the systems that hold the spend, the schedule and the outcome." }
-        ],
         caseStudy: {
           descriptor: "A major construction and engineering contractor",
           area: "Plan versus actual across completed work packages",
@@ -1546,25 +1647,47 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Operations teams read long, complex contracts and key the data into downstream systems by hand — page by page, transcribing rates, rules and terms. Slow, error-prone, and dependent on scarce specialists.",
-            icon: "alert"
+            headline: "One contract's rates take a specialist three to five days",
+            text: "Operations staff read 60 to 100 pages of supplier terms and type the rate cards into the cost system, line by line. Throughput hangs on the few people who can."
           },
           solution: {
-            title: "THE SOLUTION: REVIEW THE DATA, NOT TYPE IT",
-            text: "NVIDIA AI-Q on Oracle OCI classifies each document, routes it page by page and extracts the target fields against business rules — scoring confidence and citing the source page for every value. Reviewers validate in a split-view UI, then export.",
-            icon: "spark"
+            headline: "Review the data, not type it: minutes per contract",
+            text: "The values arrive already extracted, each with its page in the agreement beside it. The reviewer checks the flagged ones, approves, and exports to the cost system."
           }
         },
         metrics: [
-          { value: null, label: "Business-rule validators", qualifier: "Flag what a human must look at, before anything is exported", icon: "alert" },
-          { value: null, label: "Confidence and a page citation", qualifier: "On every extracted value, before anything is exported", icon: "shield" }
+          {
+            key: "cycle-time",
+            title: "Contract to system-ready data",
+            kind: "proven",
+            owner: "Head of contract management",
+            figure: { text: "5–15 min" },
+            visual: {
+              form: "compression",
+              unit: "minutes per 60 to 100-page agreement",
+              direction: "down",
+              scale: { min: 0, max: 5760 },
+              before: { value: 5760, label: "3–5 days before" },
+              after: { value: 10, label: "5–15 min after" }
+            },
+            line: "One 60 to 100-page agreement, end to end, the reviewer's check included."
+          },
+          {
+            key: "onboarding",
+            title: "Onboarding a new supplier's rates",
+            kind: "estimated",
+            owner: "Head of procurement operations",
+            figure: { prefix: "from", text: "~1 month" },
+            visual: {
+              form: "baseline",
+              unit: "days",
+              direction: "down",
+              scale: { min: 0, max: 30 },
+              before: { value: 30, label: "about a month today" }
+            },
+            line: "A new supplier or site, from signed agreement to billable rates."
+          }
         ],
-        metricsNote: "The figure the delivered proof of value produced is in the case study, on the Use cases tab.",
-        roi: {
-          icon: "roi",
-          text: "Two effects compound. Cycle time collapses — a document that took days moves in minutes, so onboarding a new counterparty stops being a month-long project. And the error class that costs the most, a rate keyed wrong and found at invoice reconciliation, is caught at review against a cited source page instead."
-        },
         features: [
           "Document-type gate, then page-level routing to the right extractor",
           "Field schema and business rules defined per document type",
@@ -1575,30 +1698,32 @@ window.SITE_CONTENT = {
           "Split-view reviewer UI with bulk actions, auto-save and an audit trail",
           "Export to JSON, CSV or XLSX against a reference template"
         ],
-        featuresDetail: [
-          { title: "Document-type gate and page-level routing", body: "Classify the document, then route each page to the right extractor." },
-          { title: "Field schema and business rules", body: "The target fields and the rules they must satisfy, defined per document type." },
-          { title: "Per-field confidence scoring", body: "With tuned thresholds, and fallback logic when a page label or a field scores low." },
-          { title: "Source-page citations", body: "Every extracted value points back to the page or section it came from." },
-          { title: "Structured data model", body: "Complex entities modeled into normalized rows, with ranges and tiers expanded and parent-child relationships preserved." },
-          { title: "Validators and reviewer warnings", body: "A business-rule validator set that flags what a human must look at." },
-          { title: "Split-view reviewer UI", body: "Source PDF beside extracted rows, per-row confidence badges, approve/edit/reject with bulk actions, auto-save and an audit trail." },
-          { title: "Export", body: "JSON, CSV or XLSX against a reference template, into the cost or ERP system." }
-        ],
         industriesNote: "Wherever the terms that drive a downstream system are locked inside long, semi-structured documents.",
         steps: [
           {
             n: 1,
-            title: "Upload and classify",
-            text: "A PDF or DOCX — native or scanned — is classified by document type, then routed page by page to the right extractor.",
-            image: "assets/img/steps/large-document-extraction-1.jpg",
+            title: "Drop the document in",
+            text: "A supplier agreement or lease goes in as a PDF, scanned or native. It is recognized by type and every page is read against the rules for that type.",
+            shot: {
+              full: "assets/img/steps/large-document-extraction-1.jpg",
+              zoom: "assets/img/steps/large-document-extraction-1-zoom.jpg",
+              region: [18, 17, 61, 30],
+              anchor: "br",
+              alt: "The upload screen: a 48-page agreement being classified, routed and extracted, two stages done and one running."
+            },
             features: ["Document-type gate, then page-level routing to the right extractor"]
           },
           {
             n: 2,
-            title: "Extract against the rules",
-            text: "The target fields are pulled against the schema and business rules for that document type, and modeled into normalized rows.",
-            image: "assets/img/steps/large-document-extraction-2.jpg",
+            title: "The rates come out as rows",
+            text: "Every rate, tier and term becomes a line in the cost system's own layout, with the page it came from beside it.",
+            shot: {
+              full: "assets/img/steps/large-document-extraction-2.jpg",
+              zoom: "assets/img/steps/large-document-extraction-2-zoom.jpg",
+              region: [56, 41, 43, 40],
+              anchor: "bl",
+              alt: "The review screen: the source PDF beside the extracted rows of one rate group, each with a confidence chip."
+            },
             features: [
               "Field schema and business rules defined per document type",
               "Structured data model: ranges and tiers expanded, relationships preserved"
@@ -1606,9 +1731,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 3,
-            title: "Score, cite, validate",
-            text: "Every value carries a confidence score and a citation to its source page, and business-rule validators flag what a human must look at.",
-            image: "assets/img/steps/large-document-extraction-3.jpg",
+            title: "Doubts are flagged",
+            text: "A value that breaks a business rule, or reads poorly, is flagged with the fix suggested and the source shown, so the reviewer looks only where it matters.",
+            shot: {
+              full: "assets/img/steps/large-document-extraction-3.jpg",
+              zoom: "assets/img/steps/large-document-extraction-3-zoom.jpg",
+              region: [56, 60, 43, 38],
+              anchor: "bl",
+              alt: "The review screen with one flagged row open: the validator, the suggested fix, a 71% confidence and the page citation."
+            },
             features: [
               "Per-field confidence scoring with tuned thresholds and fallback logic",
               "Source-page citation on every extracted value",
@@ -1617,9 +1748,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 4,
-            title: "Review and export",
-            text: "Reviewers validate row by row beside the source PDF, then export against your reference template. Nothing leaves unapproved.",
-            image: "assets/img/steps/large-document-extraction-4.jpg",
+            title: "Approve and export",
+            text: "The reviewer signs off the rows, and only approved data leaves for the cost or ERP system, in its own import format.",
+            shot: {
+              full: "assets/img/steps/large-document-extraction-4.jpg",
+              zoom: "assets/img/steps/large-document-extraction-4-zoom.jpg",
+              region: [56, 13, 43, 45],
+              anchor: "bl",
+              alt: "The review screen's approval column: Approve all, the document's status and its rate groups."
+            },
             features: [
               "Split-view reviewer UI with bulk actions, auto-save and an audit trail",
               "Export to JSON, CSV or XLSX against a reference template"
@@ -1673,16 +1810,6 @@ window.SITE_CONTENT = {
             "Production hardening: enterprise scale, security audit, HA/DR, IAM/SSO"
           ]
         },
-        moreDetail: [
-          { title: "Scope, in one paragraph", body: "The pack pulls structured data out of long, complex, semi-structured documents — classifying the document, routing it page-by-page, extracting the target fields against agreed business rules, scoring confidence, and presenting the result in a human-in-the-loop review UI. It is a decision-support system: all output is human-validated before downstream use." },
-          { title: "Today", body: "Operators read each contract and key rate cards in by hand." },
-          { title: "Tomorrow", body: "The reviewer uploads a contract, the extraction pipeline runs on OCI, and the reviewer validates extracted rates side-by-side with the source PDF before export." },
-          { title: "Slow onboarding", body: "3–5 days per contract, ~1 month to bring a new station online." },
-          { title: "Costly errors", body: "Manual transcription causes rate mismatches and duplicate billing that surface late, at invoice matching." },
-          { title: "Poor scalability", body: "Throughput hinges on scarce specialists, so contract backlogs build up." },
-          { title: "Why the error class is expensive", body: "In aviation, ground-handling contracts carry 7–12% of an airline’s direct operating cost — so a rate keyed wrong is expensive, and it surfaces late." },
-          { title: "Use-case boundaries", body: "The boundary of this solution is extraction of structured data from complex documents into a validated, human-reviewed output." }
-        ],
         caseStudy: {
           descriptor: "An international airline",
           area: "Ground-handling contract management",
@@ -1875,24 +2002,48 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Field-service operators plan their mobile workforce by hand: work zones, technician assignments, dozens of rules and constraints. Workloads come out uneven, wait times long, and new zones launch slowly.",
-            icon: "alert"
+            headline: "Two days to plan one region's month, by hand",
+            text: "Dispatchers assign technicians to zones and jobs region by region, juggling skills, absences and travel. Workloads come out uneven and customers wait longer for a visit."
           },
           solution: {
-            title: "THE SOLUTION: REVIEW THE PLAN, NOT BUILD IT",
-            text: "NVIDIA cuOpt ingests demand, availability, skills and constraints and computes the best technician-to-zone-to-job plan in minutes. Dispatchers review it on a live map, re-optimize, and write the approved plan back to Oracle Field Service.",
-            icon: "spark"
+            headline: "A solved month to review in half an hour",
+            text: "The month arrives solved against every rule at once. Dispatchers see what changed and why on the map, adjust, approve, and send it to the field-service system."
           }
         },
         metrics: [
-          { value: "~30 min", label: "To optimize and approve a region’s four-week plan", qualifier: "Down from ~2 days", icon: "clock" }
+          {
+            key: "planning-time",
+            title: "Time to plan a region's four weeks",
+            kind: "proven",
+            owner: "VP of field service",
+            figure: { text: "~30 min" },
+            visual: {
+              form: "compression",
+              unit: "elapsed time",
+              direction: "down",
+              scale: { min: 0, max: 2880 },
+              before: { value: 2880, label: "~2 days before" },
+              after: { value: 30, label: "~30 min after" }
+            },
+            line: "Optimized and approved by the dispatcher, region by region."
+          },
+          {
+            key: "jobs-per-tech",
+            title: "Jobs per technician per day",
+            kind: "estimated",
+            owner: "VP of field service",
+            figure: { text: "+4 to +10%" },
+            visual: {
+              form: "range",
+              unit: "percent",
+              direction: "up",
+              scale: { min: 0, max: 15 },
+              before: { value: 0, label: "today" },
+              range: { lo: 4, hi: 10, label: "+4% to +10%" }
+            },
+            line: "Visits completed per working day, on today's headcount."
+          }
         ],
-        metricsNote: "Each KPI is computed identically for the current plan and the optimized one, on the customer’s historical proof-of-value data — modeled against that baseline, not measured in production; figures are illustrative, not contractual.",
-        roi: {
-          icon: "roi",
-          text: "The gain lands in the field: the same technicians complete more jobs per day, with less travel and less waiting. A single-digit percentage runs across every region."
-        },
         features: [
           "Work-zone and availability rules, with skill-based allocation",
           "Planned-vacation reallocation and same-day sickness handling",
@@ -1903,54 +2054,66 @@ window.SITE_CONTENT = {
           "Dispatcher review UI: map and table views, approve, reject, re-run",
           "KPIs and analytics: productivity, utilization, travel, workload balance"
         ],
-        featuresNote: "* Commitment-rule coverage is partial out of the box; the exact constraint set is confirmed in scoping.",
-        featuresDetail: [
-          { title: "Work-zone and availability rules", body: "Skill-based allocation, maximum load per day, planned-vacation reallocation, same-day sickness handling, default and neighboring work zones, cross-zone allocation." },
-          { title: "Forecast-based allocation", body: "Allocate against a demand forecast you supply." },
-          { title: "Commitment rules", body: "Non-movable appointments and different SLA types per appointment.*" },
-          { title: "Multi-objective optimization", body: "Productivity, waiting time and workload balance, with hard/soft rule weighting and minimal disruption of the current allocation." },
-          { title: "Dispatcher review UI", body: "Map and table views, approve or reject, with model-decision explanations and recommendations." },
-          { title: "KPIs and analytics", body: "Productivity, capacity utilization, travel reduction and workload balance." }
-        ],
         industriesNote: "Any mobile field force planned against skills, availability and geography.",
+        /* Round 20: the rules are set in step 1, so the flow is four steps. */
         steps: [
           {
             n: 1,
-            title: "Load the period's data",
-            text: "Demand, technician availability, skills, work zones and the period's bookings come in from Oracle Field Service.",
-            image: "assets/img/steps/workforce-optimization-1.jpg",
+            title: "Load the month",
+            text: "Bookings, technicians, skills, absences and zones come in from the field-service system, with the rules that apply: who may do what, where, and which appointments cannot move.",
+            shot: {
+              full: "assets/img/steps/workforce-optimization-1.jpg",
+              zoom: "assets/img/steps/workforce-optimization-1-zoom.jpg",
+              region: [31.3, 56.9, 34.1, 19.9],
+              anchor: "tr",
+              alt: "The Run optimization dialog with the four-week planning file uploaded."
+            },
             features: [
               "Work-zone and availability rules, with skill-based allocation",
-              "Planned-vacation reallocation and same-day sickness handling"
-            ]
-          },
-          {
-            n: 2,
-            title: "Set the rules",
-            text: "Zone, forecast and commitment rules are configured, then weighted as hard or soft constraints against the objectives that matter.",
-            image: "assets/img/steps/workforce-optimization-2.jpg",
-            features: [
+              "Planned-vacation reallocation and same-day sickness handling",
               "Default, neighboring and cross-zone allocation",
               "Forecast-based allocation against a demand forecast you supply",
               "Commitment rules: non-movable appointments and SLA types per appointment *"
             ]
           },
           {
-            n: 3,
-            title: "Solve the plan",
-            text: "cuOpt computes the technician-to-zone-to-job plan against every constraint at once, in minutes rather than days.",
-            image: "assets/img/steps/workforce-optimization-3.jpg",
+            n: 2,
+            title: "Solve it in minutes",
+            text: "Every technician, zone and job is planned against all the rules at once, weighing travel, waiting time and workload balance.",
+            shot: {
+              full: "assets/img/steps/workforce-optimization-2.jpg",
+              zoom: "assets/img/steps/workforce-optimization-2-zoom.jpg",
+              region: [31.3, 52.0, 34.1, 15.6],
+              anchor: "br",
+              alt: "The solver mid-run: input checked, rules loaded, GPU solve running."
+            },
             features: ["Multi-objective optimization with hard and soft rule weighting"]
           },
           {
+            n: 3,
+            title: "See what changed and why",
+            text: "Each change carries its reason: a vacation covered, a sick day split, a postcode picked up. The dispatcher keeps or undoes it.",
+            shot: {
+              full: "assets/img/steps/workforce-optimization-3.jpg",
+              zoom: "assets/img/steps/workforce-optimization-3-zoom.jpg",
+              region: [66.8, 70.3, 31.4, 26.0],
+              anchor: "bl",
+              alt: "What the solver changed: a vacation covered, a sick day split."
+            },
+            features: ["Dispatcher review UI: map and table views, approve, reject, re-run"]
+          },
+          {
             n: 4,
-            title: "Review, approve, measure",
-            text: "The dispatcher compares plans on a live map, approves or re-runs, and the KPI readout shows what changed.",
-            image: "assets/img/steps/workforce-optimization-4.jpg",
-            features: [
-              "Dispatcher review UI: map and table views, approve, reject, re-run",
-              "KPIs and analytics: productivity, utilization, travel, workload balance"
-            ]
+            title: "Approve and measure",
+            text: "The dispatcher approves it and sends it to the field. Jobs per technician, capacity used and wait time are read on the same formulas as today's.",
+            shot: {
+              full: "assets/img/steps/workforce-optimization-4.jpg",
+              zoom: "assets/img/steps/workforce-optimization-4-zoom.jpg",
+              region: [6.6, 23.3, 34.1, 22.8],
+              anchor: "br",
+              alt: "Plan v2 against today: jobs per technician +4.5%, capacity +3 pts."
+            },
+            features: ["KPIs and analytics: productivity, utilization, travel, workload balance"]
           }
         ],
         industryCases: [
@@ -1998,16 +2161,6 @@ window.SITE_CONTENT = {
             "Live-traffic travel rules, within-day reassignment, spare-parts and crew-based assignment — on the roadmap"
           ]
         },
-        moreDetail: [
-          { title: "Today", body: "Dispatchers maintain work zones and technician allocations by hand, region by region, juggling postcode coverage, skills, working days and absences, with little room to optimize." },
-          { title: "Tomorrow", body: "The dispatcher uploads the period’s data, runs cuOpt on OCI, and reviews the optimized allocation on a live map — comparing, approving or re-running before export to Oracle Field Service. The solver returns the schedule that scores best against the weighted objectives." },
-          { title: "Suboptimal efficiency", body: "Uneven workloads and under-used capacity." },
-          { title: "Lower customer satisfaction", body: "Longer wait times from suboptimal allocations." },
-          { title: "Poor scalability", body: "Planning hinges on scarce senior dispatchers; new zones launch slowly." },
-          { title: "How the KPIs are defined", body: "Time to plan: how long to optimize and approve a region’s four-week plan. Productivity: jobs per technician per working day. Capacity utilization: booked activity time against available capacity. Customer wait time: calendar days between booking and appointment. Each is computed identically for the current plan and the optimized plan." },
-          { title: "Delivered after the Jumpstart", body: "Oracle Field Service integration — staff, availability and booking data in; optimized allocations (zones, visits) out; factual durations and times back. The architecture is native to Oracle Field Service; the integration itself comes after the Jumpstart, not inside it. Also after the Jumpstart: additional data sources and BI integration (up to five typical integrations — booking, inventory for parts availability, HR/WFM for people availability, demand forecasting, BI), and the re-optimization feedback loop." },
-          { title: "On the roadmap, not in the pack today", body: "Distance and travel-time rules with live traffic · within-day dynamic reassignment and urgent-request handling · spare-parts and crew-based assignment · the human-feedback learning loop." }
-        ],
         caseStudy: {
           descriptor: "A global home-appliance manufacturer",
           area: "Field-service operations across three countries",
@@ -2205,27 +2358,47 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Business questions cross application boundaries; the reporting does not. Every real question — which delayed orders are hurting our best accounts? — becomes a request in a BI queue and lands after the decision it was meant to inform.",
-            icon: "alert"
+            headline: "The answer sits in three systems and a BI queue",
+            text: "Orders sit in the ERP, customers in the CRM, deliveries with carriers. An operations lead needs the three joined for one decision, files a report request, and decides without it."
           },
           solution: {
-            title: "THE SOLUTION",
-            text: "Do the join once, in the data, rather than once per question: one governed layer under the applications — filled from Oracle applications by pipelines that ship with the products — and a plain-English answer surface on top of it.",
-            icon: "spark"
+            headline: "Ask once, get one ranked answer in minutes",
+            text: "The question is settled over every system it spans, with the money at risk per account and the action to take. Report requests stop."
           }
         },
         metrics: [
-          { value: "4–8 weeks", label: "To a governed answer layer live on your data", qualifier: "One use case, up to three data sources", icon: "calendar" },
-          { value: null, label: "Time to answer", qualifier: "Versus today, against a baseline signed before the clock starts", icon: "clock" },
-          { value: null, label: "Questions served without a data engineer", qualifier: "The share that stops becoming a report request", icon: "users" },
-          { value: null, label: "One decision domain, end to end", qualifier: "Certified views with sensitive fields masked by role", icon: "shield" }
+          {
+            key: "queue-time",
+            title: "Time an answer waits in the BI queue",
+            kind: "estimated",
+            owner: "VP of commercial operations",
+            figure: { text: "Minutes" },
+            visual: {
+              form: "compression",
+              unit: "elapsed time",
+              direction: "down",
+              scale: { min: 0, max: 336 },
+              before: { value: 336, label: "weeks before" },
+              after: { value: 0.1, label: "minutes after" }
+            },
+            line: "From the question asked to a ranked list the team can act on."
+          },
+          {
+            key: "data-prep",
+            title: "Data-team time spent preparing data",
+            kind: "estimated",
+            owner: "Head of data and analytics",
+            figure: { prefix: "from", text: "~40%" },
+            visual: {
+              form: "baseline",
+              unit: "percent of a data team's week",
+              direction: "down",
+              scale: { min: 0, max: 100 },
+              before: { value: 40, label: "about 40% of the week today" }
+            },
+            line: "Pulling and cleaning extracts before a question can be answered."
+          }
         ],
-        metricsNote: "The readout measures time-to-answer versus today, and the share of questions served without a data engineer, against a baseline signed before the clock starts.",
-        roi: {
-          icon: "roi",
-          text: "The cost being removed is the report request: the analyst hours, the queue, and the decision that waited on both. One decision domain, end to end — narrow enough to finish, real enough to matter."
-        },
         features: [
           "Prebuilt pipelines from Oracle applications — no extract engineering",
           "One or two non-Oracle sources joined in, by link or by pipeline",
@@ -2235,51 +2408,67 @@ window.SITE_CONTENT = {
           "Sensitive fields masked by role, enforced in the data layer",
           "A governed foundation that persists after the proof"
         ],
-        featuresDetail: [
-          { title: "Prebuilt pipelines from Oracle applications", body: "Into the governed layer — no extract engineering." },
-          { title: "One or two non-Oracle sources joined in", body: "By link or by pipeline." },
-          { title: "Certified views for one decision domain", body: "Using definitions the business signed off." },
-          { title: "Plain-English question answering", body: "Over the governed schema." },
-          { title: "Two to three operational dashboards", body: "Over the joined data." },
-          { title: "Sensitive fields masked by role", body: "Enforced in the data layer." }
-        ],
         industriesNote: "The same two pains in every industry, regardless of stack — what varies is the system landscape.",
         steps: [
           {
             n: 1,
-            title: "Connect the applications",
-            text: "The pipelines that ship with the Oracle products are switched on; one or two non-Oracle sources are linked or landed alongside. Read-only access.",
-            image: "assets/img/steps/cross-system-erp-qa-1.jpg",
+            title: "Ask the question",
+            text: "An operations lead types the question as they would ask a colleague: which orders are at risk this week, and what they are worth.",
+            shot: {
+              full: "assets/img/steps/cross-system-erp-qa-1.jpg",
+              zoom: "assets/img/steps/cross-system-erp-qa-1-zoom.jpg",
+              region: [19.2, 45.5, 34.1, 20.9],
+              anchor: "br",
+              alt: "The question asked in Agent Hub; the order agent reads three ERPs."
+            },
+            features: ["Plain-English question answering over the governed schema"]
+          },
+          {
+            n: 2,
+            title: "Every system is read",
+            text: "Order lines, customer tiers, stock, credit holds and carrier scans are read together from the systems that hold them, as they are.",
+            shot: {
+              full: "assets/img/steps/cross-system-erp-qa-2.jpg",
+              zoom: "assets/img/steps/cross-system-erp-qa-2-zoom.jpg",
+              region: [17.8, 22.5, 32.8, 32.0],
+              anchor: "br",
+              alt: "Data Studio's Live Feed: the sources feeding the lakehouse, with freshness."
+            },
             features: [
               "Prebuilt pipelines from Oracle applications — no extract engineering",
               "One or two non-Oracle sources joined in, by link or by pipeline"
             ]
           },
           {
-            n: 2,
-            title: "Shape one decision domain",
-            text: "One domain — order-to-cash exceptions, say — is modeled into certified views, on definitions the business owner signs off.",
-            image: "assets/img/steps/cross-system-erp-qa-2.jpg",
+            n: 3,
+            title: "One answer, with the money",
+            text: "Late lines come back as one ranked list with the cause, the revenue at risk and the accounts exposed, on definitions the business signed off.",
+            shot: {
+              full: "assets/img/steps/cross-system-erp-qa-3.jpg",
+              zoom: "assets/img/steps/cross-system-erp-qa-3-zoom.jpg",
+              region: [66.1, 28.9, 33.0, 21.5],
+              anchor: "br",
+              alt: "Recommendations: revenue at risk USD 4.18 M, 9 tier-A accounts exposed."
+            },
             features: [
               "Certified views for one decision domain, on signed-off definitions",
-              "A governed foundation that persists after the proof"
+              "Two to three operational dashboards over the joined data"
             ]
           },
           {
-            n: 3,
-            title: "Guard it in the data layer",
-            text: "Masking and row-level rules are applied to every query — including the ones AI writes — and every interaction is logged.",
-            image: "assets/img/steps/cross-system-erp-qa-3.jpg",
-            features: ["Sensitive fields masked by role, enforced in the data layer"]
-          },
-          {
             n: 4,
-            title: "Ask in plain language",
-            text: "Select AI answers over the governed schema, with two to three operational dashboards over the same joined data.",
-            image: "assets/img/steps/cross-system-erp-qa-4.jpg",
+            title: "Decide and act",
+            text: "Each proposed action becomes a task for its owner; sensitive fields stay hidden by role, and every answer is logged.",
+            shot: {
+              full: "assets/img/steps/cross-system-erp-qa-4.jpg",
+              zoom: "assets/img/steps/cross-system-erp-qa-4-zoom.jpg",
+              region: [18.5, 62.3, 34.1, 30.5],
+              anchor: "tr",
+              alt: "The answer after the override: why lines are late, and proposed actions."
+            },
             features: [
-              "Plain-English question answering over the governed schema",
-              "Two to three operational dashboards over the joined data"
+              "Sensitive fields masked by role, enforced in the data layer",
+              "A governed foundation that persists after the proof"
             ]
           }
         ],
@@ -2322,14 +2511,6 @@ window.SITE_CONTENT = {
             "Write-back to the source applications: the system retrieves, it does not act"
           ]
         },
-        moreDetail: [
-          { title: "The pattern", body: "A request asked in plain language → a governed schema, single-source or federated across systems and clouds → numbers and charts back, no report request. No human gate; the system retrieves, it does not act." },
-          { title: "Today", body: "The ERP knows orders and invoices; the CRM knows customers; carriers, e-commerce and spreadsheets know the rest. Every real question — which delayed orders are hurting our best accounts? — crosses two systems or more, lands in a BI queue, and comes back days later, already stale." },
-          { title: "Tomorrow", body: "Business-app data flows into one governed layer — for Oracle applications through pipelines that exist out of the box — joined with one or two non-Oracle sources. On top: plain-English answers and dashboards that treat it all as one system, using definitions the business signed off." },
-          { title: "Why the join is the value", body: "App-embedded analytics stops at each app’s border — the value is in the join." },
-          { title: "Procurement lead", body: "Supplier spend, purchase-order and invoice-status questions answered in plain language over ERP data joined with the systems around it; standing report requests stop." },
-          { title: "Operations lead", body: "Self-serve slicing of SLA, backlog and throughput metrics without waiting on the BI queue." }
-        ],
         caseStudy: null
       },
       technology: {
@@ -2501,27 +2682,48 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "THE PROBLEM",
-            text: "Every cloud governs its own data, so a question that spans them is an engineering project rather than a query — three extracts and a week — and no single system sees enough of the picture for AI to be useful on it.",
-            icon: "alert"
+            headline: "Finance waits on engineering for one group number",
+            text: "Sales sit in one cloud, stock in another, the ledger on premises. A CFO's revenue-by-product-line question becomes an engineering ticket, and each team answers it its own way."
           },
           solution: {
-            title: "THE SOLUTION",
-            text: "Move the answer layer to the data instead of the data to the answer layer: one governed engine mounts the catalogs and links the databases already in place, and answers under the access rules those systems already enforce.",
-            icon: "spark"
+            headline: "One question, every cloud answers, no data moved",
+            text: "Finance types it in and gets the number back on the definition the group signed off, from the systems it already runs, under the access rules in force."
           }
         },
         metrics: [
-          { value: "4–8 weeks", label: "To a governed gold layer live on your data", qualifier: "Up to three sources, zero data movement", icon: "calendar" },
-          { value: null, label: "Time to answer", qualifier: "Versus three extracts and a week, against a signed baseline", icon: "clock" },
-          { value: null, label: "Questions served without a data engineer", qualifier: "The share that stops being an engineering project", icon: "users" },
-          { value: null, label: "Role-scoped answers, fully audited", qualifier: "Enforced in the data layer, not in the prompt", icon: "shield" }
+          {
+            key: "extracts",
+            title: "Extracts built per cross-cloud question",
+            kind: "estimated",
+            owner: "Head of data engineering",
+            figure: { text: "3 → 0" },
+            visual: {
+              form: "dumbbell",
+              unit: "extracts per question",
+              direction: "down",
+              scale: { min: 0, max: 3 },
+              before: { value: 3, label: "3 extracts today" },
+              after: { value: 0, label: "0 after" }
+            },
+            line: "A data engineer's pulls and copies, replaced by one query run in place."
+          },
+          {
+            key: "time-to-answer",
+            title: "Time to answer across clouds",
+            kind: "estimated",
+            owner: "Chief financial officer",
+            figure: { text: "Minutes" },
+            visual: {
+              form: "compression",
+              unit: "elapsed time",
+              direction: "down",
+              scale: { min: 0, max: 168 },
+              before: { value: 168, label: "about a week before" },
+              after: { value: 0.1, label: "minutes after" }
+            },
+            line: "Revenue, churn or inventory, all regions, on one agreed definition."
+          }
         ],
-        metricsNote: "The readout measures time-to-answer versus today, and the share of questions served without a data engineer, against a baseline signed before the clock starts.",
-        roi: {
-          icon: "roi",
-          text: "A governed gold layer that answers is cheaper than three extracts and a week — and it is the same layer every subsequent question, dashboard and agent runs on. The proof measures the first question set; the foundation stays for the rest."
-        },
         features: [
           "Catalog federation: mount the Iceberg catalogs you already run",
           "Database links to the systems not in a catalog, on-prem included",
@@ -2531,21 +2733,19 @@ window.SITE_CONTENT = {
           "Role-scoped answers and a full audit trail, enforced in the data layer",
           "Zero data movement — queries run where the data lives"
         ],
-        featuresDetail: [
-          { title: "Catalog federation", body: "Mount the Iceberg catalogs you already run (Glue, Unity, Polaris) rather than copying data." },
-          { title: "Database links", body: "To the systems that are not in a catalog, including on-prem." },
-          { title: "A governed gold layer", body: "With business definitions the organization signs off." },
-          { title: "Plain-English question answering", body: "Via Select AI over that layer." },
-          { title: "Converged data in one database", body: "Relational, JSON, spatial, graph and vector." },
-          { title: "Role-scoped answers and a full audit trail", body: "Enforced in the data layer." }
-        ],
         industriesNote: "The same two pains in every industry, regardless of stack — what varies is the data estate.",
         steps: [
           {
             n: 1,
-            title: "Mount what you already run",
-            text: "Existing Iceberg catalogs are mounted and the databases outside them are linked, on-prem included. Nothing is copied.",
-            image: "assets/img/steps/business-metrics-qa-1.svg",
+            title: "Ask across every cloud",
+            text: "A finance lead asks for revenue by product line, all regions, this month against plan. The catalogs and databases already in place are connected as they are.",
+            shot: {
+              full: "assets/img/steps/business-metrics-qa-1.jpg",
+              zoom: "assets/img/steps/business-metrics-qa-1-zoom.jpg",
+              region: [65.8, 7.3, 32.5, 35.3],
+              anchor: "br",
+              alt: "The Ask bar with the revenue question and three connected sources."
+            },
             features: [
               "Catalog federation: mount the Iceberg catalogs you already run",
               "Database links to the systems not in a catalog, on-prem included",
@@ -2554,9 +2754,15 @@ window.SITE_CONTENT = {
           },
           {
             n: 2,
-            title: "Build the gold layer",
-            text: "A small governed model over those sources carries the business definitions the organization signs off.",
-            image: "assets/img/steps/business-metrics-qa-2.svg",
+            title: "One agreed definition",
+            text: "Net revenue means one thing, signed off by group finance, and every result uses it, so two dashboards stop disagreeing.",
+            shot: {
+              full: "assets/img/steps/business-metrics-qa-2.jpg",
+              zoom: "assets/img/steps/business-metrics-qa-2-zoom.jpg",
+              region: [17.3, 19.6, 33.8, 31.3],
+              anchor: "br",
+              alt: "The net revenue definition, version 3, signed off by Group FP&A."
+            },
             features: [
               "A governed gold layer with definitions the organization signs off",
               "Converged data in one database: relational, JSON, spatial, graph, vector"
@@ -2564,17 +2770,29 @@ window.SITE_CONTENT = {
           },
           {
             n: 3,
-            title: "Scope it by role",
-            text: "Masking, row-level policies and a full audit trail are enforced by the database itself, on every query the assistant writes.",
-            image: "assets/img/steps/business-metrics-qa-3.svg",
-            features: ["Role-scoped answers and a full audit trail, enforced in the data layer"]
+            title: "The answer, by role",
+            text: "The table and chart come back in seconds, showing each person only the regions and fields their role allows.",
+            shot: {
+              full: "assets/img/steps/business-metrics-qa-3.jpg",
+              zoom: "assets/img/steps/business-metrics-qa-3-zoom.jpg",
+              region: [17.3, 41.4, 33.0, 36.3],
+              anchor: "br",
+              alt: "The answer as table and chart, two columns masked for this role."
+            },
+            features: ["Plain-English question answering via Select AI over that layer"]
           },
           {
             n: 4,
-            title: "Answer across every source",
-            text: "Select AI answers plain-English questions across each connected source, tuned live with your analysts against an agreed question set.",
-            image: "assets/img/steps/business-metrics-qa-4.svg",
-            features: ["Plain-English question answering via Select AI over that layer"]
+            title: "Traced and reused",
+            text: "Who asked, what was read and how it was computed are kept, so an auditor can retrace any answer and the next question runs on the same foundation.",
+            shot: {
+              full: "assets/img/steps/business-metrics-qa-4.jpg",
+              zoom: "assets/img/steps/business-metrics-qa-4-zoom.jpg",
+              region: [64.5, 25.4, 33.8, 36.4],
+              anchor: "bl",
+              alt: "The audit entry: who asked, the sources read, the query, 4 s."
+            },
+            features: ["Role-scoped answers and a full audit trail, enforced in the data layer"]
           }
         ],
         industryCases: [
@@ -2616,16 +2834,6 @@ window.SITE_CONTENT = {
             "Write-back to the source systems: the system retrieves, it does not act"
           ]
         },
-        moreDetail: [
-          { title: "The pattern", body: "A request asked in plain language → a governed schema, single-source or federated across systems and clouds → numbers and charts back, no report request. No human gate; the system retrieves, it does not act." },
-          { title: "Today", body: "Data lives in AWS, Azure, Google and on-prem databases. Each platform has its own catalog, its own security model, its own team. So a cross-cloud question — group revenue by product, all regions, today — takes a data engineer, three extracts and a week. AI initiatives stall: no single system sees the whole picture." },
-          { title: "Tomorrow", body: "One governed engine mounts the catalogs you already have — AWS Glue, Databricks Unity, Snowflake — and links your databases, querying data where it lives. No migration. On top: an AI assistant answers plain-English questions across all of it, and obeys your access rules. The platform runs inside whichever cloud you prefer; your apps stay where they are." },
-          { title: "Why the answer layer moves", body: "The answer layer moves to your data — your data does not move to it." },
-          { title: "TIME — every answer is a project", body: "The BI backlog runs in weeks, so the business answers itself in Excel. Same KPI, two dashboards, two different numbers — nobody trusts either. Every acquisition and every new app adds an island nobody has integrated." },
-          { title: "TRUST — AI is stuck in security review", body: "Pilots die in review: no one can prove what the model can see or show. Access rules live app by app; AI cuts across all of them at once. When auditors ask who saw what through AI, there is no answer today." },
-          { title: "Business manager", body: "Ask revenue, churn or inventory questions in plain language; get charts back from governed data, no report request." },
-          { title: "Merchandiser", body: "Sales by SKU, region and promotion compared on demand." }
-        ],
         caseStudy: null
       },
       technology: {
@@ -2795,26 +3003,47 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            title: "The problem",
-            text: "Field-service planners route hundreds of vans a day around booked slots, engineer skills and traffic, and now around charging for the electric ones. The operator pays for every extra mile, every hour an engineer waits at a charger and every second visit after a missed slot.",
-            icon: "alert"
+            headline: "Every extra mile, charger wait and missed slot is paid for",
+            text: "Planners route hundreds of vans by hand around booked windows, skills and, for electric vans, charging. Every wasted mile, idle hour and repeat trip is a cost line."
           },
           solution: {
-            title: "The solution: see the saving before you change a route",
-            text: "NVIDIA cuOpt re-plans every van’s day in one GPU solve: the right jobs, in the right order, with the charging stop where it costs no visit. It is tested first on your own past days, so operations and finance see the cost per visit before anything reaches the field.",
-            icon: "spark"
+            headline: "See the saving on your own past days first",
+            text: "Your days are replayed and planned again around windows, skills and battery range. Operations and finance see cost per visit, visits per engineer and missed slots before any route changes."
           }
         },
         metrics: [
-          { value: null, label: "Cost per completed visit", qualifier: "Driving, paid charging time and overtime, priced at your own unit costs", icon: "roi" },
-          { value: null, label: "Visits per engineer per day", qualifier: "More booked work from the same fleet, without new hires", icon: "gauge" },
-          { value: null, label: "Missed appointments", qualifier: "Each one a second visit, and often a compensation payment", icon: "calendar" }
+          {
+            key: "cost-per-visit",
+            title: "Cost per completed visit",
+            kind: "estimated",
+            owner: "Chief operating officer",
+            figure: { text: "−5 to −10%" },
+            visual: {
+              form: "range",
+              unit: "percent of cost per visit",
+              direction: "down",
+              scale: { min: 0, max: 15 },
+              before: { value: 0, label: "today" },
+              range: { lo: 5, hi: 10, label: "−5% to −10%" }
+            },
+            line: "Driving, paid charging time and overtime, priced at your own unit costs."
+          },
+          {
+            key: "road-time",
+            title: "Paid time on the road per engineer",
+            kind: "estimated",
+            owner: "Director of field operations",
+            figure: { text: "up to 1 h a day" },
+            visual: {
+              form: "baseline",
+              unit: "minutes per engineer per day",
+              direction: "down",
+              scale: { min: 0, max: 60 },
+              before: { value: 60, label: "up to an hour a day that adds no visit, today" }
+            },
+            line: "Unnecessary miles in a technician's day, the first item on every visit's bill."
+          }
         ],
-        metricsNote: "Each measure is computed the same way for the day as it ran and for the re-planned day, on your own past days. Your finance team prices the driving, charging and overtime at your own unit costs.",
-        roi: {
-          icon: "roi",
-          text: "The saving lands in the field: fewer miles, less paid time at chargers and fewer second visits. Each visit costs less, and the same fleet takes on more booked work."
-        },
         features: [
           "Real past days replayed from Field Service, telematics and charging records",
           "Replay checked against actual visits, journey times and outcomes",
@@ -2825,22 +3054,19 @@ window.SITE_CONTENT = {
           "The day as it ran beside the re-plan, route by route",
           "Approved routes and charging stops sent to Oracle Fusion Field Service *"
         ],
-        featuresNote: "* Write-back to Oracle Fusion Field Service comes with the Integration package; the Jumpstart works on files.",
-        featuresDetail: [
-          { title: "Replay of real past days", body: "Bookings, engineers, skills and slots from Oracle Fusion Field Service, aligned with telematics, GPS traces and charging history, rebuilt engineer by engineer and checked against what really happened." },
-          { title: "One GPU solve for the whole region", body: "Booked slots, skills including multi-skill jobs, job priorities weighed against travel, and electric and combustion vans in one NVIDIA cuOpt run." },
-          { title: "Charging planned in", body: "Battery level and the range the remaining work needs, charging stops placed by location, connector, speed and listed availability, home-charging policy with its exceptions, and every electric route checked leg by leg against a battery reserve." },
-          { title: "Unserved visits with a reason", body: "A visit no engineer can serve comes back unassigned with the reason, and is checked for real infeasibility rather than cost." },
-          { title: "The saving, side by side", body: "The day as it ran against the re-plan: cost per visit, visits per engineer and missed appointments, down to each engineer’s route and visit." },
-          { title: "Dispatcher approval", body: "A dispatcher reviews and approves every change; the approved routes and charging stops go to Oracle Fusion Field Service in its own import format." }
-        ],
         industriesNote: "Any van fleet that visits customers against booked slots, especially one going electric.",
         steps: [
           {
             n: 1,
-            title: "Replay the real day",
-            text: "Past days come in from Oracle Fusion Field Service, telematics and charging records, rebuilt engineer by engineer and checked against what really happened.",
-            image: "assets/img/steps/fleet-route-optimization-1.jpg",
+            title: "Replay a real day",
+            text: "A past day is rebuilt van by van from the field-service, telematics and battery records, and checked against what actually happened.",
+            shot: {
+              full: "assets/img/steps/fleet-route-optimization-1.jpg",
+              zoom: "assets/img/steps/fleet-route-optimization-1-zoom.jpg",
+              region: [27.7, 36.8, 25.9, 9.3],
+              anchor: "br",
+              alt: "The replayed day checked: 72 of 72 visits matched, journeys within 6%."
+            },
             features: [
               "Real past days replayed from Field Service, telematics and charging records",
               "Replay checked against actual visits, journey times and outcomes"
@@ -2849,8 +3075,14 @@ window.SITE_CONTENT = {
           {
             n: 2,
             title: "Plan every route",
-            text: "NVIDIA cuOpt re-plans every van in one GPU solve, around booked slots, skills, priorities and charging, and checks every electric route against the battery.",
-            image: "assets/img/steps/fleet-route-optimization-2.jpg",
+            text: "It is planned again: every booked slot kept, every job on someone with the right skills, and the charging stop where it costs nothing.",
+            shot: {
+              full: "assets/img/steps/fleet-route-optimization-2.jpg",
+              zoom: "assets/img/steps/fleet-route-optimization-2-zoom.jpg",
+              region: [27.6, 53.9, 31.6, 25.8],
+              anchor: "tr",
+              alt: "The Changes tab: each re-plan change with its rule and effect."
+            },
             features: [
               "Booked slots, engineer skills and job priorities in one GPU solve",
               "Electric and combustion vans planned together",
@@ -2861,15 +3093,27 @@ window.SITE_CONTENT = {
           {
             n: 3,
             title: "See what it saves",
-            text: "Operations see the day as it ran beside the re-plan: cost per visit, visits per engineer and missed appointments, down to each engineer’s route.",
-            image: "assets/img/steps/fleet-route-optimization-3.jpg",
+            text: "The day as it ran sits beside the re-plan: cost per visit, visits per engineer, missed slots, down to each engineer and the reason for each change.",
+            shot: {
+              full: "assets/img/steps/fleet-route-optimization-3.jpg",
+              zoom: "assets/img/steps/fleet-route-optimization-3-zoom.jpg",
+              region: [27.0, 23.3, 34.1, 19.6],
+              anchor: "br",
+              alt: "Cost per visit €64.41 to €56.96, visits per engineer 5.50 to 5.92."
+            },
             features: ["The day as it ran beside the re-plan, route by route"]
           },
           {
             n: 4,
             title: "Send it to dispatch",
-            text: "A dispatcher approves the changes, and the approved routes and charging stops go to Oracle Fusion Field Service in its own import format.",
-            image: "assets/img/steps/fleet-route-optimization-4.jpg",
+            text: "A dispatcher approves the changes, and the routes and charging stops go to the field-service system in its own import format.",
+            shot: {
+              full: "assets/img/steps/fleet-route-optimization-4.jpg",
+              zoom: "assets/img/steps/fleet-route-optimization-4-zoom.jpg",
+              region: [27.6, 53.9, 25.2, 25.3],
+              anchor: "tr",
+              alt: "The Field Service import: 10 approved changes, 71 visits, 3 charging stops."
+            },
             features: ["Approved routes and charging stops sent to Oracle Fusion Field Service *"]
           }
         ],
@@ -2918,16 +3162,6 @@ window.SITE_CONTENT = {
             "Queueing at shared chargers — on the roadmap"
           ]
         },
-        moreDetail: [
-          { title: "Today", body: "Planners build the day from the scheduling system’s rules and patch the rest by hand. Charging an electric van is left to the engineer, and nobody can say what a better plan would have saved." },
-          { title: "Tomorrow", body: "Each day is planned on GPU with slots, skills, priorities and charging stops in one solve, and every electric route is checked against the battery. Operations see what it is worth before any live schedule changes." },
-          { title: "Paid time on the road", body: "Fuel, wear and an engineer who is not on a job." },
-          { title: "Second visits", body: "A missed slot costs a repeat visit and often a compensation payment." },
-          { title: "Paid time at chargers", body: "A badly timed charge takes an engineer off the job." },
-          { title: "How the measures are defined", body: "Cost per completed visit: driving, in-day charging and overtime, priced at your own unit costs, over completed visits. Visits per engineer: completed visits per engineer per working day. Missed appointments: missed or late booked appointments per day. Each is computed identically for the day as it ran and the re-planned day." },
-          { title: "Delivered after the Jumpstart", body: "Live read from Oracle Fusion Field Service, dispatcher review and write-back of approved routes and charging stops, live traffic and charger data, several charging stops per shift, and sign-in, roles and audit for production use." },
-          { title: "On the roadmap", body: "Queueing and contention at shared chargers · van load capacity · the saving worked out in money and carbon inside the product." }
-        ],
         caseStudy: null
       },
       technology: {
@@ -3113,41 +3347,48 @@ window.SITE_CONTENT = {
   "overview": {
     "problemSolution": {
       "problem": {
-        "title": "The problem",
-        "text": "Call agents, surveyors and claims handlers decide repair or replace from photos of damaged vehicles, containers and equipment, and each wrong call costs a needless replacement or a repeat visit. The insurer or lessor funds a part it did not need; the network goes back for the repair that failed.",
-        "icon": "alert"
+        "headline": "Repair or replace, decided by eye from a photo",
+        "text": "Call agents, depot surveyors and claims handlers judge from photos whether a windscreen, a container panel or a body panel is repaired or replaced. Guessing costs money both ways."
       },
       "solution": {
-        "title": "The solution: check the call, don't make it",
-        "text": "The agent, surveyor or handler confirms or overrules a measured call before the job is booked, with its rule and any recalibration listed. Replacements are funded only when the rules require them, and the job is done once.",
-        "icon": "spark"
+        "headline": "Measured from the picture, checked against the rule",
+        "text": "The inspector sees the measured damage, the rule that applies in that market and the recommended call, then confirms or overrules it. Every decision keeps its reason."
       }
     },
     "metrics": [
       {
-        "value": "about £460",
-        "label": "Saving per needless replacement avoided",
-        "qualifier": "A windscreen replacement about £500 against a £40 repair, UK industry averages",
-        "icon": "roi"
+        "key": "needless-replacements",
+        "title": "Needless replacements",
+        "kind": "estimated",
+        "owner": "Head of claims, on the payer's side",
+        "figure": { "text": "3.0 → 2.4%" },
+        "visual": {
+          "form": "dumbbell",
+          "unit": "share of remediation decisions",
+          "direction": "down",
+          "scale": { "min": 0, "max": 4 },
+          "before": { "value": 3, "label": "3.0% today" },
+          "after": { "value": 2.4, "label": "2.4% estimated" }
+        },
+        "line": "Parts swapped where a repair would have held; the payer funds them."
       },
       {
-        "value": "$300–400 and 4 days",
-        "label": "Avoidable recalibrations",
-        "qualifier": "Each camera recalibration a needless replacement would have triggered, industry figures",
-        "icon": "clock"
-      },
-      {
-        "value": "36 per 1,000",
-        "label": "Wrong calls per 1,000 cases",
-        "qualifier": "Down from 45 per 1,000 today, counting both kinds of wrong call",
-        "icon": "gauge"
+        "key": "repeat-visits",
+        "title": "Repeat visits for the same damage",
+        "kind": "estimated",
+        "owner": "Network operations director",
+        "figure": { "text": "1.5 → 1.2%" },
+        "visual": {
+          "form": "dumbbell",
+          "unit": "share of repairs",
+          "direction": "down",
+          "scale": { "min": 0, "max": 2 },
+          "before": { "value": 1.5, "label": "1.5% today" },
+          "after": { "value": 1.2, "label": "1.2% estimated" }
+        },
+        "line": "Repairs that fail and come back, absorbed by the operator."
       }
     ],
-    "metricsNote": "Modeled figures: the saving per call and the recalibration cost are published industry averages (vehicle glazing, UK 2013, about $250 in the US; collision repair estimates), and the rate follows industry assumptions. Each is applied to your own volumes, and the proof of value measures each one on your own cases.",
-    "roi": {
-      "icon": "roi",
-      "text": "The saving lands on both sides: the insurer or lessor keeps the price gap every time a repair would have met the rules, and the network makes one visit with the right part instead of two."
-    },
     "features": [
       "Capture requests sent from a booking or claim *",
       "Guided capture with a scale anchor, so size can be measured *",
@@ -3158,55 +3399,70 @@ window.SITE_CONTENT = {
       "Rule, frame and measurement cited on every call *",
       "Reviewer workspace with override, a captured reason and a decision record *"
     ],
-    "featuresNote": "* Partial out of the box or completed during the proof of value; the exact coverage is confirmed in scoping.",
-    "featuresDetail": [
-      { "title": "Guided capture", "body": "A capture request goes from the booking or claim to whoever holds the asset, with prompts on framing and a scale anchor so size can be measured.*" },
-      { "title": "Asset identification", "body": "The identifier is read from the media itself, and the asset's record and geometry are retrieved." },
-      { "title": "Detection and classification", "body": "Each damage is located, tracked across frames and classified against a taxonomy configured per asset class.*" },
-      { "title": "Measurement", "body": "Each damage is measured, with its basis stated, and mapped to the zone whose limit governs it.*" },
-      { "title": "The call", "body": "Repair, replace or refer, citing the rule, the frame and the measurement, with a threshold tuned to what each kind of error costs you.*" },
-      { "title": "Review and record", "body": "The reviewer sees the media, the reading and the rule, confirms or overrules with a reason, and the decision record is kept per market retention rules.*" }
-    ],
     "industriesNote": "For the network, depot, branch or maintenance organization that makes the call and carries a wrong one, and for the insurer, lessor or fleet owner that funds the remedy.",
     "steps": [
       {
         "n": 1,
-        "title": "Capture",
-        "text": "The capture request reaches whoever holds the asset. Media comes back, is checked for usability, and a retake is requested when it falls short.",
-        "image": "assets/img/steps/repair-or-replace-decisions-1.jpg",
+        "title": "Measure the damage",
+        "text": "The photos identify the item, locate each damage and measure it against the limit that governs it; unusable pictures are sent back for a retake.",
+        "shot": {
+          "full": "assets/img/steps/repair-or-replace-decisions-1.jpg",
+          "zoom": "assets/img/steps/repair-or-replace-decisions-1-zoom.jpg",
+          "region": [67.6, 18.4, 30.5, 32.4],
+          "anchor": "bl",
+          "alt": "Case RR-24811: the windscreen photo with the chip measured at 14.2 mm."
+        },
         "features": [
           "Capture requests sent from a booking or claim *",
-          "Guided capture with a scale anchor, so size can be measured *"
-        ]
-      },
-      {
-        "n": 2,
-        "title": "Read the damage",
-        "text": "The asset is identified from its own markings, and each damage is located, classified and measured against the limit that governs it.",
-        "image": "assets/img/steps/repair-or-replace-decisions-2.jpg",
-        "features": [
+          "Guided capture with a scale anchor, so size can be measured *",
           "Asset identified from its own markings",
           "Damage located across frames and classified against your taxonomy *",
           "Each damage measured against the limit that governs it *"
         ]
       },
       {
-        "n": 3,
-        "title": "The call",
-        "text": "Repair, replace or refer, with the rule it came from, the measurement it used and a confidence attached, before the job is booked.",
-        "image": "assets/img/steps/repair-or-replace-decisions-3.jpg",
+        "n": 2,
+        "title": "Check it against the rule",
+        "text": "The size, the position and the market's limits give the call: repair, replace or refer, with the dependent work a replacement would trigger.",
+        "shot": {
+          "full": "assets/img/steps/repair-or-replace-decisions-2.jpg",
+          "zoom": "assets/img/steps/repair-or-replace-decisions-2-zoom.jpg",
+          "region": [67.6, 50.3, 30.5, 28.9],
+          "anchor": "bl",
+          "alt": "Brisca case: 11 mm chip in zone A, the rule says replace."
+        },
         "features": [
-          "Repair, replace or refer, with a confidence attached",
-          "Rule, frame and measurement cited on every call *"
+          "Repair, replace or refer, with a confidence attached"
+        ]
+      },
+      {
+        "n": 3,
+        "title": "Confirm or overrule",
+        "text": "The reviewer sees the photo, the measurement and the cited rule beside the recommendation, and confirms it or overrules it with a reason that is kept.",
+        "shot": {
+          "full": "assets/img/steps/repair-or-replace-decisions-3.jpg",
+          "zoom": "assets/img/steps/repair-or-replace-decisions-3-zoom.jpg",
+          "region": [2.2, 50.3, 32.1, 19.3],
+          "anchor": "br",
+          "alt": "Before and after, same cases: needless replacements 3.0% to 2.4%."
+        },
+        "features": [
+          "Reviewer workspace with override, a captured reason and a decision record *"
         ]
       },
       {
         "n": 4,
-        "title": "Review and hand off",
-        "text": "The reviewer confirms the call or overrules it with a reason. The confirmed decision reaches the booking, dispatch or claims system with its scope resolved; the record is kept.",
-        "image": "assets/img/steps/repair-or-replace-decisions-4.jpg",
+        "title": "Book the right job",
+        "text": "The approved call goes to booking or claims with its scope resolved: the part, the skill, the slot, and the recalibration if one is needed.",
+        "shot": {
+          "full": "assets/img/steps/repair-or-replace-decisions-4.jpg",
+          "zoom": "assets/img/steps/repair-or-replace-decisions-4-zoom.jpg",
+          "region": [64.5, 18.0, 33.2, 29.3],
+          "anchor": "br",
+          "alt": "Booking import, 6 sent and 1 held: rule, measurement, who authorized."
+        },
         "features": [
-          "Reviewer workspace with override, a captured reason and a decision record *"
+          "Rule, frame and measurement cited on every call *"
         ]
       }
     ],
@@ -3263,16 +3519,6 @@ window.SITE_CONTENT = {
         "Rule sets for further markets, delivered after the Jumpstart"
       ]
     },
-    "moreDetail": [
-      { "title": "Today", "body": "Staff decide repair or replace from photos, by eye, against limits that differ between markets and contracts and are rarely written down. A wrong call is paid for twice: by the insurer or lessor that funds it and by the network that goes back." },
-      { "title": "Tomorrow", "body": "The reviewer sees the measured size, the rule that applies and the recommended call, confirms or overrules it with a reason, and the decision reaches the booking, dispatch or claims system with its scope resolved: part, skill and slot." },
-      { "title": "Needless replacements", "body": "A full replacement is paid for when a repair would have met the rules." },
-      { "title": "Repeat visits", "body": "A repair that should have been a replacement fails and comes back." },
-      { "title": "Follow-on work found late", "body": "Work a replacement triggers, such as camera recalibration, surfaces after booking and adds days." },
-      { "title": "How the measures are defined", "body": "Saving per needless replacement avoided: the replacement not made, less the repair made instead, for each call corrected from replace to repair where the repair meets the governing limit; UK industry averages put a windscreen replacement at about £500 and a repair at £40, US figures at about $350 and $99. Avoidable recalibrations: camera recalibrations booked only because a replacement was chosen where a repair would have met the limit; about 42 in 100 windscreen replacements also need one, over half of calibrations surface only after the first estimate, and each costs $300–400 and about four more days, on industry figures from collision repair estimates. Wrong calls per 1,000 cases: cases booked as a repair that needed a replacement, or as a replacement a repair would have met, over the same window before and after; the model takes 30 needless replacements and 15 failed repairs per 1,000 today, each reduced by a fifth." },
-      { "title": "Delivered after the Jumpstart", "body": "Further asset classes, markets and contracts; rules authored by your own team; integrity and tamper checks on submitted media; write-back into your booking, dispatch or claims system; priced scope with the write-off test against a local ceiling." },
-      { "title": "On the roadmap", "body": "Follow-on work such as camera recalibration flagged at the moment of decision · rule changes replayed on past cases before release · the post-repair residual predicted where rules require it · corrections fed back into training." }
-    ],
     "caseStudy": null
   },
   "technology": {

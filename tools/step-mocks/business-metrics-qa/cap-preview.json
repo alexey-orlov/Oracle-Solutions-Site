@@ -1,0 +1,5 @@
+[
+  {"eval": "document.fonts.ready.then(() => true)"},
+  {"eval": "(() => { const r = document.querySelector('#region').getBoundingClientRect(); const over = [...document.querySelectorAll('body *')].filter(e => { const b = e.getBoundingClientRect(); return b.right > 1281 || b.bottom > 801; }).map(e => e.tagName + '.' + e.className + ' ' + Math.round(e.getBoundingClientRect().right) + 'x' + Math.round(e.getBoundingClientRect().bottom)).slice(0, 12); return { x: r.x, y: r.y, w: r.width, h: r.height, overflow: over }; })()"},
+  {"shot": "preview"}
+]

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Case evidence · CMP-2026-0418 · File</title>
+<link rel="stylesheet" href="../shell-a.css">
+<style>
+  .casebar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; height: 36px; }
+  .casebar .l { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .casebar .l .mono { font-size: 13px; color: var(--muted); }
+  .casebar h1 { font-size: 22px; font-weight: 600; letter-spacing: -.014em; white-space: nowrap; }
+  .seg > span { display: inline-flex; align-items: center; gap: 6px; }
+  .seg .n { font-size: 11.5px; font-weight: 600; background: var(--grey-bg); color: var(--grey-fg); padding: 0 7px; border-radius: 999px; line-height: 17px; }
+  .clock { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px 0 8px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; background: var(--blue-bg); color: var(--blue-fg); }
+  .clock svg.i { width: 14px; height: 14px; stroke-width: 2; }
+  .cols { display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: start; }
+  .cols > .rail { grid-column: 1; grid-row: 1; }
+  .cols > .file { grid-column: 2; grid-row: 1; }
+  .file { position: relative; padding: 0; }
+  .file .card-head { padding: 13px 22px; }
+  .file section { padding: 16px 22px 18px; border-bottom: 1px solid var(--line); }
+  .file section:last-child { border-bottom: 0; }
+  .file .eyebrow { margin-bottom: 8px; }
+  .file p { font-size: 14px; line-height: 1.75; color: var(--text); }
+  .file section.sum { display: grid; grid-template-columns: 400px 1fr; gap: 22px; }
+  .facts { border-left: 1px solid var(--line); padding-left: 18px; }
+  .facts dl { margin: 0; }
+  .facts dt { font-size: 12px; color: var(--muted); margin-top: 9px; }
+  .facts dt:first-child { margin-top: 0; }
+  .facts dd { margin: 1px 0 0; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .cite { vertical-align: 0; margin: 0 1px; }
+  .cite svg.i { width: 11px; height: 11px; }
+  .cite.is-open { position: relative; z-index: 21; }
+  .tlrow { display: flex; align-items: center; gap: 12px; font-size: 13.5px; color: var(--text-2); }
+  .file section.tlsec { padding-top: 22px; padding-bottom: 22px; }
+  .tlrow .dots { display: flex; gap: 3px; }
+  .tlrow .dots i { width: 8px; height: 8px; border-radius: 50%; }
+  .d-violet { background: #7c3aed; } .d-azure { background: #0284c7; } .d-teal { background: #0d9488; } .d-fuchsia { background: #c026d3; }
+  .resp h4 { font-size: 13.5px; font-weight: 600; margin: 10px 0 2px; display: flex; align-items: center; gap: 8px; }
+  .resp h4 .n { width: 18px; height: 18px; border-radius: 50%; background: var(--grey-bg); color: var(--grey-fg); font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+  .resp p { font-size: 13.5px; line-height: 1.65; padding-left: 26px; }
+  .pop { width: 420px; padding: 12px 16px 12px; }
+  .pop::before { left: var(--arrow, 22px); }
+  .pop .for { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .pop .stmt { font-size: 13px; line-height: 1.5; color: var(--text); margin-top: 4px; }
+  .pop .srchead { display: flex; align-items: center; gap: 8px; margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--line); font-size: 13px; }
+  .pop .srchead b { font-weight: 600; }
+  .pop .srchead a { margin-left: auto; font-size: 12.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+  .pop .srchead a svg.i { width: 12px; height: 12px; }
+  .fields { display: grid; grid-template-columns: 110px 1fr; margin-top: 9px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 13px; }
+  .fields > span { padding: 4px 10px; border-bottom: 1px solid var(--line-3); }
+  .fields > span:nth-child(odd) { color: var(--muted); background: #fafbfc; }
+  .fields > span.last { border-bottom: 0; }
+  .fields .hit { background: #fef9c3; color: var(--ink); font-weight: 600; }
+  .fields .hit-l { background: #fef9c3 !important; color: #854d0e !important; }
+  .status-card { padding: 18px 20px; }
+  .st-list { margin-top: 12px; }
+  .st-list li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-3); font-size: 13.5px; }
+  .st-list li:last-child { border-bottom: 0; }
+  .st-list li .ok { width: 18px; height: 18px; border-radius: 50%; background: var(--green); display: grid; place-items: center; color: #fff; flex: none; }
+  .st-list li .ok svg.i { width: 11px; height: 11px; stroke-width: 2.8; }
+  .st-list li em { margin-left: auto; font-style: normal; font-size: 12.5px; color: var(--muted); }
+  .linked { margin-top: 14px; }
+  .linked .row { font-size: 13px; }
+  .linked .bar { margin-top: 7px; }
+  .used { padding: 16px 20px; margin-top: 16px; }
+  .used .g { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .used .g > div { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <span class="brand-mark"><svg class="i" viewBox="0 0 24 24"><path d="M3.5 7a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v2.5"/><path d="M3.5 7v10a2 2 0 0 0 2 2h6"/><circle cx="17" cy="16" r="3.2"/><path d="m19.4 18.4 2.1 2.1"/></svg></span>
+      <div class="brand-text"><strong>Case evidence</strong><span>collection and review</span></div>
+    </div>
+    <nav class="nav">
+      <a class="nav-item is-active"><svg class="i" viewBox="0 0 24 24"><path d="M3.5 7a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></svg>Cases<span class="nav-count">6</span></a>
+      <a class="nav-item"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V6"/><path d="M5 12v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/></svg>Sources</a>
+      <a class="nav-item"><svg class="i" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Audit log</a>
+    </nav>
+    <div class="side-foot">
+      <div class="user"><span class="avatar">NB</span><div><strong>Nadia Brandt</strong><span>Investigator · Complaints</span></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="crumbs">Cases <span class="sep">›</span> <span class="mono">CMP-2026-0418</span> <span class="sep">›</span> <b>File</b></div>
+      <div class="topbar-right">
+        <span class="topbar-note"><svg class="i" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg>File built 22 Sep, 09:33</span>
+        <span class="chip chip--grey chip--synth">Synthetic data</span>
+      </div>
+    </header>
+
+    <section class="screen">
+      <div class="casebar">
+        <div class="l"><span class="mono">CMP-2026-0418</span><h1>Overcharge on account closure</h1><span class="clock"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 1.5"/><path d="M10 3h4"/></svg>Day 3 of 56</span></div>
+        <span class="seg"><span>Evidence <span class="n">12</span></span><span class="is-active">File</span><span>Review</span></span>
+      </div>
+
+      <div class="cols">
+        <div class="card file" id="file">
+          <div class="card-head"><span class="card-h">Case file</span><span class="row"><span class="chip chip--grey">Draft v1</span><span class="chip chip--green chip--dot">Every statement cited</span></span></div>
+          <section class="sum">
+            <div>
+              <span class="eyebrow">Summary</span>
+              <p id="sum-p">On 21 Aug the account holder asked by phone to close the account from 31 Aug <span class="cite"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Calls · 21 Aug</span>, and it was confirmed by email <span class="cite"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>Email · 21 Aug</span>. It was set to Closed on 31 Aug <span class="cite"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16a3.4 3.4 0 0 1 6.4 0"/></svg>CRM · T-88213</span>, yet £42.00 was taken on 9 Sep <span class="cite"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Billing · row 4419</span>. The account holder complained on 22 Sep <span class="cite"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Calls · 22 Sep</span>: it was a September fee, raised after the closure <span class="cite is-open" id="cite-open"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Billing · row 4412</span>.</p>
+            </div>
+            <div class="facts">
+              <span class="eyebrow">Key facts</span>
+              <dl>
+                <dt>Account closed</dt><dd>31 Aug</dd>
+                <dt>Fee after closure</dt><dd>£42.00</dd>
+                <dt>Collected</dt><dd>9 Sep</dd>
+                <dt>Complaint</dt><dd>22 Sep</dd>
+              </dl>
+            </div>
+          </section>
+          <section class="tlsec">
+            <div class="tlrow"><span class="eyebrow" style="margin:0">Timeline</span><span class="dots"><i class="d-teal"></i><i class="d-fuchsia"></i><i class="d-violet"></i><i class="d-azure"></i><i class="d-violet"></i><i class="d-teal"></i><i class="d-azure"></i><i class="d-teal"></i><i class="d-azure"></i><i class="d-fuchsia"></i><i class="d-violet"></i><i class="d-azure"></i></span><span>12 dated events, 3 Aug to 23 Sep</span><span class="grow"></span><a class="small" style="font-weight:500">Show all</a></div>
+          </section>
+          <section class="resp">
+            <div class="row row--between"><span class="eyebrow" style="margin:0">Draft response</span><span class="chip chip--amber">For your review</span></div>
+            <h4><span class="n">1</span>What happened</h4>
+            <p>You asked us on 21 August to close your account from 31 August, and we confirmed that date to you by email <span class="cite"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>Email · 21 Aug</span>.</p>
+            <h4><span class="n">2</span>What we found</h4>
+            <p>Our billing system raised a fee for September after your account had closed <span class="cite"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Billing · row 4412</span>. That fee should not have been charged.</p>
+            <h4><span class="n">3</span>Putting it right</h4>
+            <p>We will refund the £42.00 to the account you paid from within five working days <span class="cite"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Billing · row 4419</span>.</p>
+          </section>
+
+          <div class="pop" id="pop">
+            <div class="for">Cited for</div>
+            <div class="stmt">“…it was a September fee, raised after the closure.”</div>
+            <div class="srchead"><span class="src src--teal"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Billing</span><b>Charges ledger · row 4412</b><a>Open in Billing<svg class="i" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></div>
+            <div class="fields">
+              <span>Item</span><span>Monthly fee · ACC-5521-0347</span>
+              <span class="hit-l">Period</span><span class="hit">01 Sep to 30 Sep 2026</span>
+              <span class="hit-l">Amount</span><span class="hit">£42.00</span>
+              <span class="last">Raised</span><span class="last">01 Sep 2026, 02:10</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rail">
+          <div class="card status-card">
+            <div class="row row--between"><span class="card-h">File status</span><span class="chip chip--green">Ready for review</span></div>
+            <ul class="st-list">
+              <li><span class="ok"><svg class="i" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg></span>Summary<em>3 statements · 6 citations</em></li>
+              <li><span class="ok"><svg class="i" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg></span>Timeline<em>12 events, each with its source</em></li>
+              <li><span class="ok"><svg class="i" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg></span>Draft response<em>3 sections · 3 citations</em></li>
+            </ul>
+            <div class="linked">
+              <div class="row row--between"><span class="text-2">Statements linked to a source</span><span class="strong tnum">6 of 6</span></div>
+              <div class="bar bar--green"><span style="width:100%"></span></div>
+            </div>
+            <span class="btn btn--block" style="margin-top:16px">Go to review<svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="card used">
+            <div class="row row--between"><span class="card-h" style="font-size:14px">Sources in this file</span><span class="small muted">12 items</span></div>
+            <div class="g">
+              <div><span class="src src--violet"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16a3.4 3.4 0 0 1 6.4 0"/><path d="M14 10h4M14 13.5h3"/></svg>CRM</span>3</div>
+              <div><span class="src src--azure"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>Email</span>4</div>
+              <div><span class="src src--teal"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Billing</span>3</div>
+              <div><span class="src src--fuchsia"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Calls</span>2</div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:16px;font-size:12.5px;color:var(--text-2)">The file is drafted for you; the outcome is yours. Nothing is sent from this screen.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+  (function () {
+    var chip = document.getElementById('cite-open'), pop = document.getElementById('pop'), card = document.getElementById('file');
+    var para = document.getElementById('sum-p').getBoundingClientRect();
+    var c = card.getBoundingClientRect(), r = chip.getBoundingClientRect(), w = pop.offsetWidth;
+    var left = Math.round(para.left - c.left - 12);
+    pop.style.left = left + 'px';
+    pop.style.top = Math.round(r.bottom - c.top + 10) + 'px';
+    pop.style.setProperty('--arrow', Math.round(r.left - c.left - left + r.width / 2 - 7) + 'px');
+    var box = document.createElement('div');
+    var p = pop.getBoundingClientRect();
+    var x0 = p.left, y0 = r.top - 4, x1 = p.right, y1 = p.bottom;
+    box.id = 'region-box';
+    box.setAttribute('data-region', '');
+    box.style.cssText = 'position:fixed;left:' + x0 + 'px;top:' + y0 + 'px;width:' + (x1 - x0) + 'px;height:' + (y1 - y0) + 'px;pointer-events:none;';
+    document.body.appendChild(box);
+  })();
+</script>
+</body>
+</html>

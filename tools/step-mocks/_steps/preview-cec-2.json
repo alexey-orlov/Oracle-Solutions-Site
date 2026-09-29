@@ -1,0 +1,5 @@
+[
+  {"sleep": 300},
+  {"eval": "(()=>{const a=document.querySelector('#ev-4').getBoundingClientRect(), b=document.querySelector('#ev-6').getBoundingClientRect(); const over=[...document.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect(); return r.width>0 && (r.right>1280.5 || r.bottom>800.5);}).slice(0,6).map(e=>e.tagName+'.'+e.className+' '+Math.round(e.getBoundingClientRect().right)+'x'+Math.round(e.getBoundingClientRect().bottom)); const card=document.querySelector('.tl').getBoundingClientRect(); return {region:{x:a.x,y:a.y,w:a.width,h:b.bottom-a.top}, card:{x:card.x,y:card.y,w:card.width,h:card.height}, over};})()"},
+  {"shot": "preview"}
+]

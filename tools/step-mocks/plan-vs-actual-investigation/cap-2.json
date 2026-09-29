@@ -1,0 +1,7 @@
+[
+  {"eval": "document.fonts.ready.then(() => true)"},
+  {"eval": "(() => { document.querySelectorAll('.tour, .toast, [role=dialog]').forEach(e => e.remove()); return true; })()"},
+  {"eval": "(() => { const card = document.querySelector('#tablecard').getBoundingClientRect(); const r3 = document.querySelectorAll('.pk tbody tr')[2].getBoundingClientRect(); const th3 = document.querySelectorAll('.pk thead th')[2].getBoundingClientRect(); return { x: card.left, y: card.top, w: th3.right - card.left, h: r3.bottom - card.top }; })()"},
+  {"shot": "step-2-full"},
+  {"rectshot": {"name": "step-2-zoom", "x": 254, "y": 143, "w": 423, "h": 218}}
+]

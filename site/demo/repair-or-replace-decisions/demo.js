@@ -103,8 +103,11 @@
     return n + " fewer per 1,000 " + per + (each ? " · " + each : "");
   }
 
-  /* ---- illustrations (drawn, not photographed) ---- */
-  function svgFor(c) {
+  /* ---- illustrations (drawn, not photographed) ----
+     `read` is false until the damage has been read: the photo then shows the
+     asset, the damage and the scale tag only. The zone overlay and the
+     measurement are the reading's output, so they appear with it. */
+  function svgFor(c, read) {
     var d = c.draw, s = [];
     s.push('<svg viewBox="0 0 320 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustration of ' + esc(c.damage.toLowerCase()) + ' on ' + esc(c.asset) + '">');
     s.push('<rect width="320" height="190" fill="#1B2436"/>');
@@ -112,11 +115,13 @@
     var label = c.size + " " + c.unit.replace(" deep", "").replace(" long", "");
     if (c.cls === "glazing") {
       s.push('<path d="M40 172 L280 172 L252 24 L68 24 Z" fill="#9CC3E0" fill-opacity=".5" stroke="#CBD5E1" stroke-width="2"/>');
-      s.push('<rect x="90" y="54" width="100" height="90" fill="#FDB022" fill-opacity=".10" stroke="#FDB022" stroke-dasharray="5 4"/>');
-      s.push('<text x="95" y="67" font-size="9" fill="#FEC84B" font-family="system-ui, sans-serif">Zone A · sight-line</text>');
+      if (read) {
+        s.push('<rect x="90" y="54" width="100" height="90" fill="#FDB022" fill-opacity=".10" stroke="#FDB022" stroke-dasharray="5 4"/>');
+        s.push('<text x="95" y="67" font-size="9" fill="#FEC84B" font-family="system-ui, sans-serif">Zone A · sight-line</text>');
+      }
       if (c.crack) {
         s.push('<path d="M' + d.x + ' ' + d.y + ' l12 -5 l8 7 l14 -8 l10 3 l14 -7 l12 5" fill="none" stroke="#F8FAFC" stroke-width="1.8"/>');
-        s.push(measure(d.x, d.y - 26, d.x + 70, label));
+        if (read) s.push(measure(d.x, d.y - 26, d.x + 70, label));
       } else {
         var r = Math.max(3, Math.min(14, c.size / 25 * 11));
         s.push('<circle cx="' + d.x + '" cy="' + d.y + '" r="' + r.toFixed(1) + '" fill="#F8FAFC" fill-opacity=".75"/>');
@@ -124,18 +129,18 @@
           var ang = a * Math.PI / 3 + 0.3, x2 = d.x + Math.cos(ang) * (r + 5), y2 = d.y + Math.sin(ang) * (r + 5);
           s.push('<line x1="' + d.x + '" y1="' + d.y + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="#F8FAFC" stroke-width="1"/>');
         }
-        s.push(measure(d.x - r, d.y + r + 12, d.x + r, label + " ± " + c.tol));
+        if (read) s.push(measure(d.x - r, d.y + r + 12, d.x + r, label + " ± " + c.tol));
       }
     } else if (c.cls === "container") {
       s.push('<rect x="18" y="18" width="284" height="154" fill="#8A9BB0"/>');
       for (var x = 30; x < 300; x += 18) s.push('<line x1="' + x + '" y1="18" x2="' + x + '" y2="172" stroke="#6E7F94" stroke-width="3"/>');
       if (c.hole) {
         s.push('<circle cx="' + d.x + '" cy="' + d.y + '" r="13" fill="#0B0F17" stroke="#3B4656" stroke-width="3"/>');
-        s.push(measure(d.x - 13, d.y + 26, d.x + 13, label));
+        if (read) s.push(measure(d.x - 13, d.y + 26, d.x + 13, label));
       } else {
         s.push('<ellipse cx="' + d.x + '" cy="' + d.y + '" rx="38" ry="24" fill="#4E5D71" fill-opacity=".75"/>');
         s.push('<ellipse cx="' + (d.x - 8) + '" cy="' + (d.y - 6) + '" rx="16" ry="9" fill="#B8C4D2" fill-opacity=".35"/>');
-        s.push(measure(d.x - 38, d.y + 36, d.x + 38, label + " deep"));
+        if (read) s.push(measure(d.x - 38, d.y + 36, d.x + 38, label + " deep"));
       }
     } else {
       s.push('<rect x="18" y="18" width="284" height="154" rx="6" fill="#C9D1DB"/>');
@@ -144,8 +149,10 @@
       }
       for (var fy = 56; fy < 146; fy += 14) s.push('<circle cx="196" cy="' + fy + '" r="2" fill="#6B7785"/>');
       s.push('<ellipse cx="' + d.x + '" cy="' + d.y + '" rx="20" ry="13" fill="#8C98A6" fill-opacity=".8"/>');
-      s.push(measure(d.x - 20, d.y + 24, d.x + 20, label + " deep"));
-      s.push('<text x="202" y="' + (d.y - 16) + '" font-size="9" fill="#344054" font-family="system-ui, sans-serif">fastener row</text>');
+      if (read) {
+        s.push(measure(d.x - 20, d.y + 24, d.x + 20, label + " deep"));
+        s.push('<text x="202" y="' + (d.y - 16) + '" font-size="9" fill="#344054" font-family="system-ui, sans-serif">fastener row</text>');
+      }
     }
     var tagW = tag === "100 mm" ? 60 : 54;
     s.push('<rect x="26" y="150" width="' + tagW + '" height="16" rx="2" fill="#FFFFFF"/><text x="' + (26 + tagW / 2) + '" y="161" text-anchor="middle" font-size="8.5" fill="#101828" font-family="system-ui, sans-serif">' + tag + ' tag</text>');
@@ -255,7 +262,7 @@
     var h = [];
     h.push('<div class="case-head"><span class="cls">' + esc(c.clsLabel) + '</span><h3>' + c.id + '</h3><span class="sub">' +
       esc(c.market) + " · " + esc(c.site) + " · " + esc(c.asset) + "</span></div>");
-    h.push('<figure class="shot">' + svgFor(c) + "<figcaption>Illustration of photo " + c.frame + " of " + c.photos + " · " + esc(c.anchor.toLowerCase()) + " in view</figcaption></figure>");
+    h.push('<figure class="shot">' + svgFor(c, S.ran) + "<figcaption>Illustration of photo " + c.frame + " of " + c.photos + " · " + esc(c.anchor.toLowerCase()) + " in view</figcaption></figure>");
     if (!S.ran) {
       h.push('<p class="empty-note">Booked at first contact: ' + esc(bookedLabel(c)) + ", on " + esc(c.described) + ". Read the damage to measure it against the rules.</p>");
       box.innerHTML = h.join("");

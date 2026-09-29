@@ -61,13 +61,6 @@
     }).join("") + "</ul>";
   }
 
-  function plainList(items) {
-    var UI = window.UI;
-    return '<ul class="dash-list">' + items.map(function (item) {
-      return "<li>" + UI.esc(item) + "</li>";
-    }).join("") + "</ul>";
-  }
-
   /* ————— hero ————— */
 
   function youtubeId(url) {
@@ -224,78 +217,114 @@
 
   /* ————— tab: overview ————— */
 
+  /* Round 20 (Alex: "too much text, heading indistinguishable from text, not
+     sexy"): two plates side by side, equal height. The problem sits on the
+     screen's one grey step, what changes on the tab's one dark plate; each is a
+     shared eyebrow, a display headline and one short paragraph. No icons and no
+     arrow: the pair reads left to right on its own. */
   function problemSolution(block) {
     var UI = window.UI;
-    if (!block) return "";
-    function panel(side, isSolution) {
-      return '<article class="ps-panel' + (isSolution ? " ps-panel--solution" : "") + '">' +
-        '<span class="ps-mark">' + UI.icon(side.icon) + "</span>" +
-        '<p class="eyebrow' + (isSolution ? " eyebrow--accent" : "") + '">' + UI.esc(side.title) + "</p>" +
-        '<p class="ps-text">' + UI.esc(side.text) + "</p>" +
+    if (!block || !block.problem || !block.solution) return "";
+    function plate(side, eyebrowKey, tone) {
+      return '<article class="ps-plate ps-plate--' + tone + '">' +
+        '<p class="eyebrow ps-eyebrow">' + UI.esc(label(eyebrowKey)) + "</p>" +
+        '<h2 class="ps-headline">' + UI.esc(side.headline) + "</h2>" +
+        '<p class="ps-copy">' + UI.esc(side.text) + "</p>" +
         "</article>";
     }
-    return '<section class="panel panel--flat reveal"><div class="ps-strip">' +
-      panel(block.problem, false) +
-      '<span class="ps-arrow" aria-hidden="true">' + UI.icon("arrow") + "</span>" +
-      panel(block.solution, true) +
-      "</div></section>";
+    return '<section class="ps-pair reveal">' +
+      plate(block.problem, "problemEyebrow", "problem") +
+      plate(block.solution, "solutionEyebrow", "solution") +
+      "</section>";
   }
 
-  /* How it works: the workflow, not a list of nouns. Each feature bullet sits
-     under the step it belongs to, and the frame is the same 16:10 whether it
-     holds a product screenshot or a designed illustration.
-     Round 10 — the frame becomes the block. On a desktop the steps are a strip
-     of heads across the top (one grid cell each), the frame spans the whole row
-     under them at the MAIN column's full width, and the active step's body sits
-     under the frame. `.stepper-list` and `.stepper-step` are `display: contents`
-     there, so the heads, the frames and the open body are all children of the
-     one grid; `--steps` tells that grid how many columns to cut. Below 901px the
-     same markup falls back to the accordion, body under head. */
-  function stepper(product) {
+  /* How it works, round 20 (Alex: the block has to fit one screen, the step
+     heads line up, two sizes of type, screenshots large and legible). A
+     vertical list of steps beside one frame: the walkthrough's own screen at
+     16:10, the step's region outlined in blue and a zoom of that region inset
+     at the corner it leaves free (`anchor`), so the UI text reads at 1:1. A row
+     is a button; choosing it opens its text under its title and crossfades the
+     frame. From 768 to 1099px the frame sits over the same list; on a phone the
+     block is the steps as four static cards, each ending on its zoom, which
+     carries the legible part of the screen at that width. Both layouts are in
+     the markup and CSS shows one, so neither needs script. */
+  function howItWorks(product) {
     var UI = window.UI;
     var steps = product.overview.steps;
     if (!steps || !steps.length) return "";
-    var base = "wf-" + product.slug;
+    var base = "hiw-" + product.slug;
 
-    var list = steps.map(function (step, index) {
+    var rows = steps.map(function (step, index) {
       var on = index === 0;
-      var features = (step.features || []).length
-        ? bulletList(step.features, "stepper-features")
-        : "";
-      return '<li class="stepper-step' + (on ? " is-active" : "") + '">' +
-        '<button class="stepper-head" type="button" data-step="' + index + '"' +
-          ' id="' + base + "-head-" + index + '"' +
+      return '<li class="hiw-step' + (on ? " is-active" : "") + '">' +
+        '<button class="hiw-head" type="button" id="' + base + "-head-" + index + '"' +
           ' aria-expanded="' + (on ? "true" : "false") + '"' +
-          ' aria-controls="' + base + "-body-" + index + '">' +
-          '<span class="stepper-num nums">' + UI.esc(step.n) + "</span>" +
-          '<span class="stepper-title">' + UI.esc(step.title) + "</span>" +
+          ' aria-controls="' + base + "-text-" + index + " " + base + "-shot-" + index + '">' +
+          '<span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
+          '<span class="hiw-title">' + UI.esc(step.title) + "</span>" +
         "</button>" +
-        '<div class="stepper-body" id="' + base + "-body-" + index + '"' + (on ? "" : " hidden") + ">" +
-          '<p class="stepper-text">' + UI.esc(step.text) + "</p>" +
-          features +
-        "</div>" +
+        '<p class="hiw-text" id="' + base + "-text-" + index + '">' + UI.esc(step.text) + "</p>" +
         "</li>";
     }).join("");
 
-    var frames = steps.map(function (step, index) {
-      return '<figure class="step-frame' + (index === 0 ? " is-active" : "") + '"' +
-        ' data-frame="' + index + '"' + (index === 0 ? "" : " hidden") + ">" +
-        '<img src="' + UI.esc(step.image) + '" alt="' + UI.esc(step.title) +
-        '" loading="lazy" decoding="async">' +
+    var shots = steps.map(function (step, index) {
+      var shot = step.shot || {};
+      var region = shotRegion(shot.region);
+      var anchor = /^(tl|tr|bl|br)$/.test(shot.anchor || "") ? shot.anchor : "br";
+      return '<figure class="hiw-shot' + (index === 0 ? " is-active" : "") + '" id="' + base + "-shot-" + index + '">' +
+        '<div class="hiw-canvas"><div class="hiw-pic">' +
+          '<img class="hiw-full" src="' + UI.esc(shot.full) + '" alt="' + UI.esc(shot.alt) + '"' +
+            ' decoding="async" loading="' + (index === 0 ? "eager" : "lazy") + '">' +
+          (region
+            ? '<span class="hiw-region" aria-hidden="true" style="left: ' + region.x + "%; top: " + region.y +
+                "%; width: " + region.w + "%; height: " + region.h + '%"></span>' +
+              '<span class="hiw-zoom hiw-zoom--' + anchor + '" aria-hidden="true" style="--za: ' + region.za + '">' +
+                '<img src="' + UI.esc(shot.zoom) + '" alt="" decoding="async" loading="lazy"></span>'
+            : "") +
+        "</div></div>" +
         "</figure>";
     }).join("");
 
-    return '<section class="panel reveal" data-stepper="' + UI.esc(product.slug) + '">' +
-      blockHead(label("howItWorks")) +
-      '<div class="stepper" style="--steps: ' + steps.length + '">' +
-        '<ol class="stepper-list">' + list + "</ol>" +
-        '<div class="step-frames">' + frames + "</div>" +
-      "</div></section>";
+    var cards = steps.map(function (step) {
+      var shot = step.shot || {};
+      return '<li class="hiw-card">' +
+        '<h3 class="hiw-card-head"><span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
+          '<span class="hiw-title">' + UI.esc(step.title) + "</span></h3>" +
+        '<p class="hiw-text">' + UI.esc(step.text) + "</p>" +
+        '<figure class="hiw-card-shot"><img src="' + UI.esc(shot.zoom) + '" alt="' + UI.esc(shot.alt) + '"' +
+          ' decoding="async" loading="lazy"></figure>' +
+        "</li>";
+    }).join("");
+
+    return '<section class="hiw reveal" data-hiw="' + UI.esc(product.slug) + '">' +
+      '<h2 class="h2 ov-h2">' + UI.esc(label("howItWorks")) + "</h2>" +
+      '<div class="hiw-body">' +
+        '<ol class="hiw-list">' + rows + "</ol>" +
+        '<div class="hiw-frame">' + shots + "</div>" +
+      "</div>" +
+      '<ol class="hiw-cards">' + cards + "</ol>" +
+      "</section>";
+  }
+
+  /* The region is [x, y, w, h] in percent of the frame. `za` is the zoom's own
+     aspect: the frame is 16:10, so a region w% by h% is 1.6·w/h wide per unit
+     of height, which is what the inset's size is worked out from (site.css). */
+  function shotRegion(region) {
+    if (!region || region.length !== 4) return null;
+    var r = region.map(Number);
+    if (r.some(function (v) { return !isFinite(v); }) || !(r[2] > 0 && r[3] > 0)) return null;
+    return { x: r[0], y: r[1], w: r[2], h: r[3], za: Math.round(1.6 * r[2] / r[3] * 1000) / 1000 };
   }
 
   /* Round 13 (Alex): the block prints no heading. It opens the Use cases tab,
      which already names it, and a row of industry tabs names its own cut, so
-     "By industry" survives only as the tablist's accessible name. */
+     "By industry" survives only as the tablist's accessible name.
+     Round 20 (D-design §3): the tabs are text over one hairline, the selected
+     one on a blue underline, and the selected industry is one split plate, as
+     softserveinc.com sets its "Client Voice": the copy first, on #edf0f2, the
+     problem and the solution each a heading over its text, then the
+     photograph edge to edge. The selected tab names the industry one line
+     above, so the plate does not print it a second time. */
   function industryCases(product) {
     var UI = window.UI;
     var cases = product.overview.industryCases;
@@ -316,112 +345,184 @@
       return '<div class="ind-panel" role="tabpanel" id="' + base + "-panel-" + index + '"' +
         ' aria-labelledby="' + base + "-tab-" + index + '" tabindex="0"' +
         (first ? "" : " hidden") + ">" +
+        '<div class="ind-case">' +
+          '<div class="ind-case-part">' +
+            '<h3 class="ind-case-title">' + UI.esc(label("caseProblem")) + "</h3>" +
+            '<p class="ind-case-text">' + UI.esc(item.problem) + "</p>" +
+          "</div>" +
+          '<div class="ind-case-part">' +
+            '<h3 class="ind-case-title">' + UI.esc(label("caseSolution")) + "</h3>" +
+            '<p class="ind-case-text">' + UI.esc(item.solution) + "</p>" +
+          "</div>" +
+        "</div>" +
         '<figure class="ind-figure"><img src="' + UI.esc(item.image) +
           '" alt="" decoding="async" loading="' + (first ? "eager" : "lazy") + '"' +
           (first ? ' fetchpriority="high"' : "") + "></figure>" +
-        '<div class="ind-case">' +
-          '<h3 class="ind-case-name">' + UI.esc(item.label) + "</h3>" +
-          '<p class="eyebrow">' + UI.esc(label("caseProblem")) + "</p>" +
-          '<p class="ind-case-text">' + UI.esc(item.problem) + "</p>" +
-          '<p class="eyebrow eyebrow--accent">' + UI.esc(label("caseSolution")) + "</p>" +
-          '<p class="ind-case-text">' + UI.esc(item.solution) + "</p>" +
-        "</div></div>";
+        "</div>";
     }).join("");
 
-    return '<section class="panel reveal" data-industry-tabs="' + UI.esc(product.slug) + '">' +
+    return '<section class="panel ind-block reveal" data-industry-tabs="' + UI.esc(product.slug) + '">' +
       '<div class="ind-tablist" role="tablist" aria-label="' + UI.esc(heading) + '">' + tabs + "</div>" +
       '<div class="ind-panels">' + panels + "</div>" +
       (product.overview.industriesNote
-        ? '<p class="footnote ind-note">' + UI.esc(product.overview.industriesNote) + "</p>"
+        ? '<p class="ind-note">' + UI.esc(product.overview.industriesNote) + "</p>"
         : "") +
       "</section>";
   }
 
-  function detailEntries(items) {
-    var UI = window.UI;
-    return (items || []).map(function (item) {
-      return '<div class="detail-entry">' +
-        '<h3 class="detail-title">' + UI.esc(item.title) + "</h3>" +
-        '<p class="detail-text">' + UI.esc(item.body) + "</p>" +
-        "</div>";
-    }).join("");
+  /* ————— the KPI band (round 20) —————
+     What changes in your numbers (Alex: the ROI block was "too wordy, and too
+     boring"; show the metric, "from X" or the potential range, and never a
+     footnote, a method or a note to the reviewer). One full-bleed band of two
+     or three tiles; each is the fact dash, the metric and its kind, one figure,
+     one small chart drawn from the metric's own numbers, the chart's labels as
+     real text, one line and the owner. The chart is aria-hidden and carries
+     nothing its labels row does not print. */
+
+  var KPI_FORMS = { compression: true, range: true, dumbbell: true, baseline: true };
+
+  /* A value's place on the metric's own scale, in percent of the chart's
+     width, clamped to it. */
+  function kpiPos(value, scale) {
+    var min = Number(scale && scale.min);
+    var max = Number(scale && scale.max);
+    var v = Number(value);
+    if (!isFinite(min) || !isFinite(max) || !(max > min) || !isFinite(v)) return 0;
+    return Math.max(0, Math.min(100, (v - min) / (max - min) * 100));
   }
 
-  /* The disclosure at the foot of the tab: detail entries, scope and the
-     feature detail, all behind one click. */
-  function moreDetail(o) {
-    var UI = window.UI;
-    var parts = [detailEntries(o.moreDetail)];
+  function pct(p) { return (Math.round(p * 100) / 100) + "%"; }
 
-    if (o.scope) {
-      parts.push('<p class="eyebrow detail-sub">' + UI.esc(label("scope")) + "</p>" +
-        '<div class="detail-full"><div class="scope-grid">' +
-          '<div class="scope-col">' +
-            '<p class="eyebrow eyebrow--accent">' + UI.esc(label("scopeIn")) + "</p>" +
-            bulletList(o.scope.in) +
-          "</div>" +
-          '<div class="scope-col">' +
-            '<p class="eyebrow">' + UI.esc(label("scopeOut")) + "</p>" +
-            plainList(o.scope.out) +
-          "</div></div></div>");
-    }
-
-    var features = detailEntries(o.featuresDetail);
-    if (features) {
-      parts.push('<p class="eyebrow detail-sub">' + UI.esc(label("moreDetailFeatures")) + "</p>" + features);
-    }
-    if (o.featuresNote) {
-      parts.push('<div class="detail-full"><p class="footnote">' + UI.esc(o.featuresNote) + "</p></div>");
-    }
-
-    var body = parts.filter(Boolean).join("");
-    if (!body) return "";
-
-    return '<section class="panel panel--flat reveal">' +
-      '<details class="disclosure disclosure--detail">' +
-        "<summary><span>" + UI.esc(label("moreDetail")) + "</span>" + UI.icon("chevronDown") + "</summary>" +
-        '<div class="detail-wrap">' + body + "</div>" +
-      "</details></section>";
+  /* A swatch is drawn in the shape of the mark it names (a bar, a tick, a
+     dot), so the pairing never rests on colour alone. */
+  function kpiLabel(text, swatch) {
+    return '<span class="kpi-label"><span class="kpi-swatch kpi-swatch--' + swatch + '" aria-hidden="true"></span>' +
+      "<span>" + window.UI.esc(text) + "</span></span>";
   }
 
-  /* Rule 2 of the visual grammar: a number never renders away from the
-     disclaimer that belongs to it, so tiles, ROI and footnote are one block. */
-  function outcomesBlock(o) {
+  /* The four forms (D-design §2.2), all 40px tall with the track at y 17:
+     compression — measured before → after, the after bar its share of the
+       before one, at least 8px so a minutes-against-days bar still shows;
+     range — a modelled band on the scale, today's tick at its origin;
+     dumbbell — a modelled before → after on the scale;
+     baseline — a sourced "from X" with no promised end: the scale filled to X,
+       the tick, and a chevron pointing the way the number improves. */
+  function kpiVisual(viz) {
     var UI = window.UI;
-    if (!o.metrics || !o.metrics.length) return "";
-    function valued(metric) {
-      return metric.value !== null && metric.value !== undefined && metric.value !== "";
+    var scale = viz.scale || {};
+    var before = viz.before || {};
+    var after = viz.after || {};
+    var range = viz.range || {};
+    var at = pct(kpiPos(before.value, scale));
+    var track = '<rect class="kv-track" x="0" y="17" width="100%" height="6"></rect>';
+    var tick = '<line class="kv-tick" x1="' + at + '" x2="' + at + '" y1="10" y2="30"></line>';
+    var marks = "";
+    var left = "";
+    var right = "";
+    var hidden = "";
+
+    if (viz.form === "compression") {
+      var share = Number(before.value) > 0
+        ? Math.max(0, Math.min(100, Number(after.value) / Number(before.value) * 100))
+        : 0;
+      marks = '<rect class="kv-before" x="0" y="4" width="100%" height="10"></rect>' +
+        '<rect class="kv-after" x="0" y="22" width="8" height="10"></rect>' +
+        '<rect class="kv-after" x="0" y="22" width="' + pct(share) + '" height="10"></rect>';
+      left = kpiLabel(before.label, "before");
+      right = kpiLabel(after.label, "after");
+    } else if (viz.form === "range") {
+      var lo = kpiPos(range.lo, scale);
+      var hi = kpiPos(range.hi, scale);
+      marks = track +
+        '<rect class="kv-band" x="' + pct(Math.min(lo, hi)) + '" y="15" width="' + pct(Math.abs(hi - lo)) + '" height="10"></rect>' +
+        tick;
+      left = kpiLabel(label("metricToday") || before.label, "tick");
+      right = kpiLabel(range.label, "band");
+    } else if (viz.form === "dumbbell") {
+      var to = pct(kpiPos(after.value, scale));
+      marks = track +
+        '<line class="kv-link" x1="' + at + '" x2="' + to + '" y1="20" y2="20"></line>' +
+        '<circle class="kv-dot kv-dot--before" cx="' + at + '" cy="20" r="7"></circle>' +
+        '<circle class="kv-dot kv-dot--after" cx="' + to + '" cy="20" r="7"></circle>';
+      left = kpiLabel(before.label, "dot-before");
+      right = kpiLabel(after.label, "dot-after");
+    } else if (viz.form === "baseline") {
+      var up = viz.direction === "up";
+      /* The nested svg carries the chevron to the tick's x; the path is drawn
+         beside it, on the side the number improves toward. */
+      marks = track +
+        '<rect class="kv-fill" x="0" y="17" width="' + at + '" height="6"></rect>' +
+        tick +
+        '<svg x="' + at + '" y="15" width="1" height="10" overflow="visible">' +
+          '<path class="kv-chevron" d="' + (up ? "M6 0 11 5 6 10" : "M-6 0 -11 5 -6 10") + '"></path></svg>';
+      left = kpiLabel(before.label, "fill");
+      var end = up ? scale.max : scale.min;
+      hidden = '<span class="sr-only">' +
+        UI.esc([label("metricToward"), end, viz.unit].filter(function (x) { return x !== undefined && x !== ""; }).join(" ")) +
+        "</span>";
     }
-    var anyValue = o.metrics.some(valued);
-    var tiles = o.metrics.map(function (metric) {
-      var hasValue = valued(metric);
-      return '<div class="stat-tile">' +
-        '<div class="stat-tile-top">' +
-          (hasValue
-            ? '<p class="stat-tile-value nums">' + UI.esc(metric.value) + "</p>"
-            : '<span class="stat-tile-mark">' + UI.icon(metric.icon) + "</span>") +
-        "</div>" +
-        '<p class="stat-tile-label">' +
-          (hasValue ? UI.icon(metric.icon) : "") +
-          "<span>" + UI.esc(metric.label) + "</span></p>" +
-        '<p class="stat-tile-qual">' + UI.esc(metric.qualifier) + "</p>" +
-        "</div>";
-    }).join("");
 
-    var roi = o.roi && o.roi.text
-      ? '<div class="roi-band roi-band--compact">' +
-          '<span class="roi-mark">' + UI.icon((o.roi && o.roi.icon) || "roi") + "</span>" +
-          '<div class="roi-copy">' +
-            '<p class="eyebrow eyebrow--accent">' + UI.esc(label("roi")) + "</p>" +
-            '<p class="roi-text">' + UI.esc(o.roi.text) + "</p>" +
-          "</div></div>"
-      : "";
+    return {
+      svg: '<svg class="kpi-svg" width="100%" height="40" aria-hidden="true" focusable="false">' + marks + "</svg>",
+      labels: '<p class="kpi-labels">' + left + right + hidden + "</p>"
+    };
+  }
 
-    return '<section class="panel panel--tight rail-card reveal">' +
-      blockHead(label(anyValue ? "metrics" : "metricsPlanned")) +
-      '<div class="stat-tiles stat-tiles--stack">' + tiles + "</div>" +
-      roi +
-      (o.metricsNote ? '<p class="footnote stat-tiles-note">' + UI.esc(o.metricsNote) + "</p>" : "") +
+  /* The figure's width in ems of its own size, estimated per glyph, so the CSS
+     can shrink a long figure to its tile and never a short one (site.css,
+     .kpi-value). The prefix is set at 20px beside a 56px figure. */
+  function figureEm(figure) {
+    var text = String(figure.text || "");
+    var em = 0;
+    for (var i = 0; i < text.length; i += 1) {
+      var ch = text.charAt(i);
+      if (ch === " ") em += 0.28;
+      else if (/[.,:;'’]/.test(ch)) em += 0.3;
+      else if (ch === "%") em += 0.9;
+      else if (ch === "→") em += 1;
+      else if (/[mwMW]/.test(ch)) em += 0.86;
+      else em += 0.6;
+    }
+    if (figure.prefix) em += (String(figure.prefix).length * 0.55 + 0.6) * 20 / 56;
+    return Math.max(1, Math.round(em * 100) / 100);
+  }
+
+  function kpiTile(metric) {
+    var UI = window.UI;
+    var kind = (C().shared.metricKinds || {})[metric.kind] || {};
+    var viz = metric.visual || {};
+    var figure = metric.figure || {};
+    var visual = KPI_FORMS[viz.form] ? kpiVisual(viz) : { svg: "", labels: "" };
+    return '<article class="kpi">' +
+      '<span class="kpi-dash" aria-hidden="true"></span>' +
+      '<div class="kpi-head">' +
+        '<h3 class="kpi-title">' + UI.esc(metric.title) + "</h3>" +
+        (kind.chip
+          ? '<span class="kpi-kind"' + (kind.tooltip ? ' title="' + UI.esc(kind.tooltip) + '"' : "") + ">" +
+            UI.esc(kind.chip) + "</span>"
+          : "") +
+      "</div>" +
+      '<p class="kpi-figure nums" style="--fig-em: ' + figureEm(figure) + '">' +
+        (figure.prefix ? '<span class="kpi-prefix">' + UI.esc(figure.prefix) + "</span> " : "") +
+        '<span class="kpi-value">' + UI.esc(figure.text) + "</span>" +
+      "</p>" +
+      '<div class="kpi-viz kpi-viz--' + UI.esc(viz.form) + '">' + visual.svg + "</div>" +
+      visual.labels +
+      '<p class="kpi-line">' + UI.esc(metric.line) + "</p>" +
+      '<p class="kpi-owner">' + UI.esc(label("metricOwner")) + " · " + UI.esc(metric.owner) + "</p>" +
+      "</article>";
+  }
+
+  function outcomesBlock(product) {
+    var UI = window.UI;
+    var metrics = product.overview.metrics;
+    if (!metrics || !metrics.length) return "";
+    var id = "kpi-" + product.slug;
+    return '<section class="kpi-band reveal" aria-labelledby="' + id + '">' +
+      '<h2 class="h2 ov-h2" id="' + id + '">' + UI.esc(label("outcomes")) + "</h2>" +
+      '<div class="kpi-grid kpi-grid--' + metrics.length + '">' +
+        metrics.map(function (metric) { return kpiTile(metric); }).join("") +
+      "</div>" +
       "</section>";
   }
 
@@ -489,23 +590,16 @@
       "</div></section>";
   }
 
-  /* Round 10 — the Overview argues the product: the problem it solves, how it
-     works, and the detail behind that, with the outcomes in the rail. The
-     industry cases and the case study moved to their own tab, because they
-     answer a different question ("where does this apply, and has it worked?")
-     and were pushing How it works out of the first screen. */
+  /* Round 20 — one column at the wrap's width and no rail, in the order of the
+     argument: the problem and what changes, what changes in the numbers, then
+     how it works. The number is the reason to look at the screens. The More
+     detail disclosure is gone (Alex); `scope`, `features` and each step's
+     `features` stay in the data, unrendered, for the Jumpstart tab next round.
+     The industry cases and the case study are the Use cases tab's (round 10). */
   function overviewTab(product) {
-    var o = product.overview;
-    return '<div class="ov-layout">' +
-      '<div class="ov-main">' +
-        problemSolution(o.problemSolution) +
-        stepper(product) +
-        moreDetail(o) +
-      "</div>" +
-      '<aside class="ov-rail" aria-label="' + window.UI.esc(label("outcomes")) + '">' +
-        outcomesBlock(o) +
-      "</aside>" +
-      "</div>";
+    return problemSolution(product.overview.problemSolution) +
+      outcomesBlock(product) +
+      howItWorks(product);
   }
 
   /* ————— tab: use cases ————— */
@@ -849,7 +943,7 @@
 
     return hero(item) + tabbar(item, active) +
       '<section class="section section--tight section--tabs"><div class="wrap tab-body' +
-        (active === "overview" ? " tab-body--compact" : "") + '" id="tab-body">' +
+        (active === "overview" ? " tab-body--overview" : "") + '" id="tab-body">' +
         body +
       "</div></section>";
   }
@@ -885,9 +979,9 @@
     });
   }
 
-  /* `axis` is "horizontal", "vertical" or "both". The stepper takes both: its
-     heads are a horizontal strip on a desktop and a vertical accordion below
-     901px, and one component may not answer to different keys at two widths. */
+  /* `axis` is "horizontal", "vertical" or "both". How it works takes both: its
+     rows are a vertical list, and a reader who reaches for ← → on the frame
+     beside them still moves through the steps. */
   var ROVING_KEYS = {
     horizontal: { forward: ["ArrowRight"], back: ["ArrowLeft"] },
     vertical: { forward: ["ArrowDown"], back: ["ArrowUp"] },
@@ -911,11 +1005,14 @@
     });
   }
 
-  function bindStepper(root) {
-    var block = root.querySelector("[data-stepper]");
+  /* One step open at a time: its row carries `is-active` (which shows its text
+     and the blue rule) and its frame crossfades in over the last one (CSS,
+     200ms). The phone's cards are static and take no binding. */
+  function bindHowItWorks(root) {
+    var block = root.querySelector("[data-hiw]");
     if (!block) return;
-    var heads = Array.prototype.slice.call(block.querySelectorAll(".stepper-head"));
-    var frames = Array.prototype.slice.call(block.querySelectorAll(".step-frame"));
+    var heads = Array.prototype.slice.call(block.querySelectorAll(".hiw-head"));
+    var shots = Array.prototype.slice.call(block.querySelectorAll(".hiw-shot"));
     if (!heads.length) return;
 
     function select(index) {
@@ -923,12 +1020,9 @@
         var on = i === index;
         head.setAttribute("aria-expanded", on ? "true" : "false");
         head.parentNode.classList.toggle("is-active", on);
-        var body = document.getElementById(head.getAttribute("aria-controls"));
-        if (body) body.hidden = !on;
       });
-      frames.forEach(function (frame, i) {
-        frame.hidden = i !== index;
-        frame.classList.toggle("is-active", i === index);
+      shots.forEach(function (shot, i) {
+        shot.classList.toggle("is-active", i === index);
       });
     }
 
@@ -937,6 +1031,22 @@
     });
     roving(heads, select, "both");
   }
+
+  /* Round 20: the industry tabs are one row over one hairline, and a row too
+     long for its width scrolls sideways, as the tab bar above it does, so an
+     underline never floats on a wrapped line. The fade that says the row goes
+     on is drawn only while it overflows, measured without the fade's own end
+     padding so the class cannot hold itself on. One resize listener for the
+     page's lifetime; it measures whichever row is on screen. */
+  var industryRow = null;
+
+  function measureIndustryRow() {
+    if (!industryRow || !industryRow.isConnected) return;
+    industryRow.classList.remove("is-scrolling");
+    industryRow.classList.toggle("is-scrolling", industryRow.scrollWidth > industryRow.clientWidth + 1);
+  }
+
+  window.addEventListener("resize", measureIndustryRow);
 
   function bindIndustryTabs(root) {
     var block = root.querySelector("[data-industry-tabs]");
@@ -959,6 +1069,11 @@
       tab.addEventListener("click", function () { select(index); });
     });
     roving(tabs, select, "horizontal");
+
+    industryRow = block.querySelector(".ind-tablist");
+    measureIndustryRow();
+    /* The row's width changes when the brand faces arrive. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureIndustryRow);
   }
 
   function bindStack(root) {
@@ -1003,7 +1118,7 @@
     }
 
     bindVideo(root, item);
-    bindStepper(root);
+    bindHowItWorks(root);
     bindIndustryTabs(root);
     bindStack(root);
 

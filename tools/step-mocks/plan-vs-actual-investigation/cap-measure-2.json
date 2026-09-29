@@ -1,0 +1,5 @@
+[
+  {"eval": "document.fonts.ready.then(() => true)"},
+  {"eval": "(() => { const card = document.querySelector('#tablecard').getBoundingClientRect(); const rows = document.querySelectorAll('.pk tbody tr'); const r3 = rows[2].getBoundingClientRect(); const th3 = document.querySelectorAll('.pk thead th')[2].getBoundingClientRect(); const wrapped = [...document.querySelectorAll('.chip, .btn, .nm, .sc, .pa, .seg span, th')].filter(e => e.getClientRects().length > 1 || e.scrollWidth > e.clientWidth + 1).map(e => (e.textContent || '').trim().slice(0, 24)); const varOver = [...document.querySelectorAll('.pk .var')].filter(v => v.scrollWidth > v.clientWidth + 1).map(v => v.textContent.trim()); const m = 6; return { region: [Math.floor(card.left) - m, Math.floor(card.top) - m, Math.ceil(th3.right - card.left) + 2 * m, Math.ceil(r3.bottom - card.top) + 2 * m], rows: [...rows].map(r => Math.round(r.getBoundingClientRect().height)), cardBottom: Math.round(card.bottom), wrapped, varOver }; })()"},
+  {"shot": "measure"}
+]

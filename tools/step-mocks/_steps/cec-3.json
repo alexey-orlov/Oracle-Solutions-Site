@@ -1,0 +1,7 @@
+[
+  {"sleep": 500},
+  {"eval": "(()=>{document.querySelectorAll('.toast,.tour,[data-overlay]').forEach(e=>e.remove()); document.documentElement.style.cursor='none'; return true;})()"},
+  {"eval": "(()=>{const r=document.querySelector('[data-region]').getBoundingClientRect(), c=document.querySelector('#cite-open').getBoundingClientRect(), p=document.querySelector('#pop').getBoundingClientRect(); return {region:{x:r.x,y:r.y,w:r.width,h:r.height}, chip:{x:c.x,y:c.y,w:c.width,h:c.height}, pop:{x:p.x,y:p.y,w:p.width,h:p.height}};})()"},
+  {"shot": "step-3-full"},
+  {"rectshot": {"name": "step-3-zoom", "x": 672, "y": 369, "w": 420, "h": 266}}
+]

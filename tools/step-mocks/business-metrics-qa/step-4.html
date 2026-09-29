@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Business metrics Q&amp;A — Audit trail</title>
+<link rel="stylesheet" href="../shell-b.css">
+<style>
+  .filters { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .sel { display: inline-flex; align-items: center; gap: 7px; height: 32px; border: 1px solid var(--line-2); background: #fff; border-radius: 6px; padding: 0 10px 0 12px; font-size: 13px; color: var(--txt); }
+  .sel svg.i { width: 14px; height: 14px; color: var(--muted); }
+  .search { margin-left: auto; width: 270px; display: flex; align-items: center; gap: 8px; height: 32px; border: 1px solid var(--line-2); background: #fff; border-radius: 6px; padding: 0 12px; font-size: 13px; color: var(--faint); }
+  .search svg.i { width: 15px; height: 15px; color: var(--muted); }
+  .split { display: grid; grid-template-columns: 1fr 420px; gap: 20px; align-items: start; }
+  .log { padding: 0; overflow: hidden; }
+  .log .tbl th { padding: 9px 12px; }
+  .log .tbl td { padding: 10px 12px; }
+  .log .tbl td.q { max-width: 0; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+  .log .tbl td.t { white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .who { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .who i { width: 24px; height: 24px; border-radius: 50%; font-style: normal; font-size: 10px; font-weight: 700; color: #fff; display: grid; place-items: center; background: #5b6b86; flex: none; }
+  .who i.jh { background: #7a6a55; }
+  .log .tbl tr.is-sel td { background: #eff6ff; }
+  .log .tbl tr.is-sel td:first-child { box-shadow: inset 3px 0 0 var(--blue); }
+  .log-foot { display: flex; justify-content: space-between; padding: 10px 12px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+  .entry { padding: 14px 16px 13px; }
+  .entry-top { display: flex; align-items: center; gap: 9px; }
+  .entry-top .who i { width: 26px; height: 26px; font-size: 10.5px; }
+  .entry-top b { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .entry-top .when { font-size: 13px; color: var(--muted); }
+  .entry-top .chip { margin-left: auto; }
+  .entry .qq { font-size: 14.5px; line-height: 1.42; color: var(--ink); margin: 8px 0 9px; }
+  .entry .srcrow { display: flex; gap: 5px; flex-wrap: nowrap; }
+  .entry .srcrow .chip { padding: 2px 7px; }
+  .applied { padding: 14px 16px; margin-top: 16px; }
+  .applied h3 { font-size: 15px; }
+  .applied .kv { margin-top: 10px; grid-template-columns: 92px 1fr; font-size: 13px; gap: 7px 12px; }
+  .applied .kv dd { color: var(--ink); }
+  .applied .mono { font-size: 12px; }
+  .entry .code { margin-top: 9px; font-size: 12px; line-height: 1.5; padding: 9px 12px; }
+  .entry .foot { font-size: 13px; color: var(--txt-2); margin-top: 8px; }
+  .entry .foot b { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5.5 6v5.2c0 4.3 2.8 7.8 6.5 9.3 3.7-1.5 6.5-5 6.5-9.3V6z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5.5 4.5h10a3 3 0 0 1 3 3v13h-10a3 3 0 0 1-3-3z"/><path d="M5.5 17.5a3 3 0 0 1 3-3h10"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><circle cx="5.5" cy="6" r="2"/><circle cx="5.5" cy="18" r="2"/><circle cx="18.5" cy="12" r="2"/><path d="M7.5 6h3a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M7.5 18h3a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="4" rx="1"/><path d="M5.5 9v10h13V9M10 13h4"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5.8" rx="6.8" ry="2.6"/><path d="M5.2 5.8v12.4c0 1.45 3.05 2.6 6.8 2.6s6.8-1.15 6.8-2.6V5.8"/><path d="M5.2 12c0 1.45 3.05 2.6 6.8 2.6s6.8-1.15 6.8-2.6"/></symbol>
+</svg>
+
+<div class="frame">
+  <header class="wsb">
+    <div class="wsb-id">
+      <span class="wsb-cube"></span>
+      <span class="wsb-name"><b>Arvane Group</b> workspace</span>
+      <span class="wsb-ctx">Group finance · Tue 29 Sep 2026</span>
+    </div>
+    <nav class="wsb-tabs">
+      <span class="wsb-tab"><i class="glyph glyph--hub"></i><span class="wsb-lab"><b>AI Data Platform</b><em>Agent Hub</em></span></span>
+      <span class="wsb-tab"><i class="glyph glyph--lh"></i><span class="wsb-lab"><b>Autonomous AI Lakehouse</b><em>Catalog</em></span></span>
+      <span class="wsb-tab is-active"><i class="glyph glyph--au"></i><span class="wsb-lab"><b>Audit</b><em>lineage &amp; access</em></span></span>
+    </nav>
+    <div class="wsb-right">
+      <span class="wsb-syn">Synthetic data</span>
+      <span class="wsb-av">EM</span>
+    </div>
+  </header>
+
+  <div class="body">
+    <nav class="side">
+      <div class="side-app"><span class="tile tile--au"><svg class="i"><use href="#i-check"/></svg></span><div><b>Audit</b><span>Lineage &amp; access</span></div></div>
+      <span class="side-item is-active"><svg class="i"><use href="#i-list"/></svg>Answers log<span class="cnt">1,284</span></span>
+      <span class="side-item"><svg class="i"><use href="#i-shield"/></svg>Access decisions</span>
+      <span class="side-item"><svg class="i"><use href="#i-book"/></svg>Definition changes</span>
+      <span class="side-item"><svg class="i"><use href="#i-flow"/></svg>Lineage</span>
+      <span class="side-item"><svg class="i"><use href="#i-download"/></svg>Exports</span>
+      <span class="side-item"><svg class="i"><use href="#i-archive"/></svg>Retention</span>
+      <div class="side-cap">Saved views</div>
+      <span class="side-rec">Group finance, this week</span>
+      <span class="side-rec">Answers with masking</span>
+      <span class="side-rec">Board pack sources</span>
+      <div class="side-foot"><span class="av">EM</span><div><b>Elena Marsh</b><span>Finance lead</span></div></div>
+    </nav>
+
+    <main class="main">
+      <div class="crumbs"><a>Audit</a><span class="sep">›</span><b>Answers log</b></div>
+      <div class="page-head">
+        <div>
+          <h1>Answers log</h1>
+          <p class="sub">Who asked, what was read and how each answer was computed. Kept for seven years.</p>
+        </div>
+        <div class="acts">
+          <span class="btn"><svg class="i"><use href="#i-download"/></svg>Export</span>
+          <span class="btn btn--primary"><svg class="i"><use href="#i-replay"/></svg>Retrace answer</span>
+        </div>
+      </div>
+
+      <div class="filters">
+        <span class="sel"><svg class="i"><use href="#i-cal"/></svg>Last 7 days<svg class="i"><use href="#i-chev"/></svg></span>
+        <span class="sel"><svg class="i"><use href="#i-user"/></svg>All people<svg class="i"><use href="#i-chev"/></svg></span>
+        <span class="sel"><svg class="i"><use href="#i-db"/></svg>All sources<svg class="i"><use href="#i-chev"/></svg></span>
+        <span class="search"><svg class="i"><use href="#i-search"/></svg>Search questions</span>
+      </div>
+
+      <div class="split">
+        <section class="card log">
+          <table class="tbl">
+            <thead><tr><th>Time</th><th>Asked by</th><th>Question</th><th class="r">Took</th></tr></thead>
+            <tbody>
+              <tr class="is-sel"><td class="t">09:14</td><td><span class="who"><i>EM</i>Elena Marsh</span></td><td class="q">Group net revenue by product line, all regions, this month vs plan</td><td class="r">4 s</td></tr>
+              <tr><td class="t">08:52</td><td><span class="who"><i class="jh">TR</i>Tomas Reyes</span></td><td class="q">Returns rate by product line, September to date</td><td class="r">5 s</td></tr>
+              <tr><td class="t">08:31</td><td><span class="who"><i>EM</i>Elena Marsh</span></td><td class="q">Credit notes over EUR 50 k this month</td><td class="r">3 s</td></tr>
+              <tr><td class="t">Mon 16:05</td><td><span class="who"><i class="jh">TR</i>Tomas Reyes</span></td><td class="q">Net revenue by entity vs plan, Q3 to date</td><td class="r">6 s</td></tr>
+              <tr><td class="t">Mon 11:40</td><td><span class="who"><i>EM</i>Elena Marsh</span></td><td class="q">Inventory days by plant, last 6 months</td><td class="r">4 s</td></tr>
+              <tr><td class="t">Mon 09:12</td><td><span class="who"><i class="jh">TR</i>Tomas Reyes</span></td><td class="q">Gross margin by product line, August close</td><td class="r">5 s</td></tr>
+              <tr><td class="t">Fri 17:22</td><td><span class="who"><i>EM</i>Elena Marsh</span></td><td class="q">Churn by customer segment, Q3</td><td class="r">7 s</td></tr>
+              <tr><td class="t">Fri 10:03</td><td><span class="who"><i class="jh">TR</i>Tomas Reyes</span></td><td class="q">Net revenue vs plan, August close, all regions</td><td class="r">4 s</td></tr>
+            </tbody>
+          </table>
+          <div class="log-foot"><span>8 of 46 answers this week</span><span>Every answer is kept with its query and sources</span></div>
+        </section>
+
+        <div>
+        <section class="card entry" id="region">
+          <div class="entry-top">
+            <span class="who"><i>EM</i></span>
+            <div><b>Elena Marsh</b> <span class="when">asked at 09:14:07</span></div>
+            <span class="chip chip--blue">4 s</span>
+          </div>
+          <p class="qq">&ldquo;Group net revenue by product line, all regions, this month vs plan&rdquo;</p>
+          <div class="srcrow">
+            <span class="chip chip--grey">Snowflake (AWS)</span>
+            <span class="chip chip--grey">Databricks (Azure)</span>
+            <span class="chip chip--grey">On-premises Oracle</span>
+          </div>
+<div class="code"><span class="kw">SELECT</span> product_line, region,
+       <span class="fn">SUM</span>(net_revenue) actual, <span class="fn">SUM</span>(plan) plan
+<span class="kw">FROM</span>   gold.net_revenue_v3 <span class="kw">JOIN</span> gold.plan_phased
+<span class="kw">WHERE</span>  month = <span class="st">'2026-09'</span> <span class="kw">AND</span> region <span class="kw">IN</span> (:role)
+<span class="kw">GROUP BY</span> product_line, region;</div>
+          <p class="foot"><b>Net revenue v3</b> · 5 rows · EMEA, APAC · 2 columns masked</p>
+        </section>
+        <section class="card applied">
+          <div class="card-head"><h3>Access applied</h3><span class="chip chip--grey r">Policy v4</span></div>
+          <dl class="kv">
+            <dt>Row rule</dt><dd>Regions EMEA and APAC, from the Finance lead role</dd>
+            <dt>Column mask</dt><dd>Americas and Group totals</dd>
+            <dt>Policy</dt><dd><span class="mono">finance_regional</span> · owner Group FP&amp;A</dd>
+          </dl>
+        </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

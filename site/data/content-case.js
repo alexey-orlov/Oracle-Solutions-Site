@@ -35,55 +35,41 @@
     /* Products index */
     ["productsPage.title", "PRODUCTS", "Products"],
 
+    /* Round 20 retired the problem/solution titles (the plates' eyebrows are
+       shared.sectionLabels) and More detail, so their re-casings went too. */
+
     /* Product 0 — Account insights */
     ["products[0].headline.accent", "ACCOUNT", "Account"],
     ["products[0].headline.rest", "INSIGHTS", "insights"],
-    ["products[0].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[0].overview.problemSolution.solution.title", "THE SOLUTION", "The solution"],
 
     /* Product 1 — Case evidence collection */
     ["products[1].headline.accent", "CASE", "Case"],
     ["products[1].headline.rest", "EVIDENCE COLLECTION", "evidence collection"],
-    ["products[1].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[1].overview.problemSolution.solution.title", "THE SOLUTION", "The solution"],
 
     /* Product 2 — Plan vs actual investigation */
     ["products[2].headline.accent", "PLAN", "Plan"],
     ["products[2].headline.rest", "VS ACTUAL INVESTIGATION", "vs actual investigation"],
-    ["products[2].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[2].overview.problemSolution.solution.title", "THE SOLUTION", "The solution"],
 
     /* Product 3 — Large docs processing and review */
     ["products[3].headline.accent", "LARGE", "Large"],
     ["products[3].headline.rest", "DOCS PROCESSING AND REVIEW", "docs processing and review"],
-    ["products[3].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[3].overview.problemSolution.solution.title", "THE SOLUTION: REVIEW THE DATA, NOT TYPE IT", "The solution: review the data, not type it"],
 
     /* Product 4 — Workforce optimization */
     ["products[4].headline.accent", "WORKFORCE", "Workforce"],
     ["products[4].headline.rest", "OPTIMIZATION", "optimization"],
-    ["products[4].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[4].overview.problemSolution.solution.title", "THE SOLUTION: REVIEW THE PLAN, NOT BUILD IT", "The solution: review the plan, not build it"],
 
     /* Product 5 — Cross-system ERP Q&A (headline.rest "ERP Q&A" stays as stored) */
     ["products[5].headline.accent", "CROSS-SYSTEM", "Cross-system"],
     ["products[5].badges[0]", "ERP + CRM + THE SYSTEMS AROUND THEM", "ERP + CRM + the systems around them"],
     ["products[5].badges[1]", "PREBUILT PIPELINES", "Prebuilt pipelines"],
     ["products[5].badges[2]", "ANSWERS IN MINUTES", "Answers in minutes"],
-    ["products[5].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[5].overview.problemSolution.solution.title", "THE SOLUTION", "The solution"],
 
     /* Product 6 — Business metrics Q&A */
     ["products[6].headline.accent", "BUSINESS", "Business"],
     ["products[6].headline.rest", "METRICS Q&A", "metrics Q&A"],
     ["products[6].badges[0]", "MULTI-CLOUD", "Multi-cloud"],
     ["products[6].badges[1]", "ON-PREM TOO", "On-prem too"],
-    ["products[6].badges[2]", "NO MIGRATION", "No migration"],
-    ["products[6].overview.problemSolution.problem.title", "THE PROBLEM", "The problem"],
-    ["products[6].overview.problemSolution.solution.title", "THE SOLUTION", "The solution"],
-    /* Two moreDetail titles whose siblings in the same list are sentence case. */
-    ["products[6].overview.moreDetail[4].title", "TIME — every answer is a project", "Time — every answer is a project"],
-    ["products[6].overview.moreDetail[5].title", "TRUST — AI is stuck in security review", "Trust — AI is stuck in security review"]
+    ["products[6].badges[2]", "NO MIGRATION", "No migration"]
   ];
 
   var C = window.SITE_CONTENT;

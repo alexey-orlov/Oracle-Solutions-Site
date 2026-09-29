@@ -76,6 +76,26 @@ var CASE_STATUSES = ["measured", "modeled", "in-preparation"];
    forecast read as a disclaimer rather than a result. Both eyebrow keys are
    retired and the checker fails them if they come back. */
 var CASE_STATUS_CHIPS = ["Proven", "Forecast", "Estimated"];
+/* Round 20: the Overview's KPI band. A tile names its kind in one of the case
+   study's own three words (shared.metricKinds reuses the vocabulary), and its
+   chart is one of four forms, each drawn from the metric's own numbers
+   (D-design §2.2): a measured before → after, a modelled band, a modelled
+   before → after on a scale, or a sourced "from X". */
+var METRIC_KINDS = ["proven", "forecast", "estimated"];
+var METRIC_KIND_CHIPS = ["Proven", "Forecast", "Estimated"];
+var METRIC_FORMS = ["compression", "range", "dumbbell", "baseline"];
+var SHOT_ANCHORS = ["tl", "tr", "bl", "br"];
+/* What round 20 took off the Overview. Nothing renders these keys, and one
+   that comes back fails by name. */
+var RETIRED_OVERVIEW_KEYS = [
+  ["metricsNote", "the KPI band prints no footnote and no method (Alex: metrics \"should not lie but should not apologize\")"],
+  ["roi", "the ROI paragraph left with the rail; the KPI band says it in numbers"],
+  ["moreDetail", "the More detail disclosure is removed (Alex)"],
+  ["featuresDetail", "the long-form feature list rendered only inside More detail"],
+  ["featuresNote", "its footnote rendered only inside More detail"]
+];
+/* The rail tile's shape: a value or an icon, a label and a qualifier. */
+var RETIRED_METRIC_KEYS = ["value", "label", "qualifier", "icon"];
 /* Round 4, T1: the three tag families and the two availability badges.
    Round 9: the catalog is grouped by the job to be done — six product groups,
    in the order the home page's tiles and the rail list them. The two retired
@@ -338,65 +358,145 @@ if (!arr(C.products) || C.products.length !== 9) {
     }
   }
 
-  /* 2.1 problem → solution */
+  /* 2.1 the problem → what changes (round 20, Alex: "too much text, heading
+     indistinguishable from text, not sexy"). Each plate is a display headline
+     and one short paragraph under a shared eyebrow (sectionLabels.problemEyebrow
+     and .solutionEyebrow), so the per-plate title and icon are retired. The
+     copy sells the business value in the reader's nouns, so no platform or
+     engine name (round 19's rule, which Alex's instruction extends to it). */
   var ps = o.problemSolution;
   if (!ps) fail(w, "overview.problemSolution missing");
   else ["problem", "solution"].forEach(function (side) {
     var panel = ps[side];
+    var pw = w + ".problemSolution." + side;
     if (!panel) return fail(w, "problemSolution." + side + " missing");
-    ["title", "text", "icon"].forEach(function (k) {
-      if (!str(panel[k])) fail(w, "problemSolution." + side + "." + k + " missing");
+    ["headline", "text"].forEach(function (k) {
+      if (!str(panel[k])) fail(pw, k + " missing");
+      else implementationTerms(panel[k]).forEach(function (term) {
+        fail(pw, k + ' names the implementation ("' + term + '") — it sells the business value; the platform and the engine belong on the Technology tab');
+      });
+    });
+    if (str(panel.headline) && panel.headline.length > 60) {
+      fail(pw, "headline is " + panel.headline.length + " characters (max 60 — two display lines)");
+    }
+    if (str(panel.text) && words(panel.text) > 30) fail(pw, "text is " + words(panel.text) + " words (max 30)");
+    ["title", "icon"].forEach(function (k) {
+      if (panel[k] !== undefined) {
+        fail(pw, k + " is retired in round 20 — the eyebrow is the shared sectionLabels." + side + "Eyebrow, and the plate carries no icon");
+      }
     });
   });
 
-  /* 2.2 metrics */
-  if (!arr(o.metrics) || o.metrics.length < 1 || o.metrics.length > 4) {
-    fail(w, "overview.metrics must hold 1–4 tiles, got " + (arr(o.metrics) ? o.metrics.length : "none"));
-  } else o.metrics.forEach(function (m, i) {
-    var mw = w + ".metrics[" + i + "]";
-    if (!(m.value === null || str(m.value))) fail(mw, "value must be a non-empty string or null");
-    if (str(m.value) && m.value.length > 20) fail(mw, 'value "' + m.value + '" is too long to set large');
-    ["label", "qualifier", "icon"].forEach(function (k) {
-      if (!str(m[k])) fail(mw, k + " missing");
+  /* 2.2 metrics — the KPI band (round 20, Alex: the ROI block was "too wordy,
+     and too boring"; a visual per metric that "could either point to number X
+     and say that it's improvement 'from X', or show the potential improvement
+     range"; no footnotes, no method, no reviewer notes). Two or three tiles.
+     Each names its kind in one chip word, prints one figure, draws one chart
+     from its own numbers, and every mark on the chart has a printed label.
+     Where each figure comes from is recorded in docs/PROVENANCE.md (§41), never
+     in content.js: the data file ships in view-source, and nothing internal
+     ships (START-HERE §4), so a `sources` key fails. */
+  if (!arr(o.metrics) || o.metrics.length < 2 || o.metrics.length > 3) {
+    fail(w, "overview.metrics must hold 2–3 tiles, got " + (arr(o.metrics) ? o.metrics.length : "none"));
+  } else {
+    var figMax = o.metrics.length === 3 ? 14 : 20;
+    var metricKeys = [];
+    o.metrics.forEach(function (m, i) {
+      var mw = w + ".metrics[" + i + "]";
+      RETIRED_METRIC_KEYS.forEach(function (k) {
+        if (m[k] !== undefined) fail(mw, k + " is the retired rail-tile shape (round 20) — a tile is { key, title, kind, owner, figure, visual, line }");
+      });
+      ["key", "title", "kind", "owner", "line"].forEach(function (k) {
+        if (!str(m[k])) fail(mw, k + " missing");
+      });
+      if (str(m.key)) {
+        if (metricKeys.indexOf(m.key) !== -1) fail(mw, 'key "' + m.key + '" is used twice on this product');
+        metricKeys.push(m.key);
+      }
+      if (str(m.title) && m.title.length > 40) fail(mw, "title is " + m.title.length + " characters (max 40)");
+      if (str(m.owner) && m.owner.length > 40) fail(mw, "owner is " + m.owner.length + " characters (max 40)");
+      if (str(m.line) && words(m.line) > 14) fail(mw, "line is " + words(m.line) + " words (max 14 — two lines under the chart)");
+      if (str(m.kind) && METRIC_KINDS.indexOf(m.kind) === -1) fail(mw, 'kind "' + m.kind + '" is not ' + METRIC_KINDS.join(" / "));
+      var fig = m.figure || {};
+      if (!str(fig.text)) fail(mw, "figure.text missing");
+      else if (fig.text.length > figMax) {
+        fail(mw, 'figure.text "' + fig.text + '" is ' + fig.text.length + " characters (max " + figMax + " with " + o.metrics.length + " tiles)");
+      }
+      if (fig.prefix !== undefined && (!str(fig.prefix) || fig.prefix.length > 6)) {
+        fail(mw, "figure.prefix must be 1–6 characters where present — it sets small beside the figure");
+      }
+      if (m.sources !== undefined) {
+        fail(mw, "sources is internal research — a figure's provenance lives in docs/PROVENANCE.md §41, and content.js ships in view-source; delete the key");
+      }
+      var vz = m.visual || {};
+      if (METRIC_FORMS.indexOf(vz.form) === -1) {
+        return fail(mw, 'visual.form "' + vz.form + '" is not ' + METRIC_FORMS.join(" / "));
+      }
+      if (!str(vz.unit)) fail(mw, "visual.unit missing");
+      if (["up", "down"].indexOf(vz.direction) === -1) fail(mw, 'visual.direction "' + vz.direction + '" is not up / down');
+      var sc = vz.scale || {};
+      var scaled = typeof sc.min === "number" && typeof sc.max === "number" && sc.max > sc.min;
+      if (!scaled) fail(mw, "visual.scale needs numbers { min, max } with max > min");
+      function onScale(v) { return typeof v === "number" && (!scaled || (v >= sc.min && v <= sc.max)); }
+      var before = vz.before || {};
+      var after = vz.after;
+      var range = vz.range;
+      if (!onScale(before.value)) fail(mw, "visual.before.value must be a number on the scale");
+      /* No figure without a printed label: each form's marks and the labels
+         row that names them. */
+      if (vz.form === "compression" || vz.form === "dumbbell") {
+        if (!str(before.label)) fail(mw, "visual.before.label missing — a mark on the chart with no printed label");
+        if (!after || !onScale(after.value)) fail(mw, "visual.after.value must be a number on the scale (" + vz.form + ")");
+        if (!after || !str(after.label)) fail(mw, "visual.after.label missing — a mark on the chart with no printed label");
+        if (vz.form === "compression" && !(before.value > 0)) {
+          fail(mw, "visual.before.value must be above 0 — the after bar is drawn as its share of it");
+        }
+      } else if (after !== undefined) {
+        fail(mw, "visual.after belongs to compression and dumbbell only — a " + vz.form + " prints no after mark");
+      }
+      if (vz.form === "range") {
+        if (!range || !onScale(range.lo) || !onScale(range.hi) || !(range.hi > range.lo)) {
+          fail(mw, "visual.range needs { lo, hi } on the scale, with hi above lo");
+        }
+        if (!range || !str(range.label)) fail(mw, "visual.range.label missing — the band with no printed label");
+      } else if (range !== undefined) {
+        fail(mw, "visual.range belongs to the range form only");
+      }
+      if (vz.form === "baseline" && !str(before.label)) {
+        fail(mw, "visual.before.label missing — the baseline's one printed label");
+      }
     });
-    if (str(m.qualifier) && words(m.qualifier) > 14) fail(mw, "qualifier is " + words(m.qualifier) + " words (max 14)");
-  });
-  if (!str(o.metricsNote)) fail(w, "overview.metricsNote missing — a metric row never renders without it");
+  }
 
-  /* 2.3 roi */
-  if (!o.roi) fail(w, "overview.roi missing");
-  else ["icon", "text"].forEach(function (k) {
-    if (!str(o.roi[k])) fail(w, "overview.roi." + k + " missing");
+  /* 2.3 what the Overview no longer carries (round 20): the footnote, the ROI
+     paragraph, More detail and the feature detail inside it. */
+  RETIRED_OVERVIEW_KEYS.forEach(function (pair) {
+    if (o[pair[0]] !== undefined) fail(w, "overview." + pair[0] + " is retired in round 20 — " + pair[1] + "; delete the key");
   });
 
-  /* 2.4 features */
+  /* 2.4 features — not rendered since round 20: the tick-lists left How it
+     works and the long-form list left with More detail. The list stays in the
+     data for the Jumpstart tab next round, so its shape still holds. */
   if (!arr(o.features) || o.features.length < 6 || o.features.length > 8) {
     fail(w, "overview.features must hold 6–8 items, got " + (arr(o.features) ? o.features.length : "none"));
   } else o.features.forEach(function (f, i) {
     if (!str(f)) return fail(w, "features[" + i + "] is not a string");
     if (words(f) > 12) fail(w, 'features[' + i + '] is ' + words(f) + ' words (max 12): "' + f + '"');
   });
-  if (!arr(o.featuresDetail) || o.featuresDetail.length < 6) {
-    fail(w, "overview.featuresDetail must keep the long-form list (≥6 entries)");
-  }
 
   /* 2.5 industries — the chips are superseded by the industryCases tabs; only
      the "where else this applies" line survives, under the tab component. */
   if (o.industries !== undefined) fail(w, "overview.industries is superseded by overview.industryCases — nothing renders it");
   if (!str(o.industriesNote)) fail(w, "overview.industriesNote missing");
 
-  /* 2.6 scope */
+  /* 2.6 scope — not rendered since round 20 (it sat inside More detail); it
+     moves to the Jumpstart tab next round, so its shape still holds. More
+     detail itself (2.7) is retired above, by name. */
   if (!o.scope || !arr(o.scope.in) || !arr(o.scope.out)) fail(w, "overview.scope.in / .out missing");
   else {
     if (o.scope.in.length < 4) fail(w, "overview.scope.in needs ≥4 items");
     if (o.scope.out.length < 4) fail(w, "overview.scope.out needs ≥4 items");
   }
-
-  /* 2.7 more detail */
-  if (!arr(o.moreDetail) || o.moreDetail.length < 3) fail(w, "overview.moreDetail needs ≥3 entries");
-  else o.moreDetail.forEach(function (d, i) {
-    if (!str(d.title) || !str(d.body)) fail(w, "moreDetail[" + i + "] needs { title, body }");
-  });
 
   /* 2.8 case study — round 4, C1. An anonymized customer callout, or null.
      There is no empty state: a block whose only content is "nothing published
@@ -447,36 +547,46 @@ if (!arr(C.products) || C.products.length !== 9) {
     }
   }
 
-  /* E2 · How it works — the workflow stepper */
+  /* E2 · How it works (round 20, Alex: the block did not fit one screen, the
+     step heads were poorly lined up, too many fonts, the screenshots too small
+     to read). A vertical list of steps beside one frame: each step is a
+     one-line title and a short text, and its shot is the walkthrough's full
+     screen at 16:10 plus the zoom of one region, which is also the phone's
+     picture. `features` stays in the data, unrendered.
+     The feature-coverage invariant (every overview.features item under exactly
+     one step) is retired with the tick-lists: neither list renders any more,
+     so the invariant has no surface to keep in step. */
   if (!arr(o.steps) || o.steps.length < 3 || o.steps.length > 5) {
     fail(w, "overview.steps must hold 3–5 workflow steps, got " + (arr(o.steps) ? o.steps.length : "none"));
-  } else {
-    var covered = [];
-    o.steps.forEach(function (s, i) {
-      var sw = w + ".steps[" + i + "]";
-      if (s.n !== i + 1) fail(sw, 'n is "' + s.n + '", expected ' + (i + 1) + " — steps are numbered in order from 1");
-      ["title", "text", "image"].forEach(function (k) {
-        if (!str(s[k])) fail(sw, k + " missing");
-      });
-      /* ≤ 2 lines in the stepper, whose column is narrow. */
-      if (str(s.text) && words(s.text) > 30) fail(sw, "text is " + words(s.text) + " words (max 30 — it has to fit two lines)");
-      if (str(s.image)) {
-        var want = new RegExp("^assets/img/steps/" + p.slug + "-" + (i + 1) + "\\.(jpg|jpeg|png|webp|svg)$");
-        if (!want.test(s.image)) fail(sw, 'image "' + s.image + '" must be assets/img/steps/' + p.slug + "-" + (i + 1) + ".<jpg|png|webp|svg>");
-        else checkAsset(sw, "step image", s.image);
-      }
-      if (!arr(s.features) || !s.features.length) fail(sw, "features missing — every step carries the feature bullets that belong to it");
-      else s.features.forEach(function (f) {
-        if (!arr(o.features) || o.features.indexOf(f) === -1) fail(sw, 'feature "' + f + '" is not one of overview.features');
-        else if (covered.indexOf(f) !== -1) fail(sw, 'feature "' + f + '" is claimed by more than one step');
-        else covered.push(f);
-      });
+  } else o.steps.forEach(function (s, i) {
+    var sw = w + ".steps[" + i + "]";
+    if (s.n !== i + 1) fail(sw, 'n is "' + s.n + '", expected ' + (i + 1) + " — steps are numbered in order from 1");
+    ["title", "text"].forEach(function (k) {
+      if (!str(s[k])) fail(sw, k + " missing");
     });
-    /* No bullet may fall between the steps: the stepper replaces the checklist. */
-    (o.features || []).forEach(function (f) {
-      if (covered.indexOf(f) === -1) fail(w, 'feature "' + f + '" belongs to no step — every overview.features item lands in exactly one');
-    });
-  }
+    if (str(s.title) && s.title.length > 26) fail(sw, "title is " + s.title.length + " characters (max 26 — one line in the step list)");
+    if (str(s.text) && words(s.text) > 30) fail(sw, "text is " + words(s.text) + " words (max 30)");
+    if (s.image !== undefined) {
+      fail(sw, "image is retired in round 20 — the step's picture is shot { full, zoom, region, anchor, alt }");
+    }
+    var shot = s.shot;
+    if (!shot || typeof shot !== "object") return fail(sw, "shot missing — { full, zoom, region, anchor, alt }");
+    var stem = "assets/img/steps/" + p.slug + "-" + (i + 1);
+    if (shot.full !== stem + ".jpg") fail(sw, 'shot.full "' + shot.full + '" must be ' + stem + ".jpg");
+    else checkAsset(sw, "step frame", shot.full);
+    if (shot.zoom !== stem + "-zoom.jpg") fail(sw, 'shot.zoom "' + shot.zoom + '" must be ' + stem + "-zoom.jpg");
+    else checkAsset(sw, "step zoom", shot.zoom);
+    var rg = shot.region;
+    if (!arr(rg) || rg.length !== 4 || rg.some(function (v) { return typeof v !== "number" || !(v >= 0 && v <= 100); })) {
+      fail(sw, "shot.region must be four numbers [x, y, w, h], each 0–100 (percent of the frame)");
+    } else {
+      if (!(rg[2] > 0 && rg[3] > 0)) fail(sw, "shot.region has no area — w and h must be above 0");
+      if (rg[0] + rg[2] > 100) fail(sw, "shot.region runs off the frame: x + w = " + (rg[0] + rg[2]) + " (max 100)");
+      if (rg[1] + rg[3] > 100) fail(sw, "shot.region runs off the frame: y + h = " + (rg[1] + rg[3]) + " (max 100)");
+    }
+    if (SHOT_ANCHORS.indexOf(shot.anchor) === -1) fail(sw, 'shot.anchor "' + shot.anchor + '" is not ' + SHOT_ANCHORS.join(" / "));
+    if (!str(shot.alt)) fail(sw, "shot.alt missing — the frame's text equivalent");
+  });
 
   /* E2 · Industry use cases — the tab component */
   if (!arr(o.industryCases) || o.industryCases.length < 3 || o.industryCases.length > 6) {
@@ -852,8 +962,23 @@ if (!arr(C.products) || C.products.length !== 9) {
     ["overview.catalog.lead", ((C.overview || {}).catalog || {}).lead],
     ["overview.catalog.title", ((C.overview || {}).catalog || {}).title]
   ];
+  /* Round 20: the Overview's own words, the plates, the KPI tiles and the
+     steps (the metrics footnote this sweep used to read is retired). */
   (C.products || []).forEach(function (pr) {
-    strings.push(["products[" + pr.slug + "].overview.metricsNote", (pr.overview || {}).metricsNote]);
+    var ov = pr.overview || {};
+    var at = "products[" + pr.slug + "].overview";
+    ["problem", "solution"].forEach(function (side) {
+      var plate = (ov.problemSolution || {})[side] || {};
+      strings.push([at + ".problemSolution." + side + ".headline", plate.headline]);
+      strings.push([at + ".problemSolution." + side + ".text", plate.text]);
+    });
+    (ov.metrics || []).forEach(function (m, i) {
+      strings.push([at + ".metrics[" + i + "].title", m.title]);
+      strings.push([at + ".metrics[" + i + "].line", m.line]);
+    });
+    (ov.steps || []).forEach(function (s, i) {
+      strings.push([at + ".steps[" + i + "].text", s.text]);
+    });
   });
   strings.forEach(function (pair) {
     var s = pair[1];
@@ -915,6 +1040,169 @@ if (!arr(C.products) || C.products.length !== 9) {
   }
   if (C.shared.sectionLabels && C.shared.sectionLabels.successStory !== undefined) {
     fail("shared.sectionLabels", "successStory is superseded by caseStudy");
+  }
+})();
+
+/* ---- round 20 · Use cases and Contacts (D-design §3, §4) ----
+   Alex, 2026-09-29: "all blocks are too greyish". The Use cases tab carries one
+   grey step and one dark plate: the industry tabs are text over a hairline with
+   a blue underline, never grey chips; the selected industry is one split plate,
+   its copy on #edf0f2 and its photograph edge to edge; the case study is the
+   #1a1a1a plate, its figures Replica Light under the orange-75 fact dash, never
+   Azurio. The contact component wraps itself in a full-bleed #edf0f2 band
+   holding one white plate: the people on brand-fill tiles, the mailbox a link
+   and never a button, the switch two text tabs, white fields. The band is the
+   page's last grey, so the footer's #edf0f2 spacer is not drawn after it —
+   two greys back to back read as one grey mass. Each block's rules stay in
+   their region, so the home page's case cards and the #/sellers form keep
+   their own look. */
+(function () {
+  var CSS_FILE = "site/assets/site.css";
+  var cssR20 = fs.readFileSync(path.join(root, CSS_FILE), "utf8");
+  var prodR20 = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  var appR20 = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+
+  function block(name) {
+    var head = "/* ===== Round 20 · " + name + " ===== */";
+    var end = "/* ===== end Round 20 · " + name + " ===== */";
+    var at = cssR20.indexOf(head);
+    var stop = cssR20.indexOf(end);
+    if (at === -1 || stop < at) {
+      fail(CSS_FILE, 'the "Round 20 · ' + name + '" block is missing its header or its end marker — one block per region');
+      return "";
+    }
+    if (cssR20.indexOf(head, at + head.length) !== -1) {
+      fail(CSS_FILE, 'the "Round 20 · ' + name + '" block appears twice — one block per region');
+    }
+    return cssR20.slice(at, stop);
+  }
+  /* The first rule for exactly this selector inside a block, braces included. */
+  function rule(src, selector) {
+    var at = src.indexOf("\n" + selector + " {");
+    return at === -1 ? "" : src.slice(at, src.indexOf("}", at) + 1);
+  }
+  /* Every selector a block styles, split on the commas outside parentheses so
+     an :is() list stays whole; at-rule preludes are skipped. */
+  function selectorsOf(src) {
+    var out = [];
+    src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/([^{};]+)\{/g, function (match, prelude) {
+      var text = prelude.trim();
+      if (!text || text.charAt(0) === "@") return match;
+      var depth = 0, cur = "";
+      for (var i = 0; i < text.length; i += 1) {
+        var ch = text.charAt(i);
+        if (ch === "(") depth += 1;
+        if (ch === ")") depth -= 1;
+        if (ch === "," && depth === 0) { out.push(cur.trim()); cur = ""; } else cur += ch;
+      }
+      if (cur.trim()) out.push(cur.trim());
+      return match;
+    });
+    return out;
+  }
+  function need(src, selector, pattern, message) {
+    var r = rule(src, selector);
+    if (!r) return fail(CSS_FILE, selector + " is not styled in its Round 20 block — " + message);
+    if (!pattern.test(r)) fail(CSS_FILE, selector + " — " + message);
+  }
+  function never(src, selector, pattern, message) {
+    var r = rule(src, selector);
+    if (r && pattern.test(r)) fail(CSS_FILE, selector + " — " + message);
+  }
+  var grouped = (cssR20.match(/\n\.cut,\n[\s\S]*?\{\n  border-radius: 0;\n  clip-path: polygon\(/) || [""])[0];
+
+  /* — Use cases — */
+  var uses = block("Use cases");
+  if (uses) {
+    selectorsOf(uses).forEach(function (sel) {
+      if (sel.indexOf(".ind-") === -1 && sel.indexOf(".case-callout") === -1) {
+        fail(CSS_FILE, 'Round 20 · Use cases styles "' + sel + '" — every rule there is .ind-* or inside .case-callout, so the home case cards keep their look');
+      }
+    });
+    if (/\.case-card\b/.test(uses)) fail(CSS_FILE, "Round 20 · Use cases touches .case-card — the home page's cards keep their round-19 look");
+    need(uses, ".ind-tab", /background:\s*none/, "the industry tab is text on white, never a grey chip (background: none)");
+    never(uses, ".ind-tab", /var\(--(bg-inset|bg-raised|surface-select)\)|border:\s*1px/, "the industry tab carries a fill or a frame — it is an underline tab");
+    need(uses, ".ind-tab.is-active", /inset 0 -2px 0 var\(--action\)/, "the selected industry is ink on a 2px blue underline");
+    never(uses, ".ind-tab.is-active", /background/, "the selected industry takes no fill — the underline says it");
+    need(uses, ".ind-tablist", /var\(--border-hairline\)/, "the tab row sits on one #d1dae2 hairline");
+    need(uses, ".ind-panel", /background:\s*var\(--bg-raised\)/, "the industry plate's copy half is the tab's one grey step, #edf0f2");
+    need(uses, ".ind-panel", /--cut:\s*var\(--cut-8\)/, "the industry plate takes the 8px cut");
+    never(uses, ".ind-figure", /border:/, "the photograph runs edge to edge — no frame of its own");
+    need(uses, ".case-callout", /background:\s*var\(--surface-dark-raised\)/, "the case study is the tab's one dark plate, #1a1a1a");
+    need(uses, ".case-callout .case-figure-value", /font-family:\s*var\(--font-sans\)/, "a case figure is set in Replica, never Azurio");
+    need(uses, ".case-callout .case-figure-value", /font-weight:\s*300/, "a case figure is Replica Light");
+    never(uses, ".case-callout .case-figure-value", /--font-display/, "a case figure is never Azurio");
+    need(uses, ".case-callout .case-figure::before", /#fe8d6b/i, "every case figure carries the orange-75 fact dash");
+    if (grouped.indexOf(".ind-panel") === -1) fail(CSS_FILE, "the grouped cut declaration does not list .ind-panel — the split plate carries the cut");
+  }
+  var industryFnR20 = (prodR20.split("function industryCases(")[1] || "").split("\n  function ")[0];
+  if (industryFnR20) {
+    var atCopy = industryFnR20.indexOf('class="ind-case"');
+    var atPhoto = industryFnR20.indexOf('class="ind-figure"');
+    if (atCopy === -1 || atPhoto === -1 || atPhoto < atCopy) {
+      fail("site/pages/product.js industryCases()", "the plate is the copy, then the photograph (the split plate, D-design §3)");
+    }
+    if (!/class="ind-case-title">' \+ UI\.esc\(label\("caseProblem"\)\)/.test(industryFnR20) ||
+        !/class="ind-case-title">' \+ UI\.esc\(label\("caseSolution"\)\)/.test(industryFnR20)) {
+      fail("site/pages/product.js industryCases()", "the problem and the solution are each a 20px heading over their text, read from sectionLabels.caseProblem / caseSolution");
+    }
+    if (/class="eyebrow/.test(industryFnR20)) {
+      fail("site/pages/product.js industryCases()", "prints an eyebrow — round 20 set the problem and the solution as headings; an eyebrow is never a block's only heading");
+    }
+  }
+
+  /* — Contacts — */
+  var contacts = block("Contacts");
+  if (contacts) {
+    selectorsOf(contacts).forEach(function (sel) {
+      if (sel.indexOf("contact") === -1) {
+        fail(CSS_FILE, 'Round 20 · Contacts styles "' + sel + '" — every rule there is scoped to the contact component, so #/sellers keeps its own form');
+      }
+    });
+    need(contacts, ".contact-band", /var\(--bg-raised\)[\s\S]*100vw/, "the component wraps itself in a full-bleed #edf0f2 band");
+    need(contacts, ".contact-plate", /background:\s*#ffffff/i, "the band holds one white plate");
+    need(contacts, ".contact-plate", /--cut:\s*var\(--cut-12\)/, "the white plate takes the 12px cut");
+    need(contacts, ".contact-tile", /#459fdd/i, "the first person's portrait sits on Lviv blue 75");
+    need(contacts, ".contact-person:nth-child(even) .contact-tile", /#fe8d6b/i, "the second person's portrait sits on Austin orange 75");
+    need(contacts, ".contact-mail", /color:\s*var\(--action\)/, "the mailbox is a blue link");
+    never(contacts, ".contact-mail", /background|--fill/, "the mailbox carries a fill — an address is a link, never a button");
+    need(contacts, ".contact-segmented", /background:\s*none[\s\S]*clip-path:\s*none|clip-path:\s*none[\s\S]*background:\s*none/, "the switch is two text tabs — no grey frame, no cut");
+    need(contacts, ".contact-segmented .segment", /--fill:\s*transparent/, "a switch tab takes no fill");
+    need(contacts, ".contact-segmented .segment", /text-transform:\s*none/, "a switch tab reads in sentence case, 16px Replica 400");
+    need(contacts, '.contact-segmented .segment[aria-selected="true"]', /inset 0 -2px 0 var\(--action\)/, "the selected tab is ink on a 2px blue underline");
+    need(contacts, ".contact-tabs :is(.input, .select, .textarea)", /background:\s*#ffffff/i, "the fields are white");
+    need(contacts, ".contact-tabs :is(.input, .select, .textarea)", /border:\s*1px solid var\(--border\)/, "the fields carry a 1px #bdcbd7 border");
+    need(contacts, ".contact-tabs .field-label", /text-transform:\s*none/, "a field label is 14px Replica 400 in ink, sentence case");
+    if (!/\n#app:has\(> :last-child \.contact-band\) \+ \.site-footer::before \{ display: none; \}/.test(contacts)) {
+      fail(CSS_FILE, "the footer's #edf0f2 spacer is still drawn after a page that ends on the contact band — two greys back to back read as one grey mass");
+    }
+    if (grouped.indexOf(".contact-plate") === -1 || grouped.indexOf(".contact-tile") === -1) {
+      fail(CSS_FILE, "the grouped cut declaration does not list .contact-plate and .contact-tile");
+    }
+  }
+  function fnOf(src, name, next) {
+    var at = src.indexOf("function " + name + "(");
+    var stop = src.indexOf("function " + next + "(");
+    return at === -1 || stop < at ? "" : src.slice(at, stop);
+  }
+  var switchFn = fnOf(appR20, "contactSwitch", "mountContactSwitch");
+  var cardFn = fnOf(appR20, "contactCard", "contactSplit");
+  var photoFn = fnOf(appR20, "contactPhoto", "contactWho");
+  if (!switchFn || !cardFn || !photoFn) {
+    warn("site/assets/app.js", "contactSwitch / contactCard / contactPhoto not found — the round-20 contact checks are reading nothing");
+  } else {
+    if (switchFn.indexOf('class="contact-band"') === -1 || switchFn.indexOf('class="contact-plate"') === -1) {
+      fail("site/assets/app.js contactSwitch()", "does not wrap itself in the contact band and its white plate — both surfaces take the ground from the component");
+    }
+    if (!/<a class="contact-mail" href="mailto:/.test(cardFn) || /button\(|\bbtn\b/.test(cardFn)) {
+      fail("site/assets/app.js contactCard()", "the mailbox must render as a mailto link, never a button (VISUAL-GRAMMAR §9)");
+    }
+    if ((cardFn.match(/contact-card-copy/g) || []).length !== 1 || cardFn.indexOf('<ul class="contact-people">') === -1) {
+      fail("site/assets/app.js contactCard()", "one card anatomy on both surfaces: the people as rows, then the one address and the one line");
+    }
+    if (photoFn.indexOf('class="contact-tile"') === -1) {
+      fail("site/assets/app.js contactPhoto()", "the round portrait sits on its square brand-fill tile");
+    }
   }
 })();
 
@@ -1794,6 +2082,75 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (homeRaw.indexOf(word) !== -1) {
       fail("overview", 'carries the banned word "' + word + '" (HANDOFF §6.1) — name the specific thing instead');
     }
+  });
+})();
+
+/* ---- round 20 · the Overview (Alex, 2026-09-29) ----
+   One column and no rail: the problem and what changes, the KPI band, then
+   How it works — the number is the reason to look at the screens. The
+   renderer builds none of what the round retired (the More detail
+   disclosure, the rail, its grey tiles, the ROI paragraph, the footnote), and
+   reads no metric `sources` (the data carries none; 2.2). The words the new
+   blocks print are shared: the section labels, and the three kind chips,
+   which are the case study's own vocabulary. */
+(function () {
+  var src = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  var overviewFn = (src.split("function overviewTab(")[1] || "").split("\n  function ")[0];
+  if (!overviewFn) warn("site/pages/product.js", "overviewTab() not found — the Overview order check is reading nothing");
+  else if (!/problemSolution\([^)]*\)\s*\+\s*outcomesBlock\([^)]*\)\s*\+\s*howItWorks\(/.test(overviewFn)) {
+    fail("site/pages/product.js overviewTab()", "must render problemSolution(), then outcomesBlock() (the KPI band), then howItWorks() — D-design §2's order");
+  }
+  [
+    ["disclosure--detail", "the More detail disclosure"],
+    ["moreDetail", "the More detail disclosure"],
+    ["featuresDetail", "the long-form feature list"],
+    ["featuresNote", "the feature footnote"],
+    ["metricsNote", "the metrics footnote"],
+    ["ov-rail", "the Overview rail"],
+    ["rail-card", "the rail card"],
+    ["stat-tile", "the rail's grey tiles"],
+    ["roi-band", "the ROI paragraph"],
+    ["stepper-features", "the step tick-lists"]
+  ].forEach(function (pair) {
+    if (src.indexOf(pair[0]) !== -1) fail("site/pages/product.js", 'still builds "' + pair[0] + '" — ' + pair[1] + " is retired in round 20");
+  });
+  if (/\.sources\b/.test(src)) fail("site/pages/product.js", "reads a metric's `sources` — a figure's provenance lives in docs/PROVENANCE.md, never on the page");
+
+  var css = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
+  if (css.indexOf("/* ===== Round 20 · Overview ===== */") === -1) {
+    fail("site/assets/site.css", 'has no "===== Round 20 · Overview =====" block — the Overview\'s components live in one block');
+  }
+  /* Each is a prefix: `.stepper` stands for `.stepper-head` and the rest. */
+  [".ps-strip", ".ps-panel", ".ps-mark", ".ps-arrow", ".ov-layout", ".ov-main", ".ov-rail", ".rail-card", ".stat-tile",
+   ".roi-band", ".disclosure--detail", ".detail-wrap", ".detail-entry", ".stepper", ".step-frame"].forEach(function (sel) {
+    if (css.indexOf(sel) !== -1) fail("site/assets/site.css", 'still styles "' + sel + '…" — retired with the round-20 Overview');
+  });
+
+  var labels = (C.shared || {}).sectionLabels || {};
+  ["outcomes", "howItWorks", "problemEyebrow", "solutionEyebrow", "metricOwner", "metricToday", "metricToward"].forEach(function (k) {
+    if (!str(labels[k])) fail("shared.sectionLabels", k + " missing — the Overview prints it");
+  });
+  /* Both are H2s, set at 48px (START-HERE §4: ≤ ~30 characters). */
+  ["outcomes", "howItWorks"].forEach(function (k) {
+    if (str(labels[k]) && labels[k].length > 30) fail("shared.sectionLabels." + k, "is " + labels[k].length + " characters — an H2 is a display line (max 30)");
+  });
+  ["metrics", "metricsPlanned", "roi", "moreDetail", "moreDetailFeatures"].forEach(function (k) {
+    if (labels[k] !== undefined) {
+      fail("shared.sectionLabels." + k, "is retired in round 20 — the band has one heading, `outcomes`, and More detail is gone");
+    }
+  });
+
+  var kinds = (C.shared || {}).metricKinds;
+  if (!kinds) return fail("shared.metricKinds", "missing — the KPI tiles' kind chips read their word and tooltip here");
+  METRIC_KINDS.forEach(function (k, i) {
+    var kind = kinds[k] || {};
+    if (kind.chip !== METRIC_KIND_CHIPS[i]) {
+      fail("shared.metricKinds." + k, 'chip is "' + kind.chip + '", expected "' + METRIC_KIND_CHIPS[i] + '" — the case study\'s own word, one word');
+    }
+    if (!str(kind.tooltip)) fail("shared.metricKinds." + k, "tooltip missing");
+  });
+  Object.keys(kinds).forEach(function (k) {
+    if (METRIC_KINDS.indexOf(k) === -1) fail("shared.metricKinds", 'carries "' + k + '", which is not ' + METRIC_KINDS.join(" / "));
   });
 })();
 

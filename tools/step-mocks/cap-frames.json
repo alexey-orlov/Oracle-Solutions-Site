@@ -1,0 +1,6 @@
+[
+  {"sleep": 800},
+  {"eval": "Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))).then(() => [...document.images].map(i => i.naturalWidth + 'x' + i.naturalHeight).join(' '))"},
+  {"eval": "[...document.querySelectorAll('h2')].map(h => h.textContent).join(' | ')"},
+  {"fullshot": "frames"}
+]

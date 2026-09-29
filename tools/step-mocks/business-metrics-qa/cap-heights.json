@@ -1,0 +1,4 @@
+[
+  {"eval": "document.fonts.ready.then(() => true)"},
+  {"eval": "(() => { const out = {}; document.querySelectorAll('.card').forEach((c, i) => { c.style.alignSelf = 'start'; }); document.querySelectorAll('.card').forEach((c, i) => { const b = c.getBoundingClientRect(); out[i + ':' + c.className] = [Math.round(b.x), Math.round(b.y), Math.round(b.width), +b.height.toFixed(1)]; const kids = [...c.children].map(k => (k.className || k.tagName) + '=' + k.getBoundingClientRect().height.toFixed(1)); out[i + ':kids'] = kids.join(' | '); }); return out; })()"}
+]

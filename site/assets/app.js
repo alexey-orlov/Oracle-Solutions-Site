@@ -343,24 +343,25 @@
     }).join("");
   }
 
-  /* One named human, one address, one panel — the left column of every contact
-     section, on a product's Contacts tab and on Services. The monogram is the
-     avatar's own background and the photograph sits on top of it, so a missing
-     file leaves initials rather than a broken frame: the image guard drops the
-     <img>. Round 10 retired the "Bring to the call" list: it repeated the form's
-     own placeholder and the Jumpstart tab's "What we need from you", and the
-     card is now a person, not a briefing. Round 13: `people` adds names after
-     `shared.contact` (a product's own lead). The card then lists each person
-     as a row, photo beside name and title, over the one address and blurb:
-     the people are several, the mailbox is one. */
+  /* The named humans, one address, one line — the left column of the contact
+     switch, on a product's Contacts tab and on the home page's last screen. The
+     monogram is the avatar's own background and the photograph sits on top of
+     it, so a missing file leaves initials rather than a broken frame: the image
+     guard drops the <img>. Round 10 retired the "Bring to the call" list: the
+     card is a person, not a briefing. Round 13: `people` adds names after
+     `shared.contact` (a product's own lead). Round 20 (D-design §4): every
+     person is a row on both surfaces, the round portrait on a square brand-fill
+     tile (blue 75 first, orange 75 second, as softserveinc.com shoots its team
+     on brand grounds) beside the name and title, over the one address and the
+     one line: the people are several, the mailbox is one. */
   function contactPhoto(person) {
-    return '<span class="contact-photo" aria-hidden="true">' +
+    return '<span class="contact-tile" aria-hidden="true"><span class="contact-photo">' +
       '<span class="contact-initials">' + esc(initials(person.name)) + "</span>" +
       (person.photo
         ? '<img class="contact-photo-img" src="' + esc(person.photo) +
           '" alt="" loading="lazy" decoding="async">'
         : "") +
-      "</span>";
+      "</span></span>";
   }
 
   function contactWho(person) {
@@ -379,28 +380,21 @@
     var opts = options || {};
     var person = (C.shared && C.shared.contact) || null;
     if (!person || !person.name) return "";
-    var extra = (opts.people || []).filter(function (p) { return p && p.name; });
+    var everyone = [person].concat((opts.people || []).filter(function (p) { return p && p.name; }));
+    /* The address is a link, never a filled button (VISUAL-GRAMMAR §9). */
     var mail = person.email
       ? '<a class="contact-mail" href="mailto:' + esc(person.email) + '">' +
         icon("mail") + "<span>" + esc(person.email) + "</span></a>"
       : "";
     var blurb = person.blurb ? '<p class="contact-blurb">' + esc(person.blurb) + "</p>" : "";
-    var cls = "contact-card" + (opts.className ? " " + esc(opts.className) : "");
-
-    if (extra.length) {
-      var rows = [person].concat(extra).map(function (p) {
-        return '<li class="contact-person">' + contactPhoto(p) +
-          '<div class="contact-person-copy">' + contactWho(p) + contactSocial(p) + "</div></li>";
-      }).join("");
-      return '<div class="' + cls + ' contact-card--team">' +
-        '<ul class="contact-people">' + rows + "</ul>" +
-        '<div class="contact-card-copy">' + mail + blurb + "</div></div>";
-    }
-
-    return '<div class="' + cls + '">' + contactPhoto(person) +
-      '<div class="contact-card-copy">' +
-        contactWho(person) + mail + blurb + contactSocial(person) +
-      "</div></div>";
+    var rows = everyone.map(function (p) {
+      return '<li class="contact-person">' + contactPhoto(p) +
+        '<div class="contact-person-copy">' + contactWho(p) + contactSocial(p) + "</div></li>";
+    }).join("");
+    return '<div class="contact-card' + (opts.className ? " " + esc(opts.className) : "") +
+      (everyone.length > 1 ? " contact-card--team" : "") + '">' +
+      '<ul class="contact-people">' + rows + "</ul>" +
+      '<div class="contact-card-copy">' + mail + blurb + "</div></div>";
   }
 
   /* Two columns, the named human on the left, the form on the right. One
@@ -439,7 +433,10 @@
      last screen, and only data differs. A product names its lead on the card,
      preselects itself in the ask and fixes its own kit; the home page names
      Karsten alone, starts on "Not sure yet" and lets a seller pick any kit.
-     The two ids are fixed: `#talk` lands on the ask, `#kit` on an open kit. */
+     The two ids are fixed: `#talk` lands on the ask, `#kit` on an open kit.
+     Round 20 (D-design §4): the component wraps itself in a full-bleed
+     #edf0f2 band holding one white plate, softserveinc.com's form setting, so
+     both surfaces get the same ground without a page rule of their own. */
   var CONTACT_ANCHORS = { talk: "talk", kit: "kit" };
 
   function contactSwitch(options) {
@@ -481,12 +478,14 @@
         (forms && forms.renderKit ? forms.renderKit(opts.kitOptions) : "") +
       "</div>";
 
-    return contactSplit({
-      formId: CONTACT_ANCHORS.talk,
-      people: opts.people || [],
-      form: '<div class="contact-tabs" data-contact-tabs="' + esc(opts.key || "site") + '">' +
-        pick + talkPanel + kitPanel + "</div>"
-    });
+    return '<div class="contact-band"><div class="contact-plate">' +
+      contactSplit({
+        formId: CONTACT_ANCHORS.talk,
+        people: opts.people || [],
+        form: '<div class="contact-tabs" data-contact-tabs="' + esc(opts.key || "site") + '">' +
+          pick + talkPanel + kitPanel + "</div>"
+      }) +
+      "</div></div>";
   }
 
   /* Mounts both forms whether their pane is open or not, so a switch never

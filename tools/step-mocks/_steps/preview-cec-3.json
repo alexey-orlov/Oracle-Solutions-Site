@@ -1,0 +1,5 @@
+[
+  {"sleep": 300},
+  {"eval": "(()=>{const p=document.querySelector('#pop').getBoundingClientRect(); const lines=[...document.querySelectorAll('.resp p, .resp h4')].map(e=>{const r=e.getBoundingClientRect(); return [e.tagName, Math.round(r.top*10)/10, Math.round(r.bottom*10)/10];}); const card=document.querySelector('#file').getBoundingClientRect(); return {popBottom:p.bottom, popTop:p.top, cardBottom: card.bottom, lines};})()"},
+  {"shot": "preview"}
+]

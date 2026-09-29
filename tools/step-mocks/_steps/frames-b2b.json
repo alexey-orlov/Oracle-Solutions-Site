@@ -1,0 +1,13 @@
+[
+  {"sleep": 900},
+  {"eval": "Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))).then(() => [...document.images].map(i => i.naturalWidth + 'x' + i.naturalHeight).join(' '))"},
+  {"eval": "[...document.querySelectorAll('h2')].map(h => h.textContent).join(' | ')"},
+  {"clipshot": {"name": "frame-ai-1", "selector": "#root > div:nth-of-type(1)"}},
+  {"clipshot": {"name": "frame-ai-2", "selector": "#root > div:nth-of-type(2)"}},
+  {"clipshot": {"name": "frame-ai-3", "selector": "#root > div:nth-of-type(3)"}},
+  {"clipshot": {"name": "frame-ai-4", "selector": "#root > div:nth-of-type(4)"}},
+  {"clipshot": {"name": "frame-cec-1", "selector": "#root > div:nth-of-type(5)"}},
+  {"clipshot": {"name": "frame-cec-2", "selector": "#root > div:nth-of-type(6)"}},
+  {"clipshot": {"name": "frame-cec-3", "selector": "#root > div:nth-of-type(7)"}},
+  {"clipshot": {"name": "frame-cec-4", "selector": "#root > div:nth-of-type(8)"}}
+]
