@@ -6673,6 +6673,37 @@ The list is repeated in START-HERE §9.
 
 A tile in an equal-height grid takes its tallest peer's height. A sparse tile stretched to it reads as empty; shrinking it breaks the row, and padding it with air is what Alex rejected. So a peer that holds less than its row-mates gets their anatomy, each slot filled with its own content: here, a drawing in the photograph's slot, three lines in the outcomes' slot, the link where *Learn more* sits. Recorded in START-HERE §4 (Design), VISUAL-GRAMMAR §1.1, the checker (the tile's anatomy and its three outcomes), and AO-Personal-OS `.claude/references/slide-design.md` rule 14, which until now let peer height win over a half-empty box.
 
+### 38.8 Same-day follow-up: the Bespoke band shows under Packaged services
+
+**The ask** (Alex, 2026-09-29, after the round): *"Make sure that when I open main page and scroll to Packaged services, the bespoke services block which is the next one is slightly but sufficiently visible (so I don't get under impression that we only have packaged servies if never scroll)."*
+
+**Measured first** (1440 × 820, a 1440 × 900 screen less the browser's bars): S4 was 1,061 px tall — its head, the 267 px track, then the 426 px Why list — and after the header's *Services* the band's top sat 337 px below the bottom of the window. No spacing change closes that; the Why list had to leave the gap.
+
+| Where | Before | After |
+|---|---|---|
+| S4 | head · track · *Why SoftServe on Oracle* | head · track (571 px at 1440 × 820) |
+| *Why SoftServe on Oracle* | the foot of S4 | **S4c**, its own screen after the Bespoke band, round 17's rows unchanged; its label is the screen's `h2`, set as the accent eyebrow (`whyScreen()`, still read from `delivery.why`) |
+| Home anchors | every `#/#…` target landed 96 px under the window's top | a home screen lands with its top edge under the sticky header (its own padding is the air); anything else keeps 96 px |
+| The router | read the target element once, so a delayed call from the first of the two renders one hash navigation causes (popstate, then hashchange) read a detached node's zero rect and landed the page one header short (51 px vs 102 px, run to run) | looks the target up afresh on every call; five landings in a row at 51 px |
+| The band's copy | revealed like a card, so while it peeked in the window's bottom 8% it stayed at opacity 0 for up to 1.4 s | not revealed — it is the band's head, like every screen's head; the points still reveal |
+| The band's top padding | the screens' 56–88 px | 48–64 px |
+| Short desktop windows (≥ 1025 px wide, ≤ 800 px tall) | the standard rhythm | every home screen's padding 40 px, its head's margin 24 px, the band's top padding 32 px |
+| Checker | S4 asserted track → Why list | S4 renders the track and nothing else; `whyScreen()` renders the list; `overview()` runs delivery → bespoke → whyScreen → case studies; the band's copy carries no `reveal` |
+
+**After the header's *Services***, how much of the band shows:
+
+| Window | Band in view | What it shows |
+|---|---|---|
+| 1920 × 950 | 344 px | eyebrow, heading |
+| 1512 × 860 | 254 px | eyebrow, heading |
+| 1440 × 820 | 198 px | eyebrow, heading |
+| 1440 × 780 | 271 px | eyebrow, heading |
+| 1536 × 740 | 251 px | eyebrow, heading |
+| 1366 × 650 | 122 px | eyebrow, heading |
+| 1280 × 620 | 51 px | eyebrow |
+
+On a phone the five stages stack and the track alone is taller than the screen, so the band follows the track rather than showing on landing. **Why the list moved rather than shrank:** a Why row is 120 px of 64 px icon, 28 px title and two lines of body, tuned in round 17 to one line count at every width; compressing it into columns saved ~160 px, not the 337 needed. After the band, its reasons read for both ways to buy. Opus alone, no Fable pass: a layout follow-up inside the round's decisions.
+
 ## 39. A new product: Fleet route optimization, 2026-09-29
 
 _Added by the `oracle-packs-web:listing` skill from the pack spec `packs/fleet-route-optimization/pack-spec.md` (Oracle-Packaging-Skills), while two other sessions were reworking the home and product-page layouts. Only this product's data was written; no renderer, stylesheet or layout file was touched. Not published. Written as §38 and renumbered §39 when round 18 took §38, as this note asked._
