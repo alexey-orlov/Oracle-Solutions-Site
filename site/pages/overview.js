@@ -227,11 +227,13 @@
        renaming)". Every name sets on two lines, broken before its last word, so
        the kind of work reads on the first line and the noun on the second, and
        the one-liners and arrows start level in every row. site.css sizes the
-       name to its tile, so the first line never wraps (PROVENANCE §45). */
+       name to its tile, so the first line never wraps (PROVENANCE §45). The
+       space stays before the break: a line's trailing space takes no room, and
+       without it the link's accessible name runs "&analytics" together. */
     function twoLineName(name) {
       var cut = name.lastIndexOf(" ");
       if (cut === -1) return UI.esc(name);
-      return UI.esc(name.slice(0, cut)) + "<br>" + UI.esc(name.slice(cut + 1));
+      return UI.esc(name.slice(0, cut)) + " <br>" + UI.esc(name.slice(cut + 1));
     }
 
     var tiles = (C.facets.categories || []).map(function (category) {

@@ -1797,10 +1797,11 @@ if (!arr(C.products) || C.products.length !== 9) {
   }
   /* PROVENANCE §45 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
      S3 renders each name on two lines, broken before its last word, never the
-     name as one run left to wrap wherever the tile's width puts it. */
+     name as one run left to wrap wherever the tile's width puts it. The space
+     before the break keeps the link's accessible name in words. */
   var tilesSrc = overviewSrc.slice(overviewSrc.indexOf("function groupTiles("), overviewSrc.indexOf("function delivery("));
-  if (!/"<br>"/.test(tilesSrc) || !/lastIndexOf\(" "\)/.test(tilesSrc) || /class="gtile-name">' \+ UI\.esc\(category\.full\)/.test(tilesSrc)) {
-    fail("site/pages/overview.js groupTiles()", "renders the group name as one run — it breaks before the last word, so every tile's name is two lines and the rows start level (PROVENANCE §45)");
+  if (!/" <br>"/.test(tilesSrc) || !/lastIndexOf\(" "\)/.test(tilesSrc) || /class="gtile-name">' \+ UI\.esc\(category\.full\)/.test(tilesSrc)) {
+    fail("site/pages/overview.js groupTiles()", "renders the group name as one run, or breaks it without a space — it breaks before the last word after a space, so every tile's name is two lines, the rows start level and the accessible name stays in words (PROVENANCE §45)");
   }
 
   /* --- every icon the two new screens name is in the registry --- */
