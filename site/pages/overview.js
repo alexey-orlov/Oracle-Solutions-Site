@@ -341,13 +341,13 @@
       ? '<p class="bespoke-cta">' + UI.linkArrow({ label: block.cta.label, href: block.cta.route }) + "</p>"
       : "";
 
-    return '<section class="section home-screen home-bespoke" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
-      '<div class="bespoke reveal">' +
-        '<picture class="bespoke-media" aria-hidden="true">' +
-          '<source media="(min-width: 769px)" srcset="' + UI.esc(image.wide) + '">' +
-          '<img class="bespoke-img" src="' + UI.esc(image.tall) + '" alt="" loading="lazy" decoding="async">' +
-        "</picture>" +
-        '<span class="bespoke-scrim" aria-hidden="true"></span>' +
+    return '<section class="home-screen home-bespoke" id="' + UI.esc(block.anchor) + '">' +
+      '<picture class="bespoke-media" aria-hidden="true">' +
+        '<source media="(min-width: 769px)" srcset="' + UI.esc(image.wide) + '">' +
+        '<img class="bespoke-img" src="' + UI.esc(image.tall) + '" alt="" loading="lazy" decoding="async">' +
+      "</picture>" +
+      '<span class="bespoke-scrim" aria-hidden="true"></span>' +
+      '<div class="wrap bespoke reveal">' +
         '<div class="bespoke-copy">' +
           '<p class="eyebrow bespoke-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
           '<h2 class="h2 bespoke-title">' + UI.esc(block.title) + "</h2>" +
@@ -356,7 +356,7 @@
         "</div>" +
         '<ul class="bespoke-points">' + points + "</ul>" +
       "</div>" +
-      "</div></section>";
+      "</section>";
   }
 
   /* ————— S5: the engagements behind the products ————— */
