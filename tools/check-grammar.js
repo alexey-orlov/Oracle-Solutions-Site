@@ -2621,7 +2621,7 @@ if (/request a demo/i.test(raw)) {
   if (/#\/services\b/.test(raw)) {
     fail("content.js", 'routes to "#/services" — the page is gone; link the home screen that took over its section');
   }
-  ["site/pages/overview.js", "site/pages/products.js", "site/pages/product.js", "site/pages/sellers.js", "site/assets/forms.js"].forEach(function (rel) {
+  ["site/pages/overview.js", "site/pages/products.js", "site/pages/product.js", "site/assets/forms.js"].forEach(function (rel) {
     if (/#\/services\b/.test(fs.readFileSync(path.join(root, rel), "utf8"))) {
       fail(rel, 'routes to "#/services" — the page is gone');
     }
@@ -2629,7 +2629,7 @@ if (/request a demo/i.test(raw)) {
 
   /* The ids the home page renders, and so the only anchors a "#/#…" route may
      name. `talk` is its contact's ask; `kit` left the home page on 2026-09-29
-     and redirects to #/sellers (MOVED, below). */
+     and redirects to the catalog (MOVED, below). */
   var HOME_IDS = ["top", "two-ways", "products", "how-we-deliver", ((C.overview || {}).bespoke || {}).anchor,
     "case-studies", "about", ((C.overview || {}).contact || {}).anchor, "talk"];
   var routes = [
@@ -2653,9 +2653,22 @@ if (/request a demo/i.test(raw)) {
   if (!/"\/services":\s*\{/.test(appSrcMoved)) {
     fail("site/assets/app.js", "MOVED has no \"/services\" entry — a saved link to the old page would land on Page not found");
   }
-  if (!/"\/":\s*\{\s*"kit":\s*"#\/sellers"\s*\}/.test(appSrcMoved)) {
-    fail("site/assets/app.js", "MOVED does not send \"#/#kit\" to \"#/sellers\" — a saved home kit link would land on a home page with no kit (2026-09-29)");
+  /* 2026-09-29 (Alex): "For sellers in the footer - remove that link and page
+     where it leads to". The page, its renderer and its route are gone; a saved
+     #/sellers or #/#kit lands on the catalog, where the seller picks the
+     product whose Contacts tab holds the kit (PROVENANCE §61). */
+  if (!/"\/":\s*\{\s*"kit":\s*"#\/products"\s*\}/.test(appSrcMoved)) {
+    fail("site/assets/app.js", "MOVED does not send \"#/#kit\" to \"#/products\" — a saved home kit link would land on a home page with no kit (2026-09-29)");
   }
+  if (!/"\/sellers":\s*\{\s*"":\s*"#\/products"\s*\}/.test(appSrcMoved)) {
+    fail("site/assets/app.js", "MOVED does not send \"#/sellers\" to \"#/products\" — a saved link to the retired kit page would land on Page not found (§61)");
+  }
+  if (/\/\^\\\/sellers\$\//.test(appSrcMoved) || fs.existsSync(path.join(root, "site/pages/sellers.js"))) {
+    fail("site", "the #/sellers page is back — its route or site/pages/sellers.js; it was retired with the footer's For sellers link (§61)");
+  }
+  ["site/index.html", "site/index-legacy.html"].forEach(function (rel) {
+    if (/pages\/sellers\.js/.test(fs.readFileSync(path.join(root, rel), "utf8"))) fail(rel, "loads pages/sellers.js — the page is gone and the request 404s (§61)");
+  });
 })();
 
 /* ---- round 18 · no fake and placeholder links (Alex, 2026-09-29) ----
@@ -3032,12 +3045,15 @@ if (/request a demo/i.test(raw)) {
     if (/or partner/i.test(r.label || "")) fail("forms.roles", '"' + r.label + '" lumps sellers and partners together');
   });
 
-  var footerLink = (((C.site || {}).footer) || {}).sellersLink;
-  if (!footerLink || footerLink.route !== "#/sellers" || !str(footerLink.label)) {
-    fail("site.footer.sellersLink", 'needs { label, route: "#/sellers" }');
+  if ((((C.site || {}).footer) || {}).sellersLink !== undefined) {
+    fail("site.footer.sellersLink", "retired on 2026-09-29 with the #/sellers page (Alex: \"remove that link and page where it leads to\", §61)");
+  }
+  if (/#\/sellers\b/.test(raw)) {
+    fail("content.js", 'routes to "#/sellers" — the page is gone; a kit is on its product\'s Contacts tab');
   }
   /* Round 14 (Alex, 2026-09-24): softserveinc.com's footer, cut down. A link
-     row — For sellers, the brand's two legal pages, the SoftServe website —
+     row — the brand's two legal pages, the SoftServe website (For sellers
+     left it on 2026-09-29, §61) —
      with the brand's eight social glyphs, then the copyright row with the
      spark. No partner marks, no hot links, no office, no contact block.
      Round 18 added one row of text links to Oracle's pages (below). */

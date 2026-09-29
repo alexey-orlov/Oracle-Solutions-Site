@@ -481,7 +481,7 @@
      alone on the card and the ask starting on "Not sure yet". No sales kit
      (Alex, 2026-09-29: the Get the sales kit tab "should not appear on the main
      page"): passed no kit, the component renders the ask alone, and a seller
-     finds the kit on each product's Contacts tab and on #/sellers. Product
+     finds the kit on each product's Contacts tab. Product
      pages and the header deep-link into this section, so the anchor is read
      from the data rather than written twice. The eyebrow and the H2 open the
      plate's left column rather than sitting above the band (2026-09-29, Alex:

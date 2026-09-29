@@ -2434,10 +2434,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .panel--kit .form-status:empty { display: none; }
 .field-error .inline-link { color: inherit; border-bottom-color: currentColor; }
 
-/* #/sellers — one screen: the kit panel, then the demo route. */
-.sellers-page { padding-block: clamp(3rem, 6vw, 5rem); }
-.sellers-wrap { display: flex; flex-direction: column; gap: 1.5rem; max-width: 46rem; margin-inline: auto; }
-.sellers-wrap .panel--gate { max-width: none; margin-inline: 0; }
 .link-button { background: none; border-top: 0; border-inline: 0; padding: 0; font-family: inherit; cursor: pointer; }
 
 /* ——— video modal —————————————————————————————————————— */
@@ -4148,7 +4144,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    The section that hosts the band gives up its paddings (on a product tab
    the band meets the tab bar, on the home page the band is the whole
    screen), and the footer follows it as it follows every other tab. Every
-   field rule is scoped to .contact-tabs, so #/sellers keeps its own form. */
+   field rule is scoped to .contact-tabs, so no other form takes it. */
 
 .contact-band { padding-block: 3rem; }
 

@@ -19,7 +19,6 @@ window.SITE_CONTENT = {
     navCta: { label: "Talk to us", route: "#/#request-a-demo" },
     primaryCta: { label: "Talk to us", route: "#/#request-a-demo" },
     footer: {
-      sellersLink: { label: "For sellers", route: "#/sellers" },
       legalLinks: [
         { label: "Privacy Notice", url: "https://www.softserveinc.com/en-us/privacy" },
         { label: "Terms and Conditions", url: "https://www.softserveinc.com/en-us/terms-and-conditions" }

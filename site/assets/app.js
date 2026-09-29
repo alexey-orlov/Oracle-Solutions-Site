@@ -879,7 +879,6 @@
   function renderFooter() {
     var f = C.site.footer;
     var links = [];
-    if (f.sellersLink) links.push('<a href="' + esc(f.sellersLink.route) + '">' + esc(f.sellersLink.label) + "</a>");
     f.legalLinks.concat(f.siteLink ? [f.siteLink] : []).forEach(function (item) {
       links.push(outLink(item));
     });
@@ -918,8 +917,7 @@
     { pattern: /^\/$/, page: "home", params: function () { return {}; } },
     { pattern: /^\/products$/, page: "products", params: function () { return {}; } },
     { pattern: /^\/products\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1] }; } },
-    { pattern: /^\/products\/([^/]+)\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1], tab: m[2] }; } },
-    { pattern: /^\/sellers$/, page: "sellers", params: function () { return {}; } }
+    { pattern: /^\/products\/([^/]+)\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1], tab: m[2] }; } }
   ];
 
   /* Round 18 (Alex): the Services page is gone and its story lives on the home
@@ -935,10 +933,15 @@
       "contact": "#/#request-a-demo"
     },
     /* 2026-09-29 (Alex): the home page's contact no longer carries the sales
-       kit, so its old `#/#kit` lands on the kit's own page. Every other home
-       anchor stays where it is. */
+       kit, and the kit's own page (#/sellers) is gone with the footer's For
+       sellers link (PROVENANCE §61). A kit is one product's, on its Contacts
+       tab, so a saved `#/#kit` or `#/sellers` lands on the catalog, where the
+       seller picks the product. Every other home anchor stays where it is. */
     "/": {
-      "kit": "#/sellers"
+      "kit": "#/products"
+    },
+    "/sellers": {
+      "": "#/products"
     }
   };
 
