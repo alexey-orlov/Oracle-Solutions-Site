@@ -474,8 +474,10 @@
 /* ——— widths ——————————————————————————————————————————————————————————— */
 
 /* The diagram and the reasons stack, the diagram first, as it reads on the
-   left. */
-@media (max-width: 1100px) {
+   left. Below 1181 px the reasons' column wraps so tall that the diagram,
+   stretched to its height, would open empty bands, and its pods would shrink
+   under 36 px. */
+@media (max-width: 1180px) {
   .awhy-grid { grid-template-columns: minmax(0, 1fr); }
   .awhy-map { max-width: 44rem; }
 }
