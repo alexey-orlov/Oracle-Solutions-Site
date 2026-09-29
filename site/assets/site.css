@@ -3317,9 +3317,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    32 because this tile also carries the one-liner. Round 18: the size never
    outgrows the tile. The longest first line, "Enterprise knowledge &", is
    10.43 em of glyphs and 11 px of letter-spacing, so (the measure - 12 px)
-   / 10.6 is the largest size that holds it on one line; the clamp keeps the
-   design's size wherever the tile is wide enough, which is from 1366 up and
-   in every two-across and one-column tile but a 320 px phone's. */
+   / 10.6 is the largest size that holds it on one line. The clamp keeps the
+   design's size wherever the tile has room (28 px from 1366 up, 24 px in
+   most narrower tiles) and dips no lower than 21.4 px, three across at 1101. */
 .gtile-name {
   --name-fit: calc((100cqi - 12px) / 10.6);
   font-family: var(--font-body);
@@ -3364,8 +3364,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    row leaves too little measure for a 28 px name, so the name's ceiling steps
    to 24 px; at 1024 three across left 261 px tiles, three-line names and
    seven-line one-liners, so two across takes over at 1100. Two across stops at
-   720, the site's phone step (round 18): narrower, a half row holds
-   "Enterprise knowledge &" on one line only at 20 px at 640 and 16 px at 561. */
+   720, where the rest of the home page goes to one column (round 18): below
+   it, a half row holds "Enterprise knowledge &" on one line only at 20 px at
+   640 and at 16 px at 561. */
 @media (max-width: 1279px) {
   .gtile-name { font-size: 1.5rem; font-size: clamp(1.25rem, var(--name-fit), 1.5rem); }
   .gtile-body { padding: 1rem 1.5rem 1.5rem; }

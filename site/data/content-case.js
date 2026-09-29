@@ -147,6 +147,6 @@
     if (applyOne(RECASE[k])) { applied += 1; }
   }
 
-  /* Exposed for tooling and the internal review panel; harmless in the page. */
+  /* Exposed for tooling; harmless in the page. */
   window.SITE_CONTENT_V2 = { total: RECASE.length, applied: applied, overrides: RECASE };
 }());
