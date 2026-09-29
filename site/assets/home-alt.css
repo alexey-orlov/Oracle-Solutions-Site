@@ -453,13 +453,10 @@
   .ahero-actions .ahero-link { align-self: flex-start; }
 }
 
-/* At 320 the figures and their rows step down, the H1 follows its fit, and
-   the ask's label holds one line (it misses by 2 px at the brand's 24 px
-   sides). */
+/* At 320 the H1 follows its fit, and the ask's label holds one line (it
+   misses by 2 px at the brand's 24 px sides). */
 @media (max-width: 359px) {
   .ahero-actions .btn { padding-inline: 16px; }
-  .ahero-stat { grid-template-columns: 9.5rem minmax(0, 1fr); }
-  .ahero-stat-value { font-size: 30px; }
 }
 
 /* Paper keeps the words and drops the photograph and the dark ground. */
@@ -467,8 +464,8 @@
   .ahero-media { display: none !important; }
   .ahero { background: #ffffff !important; color: #111111; }
   .ahero-photo { height: auto; }
-  .ahero-title, .ahero-stat-value { color: #111111 !important; }
-  .ahero-lead, .ahero-stat-label, .ahero-stat-prefix { color: #333333 !important; }
+  .ahero-title { color: #111111 !important; }
+  .ahero-lead { color: #333333 !important; }
   .aoffer .way--photo { padding-top: 1.5rem; }
   .aoffer .way--photo .way-title { margin-top: 0; }
 }

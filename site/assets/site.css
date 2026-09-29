@@ -2510,7 +2510,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 /* The strip is the one-pager's: grey system boxes on the left, the two
    labelled pipes, and the blue-outlined cloud holding the app and the
    engine, in the site's shapes (an 8px cut on a box, 12px on the cloud) and
-   at the one-pager's proportions (22 : 27 : 51). */
+   near the one-pager's proportions (22 : 24 : 54, the cloud a little wider
+   so its two boxes hold their names in fewer lines). */
 .flow { display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; margin: 0; }
 
 .flow-strip {
@@ -2519,7 +2520,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   --flow-cloud: #f4fafe;
   --flow-node-ring: #a9d3f1;
   display: grid;
-  grid-template-columns: minmax(0, 22fr) minmax(0, 27fr) minmax(0, 51fr);
+  grid-template-columns: minmax(0, 22fr) minmax(0, 24fr) minmax(0, 54fr);
   column-gap: .75rem;
   align-items: stretch;
 }
