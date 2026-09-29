@@ -181,9 +181,11 @@ contrast plate per screen.**
   On it, the type is white, secondary text `#bdcbd7`, and rules white at 20%.
 - **The KPI band** takes softserveinc.com's KPI ground, the light gradient above,
   full-bleed; its figures sit on it with no tile behind them.
-- **The contact portraits** sit on square blue-75 `#459fdd` and orange-75
-  `#fe8d6b` tiles, the first person blue and the second orange, as the brand
-  shoots its team on brand grounds; the home page's one person is on blue.
+- **The contact portraits** are round photographs standing on the white plate,
+  with no fill behind them. Round 20 first set them on square blue-75 and
+  orange-75 tiles, as the brand shoots its team on brand grounds, and the tile
+  read as a blue frame around an office photograph (Alex, 2026-09-29): the
+  brand's team shots are cut out onto their ground, ours are not.
 
 **Surface fills, round 17** (Alex: the home group tiles *"colored / styled like
 Our offers tiles"* on softserveinc.com). The brand's own Offers tiles are flat
@@ -191,8 +193,7 @@ fills of its 75 steps with a black line drawing, so the palette's lighter steps
 are a fourth use, with no role: **Lviv blue 75 `#459fdd`, Austin orange 75
 `#fe8d6b`, Lviv blue 50 `#c1dff4` and neutral 400 `#bdcbd7` fill the six home
 group tiles**, in the order blue 75 · orange 75 · blue 50 ·
-neutral 400 · blue 75 · orange 75. Since round 20 two of them fill one more surface:
-blue 75 and orange 75 ground the contact portraits, and orange 75 is also the fact
+neutral 400 · blue 75 · orange 75. Since round 20 orange 75 is also the fact
 marker (above). That is the one four-fill order in which no
 two touching tiles share a fill in the 3 × 2, 2 × 3 or one-column grid. The 100
 steps keep their roles: `#1485c4` is what you act on, `#f46a4a` the H1's accent,
