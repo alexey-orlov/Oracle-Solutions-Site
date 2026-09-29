@@ -364,7 +364,9 @@ window.SITE_CONTENT = {
 
     /* Round 18 (Alex): the second way to buy the practice, under the packaged
        track: a standing team built around the customer's roadmap, the "AI
-       factory", on a dark photograph. The four points are his four elements,
+       factory", on a dark band; since 2026-09-29 its picture is parallel
+       ribbons in one long wave (Alex: "parallelism and infinity"), and the
+       copy is one column on the right. The four points are his four elements,
        in his order: Oracle experts; decades of enterprise AI and data; proven
        governance with scalable pod-based delivery; AI-enabled teams and
        lifecycle. Each is angled off the Why list above it rather than
@@ -385,7 +387,7 @@ window.SITE_CONTENT = {
       image: {
         wide: "assets/img/bands/bespoke-wide.jpg",
         tall: "assets/img/bands/bespoke-tall.jpg",
-        alt: "Three people in silhouette around a laptop by tall windows in a dark room, the light behind them"
+        alt: "Parallel chrome ribbons in one long wave, running in from the left edge on a dark grey ground"
       }
     },
 
