@@ -501,8 +501,8 @@
   .ahero-actions .ahero-link { align-self: flex-start; }
   .ahero-lead { font-size: 18px; }
   .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .ahero-stat { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
-  .ahero-stat-value { font-size: 40px; }
+  .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
+  .ahero-stat-value { font-size: 34px; }
   .ahero-stat-label { margin-top: 0; font-size: 14px; }
   .away { padding: 24px; }
   .away-title { font-size: 24px; }
@@ -517,8 +517,8 @@
 /* At 320 "Built on Oracle." holds one line only at 36 px. */
 @media (max-width: 359px) {
   .ahero-title { font-size: 36px; }
-  .ahero-stat { grid-template-columns: 9.75rem minmax(0, 1fr); }
-  .ahero-stat-value { font-size: 32px; }
+  .ahero-stat { grid-template-columns: 9.5rem minmax(0, 1fr); }
+  .ahero-stat-value { font-size: 30px; }
 }
 
 /* Paper keeps the words and drops the photographs. */
