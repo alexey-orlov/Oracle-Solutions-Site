@@ -1548,7 +1548,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 .products-head { display: flex; flex-direction: column; gap: 1.25rem; padding-top: clamp(1.5rem, 3vw, 3rem); }
 .products-head .h1 { font-size: var(--fs-hero); }
-.products-intro { max-width: 52rem; }
+.products-intro { max-width: 52rem; text-wrap: pretty; }
 .products-search { max-width: 32rem; margin-top: .75rem; }
 
 .results-bar {
