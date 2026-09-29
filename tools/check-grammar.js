@@ -2651,6 +2651,36 @@ if (/assets\/img\/logos\//.test(raw)) {
   var orange = (css.match(/var\(--accent(-dim)?\)/g) || []).length;
   if (orange > 3) fail(V2_CSS, "spends the orange accent " + orange + " times — it belongs on the hero H1's accent line and .chip--accent only");
 
+  /* A product name's hyphenated compound is one unit (2026-09-29). Headings
+     balance their lines, and balancing split "Repair-or-replace decisions" at
+     its hyphen at 375 although the compound fits the line. Both headings that
+     print a product name, the hero's H1 and the catalog tile's title, render
+     it through keepCompounds(), a nowrap span per compound, and the data
+     carries no invisible character. A text-wrap value alone is no fix: pretty
+     and wrap each strand a short word on another name at 320. */
+  var appNames = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  var headlineFn = appNames.slice(appNames.indexOf("function headline("), appNames.indexOf("function sectionHead("));
+  if (!/keepCompounds\(parts\.accent\)/.test(headlineFn) || !/keepCompounds\(parts\.rest\)/.test(headlineFn)) {
+    fail("site/assets/app.js headline()", "must render both parts through keepCompounds() — a balanced heading splits a hyphenated product name at its hyphen");
+  }
+  var tileFn = appNames.slice(appNames.indexOf("function productTile("), appNames.indexOf("function card("));
+  if (!/ptile-title[^\n]*keepCompounds\(product\.name\)/.test(tileFn)) {
+    fail("site/assets/app.js productTile()", "must render the tile title through keepCompounds(product.name) — a balanced heading splits a hyphenated product name at its hyphen");
+  }
+  var heroSrc = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  if (!/UI\.headline\([^)]*product-title/.test(heroSrc)) {
+    fail("site/pages/product.js", "renders .product-title without UI.headline() — the name's hyphenated compounds would split on a phone");
+  }
+  if (!/white-space:\s*nowrap/.test(cssRule(".compound"))) {
+    fail(V2_CSS, ".compound must be white-space: nowrap — it keeps a product name's hyphenated compound whole");
+  }
+  C.products.forEach(function (p) {
+    var name = [p.name, p.headline && p.headline.accent, p.headline && p.headline.rest].join(" ");
+    if (/[­​-‍‑⁠﻿]/.test(name)) {
+      fail("products." + p.slug + ".name", "carries an invisible or non-breaking character — the renderer keeps a compound whole, never the data");
+    }
+  });
+
   /* The five licensed faces ship with the theme. */
   ["Azurio-Regular.woff", "Azurio-Semibold.woff", "ReplicaLLWeb-Light.woff2",
    "ReplicaLL-Regular.ttf", "ReplicaLL-Bold.ttf"].forEach(function (f) {
