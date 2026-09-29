@@ -7497,6 +7497,28 @@ _A change between rounds, made in its own session while the Internal-panel remov
   - *ROI proven in weeks.* claims more than *Proven in weeks.*: a measured return, which delivery would stand behind together with *from 30 days*;
   - the hero screen still carries *data* four times and *AI* three (the lead and the figures' labels, shared with the live page), against the three-times rule;
   - on tablets in portrait the hero has no line and no spark.
+- **Version 5, the Why diagram (the same evening).** Alex, on version 4:
+  - *"narrow down bespoke services a bit (should be more balanced and symmetrical + product tiles - make 6 of them, with icons not text"*;
+  - *"bring icons to Oracle platforms back"*;
+  - *"SoftServe logo is outside, while oracle's is inside. maybe you need one more large softserve box to box around the whole SS layer"*;
+  - *"Make sure that the total height of the image is the same as the height of 4 benefits on the right"*, meaning the three reasons' column;
+  - then *"Review as web ui designer the layout after you complete"*.
+- **Version 5 — what changed:**
+  - **Two layers, one construction.** SoftServe's layer is a box of its own, a 12 px cut on a hairline ring, with the SoftServe mark inside at its top left, as Oracle's mark sits inside Oracle's blue 50 box. The cuts step down with the size: 12 px for a layer, 8 for a block, 4 for a tile or a chip.
+  - **Bespoke is narrower**: columns 2.2 : 1, 203 px at 1440, down from 253. Its pods are three across and four down, eleven and the open one, and fill the column edge to edge (17 px each side). They end level with the product tiles, 47 px under the line; version 4 left a 106 px gap.
+  - **Products are the six groups**, three by two as on the products screen. Each tile is 2 : 1, in the group's home-tile fill, with the group's icon in ink.
+  - **Oracle's platforms have their icons back**, beside the names.
+  - **One height:**
+    - The Why grid stretches its row. The SoftServe box takes spare height into its products row, and the reasons share theirs row by row, their text centred between the hairlines.
+    - At 1440 the diagram and the reasons both run 110 → 670 px; at 1920, 258 → 837; at 1280 and 1181 they are equal too.
+    - Below 1181 px the two stack. At 1120 the reasons' column had wrapped so tall that the stretched diagram opened an 83 px band in the products block and its pods shrank to 32 px.
+- **Version 5 — the review**, as a web UI designer, at 1440, 1920, 1280, 1181, 1024, 390 and 320:
+  - The edges align: the diagram meets the reasons' first and last hairlines exactly, and the tiles and the pods end on one line, 19 px above their blocks' foot.
+  - Six empty tiles gave way to 3 × 2, which fills the products block. In a single row of six, the stretch opened a 63 px band above them.
+  - `text-wrap: balance` on the lines and the chips: *Custom scope, / dedicated pods* instead of an orphaned *pods*.
+  - Phones: one column; the tiles three by two; the pods six across in two rows, edge to edge; the platforms two by two.
+  - No overflow at any of the seven widths, the console clean, `check-grammar` OK (its one warning the About H2), and the deny-list grep clean.
+- **Open for Alex (version 5):** the services photograph and the three lines are still open from version 4.
 
 ## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
 

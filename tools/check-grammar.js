@@ -1793,22 +1793,52 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 
   /* --- the #/alt hero's own H1 and lead (Alex, 2026-09-29, PROVENANCE §47) ---
-     Three sentences, one line each at every width: home-alt.css sizes the H1
-     so its longest sentence, "ROI proven in weeks." (9.8 em), fills the copy
-     column with 3 % to spare (--ahero-fit, divisor 10.1). A longer sentence
-     breaks that fit, so re-measure the divisor before raising the cap. The
-     lead is the live lead's promise on two lines from 1180 px up (35 em
-     measure) and obeys the same rules: the promise, never the procedure. */
+     Three lines, one each at every width: home-alt.css sizes the H1 so its
+     longest line, "ROI proven in weeks." (9.8 em), fills the copy column
+     with 3 % to spare (--ahero-fit, divisor 10.1). A longer line breaks
+     that fit, so re-measure the divisor before raising the cap. The first
+     line runs on into the second ("Enterprise AI agents / Built on
+     Oracle."), so it takes no full stop (Alex, the same evening). The lead
+     is the live lead's promise on two lines from 1180 px up (35 em measure)
+     and obeys the same rules: the promise, never the procedure. */
   var ah = (C.overviewAlt || {}).hero || {};
   if (ah.headline !== undefined) {
     var ahl = ah.headline || {};
     if (!str(ahl.lead) || !str(ahl.accent) || !str(ahl.proof) || ahl.rest !== undefined) {
-      fail("overviewAlt.hero.headline", "needs { lead, accent, proof } — three sentences, one line each");
-    } else ["lead", "accent", "proof"].forEach(function (k) {
-      if (ahl[k].length > 21) {
-        fail("overviewAlt.hero.headline." + k, "is " + ahl[k].length + " characters (max 21 — each sentence holds one line at the H1's fitted size)");
+      fail("overviewAlt.hero.headline", "needs { lead, accent, proof } — three lines, one each");
+    } else {
+      ["lead", "accent", "proof"].forEach(function (k) {
+        if (ahl[k].length > 21) {
+          fail("overviewAlt.hero.headline." + k, "is " + ahl[k].length + " characters (max 21 — each line holds one line at the H1's fitted size)");
+        }
+      });
+      if (/[.!?…:;,]\s*$/.test(ahl.lead)) {
+        fail("overviewAlt.hero.headline.lead", 'ends on a stop — it runs on into "' + ahl.accent + '", so it takes none (Alex, 2026-09-29)');
       }
-    });
+    }
+  }
+
+  /* The #/alt hero carries no figures: they stand under it on white, in the
+     live page's own proof strip, which overview.js renders and overview-alt.js
+     leaves in place (Alex, 2026-09-29: "same or similar to how they are
+     placed on the current main"). Its copy is centred in the photograph as
+     the eye reads it, from the H1's capitals to the ask's foot: the flex
+     centre, and the foot's padding adding back the .145 em the H1's first
+     line box holds above its capitals (Alex, the same evening: "make sure to
+     properly center the text"). PROVENANCE §47. */
+  var altSrc = fs.readFileSync(path.join(root, "site/pages/overview-alt.js"), "utf8");
+  var altCss = fs.readFileSync(path.join(root, "site/assets/home-alt.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/stat-band--home|ahero-stat|ahero-band/.test(altSrc)) {
+    fail("site/pages/overview-alt.js", "touches the figures — under the #/alt hero they are the live page's proof strip, left in place, on white (§47)");
+  }
+  if (/\.(?:ahero-stat|ahero-band|stat-band--home|stat-row--home)\b/.test(altCss)) {
+    fail("site/assets/home-alt.css", "styles the figures — the proof strip under the #/alt hero is the live page's own, as on #/ (§47)");
+  }
+  if (!/\.ahero-photo\s*\{[^}]*align-items:\s*center/.test(altCss)) {
+    fail("site/assets/home-alt.css", '.ahero-photo must centre its copy (align-items: center) — "make sure to properly center the text" (§47)');
+  }
+  if (!/\.ahero-copy\s*\{[^}]*padding-block:\s*var\(--ahero-pad\)\s+calc\(var\(--ahero-pad\)\s*\+\s*\.145\s*\*\s*var\(--ahero-h1\)\)/.test(altCss)) {
+    fail("site/assets/home-alt.css", ".ahero-copy's foot must add back the .145 em of air above the H1's capitals, or the copy reads low (§47)");
   }
   if (ah.lead !== undefined) {
     if (!str(ah.lead)) fail("overviewAlt.hero.lead", "is empty");
