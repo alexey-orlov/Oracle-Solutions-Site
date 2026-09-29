@@ -359,7 +359,7 @@
 .amap-block--bespoke { grid-area: bespoke; }
 
 .amap-name { font-family: var(--font-sans); font-weight: 400; font-size: 18px; line-height: 1.15; letter-spacing: 0; color: #000000; }
-.amap-line { margin-top: 4px; font-family: var(--font-sans); font-weight: 300; font-size: 14px; line-height: 1.3; color: #4c5156; }
+.amap-line { margin-top: 4px; font-family: var(--font-sans); font-weight: 300; font-size: 14px; line-height: 1.3; color: #4c5156; text-wrap: balance; }
 .amap-pic { margin-top: 14px; }
 
 /* A block taller than its content keeps its picture at its foot, so the
@@ -434,8 +434,9 @@
 
 .amap-arrow--dashed::before { border-top-style: dashed; }
 
-/* Bespoke services: a square team, three by three, filling the column's
-   width edge to edge; the last pod open, the team that grows. */
+/* Bespoke services: a team three across and four down, filling the tall
+   column edge to edge with no empty band; the last pod open, the team that
+   grows. */
 .amap-pods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .amap-pod .amap-node { width: 100%; height: auto; aspect-ratio: 1; }
 .amap-pod .amap-node .icon { width: 42%; height: 42%; max-width: 22px; max-height: 22px; }

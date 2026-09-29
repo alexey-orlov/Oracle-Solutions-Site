@@ -140,8 +140,8 @@
      SoftServe block says what it is in a name and one short line and shows
      the rest: the packaged services a run of steps (the last dashed: managed
      services are optional), the products the six groups as tiles in their
-     own fills and drawings, the bespoke services a square team of pods with
-     an open one (it grows). What the pictures stand for is listed on the
+     own fills and icons, the bespoke services a team of pods with an open
+     one (it grows). What the pictures stand for is listed on the
      screens around this one, so the diagram names none of it (Alex:
      "overloaded with text"). Light grounds; nothing in it is a control. It is
      hidden from assistive technology, and one sentence says the same. */
@@ -165,8 +165,9 @@
         '<li class="amap-step">' + node(36, last, glyph(stageIcons[index] || "dot")) + "</li>";
     }).join("") + "</ol>";
 
-    /* Three by three: eight pods and the open one. */
-    var pods = '<ul class="amap-pods">' + [0, 1, 2, 3, 4, 5, 6, 7].map(function () {
+    /* Three across and four down, the column's own proportions: eleven pods
+       and the open one. */
+    var pods = '<ul class="amap-pods">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(function () {
       return '<li class="amap-pod">' + node(48, false, glyph("users")) + "</li>";
     }).join("") + '<li class="amap-pod">' + node(48, true, glyph("plus")) + "</li></ul>";
 
