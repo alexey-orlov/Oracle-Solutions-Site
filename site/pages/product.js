@@ -3,14 +3,6 @@
 
   window.PAGES = window.PAGES || {};
 
-  /* The three stack vendors, resolved through brandAsset so a theme with a
-     light ground can swap in ink-on-white marks (assets/brand.js). */
-  var VENDOR_MARK = {
-    oracle: { src: window.brandAsset("oracleMark", "assets/img/oracle-wordmark-white.svg"), alt: "Oracle" },
-    nvidia: { src: window.brandAsset("nvidiaMark", "assets/img/nvidia-wordmark.svg"), alt: "NVIDIA" },
-    softserve: { src: window.brandAsset("ssMark", "assets/img/softserve-wordmark-white.svg"), alt: "SoftServe" }
-  };
-
   var lastView = { slug: null, tab: null };
 
   function C() { return window.SITE_CONTENT; }
@@ -634,7 +626,7 @@
      screens), which is the one-column order below 1240px and the order a
      screen reader reads. The More detail disclosure is gone (round 20);
      `scope`, `features` and each step's `features` stay in the data,
-     unrendered, for the Jumpstart tab. The industry cases and the case study
+     unrendered. The industry cases and the case study
      are the Use cases tab's (round 10). */
   function overviewTab(product) {
     return problemSolution(product.overview.problemSolution) +
@@ -653,257 +645,211 @@
 
   /* ————— tab: technology ————— */
 
-  function vendorMarks(vendors) {
+  /* Round 22 (Alex, 2026-09-29: "I don't like current Technology tabs … we
+     have beautiful diagrams in one-pagers … use or follow them … You can have
+     some one-liner explainers etc added, but no more than that"): the tab is
+     his wireframe's two blocks, the data-flow strip and the Oracle products
+     widget, with one line under the strip for what the picture cannot show.
+     No heading, no narrative, no layer stack, no capability list.
+
+     The strip is the pack one-pager's composition at web scale
+     (Oracle-Packaging-Skills, one-pager `_flow_from_architecture`): the
+     systems on the left, the source on top and a destination-only system
+     under it, one labelled pipe into the cloud and one back out, and the
+     cloud box holding the app and the engine. Where the source is also the
+     destination (a write-back), the column holds one box and both pipes
+     touch it. Below 720px the strip turns to run top to bottom. */
+  function flowBox(box, className) {
     var UI = window.UI;
-    return (vendors || []).map(function (vendor) {
-      var mark = VENDOR_MARK[vendor];
-      return mark
-        ? '<img class="group-mark group-mark--' + UI.esc(vendor) + '" src="' + UI.esc(mark.src) +
-          '" alt="' + UI.esc(mark.alt) + '">'
-        : "";
-    }).join("");
-  }
-
-  function stackItem(item) {
-    var UI = window.UI;
-    return '<li class="stack-item">' +
-      '<span class="stack-item-name">' + UI.esc(item.name) + "</span>" +
-      '<span class="stack-tags">' +
-        '<span class="stack-tag' + (item.required ? " stack-tag--required" : "") + '">' +
-          UI.esc(label(item.required ? "layerRequired" : "layerOptional")) + "</span>" +
-        (item.note ? '<span class="stack-tag stack-tag--when">' + UI.esc(item.note) + "</span>" : "") +
-      "</span>" +
-      "</li>";
-  }
-
-  function stackItems(items) {
-    var UI = window.UI;
-    function group(iconName, title, list) {
-      if (!list.length) return "";
-      return '<p class="eyebrow eyebrow--accent stack-dir">' + UI.icon(iconName) +
-        "<span>" + UI.esc(title) + "</span></p>" +
-        '<ul class="stack-items">' + list.map(stackItem).join("") + "</ul>";
-    }
-    function has(item, direction) {
-      return item.direction === direction || item.direction === "both";
-    }
-    var plain = items.filter(function (item) { return !item.direction; });
-    var inbound = items.filter(function (item) { return has(item, "inbound"); });
-    var outbound = items.filter(function (item) { return has(item, "outbound"); });
-
-    return (plain.length ? '<ul class="stack-items">' + plain.map(stackItem).join("") + "</ul>" : "") +
-      group("inbound", label("directionInbound"), inbound) +
-      group("outbound", label("directionOutbound"), outbound);
-  }
-
-  /* The stack read top to bottom is the flow, with the components attached:
-     application on top, infrastructure at the foot, each band expandable. */
-  function solutionStack(product) {
-    var UI = window.UI;
-    var tech = product.technology;
-    if (!tech.stack || !tech.stack.length) return "";
-    var base = "stack-" + product.slug;
-
-    var rows = tech.stack.map(function (layer, index) {
-      var open = index === 0;
-      return '<div class="stack-layer stack-layer--' + UI.esc(layer.key) +
-        (open ? " is-open" : "") + '">' +
-        '<button class="stack-row" type="button" aria-expanded="' + (open ? "true" : "false") + '"' +
-          ' aria-controls="' + base + "-body-" + index + '">' +
-          '<span class="stack-marks" aria-hidden="true">' + vendorMarks(layer.vendors) + "</span>" +
-          '<span class="stack-name">' + UI.esc(layer.label) + "</span>" +
-          '<span class="stack-summary">' + UI.esc(layer.summary) + "</span>" +
-          UI.icon("chevronDown", "stack-chev") +
-        "</button>" +
-        '<div class="stack-body" id="' + base + "-body-" + index + '"' + (open ? "" : " hidden") + ">" +
-          stackItems(layer.items || []) +
-        "</div></div>";
-    }).join("");
-
-    return '<div class="stack-accordion" data-stack="' + UI.esc(product.slug) + '">' + rows + "</div>";
-  }
-
-  /* A capability matrix that prints a restrictive asterisk gets PARTIAL, not
-     SUPPORTED — an unqualified tag on a partial row is a claim. */
-  var CAP_STATE = {
-    supported: "stateSupported",
-    partial: "statePartial",
-    roadmap: "stateRoadmap"
-  };
-
-  /* The complete feature list, grouped under the four workflow stages the
-     Overview stepper walks through — so two products compare stage for stage.
-     A state tag renders only where a shipped capability matrix states one; an
-     untagged item gets no tag at all, because a guessed tag is a claim. */
-  function capabilities(product) {
-    var UI = window.UI;
-    var groups = product.technology.capabilities;
-    if (!groups || !groups.length) return "";
-
-    var columns = groups.map(function (group, index) {
-      var items = (group.items || []).map(function (item) {
-        var state = CAP_STATE[item.state] ? item.state : "";
-        return '<li class="cap-item">' +
-          '<span class="cap-name">' + UI.esc(item.name) + "</span>" +
-          (state
-            ? '<span class="cap-tag cap-tag--' + state + '">' + UI.esc(label(CAP_STATE[state])) + "</span>"
-            : "") +
-          "</li>";
-      }).join("");
-      return '<div class="cap-stage">' +
-        '<p class="cap-stage-head">' +
-          '<span class="cap-stage-index nums">' + (index + 1) + "</span>" +
-          '<span class="cap-stage-name">' + UI.esc(group.stage) + "</span>" +
-        "</p>" +
-        '<ul class="cap-list">' + items + "</ul>" +
-        "</div>";
-    }).join("");
-
-    return '<section class="panel reveal">' +
-      blockHead(label("capabilities")) +
-      '<div class="cap-grid">' + columns + "</div>" +
-      "</section>";
-  }
-
-  /* Exactly two blocks (VISUAL-GRAMMAR §3): Architecture — the narrative and
-     the layer stack under one heading — then Capabilities. */
-  function technologyTab(product) {
-    var UI = window.UI;
-    var tech = product.technology;
-    var figure = UI.figure(product.slug);
-
-    return '<section class="panel reveal">' +
-        blockHead(label("architecture")) +
-        '<div class="arch-head">' +
-          '<p class="lead arch-narrative">' + UI.esc(tech.narrative) + "</p>" +
-          figure +
-        "</div>" +
-        '<p class="eyebrow arch-stack-label">' + UI.esc(label("stack")) + "</p>" +
-        solutionStack(product) +
-      "</section>" +
-      capabilities(product);
-  }
-
-  /* ————— tab: Jumpstart ————— */
-
-  var PILLAR_ICON = { fast: "clock", "low-risk": "shield", tangible: "trendUp" };
-
-  function hasFigure(inv) {
-    return !!((inv && inv.price) || (inv && inv.duration));
-  }
-
-  /* The card prints the figures that are published. Where neither price nor
-     duration is set, one line says so — two tiles both reading "scoped per
-     engagement" is an unfilled template, not an investment. */
-  function investFigures(inv) {
-    var UI = window.UI;
-    if (!hasFigure(inv)) {
-      return '<p class="invest-scope">' + UI.esc(label("jumpstartScoped")) + "</p>";
-    }
-    function figure(value, name) {
-      return '<div class="invest-figure">' +
-        '<p class="invest-value nums">' + UI.esc(value) + "</p>" +
-        '<p class="invest-label">' + UI.esc(name) + "</p>" +
-        "</div>";
-    }
-    var both = inv.price && inv.duration;
-    return '<div class="invest-figures' + (both ? "" : " invest-figures--single") + '">' +
-      (inv.price ? figure(inv.price, "Price") : "") +
-      (inv.duration ? figure(inv.duration, "Duration") : "") +
+    if (!box || !box.name) return "";
+    return '<div class="' + className + '">' +
+      '<span class="flow-name">' + UI.esc(box.name) + "</span>" +
+      (box.note ? '<span class="flow-note">' + UI.esc(box.note) + "</span>" : "") +
       "</div>";
   }
 
-  /* Fast · low-risk · tangible: the same six pieces in the same order on all
-     seven products, so the page does not move when a seller changes tab.
-     One footnote under the price, never a stack. */
-  function jumpstartTab(product) {
+  function flowPipe(text, direction) {
+    return '<div class="flow-pipe flow-pipe--' + direction + '">' +
+      '<span class="flow-pipe-label">' + window.UI.esc(text) + "</span>" +
+      '<span class="flow-pipe-line" aria-hidden="true"></span>' +
+      "</div>";
+  }
+
+  var FLOW_LINK = '<svg class="flow-link" viewBox="0 0 28 12" aria-hidden="true" focusable="false">' +
+    '<path d="M2 6h24M6.5 1.5 2 6l4.5 4.5M21.5 1.5 26 6l-4.5 4.5"></path></svg>';
+
+  function flowStrip(diagram) {
     var UI = window.UI;
-    var js = product.jumpstart;
-
-    var pillars = (js.pillars || []).map(function (pillar) {
-      return '<article class="pillar">' +
-        '<span class="pillar-mark">' + UI.icon(PILLAR_ICON[pillar.key] || "spark") + "</span>" +
-        '<h3 class="pillar-title">' + UI.esc(pillar.title) + "</h3>" +
-        '<p class="pillar-text">' + UI.esc(pillar.text) + "</p>" +
-        "</article>";
-    }).join("");
-
-    var timeline = (js.timeline || []).map(function (node) {
-      return '<li class="tl-node">' +
-        '<span class="tl-mark" aria-hidden="true"></span>' +
-        '<p class="tl-label">' + UI.esc(node.label) + "</p>" +
-        '<p class="tl-text">' + UI.esc(node.text) + "</p>" +
-        "</li>";
-    }).join("");
-
-    var inv = js.investment || {};
-    var includes = (inv.includes || []).map(function (line) {
-      return "<li>" + UI.icon("check") + "<span>" + UI.esc(line) + "</span></li>";
-    }).join("");
-
-    var next = (js.next || []).map(function (tier) {
-      return '<article class="next-tier">' +
-        '<p class="eyebrow eyebrow--accent">' + UI.esc(tier.tier) + "</p>" +
-        '<p class="next-tier-text">' + UI.esc(tier.text) + "</p>" +
-        '<dl class="next-tier-facts">' +
-          (tier.duration
-            ? "<div><dt>Duration</dt><dd>" + UI.esc(tier.duration) + "</dd></div>"
-            : "") +
-          (tier.price
-            ? "<div><dt>Pricing</dt><dd>" + UI.esc(tier.price) + "</dd></div>"
-            : "") +
-        "</dl>" +
-        "</article>";
-    }).join("");
-
-    return '<section class="panel reveal">' +
-        blockHead(js.title) +
-        '<p class="lead js-promise">' + UI.esc(js.promise) + "</p>" +
-        '<div class="pillar-row">' + pillars + "</div>" +
-      "</section>" +
-      '<section class="panel reveal">' +
-        '<div class="js-split">' +
-          '<div class="js-col">' +
-            blockHead(label("jumpstartOutcomes")) +
-            bulletList(js.outcomes || []) +
-          "</div>" +
-          '<div class="js-col js-col--rail">' +
-            blockHead(label("jumpstartTimeline")) +
-            '<ol class="tl">' + timeline + "</ol>" +
+    var d = diagram || {};
+    if (!d.source || !d.platform || !d.app || !d.engine) return "";
+    var systems = [flowBox(d.source, "flow-sys")].concat((d.destinations || []).map(function (box) {
+      return flowBox(box, "flow-sys flow-sys--dest");
+    })).join("");
+    return '<div class="flow-strip' + ((d.destinations || []).length ? "" : " flow-strip--loop") + '">' +
+        '<div class="flow-systems">' + systems + "</div>" +
+        '<div class="flow-pipes">' + flowPipe(d.toPlatform, "in") + flowPipe(d.fromPlatform, "out") + "</div>" +
+        '<div class="flow-cloud">' +
+          '<p class="flow-cloud-label">' +
+            '<span class="flow-cloud-name">' + UI.esc(d.platform.label) + "</span>" +
+            (d.platform.services ? '<span class="flow-cloud-services">' + UI.esc(d.platform.services) + "</span>" : "") +
+          "</p>" +
+          '<div class="flow-cloud-inner">' +
+            flowBox(d.app, "flow-node") + FLOW_LINK + flowBox(d.engine, "flow-node") +
           "</div>" +
         "</div>" +
-      "</section>" +
-      '<section class="panel reveal">' +
-        '<div class="js-split js-split--invest">' +
-          '<div class="js-col">' +
-            blockHead(label("jumpstartNeeds")) +
-            bulletList(js.needs || []) +
-          "</div>" +
-          '<div class="invest-card">' +
-            '<p class="eyebrow eyebrow--accent">' + UI.esc(label("jumpstartInvestment")) + "</p>" +
-            investFigures(inv) +
-            '<ul class="tick-list invest-includes">' + includes + "</ul>" +
-            (hasFigure(inv) && inv.footnote
-              ? '<p class="footnote invest-note">' + UI.esc(inv.footnote) + "</p>"
-              : "") +
-          "</div>" +
+      "</div>";
+  }
+
+  /* The widget names the Oracle products in play, one registry for all nine
+     products (`shared.oracleProducts`), so a system carries the same name and
+     the same glyph on every page; only its role line is the product's own.
+     Platforms first, then the Oracle applications the product reads from or
+     writes to. */
+  function oracleWidget(product) {
+    var UI = window.UI;
+    var reg = C().shared.oracleProducts || {};
+    var items = reg.items || {};
+    var picks = ((product.technology || {}).oracle || []).filter(function (pick) { return items[pick.id]; });
+    if (!picks.length) return "";
+    function group(key) {
+      var rows = picks.filter(function (pick) { return items[pick.id].group === key; });
+      if (!rows.length) return "";
+      return '<div class="op-group">' +
+        '<p class="op-group-label">' + UI.esc((reg.groups || {})[key] || "") + "</p>" +
+        '<ul class="op-list">' + rows.map(function (pick) {
+          var item = items[pick.id];
+          return '<li class="op-item">' +
+            '<span class="op-icon" aria-hidden="true">' + UI.icon(item.icon) + "</span>" +
+            '<span class="op-copy">' +
+              '<span class="op-name">' + UI.esc(item.name) + "</span>" +
+              '<span class="op-role">' + UI.esc(pick.role) + "</span>" +
+            "</span>" +
+            "</li>";
+        }).join("") + "</ul>" +
+        "</div>";
+    }
+    var id = "op-title-" + product.slug;
+    return '<aside class="op-widget" aria-labelledby="' + id + '">' +
+      '<h2 class="op-title" id="' + id + '">' + UI.esc(reg.title) + "</h2>" +
+      group("platform") + group("connected") +
+      "</aside>";
+  }
+
+  function technologyTab(product) {
+    var UI = window.UI;
+    var tech = product.technology || {};
+    return '<section class="panel reveal tech">' +
+      '<div class="tech-grid">' +
+        '<figure class="flow">' +
+          flowStrip(tech.diagram) +
+          (tech.line ? '<figcaption class="flow-line">' + UI.esc(tech.line) + "</figcaption>" : "") +
+        "</figure>" +
+        oracleWidget(product) +
+      "</div>" +
+      "</section>";
+  }
+
+  /* ————— tab: delivery ————— */
+
+  /* Round 22 (Alex, 2026-09-29: rename Jumpstart to Delivery; "same structure
+     and content as we have in packaging table in our one-pager. Add approx.
+     duration of phases (with very short footnote that it's confirmed at
+     scoping); don't add prices. Everything else should be gone from this
+     tab."): the one-pager's service-packages table without its price rows.
+     The three tiers with their scope line, a duration row, one row per
+     capability area with a mark and a phrase in every cell, the legend and
+     the one footnote. The tiers, the durations and the footnote are the
+     site's (`shared.delivery`); the scope lines and the rows are the
+     product's. From 900px it is one table; below, one block per tier, since
+     four columns do not fit a phone. Both are rendered and CSS shows one. */
+  var MARKS = ["partial", "included", "advanced", "none"];
+
+  function markOf(cell) {
+    var mark = (cell || {}).mark;
+    return MARKS.indexOf(mark) === -1 ? "none" : mark;
+  }
+
+  function markText(mark, product) {
+    var shared = C().shared.delivery || {};
+    if (mark === "advanced" && product.delivery && product.delivery.advanced) return product.delivery.advanced;
+    return (shared.marks || {})[mark] || mark;
+  }
+
+  function deliveryCell(cell, product) {
+    var UI = window.UI;
+    var mark = markOf(cell);
+    return '<span class="pk-cell">' +
+      '<span class="pk-mark pk-mark--' + mark + '" aria-hidden="true"></span>' +
+      '<span class="sr-only">' + UI.esc(markText(mark, product)) + ". </span>" +
+      (cell && cell.text ? '<span class="pk-text">' + UI.esc(cell.text) + "</span>" : "") +
+      "</span>";
+  }
+
+  function tierHead(tier, scope, tag) {
+    var UI = window.UI;
+    return "<" + tag + ' class="pk-tier-name">' + UI.esc(tier.name) +
+        ' <span class="pk-size">' + UI.esc(tier.size) + "</span>" +
+      "</" + tag + ">" +
+      (scope ? '<p class="pk-scope">' + UI.esc(scope) + "</p>" : "");
+  }
+
+  function deliveryTab(product) {
+    var UI = window.UI;
+    var shared = C().shared.delivery || {};
+    var tiers = shared.tiers || [];
+    var d = product.delivery || {};
+    var scope = d.scope || [];
+    var rows = d.rows || [];
+    var star = '<span class="pk-star" aria-hidden="true">*</span>';
+    /* The standing durations are the site's; a product overrides them only where its own evidence differs. */
+    var durations = (d.durations && d.durations.length === tiers.length) ? d.durations : tiers.map(function (tier) { return tier.duration; });
+
+    var head = '<tr><td class="pk-corner"></td>' + tiers.map(function (tier, i) {
+      return '<th scope="col" class="pk-tier pk-tier--' + UI.esc(tier.id) + '">' + tierHead(tier, scope[i], "span") + "</th>";
+    }).join("") + "</tr>";
+
+    var duration = '<tr class="pk-row pk-row--duration"><th scope="row">' + UI.esc(shared.durationLabel) + star + "</th>" +
+      tiers.map(function (tier, i) {
+        return '<td class="pk-duration">' + UI.esc(durations[i]) + "</td>";
+      }).join("") + "</tr>";
+
+    var body = rows.map(function (row) {
+      return '<tr class="pk-row"><th scope="row">' + UI.esc(row.area) + "</th>" +
+        (row.cells || []).map(function (cell) { return "<td>" + deliveryCell(cell, product) + "</td>"; }).join("") +
+        "</tr>";
+    }).join("");
+
+    var cards = tiers.map(function (tier, i) {
+      return '<section class="pk-card pk-card--' + UI.esc(tier.id) + '">' +
+        '<div class="pk-card-head">' +
+          tierHead(tier, scope[i], "h2") +
+          '<p class="pk-card-duration">' + UI.esc(shared.durationLabel) + ": " +
+            '<span class="pk-duration">' + UI.esc(durations[i]) + "</span>" + star + "</p>" +
         "</div>" +
-      "</section>" +
-      '<section class="panel reveal">' +
-        blockHead(label("jumpstartNext")) +
-        '<div class="next-grid">' + next + "</div>" +
-      "</section>" +
-      '<section class="panel panel--flat reveal">' +
-        '<div class="cta-row">' +
-          UI.button({
-            label: js.cta.label,
-            href: js.cta.route || contactsRoute(product.slug),
-            kind: "primary"
-          }) +
-        "</div>" +
-        '<p class="panel-link">' + UI.linkArrow({
-          label: C().shared.engageLink.label, href: C().shared.engageLink.route
-        }) + "</p>" +
+        '<dl class="pk-card-rows">' + rows.map(function (row) {
+          return "<div><dt>" + UI.esc(row.area) + "</dt><dd>" + deliveryCell((row.cells || [])[i], product) + "</dd></div>";
+        }).join("") + "</dl>" +
+        "</section>";
+    }).join("");
+
+    var used = MARKS.filter(function (mark) {
+      return rows.some(function (row) { return (row.cells || []).some(function (cell) { return markOf(cell) === mark; }); });
+    });
+    var legend = used.map(function (mark) {
+      return '<span class="pk-key"><span class="pk-mark pk-mark--' + mark + '" aria-hidden="true"></span>' +
+        UI.esc(markText(mark, product)) + "</span>";
+    }).join("");
+
+    return '<section class="panel reveal pk">' +
+      '<div class="pk-scroll"><table class="pk-table">' +
+        '<caption class="sr-only">' + UI.esc(shared.caption || "") + "</caption>" +
+        "<thead>" + head + "</thead><tbody>" + duration + body + "</tbody>" +
+      "</table></div>" +
+      '<div class="pk-cards">' + cards + "</div>" +
+      '<div class="pk-foot">' +
+        '<p class="pk-legend">' + legend + "</p>" +
+        '<p class="pk-note">' + star + UI.esc(shared.footnote) + "</p>" +
+      "</div>" +
       "</section>";
   }
 
@@ -977,7 +923,7 @@
     var body;
     if (active === "use-cases") body = useCasesTab(item);
     else if (active === "technology") body = technologyTab(item);
-    else if (active === "jumpstart") body = jumpstartTab(item);
+    else if (active === "delivery") body = deliveryTab(item);
     else if (active === "contacts") body = contactsTab(item);
     else body = overviewTab(item);
 
@@ -1158,20 +1104,6 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureIndustryRow);
   }
 
-  function bindStack(root) {
-    var block = root.querySelector("[data-stack]");
-    if (!block) return;
-    Array.prototype.forEach.call(block.querySelectorAll(".stack-row"), function (row) {
-      row.addEventListener("click", function () {
-        var open = row.getAttribute("aria-expanded") !== "true";
-        row.setAttribute("aria-expanded", open ? "true" : "false");
-        row.parentNode.classList.toggle("is-open", open);
-        var body = document.getElementById(row.getAttribute("aria-controls"));
-        if (body) body.hidden = !open;
-      });
-    });
-  }
-
   /* The tab strip scrolls sideways on a phone, so a reader who lands on a
      later tab would otherwise see the active one parked off-screen. The
      bar scrolls itself, never the page. */
@@ -1203,7 +1135,6 @@
     bindHowItWorks(root);
     bindKpiWidget(root);
     bindIndustryTabs(root);
-    bindStack(root);
 
     /* The Contacts tab carries both forms, one per tab of the switch; the
        shared mount binds both and then the switch (assets/app.js). */
