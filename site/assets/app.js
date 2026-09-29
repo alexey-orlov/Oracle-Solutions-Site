@@ -99,6 +99,11 @@
     "platform-oracle-ai-data-platform": '<ellipse cx="12" cy="6" rx="7.5" ry="3"></ellipse><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"></path><path d="m8.5 13 2.6 2.6 5-5"></path>',
     "platform-oracle-ai-lakehouse": '<path d="m12 3 8.5 4.2L12 11.4 3.5 7.2z"></path><path d="m3.5 12 8.5 4.2 8.5-4.2"></path><path d="m3.5 16.8 8.5 4.2 8.5-4.2"></path>',
     "platform-oracle-ai-fusion": '<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"></rect>',
+    /* Round 22: the Oracle products widget's three systems that are not a
+       catalog platform (content.js shared.oracleProducts). */
+    "oracle-database": '<ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"></ellipse><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13"></path><path d="M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"></path>',
+    "oracle-field-service": '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"></path>',
+    "oracle-cx": '<rect x="3" y="4.5" width="18" height="15" rx="1.8"></rect><circle cx="9" cy="10.8" r="2.3"></circle><path d="M5.6 16.5a3.5 3.5 0 0 1 6.8 0M14.5 10h4M14.5 13.5h3"></path>',
 
     "industry-manufacturing": '<path d="M3.5 20V11l5 3V11l5 3V7l5.5 4v9Z"></path><path d="M2.5 20h19"></path>',
     "industry-logistics": '<rect x="2.5" y="7" width="10.5" height="9" rx="1.5"></rect><path d="M13 10h4l4 3.5V16h-8z"></path><circle cx="7" cy="18.3" r="1.7"></circle><circle cx="17" cy="18.3" r="1.7"></circle>',
