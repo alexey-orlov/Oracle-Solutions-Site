@@ -1169,6 +1169,15 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (C.shared.sectionLabels && C.shared.sectionLabels.successStory !== undefined) {
     fail("shared.sectionLabels", "successStory is superseded by caseStudy");
   }
+  /* The chip is the product page's alone since §62 (Alex, 2026-09-29: "remove
+     'Forecast', 'Proven' etc labels on the main page in case studies"). */
+  var appCode = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  var cardAt = appCode.indexOf("function caseCard(");
+  var cardBody = cardAt === -1 ? "" : appCode.slice(cardAt, appCode.indexOf("\n  }\n", cardAt));
+  if (!cardBody) fail("site/assets/app.js", "caseCard() not found — the no-chip check on the home cards is reading nothing");
+  else if (/caseStatusChip|case-status/.test(cardBody)) {
+    fail("site/assets/app.js caseCard()", "renders a status chip — the home case cards carry none (Alex, 2026-09-29)");
+  }
 })();
 
 /* ---- round 20 · Use cases and Contacts (D-design §3, §4) ----
@@ -2024,6 +2033,10 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (!why) fail("overview.delivery.why", "missing — the three pillars beside the ladder");
     else {
       if (!str(why.title)) fail("overview.delivery.why", "title missing");
+      /* Alex, 2026-09-29: the block "misses the heading next to subheading".
+         "Why SoftServe on Oracle" is the eyebrow and `title` the H2 under it. */
+      if (why.eyebrow !== "Why SoftServe on Oracle") fail("overview.delivery.why.eyebrow", 'must be "Why SoftServe on Oracle", the eyebrow over the screen\'s H2');
+      if (str(why.title) && why.title === why.eyebrow) fail("overview.delivery.why.title", "repeats the eyebrow — the H2 carries the message");
       if (!arr(why.pillars) || why.pillars.length !== 3) {
         fail("overview.delivery.why.pillars", "must hold exactly 3 pillars, got " +
           (arr(why.pillars) ? why.pillars.length : "none"));
@@ -2225,9 +2238,13 @@ if (!arr(C.products) || C.products.length !== 9) {
      length instead: it may not grow, and a rewrite still fails over it. S3 is
      round 18's "Ready-to-use solutions to kick off your AI adoption" (52; his
      "kick-off" set as the verb), S4 round 17's "Service delivery that
-     accelerates time to value" (48). */
+     accelerates time to value" (48), and S2's, which the home page prints
+     from overviewAlt, his "Everything to go live with AI on Oracle." (40,
+     2026-09-29). The Why screen's H2 (§62) is held to the budget. */
   [
     ["overview.twoWays.title", (o.twoWays || {}).title, true],
+    ["overviewAlt.offer.title", ((C.overviewAlt || {}).offer || {}).title, true, 40],
+    ["overview.delivery.why.title", ((o.delivery || {}).why || {}).title, true],
     ["overview.catalog.title", (o.catalog || {}).title, true, 52],
     ["overview.caseStudiesIntro.title", (o.caseStudiesIntro || {}).title, true],
     ["overview.delivery.title", (o.delivery || {}).title, true, 48],
