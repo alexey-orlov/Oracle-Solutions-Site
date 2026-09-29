@@ -88,13 +88,12 @@
           /* One line in the dark gap between the copy and the oval, the spark
              on it, turned to the line's angle in mount(). From 769 to
              1239 px the copy fills more of the photograph's width, so a
-             steeper line keeps clear of the promise and the ask; up to
-             768 px the oval sits further right and the narrow line follows
-             it. */
+             steeper line keeps clear of the promise and the ask. At 768 px
+             and under the copy meets the oval and no gap is left, so both
+             go (home-alt.css). */
           '<svg class="ahero-line" viewBox="0 0 100 100" preserveAspectRatio="none">' +
             '<line class="ahero-line-desk" x1="54" y1="100" x2="66" y2="0"></line>' +
             '<line class="ahero-line-mid" x1="60.5" y1="100" x2="64" y2="0"></line>' +
-            '<line class="ahero-line-narrow" x1="70" y1="100" x2="86" y2="0"></line>' +
           "</svg>" +
           '<img class="ahero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async">' +
         "</div>" +

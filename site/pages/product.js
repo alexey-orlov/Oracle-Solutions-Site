@@ -199,9 +199,11 @@
 
     var media = heroMedia(product);
 
+    /* No photograph behind the copy (2026-09-29, PROVENANCE §55): the ground
+       is softserveinc.com's detail-page hero gradient (site.css), and the one
+       picture is the product's own screen in the frame. `hero.image` still
+       feeds the catalog tile. */
     return '<section class="product-hero has-hero-bg' + (media ? " product-hero--media" : "") + '">' +
-      UI.heroBackdrop(product.hero && product.hero.image) +
-      '<span class="hero-glow" aria-hidden="true"></span>' +
       '<div class="wrap product-hero-inner' + (media ? "" : " product-hero-inner--single") + '">' +
       '<div class="product-hero-copy">' +
         '<nav class="crumbs" aria-label="Breadcrumb">' +
@@ -218,7 +220,7 @@
           : "") +
         (product.subLine ? '<p class="body-text product-subline">' + UI.esc(product.subLine) + "</p>" : "") +
         badges +
-        heroCtas(product, !!media) +
+        heroCtas(product) +
       "</div>" +
       media +
       "</div>" +
@@ -1000,12 +1002,15 @@
     return value;
   }
 
+  /* Only a recording that playsInPage() reaches here: a SharePoint or Stream
+     link is rendered as a link to its own tab, because its page refuses to be
+     framed on another site. */
   function bindVideo(root, item) {
     Array.prototype.forEach.call(root.querySelectorAll("[data-video]"), function (button) {
       button.addEventListener("click", function () {
         var url = button.getAttribute("data-video");
         var title = button.getAttribute("data-video-title") || item.name;
-        var embed = /youtube\.com|youtu\.be|youtube-nocookie\.com|vimeo\.com|\.sharepoint\.com|web\.microsoftstream\.com/i.test(url)
+        var embed = /youtube\.com|youtu\.be|youtube-nocookie\.com|vimeo\.com/i.test(url)
           ? '<iframe class="video-frame" src="' + window.UI.esc(embedUrl(url)) +
             '" title="' + window.UI.esc(title) +
             '" allow="autoplay; fullscreen; picture-in-picture"></iframe>'

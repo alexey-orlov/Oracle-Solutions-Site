@@ -75,7 +75,7 @@
   vector-effect: non-scaling-stroke;
 }
 
-.ahero-line-mid, .ahero-line-narrow { display: none; }
+.ahero-line-mid { display: none; }
 
 /* The spark sits on the line at a third of the photograph's height, turned
    by overview-alt.js so its long axis follows the line. */
@@ -463,18 +463,17 @@
   .ahero-spark { left: 62.81%; }
 }
 
-/* The photograph takes its content's height, the oval becomes a glow at the
-   right edge, and the line moves right with it, so the copy widens to the
-   line's side of it; the promise runs past two lines here. */
+/* The photograph takes its content's height and the oval moves to the right
+   edge, where the copy meets it: no dark gap is left for the line, so the
+   line and the spark go, as on a phone. The copy widens up to the oval, and
+   the promise runs past two lines here. */
 @media (max-width: 768px) {
   .ahero-photo { height: auto; min-height: 440px; }
   .ahero-img { object-position: 56% 50%; }
   .ahero-copy { --ahero-share: .68; }
   .ahero-title { font-size: min(40px, var(--ahero-fit)); }
   .ahero-lead { text-wrap: pretty; }
-  .ahero-line-desk { display: none; }
-  .ahero-line-narrow { display: inline; }
-  .ahero-spark { left: 80.56%; }
+  .ahero-line, .ahero-spark { display: none; }
 }
 
 /* Under 681 px three columns no longer give "from 30 days" room to spare
@@ -497,13 +496,12 @@
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* A phone: the copy takes the full width, so the line and the spark would
-   cross it and go; the button spans the row, the link sits under it. */
+/* A phone: the copy takes the full width; the button spans the row, the
+   link sits under it. */
 @media (max-width: 540px) {
   .ahero-img { object-position: 45% 50%; }
   .ahero-copy { --ahero-share: 1; }
   .ahero-title { max-width: none; font-size: min(38px, var(--ahero-fit)); }
-  .ahero-line, .ahero-spark { display: none; }
   .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
   .ahero-actions .btn { width: 100%; }
   .ahero-actions .ahero-link { align-self: flex-start; }
