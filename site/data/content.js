@@ -290,7 +290,7 @@ window.SITE_CONTENT = {
           bullets: [
             "A proof of value from 30 days, on your own data",
             "Measurable ROI in focus from day one",
-            "Decades of enterprise adoption of AI and advanced technology"
+            "One team, from the first use case to your AI factory"
           ],
           image: {
             file: "assets/img/heroes/services.jpg",
@@ -328,7 +328,7 @@ window.SITE_CONTENT = {
            feature-icon style, bold 64 px outlines with no well. */
         pillars: [
           { icon: "why-platform", title: "Platform depth", body: "Architects who own the reference architecture on every Oracle AI platform, from Autonomous AI Lakehouse to OCI." },
-          { icon: "why-agentic", title: "Agentic AI expertise", body: "Agents and workflows tested on real enterprise systems, with evaluation, guardrails and governance on every engagement." },
+          { icon: "why-agentic", title: "Agentic AI expertise", body: "Agents and workflows tested on real enterprise systems, with evaluation and guardrails built into every engagement." },
           { icon: "why-scope", title: "Fixed-scope delivery", body: "Signed success metrics up front, and every Jumpstart ends with an executive readout and a costed expansion plan." }
         ]
       },
@@ -338,19 +338,25 @@ window.SITE_CONTENT = {
     },
 
     /* Round 18 (Alex): the second way to buy the practice, under the packaged
-       track: a team built around the customer's roadmap, on a dark photograph.
-       PROVISIONAL COPY — replaced by the round's copy pass. */
+       track: a standing team built around the customer's roadmap, the "AI
+       factory", on a dark photograph. The four points are his four elements,
+       in his order: Oracle experts; decades of enterprise AI and data; proven
+       governance with scalable pod-based delivery; AI-enabled teams and
+       lifecycle. Each is angled off the Why list above it rather than
+       restating it, and the speed is the engineering's, since "time to value"
+       already sits three times on the page. */
     bespoke: {
       anchor: "bespoke-services",
       eyebrow: "Bespoke services",
       title: "Your AI factory on Oracle.",
-      lead: "PROVISIONAL",
+      lead: "A standing team that takes your AI use cases from idea to production, one after another, and grows with your roadmap. For programs bigger than one product.",
       points: [
-        { title: "Oracle experts", body: "PROVISIONAL" },
-        { title: "Decades in AI and data", body: "PROVISIONAL" },
-        { title: "Governed pod delivery", body: "PROVISIONAL" },
-        { title: "AI-enabled engineering", body: "PROVISIONAL" }
+        { title: "Oracle experts", body: "Our Oracle architects design and scope the solution, and the AI engineers beside them build it and run it." },
+        { title: "Enterprise AI and data", body: "Decades of data, cloud and AI for large enterprises, so the groundwork under each use case is work we have done before." },
+        { title: "Governed pod-based delivery", body: "Pods sized to each project and re-sized as it grows or shrinks, with senior leads who set the standards across them." },
+        { title: "AI-enabled teams", body: "Engineers who code, test and document with AI assistants across the software lifecycle, so releases ship sooner." }
       ],
+      cta: { label: "Talk to us", route: "#/#request-a-demo" },
       image: {
         wide: "assets/img/bands/bespoke-wide.jpg",
         tall: "assets/img/bands/bespoke-tall.jpg",
