@@ -147,7 +147,8 @@
       s.push(measure(d.x - 20, d.y + 24, d.x + 20, label + " deep"));
       s.push('<text x="202" y="' + (d.y - 16) + '" font-size="9" fill="#344054" font-family="system-ui, sans-serif">fastener row</text>');
     }
-    s.push('<rect x="26" y="150" width="46" height="16" rx="2" fill="#FFFFFF"/><text x="31" y="161" font-size="8.5" fill="#101828" font-family="system-ui, sans-serif">' + tag + ' tag</text>');
+    var tagW = tag === "100 mm" ? 60 : 54;
+    s.push('<rect x="26" y="150" width="' + tagW + '" height="16" rx="2" fill="#FFFFFF"/><text x="' + (26 + tagW / 2) + '" y="161" text-anchor="middle" font-size="8.5" fill="#101828" font-family="system-ui, sans-serif">' + tag + ' tag</text>');
     s.push("</svg>");
     return s.join("");
   }
