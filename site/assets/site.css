@@ -975,6 +975,37 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .ptile-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* Round 18 (Alex): the catalog's last tile is its way out, "Looking for
+   another solution?", into the home page's contact. A tile of the grid, the
+   product tiles' footprint and cut, in the home page's group-tile language:
+   a flat brand fill with one ink, no photograph, the whole tile one link,
+   the arrow nudging on hover. Lviv blue 75, the fill that opens the group
+   tiles, so the ask reads as the site's own and not as another product. */
+.ptile--ask {
+  --tile-ink: #1a1a1a;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 18rem;
+  padding: clamp(1.5rem, 2.6vw, 2.25rem);
+  background: #459fdd;
+  color: var(--tile-ink);
+}
+
+.ptile--ask:hover, .ptile--ask:focus-visible { background: #459fdd; }
+.ptile-ask-body { display: flex; flex-direction: column; gap: .875rem; }
+.ptile-ask-title { font-family: var(--font-body); font-weight: 400; font-size: 1.75rem; line-height: 1.15; color: var(--tile-ink); }
+.ptile-ask-text { max-width: 30rem; font-size: 1rem; line-height: 1.45; color: var(--tile-ink); }
+.ptile--ask .ptile-ask-cta { align-self: flex-start; color: var(--tile-ink); }
+.ptile--ask .ptile-ask-cta .icon { transition: transform var(--t-slow) var(--ease); }
+.ptile--ask:hover .ptile-ask-cta .icon, .ptile--ask:focus-visible .ptile-ask-cta .icon { transform: translateX(2px); }
+.ptile--ask:focus-visible { outline: 2px solid var(--tile-ink); outline-offset: -6px; }
+
+@media (max-width: 1279px) { .ptile-ask-title { font-size: 1.5rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .ptile--ask .ptile-ask-cta .icon { transition: none; }
+  .ptile--ask:hover .ptile-ask-cta .icon, .ptile--ask:focus-visible .ptile-ask-cta .icon { transform: none; }
+}
+
 /* ——— proof rows ——————————————————————————————————————— */
 
 /* ——— case-study cards (round 4, C2; round 11) ——————————————————
