@@ -2,8 +2,8 @@
    home-alt.css — the alternative home page at #/alt (2026-09-29).
 
    What pages/overview-alt.js draws or re-arranges: the hero (.ahero, one dark
-   screen: a photograph that dissolves into a solid ground carrying the
-   promise and the figures), S2's two tiles (.aoffer: the live page's two
+   screen: a photograph carrying the claim, its promise and the ask, which
+   dissolves into a solid ground carrying the figures), S2's two tiles (.aoffer: the live page's two
    ways in, re-laid as dark tiles with the words off the picture), and the
    Why screen (.awhy: the portfolio diagram, .amap, on the left of the three
    reasons). Everything else is the live page's, styled by
@@ -21,10 +21,10 @@
    left edge), so the picture dissolves into it without a seam. */
 .ahero { background: #040d16; color: #ffffff; }
 
-/* The photograph carries the H1 and the two actions, set low in it, so the
-   claim leads straight into the promise and the figures under it. It is
-   held to the window's height less the band and the next screen's heading,
-   so S2's heading shows at 1280 x 800 and 1366 x 768. */
+/* The photograph carries the H1, its promise and the two actions, set low
+   in it, so the claim leads straight into the figures under it. It is held
+   to the window's height less the band and the next screen's heading, so
+   S2's heading shows at 1280 x 800 and 1366 x 768. */
 .ahero-photo {
   position: relative;
   isolation: isolate;
