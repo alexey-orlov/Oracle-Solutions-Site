@@ -394,11 +394,11 @@ Exact commands are in HANDOFF §4.
 - **§52 (the catalog's lead):** the six group empty states still open on the same kind of note to a reviewer, *"… are scoped per engagement. Tell us …"*. One is live: *Transaction & process execution*, the one group with no product, where its home tile lands.
 - **§53 (the About tile's logo):** the About screen shows two SoftServe marks, the sticky header's wordmark and the tile's logo. softserveinc.com shows its wordmark once a page and the spark elsewhere; if two is one too many, the spark alone by the eyebrow is that pattern and a few lines away.
 - **§54 (the catalog's hero):**
-  - its photograph is the home Products panel's scene, the panel its lead comes from; if `#/alt` becomes the home page, its hero is that scene too, and the catalog wants another;
+  - the photograph repeats softserveinc.com's About Us hero, as the Bespoke band repeats a softserveinc.com banner;
+  - it shows the man in the cap's face, in shadow; the site's industry images show no identifiable face;
   - the lead's claim now stands in three places (the panel, the hero, the not-found page), where the rule is two;
   - *AI* three times in the lead, his words, beside the rail's platform names;
-  - on a phone the hero shows the photograph's dark side and three of the crossing's four lines;
-  - the photograph's rights are those of §11.1's deck imagery, to confirm before launch.
+  - on a phone the hero shows mostly the photograph's dark side and three of the crossing's four lines.
 - **§55 (the product hero):**
   - **who can watch:** both recordings answer 403 to anyone not signed in to SoftServe, so an Oracle seller or a customer who clicks the frame meets a Microsoft sign-in (the kit documents' limit, round 12);
   - **what the Workforce recording shows:** the delivered product on what look like the customer's own Dutch zones and technician IDs, where the site's walkthroughs are synthetic (seen on two stills, not watched end to end). The Large docs recording runs on a synthetic contract but shows the recording browser's bookmarks bar (SoftServe's internal tools) and a temporary ngrok address;
