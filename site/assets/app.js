@@ -208,14 +208,20 @@
   }
 
   /* Maximum two, both optional: the interactive demo where a walkthrough
-     exists, and Oracle Marketplace where a listing does. A listing with no URL
-     still renders the badge — the flag says the listing is there — but it is
-     inert rather than a link to nowhere.
+     exists, and Oracle Marketplace where a listing does. Round 18 (Alex: "no
+     fake and placeholder links"): the Marketplace badge needs the listing's
+     URL as well as the flag, so it is always a link to the listing and never
+     an inert promise of one.
 
      Round 9 (Alex): the demo badge reads the walkthrough it opens, not the
-     `video` flag, which only decides whether the product page carries a video
+     video link, which only decides whether the product page carries a video
      frame. Cross-system ERP Q&A has a walkthrough and no video, and was the
      product missing its badge. */
+  function hasListing(slug) {
+    var conf = (CFG.products && CFG.products[slug]) || {};
+    return conf.marketplace === true && /^https:\/\//.test(conf.marketplaceUrl || "");
+  }
+
   function hasDemo(slug) {
     var link = links(slug).interactiveDemo;
     return typeof link === "string" && link.trim().length > 0;
@@ -254,8 +260,8 @@
     if (hasDemo(slug) && defs.demo) {
       out.push(badgeHtml(defs.demo, { action: true, attrs: { "data-demo-badge": slug } }));
     }
-    if (conf.marketplace === true && defs.marketplace) {
-      out.push(badgeHtml(defs.marketplace, conf.marketplaceUrl ? { href: conf.marketplaceUrl } : {}));
+    if (hasListing(slug) && defs.marketplace) {
+      out.push(badgeHtml(defs.marketplace, { href: conf.marketplaceUrl }));
     }
     return out.join("");
   }
@@ -1050,7 +1056,9 @@
         return;
       }
       if (onProductPage) {
-        var href = demoHref((CFG.products && CFG.products[slug]) || {});
+        /* links.json, like the hero button: config.js has held no walkthrough
+           link since round 12, so reading it here opened nothing (round 18). */
+        var href = demoHref(links(slug));
         if (href) { window.open(href, "_blank", "noopener"); return; }
       }
       window.ROUTER.go("#/products/" + slug);
