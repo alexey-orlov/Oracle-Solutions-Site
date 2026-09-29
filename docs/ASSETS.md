@@ -36,47 +36,46 @@ Nothing is drawn over a frame: no ring, no inset, no arrow, no dimming or blur. 
 ### 1.2 The capture recipe
 
 1. **Open the screen** at **1280 × 800 CSS px, DPR 2**, headless: a walkthrough at `site/demo/<slug>/index.html?tour=off&ui=clean&state=<state>` (1.3), or a mock page (1.4). **Where a walkthrough clips or overlaps at 1280, capture it at 1440 × 900, DPR 2**: Large docs, whose review PDF overlaps the page footer at 1280. No toast, no tour bubble, no cursor, no scrollbar, and nothing half-loaded — unless the step *is* a processing state, and then it shows its stages clearly mid-way, some ticked and one running.
-2. **In one capture run per step:** reach the state; hide the overlays; read the chosen element's `getBoundingClientRect()` in CSS px; shoot the **full viewport**; then shoot **the region's rectangle** directly at DPR 2 (a `rectshot` step), rather than cropping afterwards.
-3. **Write the files.** The full PNG resampled to 1744 px wide, then JPEG q82 → `assets/img/steps/<slug>-<n>.jpg`. The region PNG resampled to 802 px wide (kept at its own width if narrower), then JPEG q85 → `<slug>-<n>-zoom.jpg`. On this Mac: `sips --resampleWidth`, then `sips -s format jpeg -s formatOptions <q>`, one call each. A region narrower than 401 CSS px gives a zoom under 802 px, which is soft on a 2× screen: keep regions at least 401 px wide where the element allows (Fleet's zooms 1 and 4, 664 and 644 px, are open).
-4. **Record the step** in `content.js`: `shot.region` as `[x/W·100, y/H·100, w/W·100, h/H·100]` of the capture viewport, one decimal; `shot.anchor` by the rule in 1.1; `shot.alt`.
-5. **Check before shipping**, reading every final JPG at display size: the zoom is crisp and its UI text reads at normal size; the frame is one complete, settled screen that looks like a real product, not a wireframe; the region is the one thing the step is about; the inset leaves the ring clear (the mocks' `frames-preview.html` shows each frame at 872 × 545 with its ring and inset); **no uncleared figure and no real name** (1.5).
+2. **Reach the state, then lead the eye natively where it is needed** (1.1): click the real control, add the walkthrough's own selected or focus class through an `eval` step, or scroll the element into view. Never draw anything.
+3. **Shoot the full viewport** and write it: resampled to 1744 px wide, then JPEG q82 → `assets/img/steps/<slug>-<n>.jpg`. On this Mac: `sips --resampleWidth 1744`, then `sips -s format jpeg -s formatOptions 82`, one call each.
+4. **Record the step** in `content.js`: `shot.full` and `shot.alt`, what the screen now shows.
+5. **Check before shipping**, reading every final JPG: one complete, settled screen that looks like a real product, not a wireframe; the step's element easy to find at 800 px wide; no two steps on one screen; **no uncleared figure and no real name** (1.5).
 
-The round's capture tool was a copy of `tools/capture-demo-frames.mjs` (`MODE=script`) with a `rectshot` step and a configurable port, run from the round's scratchpad; it is not in the repository. The step files in `tools/step-mocks/` use its step types (`eval`, `shot`, `rectshot`).
+The capture tool is `tools/step-mocks/cap.mjs` (Node 22, no dependencies; its header lists the step types). **`tools/step-captures/<slug>.json`** holds the steps of every frame round 21 recaptured, one file per product (Large docs, Workforce optimization, Cross-system ERP Q&A, Fleet route optimization, Repair-or-replace decisions), each opening on an absolute `goto`; change the port in its URLs to the server's. The frames round 21 kept were made with the round-20 step files (`tools/capture-*-frames.json`, `tools/step-mocks/<slug>/cap-*.json`), whose zoom and region steps are now unused.
 
 ### 1.3 The walkthrough products — which state each step shows
 
-Six products have a walkthrough, and their frames are its own screens on its synthetic data (1.6), captured by the recipe above (in round 20; Account insights' on the same day, from its new walkthrough, §49). The state is the screen the walkthrough is in (its `state=` name where it has one); the region is what the ring and the inset hold.
+Six products have a walkthrough, and their frames are its own screens on its synthetic data (1.6). The state is the screen the walkthrough is in (its `state=` name where it has one); the last column says where the eye lands and, where a step needed it, what the screen itself shows selected. **Recaptured in round 21** marks the six frames that changed.
 
-| Product | Step | State | The region |
+| Product | Step | State | Where the eye lands |
 |---|---|---|---|
-| Large docs processing and review (**1440 × 900**) | 1 | upload, frozen mid-extract: two stages ticked, one running, two pending | the processing stages and the sources |
-| | 2 | `review`, *Routine cleaning* open | the group's rows with their cited source pages |
-| | 3 | `review`, *Volume discounts*, the flagged row | the extracted value, the validator and its suggested fix, the page-9 evidence |
-| | 4 | `review` after *Approve all*, details closed | the rate groups, each *Approved* |
-| Workforce optimization | 1 | the Run modal, the planning file chosen | the file card and *Optimize* |
-| | 2 | the solver, frozen as the GPU-solve stage starts | stages 3–5 |
-| | 3 | `final` (plan v2) | *What the solver changed*: a vacation covered, a sick day split |
-| | 4 | `final` (plan v2) | the band's head and its first two KPI tiles |
-| Cross-system ERP Q&A | 1 | Ask Oracle, 0.9 s into the run | the order agent's block |
-| | 2 | `analysed`, Data Studio's Live Feed | the heading and the first two source cards |
-| | 3 | `analysed`, Decisions › Recommendations | the two right tiles: revenue at risk, tier-A exposure |
-| | 4 | `final`, the answer after the manager's override | the causes and the first proposed action |
-| Fleet route optimization | 1 | `replayed` | the replay checks: visits matched, journey times against telematics |
-| | 2 | `changes` | the change cards, each with its rule and its effect |
-| | 3 | `solved`, the map | the first two KPI tiles: cost per completed visit, visits per engineer |
-| | 4 | `final`, the Field Service export | the export head: approved changes, visits, charging stops |
-| Repair-or-replace decisions | 1 | `reviewed`, scrolled to the case panel | case RR-24811's photograph with its measured chip |
-| | 2 | `ran`, one case opened | the reading, the market's rule and the call |
-| | 3 | `ran` | the before → after tile for repeat visits (not the needless-replacements tile beside it, which prints a £ unit cost) |
-| | 4 | `handoff` | the booking import: sent and held, rule, measurement, who authorised it |
-| Account insights | 1 | `running`: the morning check frozen with three stages ticked and *Match to your accounts* running | the first four stages: stories read, noise dropped, repeats merged, accounts being matched |
-| | 2 | `ran`, scrolled to the first story | the story and its four reads: the company named, a supplier, a customer, a competitor |
-| | 3 | `brief`, Meridian Grocers' move open | both scores and *What changes*, with its citation markers |
-| | 4 | `decided`, scrolled to the first story | three reads decided: two approved, one rejected with its reason |
+| Large docs processing and review (**1440 × 900**) | 1 | upload, frozen mid-extract: two stages ticked, one running, two pending | the processing card in front |
+| | 2 | `review`, *Routine cleaning* open | the one open group, its rows with their p.7 cite chips (the viewer stays on the cover: opening p.7 would add step 3's highlight) |
+| | 3 | `review`, *Volume discounts*, the flagged row | the row's details open: the validator, its suggested fix and the page-9 highlight |
+| | 4 | `review` after *Approve all*, the viewer moved back to page 7, the rate card (**recaptured in round 21**: step 3's page-9 highlight had stayed on the old screen and was its strongest mark) | every group's green *Approved* chip, the document *Approved* |
+| Workforce optimization | 1 | the Run modal, the planning file chosen | the modal in front |
+| | 2 | the solver, frozen as the GPU-solve stage starts | the solver dialog in front |
+| | 3 | `final` with `focus=vacation`, zone details closed, scrolled to the map row (**recaptured in round 21**: without their rings, steps 3 and 4 were one screen) | *What the solver changed* beside the zone map, the vacation card in the product's focus style |
+| | 4 | `final` (plan v2) | the *What improved · plan v2 vs today* band under the toolbar |
+| Cross-system ERP Q&A | 1 | Ask Oracle, 0.9 s into the run | the question and the order agent's block in its running fill |
+| | 2 | `analysed`, Data Studio's Live Feed | the Live Feed nav item active; the page is the sources |
+| | 3 | `analysed`, Decisions › Recommendations | the Recommendations tab: the six tiles and the ranked actions |
+| | 4 | `final` with `q=1`, the answer pane scrolled to the causes (**recaptured in round 21**: the old screen showed step 3's tiles again, one action at its foot) | *Why the lines are late* and all four proposed actions, each *Assigned as a task* |
+| Fleet route optimization | 1 | `replayed` | the replay log and its *Replay checked* tiles |
+| | 2 | `changes`, scrolled so the tabs sit under the header (**recaptured in round 21**) | the *Changes* tab active: five change cards, each with its rule and effect |
+| | 3 | `solved`, the map | the before → after tiles over the re-planned map |
+| | 4 | `final`, same scroll (**recaptured in round 21**) | the *Send to Field Service* tab active: the import table, its charging stops tinted by the app |
+| Repair-or-replace decisions | 1 | `reviewed`, scrolled to the case panel | RR-24811 selected in both lists; its photograph with the measured chip |
+| | 2 | `ran`, one case opened | RR-24814 selected; its panel: the reading, the market's rule, the call |
+| | 3 | `flagged`, RR-24826 open, scrolled to its review block (**recaptured in round 21**: the old frame showed the repeat-visits tile, not the confirm-or-overrule step, and its £ and $ unit costs) | RR-24826 selected (*Needs review*); its cited rule, the call, two amber flags, and *Overrule: replace* · *Confirm the call*. Its photograph is cut at the top: the panel is 990 px tall |
+| | 4 | `handoff` | the Handoff tab: the booking import, sent and held |
+| Account insights | 1 | `running`: the morning check frozen with three stages ticked and *Match to your accounts* running | the running check |
+| | 2 | `ran`, scrolled to the first story | the story fanning out to its four reads |
+| | 3 | `brief`, Meridian Grocers' move open | the Meridian Grocers row selected, its move panel open |
+| | 4 | `decided`, scrolled to the first story | Alder Foods selected; *Approved*, and one read *Rejected* with its reason |
 
-- **Account insights' regions are shaped by the anchor rule.** A region in the middle of the frame leaves no corner free, so step 1's stops 6 px short of the inset (380 px wide, zoom 760 px) and steps 2 and 4 are scrolled to sit just under the top bar; steps 1, 2 and 4 anchor `br`, step 3 `bl`.
-- **Workforce's settings screen is not a step.** Its only frame shows plan v1's uncleared *+4.8%* behind the drawer, so *Set the rules* is folded into step 1's text.
-- **Repair-or-replace's two-market rules screen is not a step.** It is 1,210 px wide, and no part of it fits the inset, so step 2 shows one case judged against its market's rule.
+- **Workforce's settings screen is not a step.** Its only frame shows plan v1's uncleared *+4.8%* behind the drawer, so *Set the rules* is folded into step 1's text. Step 4's band prints *+4.5%* jobs per technician, the figure PROVENANCE §41.11 lists for clearance (START-HERE §9).
+- **Repair-or-replace's two-market rules screen is not a step.** It is 1,210 px wide, too wide to read at the frame's size, so step 2 shows one case judged against its market's rule.
 
 ### 1.4 The HTML mocks — the three products with no walkthrough
 
@@ -97,7 +96,7 @@ The figures in a mock are the mock's own synthetic records, never an Overview me
 
 ### 1.5 Never in a frame
 
-- An uncleared figure: Large docs' Documents screen (*96.4% benchmark accuracy*); Workforce's settings drawer and its `v1-dashboard` (*+4.8%*); a £ unit cost beside a glazing example, which narrows the anonymized label to one company (PROVENANCE §41.2). Repair-or-replace's step-3 frame still shows its walkthrough's £ and $ unit costs and its *Modelled on industry figures* line around the zoom, which holds the repeat-visits tile; that frame is open for Alex (PROVENANCE §41.11).
+- An uncleared figure: Large docs' Documents screen (*96.4% benchmark accuracy*); Workforce's settings drawer and its `v1-dashboard` (*+4.8%*); a £ unit cost beside a glazing example, which narrows the anonymized label to one company (PROVENANCE §41.2). Repair-or-replace's step 3 showed its walkthrough's £ and $ unit costs and its *Modelled on industry figures* line until round 21 recaptured it on the review screen, where neither is in frame.
 - A screen that is not settled or cannot be read at the frame's size: Fleet mid-solve, which looks half-loaded; Workforce's compare view, whose map labels come out at about 6 px.
 - Large docs' export table, clipped in its pane at any capture width.
 - A real customer, company or person name, in a walkthrough or a mock.
@@ -151,9 +150,10 @@ A walkthrough frame shows the whole screen, so everything on it must be syntheti
 
 ### 1.7 Superseded in round 20
 
-- **Every step frame of rounds 1–19.** Large docs and Workforce optimization shipped 640 × 400 CSS-px crops of 1600 × 1000 captures (Workforce's step 4 from a 1184 px window), Cross-system ERP Q&A five crops each sized to its own viewport (896, 676, 868 and 880 px), and Fleet 1600 × 1000 crops at 2.5×. The round-20 captures replace every one at the same file names, and each gains its zoom.
+- **Every step frame of rounds 1–19.** Large docs and Workforce optimization shipped 640 × 400 CSS-px crops of 1600 × 1000 captures (Workforce's step 4 from a 1184 px window), Cross-system ERP Q&A five crops each sized to its own viewport (896, 676, 868 and 880 px), and Fleet 1600 × 1000 crops at 2.5×. The round-20 captures replace every one at the same file names.
+- **The zooms, their ring and their inset (round 21).** Round 20 gave every frame a `<slug>-<n>-zoom.jpg` of the step's region, set in a blue-outlined inset over a blue ring, with `shot.region` and `shot.anchor` to place them and a legibility rule (the inset at ≥ 0.92 of the capture's scale) to size them. Alex took them off (*"I don't like these blue highlights and callouts"*): the 36 zoom files, the two fields, `tools/step-frames.mjs` (which made and placed them) and the two `frames-preview` pages (which previewed the inset) are deleted, and the checker fails the fields by name.
 - **The 16 designed SVG illustrations** of Account insights, Case evidence collection, Plan vs actual investigation and Business metrics Q&A (drawn to a 1600 viewBox, 44–56 px labels, one blue eyebrow a frame) are deleted from disk; the HTML mocks (1.4) replace them. They were wireframes with placeholder words (*OPPORTUNITY*), the kind of frame Alex's *"they should not look like skeletons"* retired.
-- **Cropping with `sips`.** Round 20 captures the region's rectangle directly instead. For a poster re-crop, the corrected note stands: `--cropOffset` takes **Y then X** and is the crop's **top-left origin** (verified 2026-09-17: `sips -c 800 1280 --cropOffset 300 472 frame-1.png` yields the window whose top-left is (472, 300)).
+- **Cropping with `sips`.** No step frame is cropped. For a poster re-crop, the corrected note stands: `--cropOffset` takes **Y then X** and is the crop's **top-left origin** (verified 2026-09-17: `sips -c 800 1280 --cropOffset 300 472 frame-1.png` yields the window whose top-left is (472, 300)).
 
 ---
 

@@ -3317,95 +3317,113 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* ——— S4b: bespoke services, the AI factory (round 18) ——— */
 
-/* After softserveinc.com's "Confidence earned" banner, measured on the brand at
-   1024: a full-bleed photograph, dark on its left half, the copy set on that
-   half in white (the brand's 28 px Replica heading, a 20 px Light line at 80%
-   white, 450 px measure, 64 px from the top). This band keeps the home
-   screens' own head, eyebrow and H2 at the screens' sizes, and adds the
-   factory's four parts as a row along its foot, divided by hairlines like the
-   Why list above it. From 769 px the wide photograph covers the band and a
-   scrim, heaviest at the left and the foot, carries the copy; on a phone the
-   brand drops the copy onto a tall crop, and here the band stacks instead:
-   the copy on black, the tall crop (already dark at its top, so no seam), then
-   the four parts on black. Black is also what remains if the image guard
-   drops the photograph. */
+/* Re-cut on 2026-09-29 (Alex: "content should be centered on the right to
+   balance the page", and a picture of "parallelism and infinity"). The
+   picture is softserveinc.com's own "Agentic AI" render, parallel chrome
+   ribbons in one long wave (ASSETS.md §2c), mirrored so the wave runs in from
+   the band's left edge. From 1025 px the band is two columns on the wrap's
+   grid: the render fills the left half of the band and fades into the band's
+   ground before the copy, and the copy is one column on the right, the head
+   over the factory's four parts two by two, then the ask. No word sits on
+   the picture, so the band needs no scrim. The ground is the render's own
+   dark, darker at the top as the render is, so the fade, a phone's rows and a
+   picture the image guard drops all meet the same colour. */
 /* The band's top padding is a step under the other screens' (48-64 px, not
    56-88): it is the band a reader should see the top of while the Packaged
    services track above it is still in view (round 18), and its eyebrow and
-   heading are what say "a second way to buy" at a glance. */
+   heading are what say "a second way to buy" at a glance. The foot matches
+   it, so the column sits centred in the band. */
 .home-bespoke {
+  --bespoke-gap: clamp(2rem, 4vw, 4rem);
   position: relative;
   isolation: isolate;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(3rem, 7vw, 6.5rem);
+  justify-content: center;
+  gap: clamp(2rem, 3vw, 2.75rem);
   min-height: clamp(34rem, 44vw, 40rem);
-  padding-top: clamp(3rem, 4.5vw, 4rem);
+  padding-block: clamp(3rem, 4.5vw, 4rem);
   border-top: 0;
-  background: #000000;
+  background-color: #1b1e20;
+  background-image: linear-gradient(180deg, #131516 0%, #23272a 100%);
   color: #ffffff;
 }
 
-.bespoke-media { position: absolute; inset: 0; z-index: -2; display: block; }
-.bespoke-img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 72% 50%; }
+/* Five parts to the picture, seven to the copy: the copy's left edge lands at
+   45-47% of the band at every width from 1025 up, so the picture's half-band
+   box fades out just before it. */
+.bespoke-row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--bespoke-gap); }
+.bespoke-copy, .bespoke-body { grid-column: 2; min-width: 0; }
 
-.bespoke-scrim {
+/* The box is the band's left half at full height, so the render always shows
+   whole in height (it is 3.7 : 1, wider than any half-band); `55%` puts the
+   wave's crest in the box's first third and its fall near the fade at every
+   width from 1025 to 2560. The ribbons leave the box's left edge, which is
+   the band's. */
+.bespoke-media {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
   z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(0, 0, 0, .72) 0%, rgba(0, 0, 0, .46) 38%, rgba(0, 0, 0, 0) 64%),
-    linear-gradient(0deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .4) 30%, rgba(0, 0, 0, 0) 52%);
+  display: block;
+  -webkit-mask-image: linear-gradient(90deg, #000 62%, transparent 94%);
+  mask-image: linear-gradient(90deg, #000 62%, transparent 94%);
 }
+.bespoke-img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 55% 50%; }
 
-.bespoke-copy { display: flex; flex-direction: column; gap: .875rem; max-width: 36rem; }
+.bespoke-copy { display: flex; flex-direction: column; gap: .875rem; }
 .home-bespoke .bespoke-eyebrow { color: rgba(255, 255, 255, .72); }
 .home-bespoke .bespoke-title { color: #ffffff; text-wrap: balance; }
 .home-bespoke .bespoke-lead { margin-top: .25rem; color: rgba(255, 255, 255, .82); text-wrap: pretty; }
-.bespoke-cta { margin-top: 1rem; }
-.home-bespoke .link-arrow { color: #ffffff; }
-.home-bespoke .link-arrow:hover { color: var(--surface-select); }
 .home-bespoke :focus-visible { outline-color: #ffffff; }
 
+/* The reasons, then the ask. */
+.bespoke-body { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(2rem, 3vw, 2.5rem); }
+
 .bespoke-points {
+  align-self: stretch;
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem clamp(1.5rem, 2.4vw, 2.5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem clamp(1.5rem, 2.4vw, 2.5rem);
 }
 
 .bespoke-point { min-width: 0; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, .28); }
 .bespoke-point-title { font-family: var(--font-sans); font-weight: 400; font-size: 1.125rem; line-height: 1.3; color: #ffffff; }
 .bespoke-point-body { margin-top: .5rem; font-weight: 300; font-size: var(--fs-sm); line-height: 1.4; color: rgba(255, 255, 255, .8); text-wrap: pretty; }
 
-@media (max-width: 1100px) {
-  .bespoke-points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .bespoke-scrim {
-    background:
-      linear-gradient(90deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .56) 46%, rgba(0, 0, 0, .12) 80%),
-      linear-gradient(0deg, rgba(0, 0, 0, .86) 0%, rgba(0, 0, 0, .5) 42%, rgba(0, 0, 0, 0) 66%);
-  }
-}
-
-/* A phone: copy, photograph, parts, one under the other on black. The
-   photograph leaves the band's ground and takes its own row, square, its
-   people at the foot as the brand crops it. */
-@media (max-width: 768px) {
+/* A tablet or a phone: the band stacks — the head, the picture on a row of
+   its own, then the parts and the ask. The tall crop carries the wave along
+   its foot; its row shows that foot, and its top fades into the ground, so
+   the row has no seam against the head above it. */
+@media (max-width: 1024px) {
   .home-bespoke { min-height: 0; gap: 0; }
+  .bespoke-row { grid-template-columns: minmax(0, 1fr); }
+  .bespoke-copy, .bespoke-body { grid-column: 1; }
   .bespoke-media {
     position: relative;
-    inset: auto;
+    top: auto;
+    bottom: auto;
+    width: auto;
     z-index: auto;
-    margin-block: 2rem 2.5rem;
-    aspect-ratio: 1100 / 1087;
+    margin-block: 1.5rem 2.5rem;
+    aspect-ratio: 12 / 5;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 45%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 45%);
   }
   .bespoke-img { object-position: 50% 100%; }
-  .bespoke-scrim { display: none; }
+}
+
+@media (max-width: 768px) {
+  .bespoke-media { aspect-ratio: 16 / 10; }
+}
+
+@media (max-width: 540px) {
   .bespoke-points { grid-template-columns: minmax(0, 1fr); }
 }
 
@@ -3422,7 +3440,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 @media print {
-  .bespoke-media, .bespoke-scrim { display: none !important; }
+  .bespoke-media { display: none !important; }
   .home-bespoke { background: #ffffff !important; color: #111111 !important; }
   .home-bespoke .bespoke-title, .home-bespoke .bespoke-point-title { color: #111111 !important; }
   .home-bespoke .bespoke-lead, .home-bespoke .bespoke-point-body, .home-bespoke .bespoke-eyebrow { color: #333333 !important; }
