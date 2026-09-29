@@ -2832,7 +2832,7 @@ window.SITE_CONTENT = {
           { title: "The saving, side by side", body: "The day as it ran against the re-plan: cost per visit, visits per engineer and missed appointments, down to each engineer’s route and visit." },
           { title: "Dispatcher approval", body: "A dispatcher reviews and approves every change; the approved routes and charging stops go to Oracle Fusion Field Service in its own import format." }
         ],
-        industriesNote: "Any van fleet that visits customers against booked slots, above all one going electric.",
+        industriesNote: "Any van fleet that visits customers against booked slots, especially one going electric.",
         steps: [
           {
             n: 1,

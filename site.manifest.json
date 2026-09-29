@@ -2,8 +2,8 @@
   "$comment": "The mini-site's machine-readable description of itself. The oracle-packs plugin's listing and demo skills read it before they edit, check, preview or publish this site. Change it in the same commit as the thing it describes. Prose rules live in docs/START-HERE.md; enforcement lives in tools/check-grammar.js.",
   "name": "Oracle AI & Data Solutions",
   "contract": {
-    "round": 17,
-    "asOf": "2026-09-25",
+    "round": 18,
+    "asOf": "2026-09-29",
     "$comment": "Bump in any round that changes a content.js key, a config switch, a product tab, a checker rule or a publish rule. The plugin compares this with the round its own listing references were written against and defers to the site when the site is newer."
   },
   "startHere": "docs/START-HERE.md",
@@ -81,7 +81,7 @@
       "assets/site-legacy.css",
       "data/endpoint.local.json"
     ],
-    "fullTree": "Every path the target's list_files already shows, plus the new files: since round 12 that includes data/links.js, without which every Interactive demo button disappears — since round 15 built for each publish by paths.buildSiteLinks and mapped from paths.siteLinks, never from site/ — and since round 14 assets/img/softserve-star-white.svg, the footer's spark. Never the whole folder: the archived theme's files stay off this artifact.",
+    "fullTree": "Every path the target's list_files already shows, plus the new files: since round 12 that includes data/links.js, without which every Interactive demo button disappears — since round 15 built for each publish by paths.buildSiteLinks and mapped from paths.siteLinks, never from site/ — since round 14 assets/img/softserve-star-white.svg, the footer's spark, and since round 18 assets/img/bands/* (the Bespoke band's two photographs) and assets/img/groups/ask.svg (the catalog's last tile); round 18 also removes pages/services.js from the artifact by mapping it to null, since files left out of a publish are kept. Never the whole folder: the archived theme's files stay off this artifact.",
     "demoTargets": "links.json: products[<slug>].interactiveDemoArtifact (round 12; config.js carries no link to a kit artifact). Nothing copies it (round 15): the next publish builds data/links.js from links.json"
   },
   "neverShip": {
