@@ -934,6 +934,9 @@
 
   var ROUTES = [
     { pattern: /^\/$/, page: "overview", params: function () { return {}; } },
+    /* The alternative home page, shown beside the live one until Alex picks
+       (pages/overview-alt.js, PROVENANCE §47). */
+    { pattern: /^\/alt$/, page: "overviewAlt", params: function () { return {}; } },
     { pattern: /^\/products$/, page: "products", params: function () { return {}; } },
     { pattern: /^\/products\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1] }; } },
     { pattern: /^\/products\/([^/]+)\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1], tab: m[2] }; } },
