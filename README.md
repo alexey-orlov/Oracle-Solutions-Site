@@ -72,7 +72,6 @@ oracle-solutions-site/
     │   ├── site.css          all styling — design tokens in :root, then components
     │   ├── app.js            UI helpers (window.UI), header, footer, router, modal
     │   ├── forms.js          the demo, contact and sales-kit forms (window.FORMS)
-    │   ├── review.js         TEMPORARY: the Internal checklist panel, prototype only (START-HERE §8)
     │   └── img/              wordmarks, heroes, step frames, industries, posters, headshots (people/)
     │       ├── heroes/       per-page hero background images + heroes.json
     │       └── groups/       the six product-group tile images for the home page (docs/ASSETS.md §2b)
@@ -81,10 +80,9 @@ oracle-solutions-site/
     │   ├── endpoint.local.json  this machine's form endpoint for local runs — git-ignored, never published
     │   ├── (links.js)        window.SITE_LINKS — not a file: built from links.json on request (tools/site_links.py)
     │   ├── content.js        window.SITE_CONTENT — every word on the site
-    │   ├── review.js         TEMPORARY: window.SITE_REVIEW — the list the Internal panel shows
     │   └── diagrams.js       window.SITE_DIAGRAMS — the per-product architecture diagrams, drawn as inline SVG
     ├── pages/
-    │   ├── overview.js       window.PAGES.overview   →  #/   (the home page, eight screens)
+    │   ├── overview.js       window.PAGES.overview   →  #/   (the home page, nine screens)
     │   ├── products.js       window.PAGES.products   →  #/products
     │   ├── product.js        window.PAGES.product    →  #/products/<slug>[/<tab>]
     │   └── sellers.js        window.PAGES.sellers    →  #/sellers
@@ -94,21 +92,21 @@ oracle-solutions-site/
         └── cross-system-erp-qa/         the Cross-system ERP Q&A walkthrough — same four files, three product surfaces
 ```
 
-Script order in `index.html` matters: `data/*` → `assets/forms.js` → `pages/*` → `assets/app.js`, which renders on load. A new page script goes before `assets/app.js`. The two `review.js` tags come last and are removed together before launch.
+Script order in `index.html` matters: `data/*` → `assets/forms.js` → `pages/*` → `assets/app.js`, which renders on load. A new page script goes before `assets/app.js`, which is the last tag.
 
 ### Routes
 
 | Hash | Page |
 |---|---|
-| `#/` | Home — hero with the three-layer stack (Oracle platforms → SoftServe product groups → SoftServe services), a three-figure proof strip led by **from 30 days**, two ways in, **six product-group tiles**, **Packaged services** (the five-stage track and *Why SoftServe on Oracle*; the header's *Services* lands here), **Bespoke services** (the AI factory, on a dark photograph, round 18), case studies, about SoftServe, and contact — the product Contacts switch, *Talk to us* and *Get the sales kit* (round 18) |
+| `#/` | Home — hero with the three-layer stack (Oracle platforms → SoftServe product groups → SoftServe services), a three-figure proof strip led by **from 30 days**, two ways in, **six product-group tiles**, **Packaged services** (the five-stage track and *Why SoftServe on Oracle*; the header's *Services* lands here), **Bespoke services** (the AI factory, on a dark photograph, round 18), case studies, about SoftServe, and contact — the product Contacts component with the ask alone, *Talk to us* (round 18; its *Get the sales kit* tab left on 2026-09-29) |
 | `#/products` | Product marketplace — facet rail (Oracle platform · what it does · Artifacts), search, tiles, the last of them always the *Looking for another solution?* tile into the home contact (round 18). **Both radio rails are fixed lists** in canonical order: every platform a product can run on and all six groups, always, with a zero-count option disabled and printing no number. *Oracle AI for Fusion Applications* carries `catalog: false` and is not offered — no product runs on it. The *All* options carry no count, and the results line reports what a filter returned with no denominator — nothing at all when nothing is filtered. `?tech=<id>` and `?cat=<id>` both resolve for every id, rendering that facet's or that group's `emptyState` (`docs/PROVENANCE.md` §18.9, §28) |
 | `#/products/<slug>` | One product — hero plus tabs |
 | `#/products/<slug>/<tab>` | `overview` · `use-cases` · `technology` · `jumpstart` · `contacts` (round 10). **Use cases** carries the industry tabs and the case study, which used to sit at the foot of the Overview. **Contacts** is one row: the contact card (Karsten Tramborg, then the product's own lead, over the one practice address; round 13) beside a two-tab switch — *Talk to us* (open by default) and *Get the sales kit*, the product's **sales-kit request** for sellers (work email → the kit), which had its own *For sellers* tab in rounds 8–9. Only one form is open at a time, and neither is below the fold; `…/contacts#kit` opens on the kit tab, any other entry on the ask. The retired segments `pov` → `jumpstart` and `demo` / `sellers` → `contacts` redirect in place, so Back still returns to where the reader came from and an old link still lands on the right tab. |
-| `#/sellers` | **For sellers** (round 8, `docs/PROVENANCE.md` §24): the sales-kit request for all offers or one product — a SoftServe or Oracle work email gets the kit; customers and partners are routed to *Talk to us* on the home page — plus *See the fit in an account?*, which opens the demo form. Reached from the footer's link row, and from *Get the full kit* in the confirmation after a product kit request; not in the header (removed 2026-09-17). |
+| `#/sellers` | **For sellers** (round 8, `docs/PROVENANCE.md` §24): the sales-kit request for one product, chosen from a select that opens on *Choose a product* (no kit for all offers since 2026-09-29) — a SoftServe or Oracle work email gets the kit; customers and partners are routed to *Talk to us* on the home page — plus *See the fit in an account?*, which opens the demo form. Reached from the footer's link row, and by a saved `#/#kit`; not in the header (removed 2026-09-17). |
 | `#/services` | **Gone since round 18** (Alex): the page's story is the home page's Packaged services and Bespoke services screens. A saved link lands on the home screen that took over its section — `#/services` and its `#how-we-engage` / `#proof-of-value` anchors on `#/#how-we-deliver`, `#/services#contact` on `#/#request-a-demo` — and the address bar is rewritten in place (`assets/app.js` `MOVED`). |
 | anything else | A designed not-found page |
 
-An anchor can follow the route: `#/#request-a-demo`, `#/#kit` (the home page's sales-kit tab), `#/products/<slug>/contacts#kit`. The router scrolls to that element with a 96 px offset. Query parameters work too, which makes a filtered view shareable — `#/products?tech=oracle-ai-lakehouse` opens the marketplace on that platform, and **`#/products?cat=<id>` opens it on one product group**, which is what each of the home page's six tiles links to:
+An anchor can follow the route: `#/#request-a-demo`, `#/#talk` (the home page's ask), `#/products/<slug>/contacts#kit`; a saved `#/#kit` lands on `#/sellers`, since the home page carries no kit (2026-09-29). The router scrolls to that element with a 96 px offset. Query parameters work too, which makes a filtered view shareable — `#/products?tech=oracle-ai-lakehouse` opens the marketplace on that platform, and **`#/products?cat=<id>` opens it on one product group**, which is what each of the home page's six tiles links to:
 
 ```
 #/products?cat=knowledge-analytics        Enterprise knowledge & analytics
@@ -173,16 +171,6 @@ node tools/check-grammar.js
 ```
 
 `check-grammar.js` fails if a product stops filling a grammar slot, if a metric row loses its disclaimer, if an industry key is not in the fixed set, or if an internal string reaches the data layer.
-
----
-
-## The Internal review panel (prototype only)
-
-While the site is a prototype, an **Internal · N to confirm** button sits at the bottom right of every page. It opens a checklist of the working assumptions still to be confirmed (audience, positioning, commitments and disclosures, communication flow), one line per item, each with a checkbox. **Ticks are saved in the viewer's browser only** (`localStorage`), so they never reach the repo or other viewers: `docs/START-HERE.md` §2 is the record of what Alex has confirmed. Anyone with the preview link sees the panel.
-
-- **The list** is in `site/data/review.js`: `id`, `text` (≤ 70 characters, ≤ 47 beside a note) and an optional `note` (≤ 45) naming what the site does not match yet. Never rename an id, because the ticks are keyed by it.
-- **The panel** is `site/assets/review.js`, self-contained (it injects its own styles). Setting `enabled: false` in the data file hides it.
-- **Before launch**, delete both files and their two `<script>` tags. Until then, `check-grammar.js` validates the list and its lengths, and warns on every run.
 
 ---
 

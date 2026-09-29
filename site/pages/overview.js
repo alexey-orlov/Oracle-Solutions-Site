@@ -222,6 +222,20 @@
     var UI = window.UI;
     var block = C.overview.catalog;
 
+    /* Alex, after round 19: "some headings now are 2 lines, some 1 line, so
+       content looks not so clean; fix line breaks (not allowed to do tile
+       renaming)". Every name sets on two lines, broken before its last word, so
+       the kind of work reads on the first line and the noun on the second, and
+       the one-liners and arrows start level in every row. site.css sizes the
+       name to its tile, so the first line never wraps (PROVENANCE §45). The
+       space stays before the break: a line's trailing space takes no room, and
+       without it the link's accessible name runs "&analytics" together. */
+    function twoLineName(name) {
+      var cut = name.lastIndexOf(" ");
+      if (cut === -1) return UI.esc(name);
+      return UI.esc(name.slice(0, cut)) + " <br>" + UI.esc(name.slice(cut + 1));
+    }
+
     var tiles = (C.facets.categories || []).map(function (category) {
       var art = category.image
         ? '<img class="gtile-art" src="' + UI.esc(category.image) + '" alt="" loading="lazy" decoding="async">'
@@ -229,7 +243,7 @@
       return '<a class="gtile gtile--' + UI.esc(category.tone) + ' reveal" href="#/products?cat=' + UI.esc(category.id) + '">' +
         '<span class="gtile-draw">' + art + "</span>" +
         '<span class="gtile-body">' +
-          '<span class="gtile-name">' + UI.esc(category.full) + "</span>" +
+          '<span class="gtile-name">' + twoLineName(category.full) + "</span>" +
           '<span class="gtile-line">' + UI.esc(category.line) + "</span>" +
           '<span class="gtile-foot">' + UI.icon("arrow", "gtile-arrow") + "</span>" +
         "</span>" +
@@ -253,10 +267,12 @@
      wants from it: how long it takes. Round 16 (Alex): a Workshop comes first,
      the managed service is a stage of its own and the customer's choice, and
      the durations are floors ("From 4 weeks"), so the block carries no caveat.
-     The three reasons to pick this team follow the track as a hairline list
-     across the full width, not a column beside it. Round 18: the screen ends
-     on that list. Its button led to the Services page, which is gone, and the
-     services' one ask now closes the Bespoke band directly below. */
+     Round 18: the screen ends on the track. Its button led to the Services
+     page, which is gone, and the services' one ask closes the Bespoke band
+     directly below. The Why list that followed the track moved after that
+     band the same day (Alex: a reader who scrolls to Packaged services must
+     see the Bespoke band's top, or the packaged track reads as the whole
+     offer), so this screen is short enough for the band to show under it. */
   function ladderModifier(count) {
     return count === 5 ? " ladder3--five" : count === 4 ? " ladder3--four" : "";
   }
@@ -279,7 +295,28 @@
         "</div>";
     }).join("");
 
-    var pillars = ((block.why && block.why.pillars) || []).map(function (pillar) {
+    return '<section class="section home-screen" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
+      head({ eyebrow: block.eyebrow, title: block.title }) +
+      '<div class="deliver deliver--stacked reveal">' +
+        '<div class="ladder3' + ladderModifier(list.length) + '">' + steps + "</div>" +
+        (block.footnote ? '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" : "") +
+      "</div>" +
+      "</div></section>";
+  }
+
+  /* ————— S4c: why SoftServe on Oracle ————— */
+
+  /* The three reasons to pick this team, as round 17 drew them — the label,
+     then three rows between hairlines, the brand's feature icons — on a screen
+     of their own since round 18, after both ways to buy the practice, where
+     each reason reads for either. The label opens the screen, so it is the
+     screen's heading and takes the accent eyebrow. */
+  function whyScreen(C) {
+    var UI = window.UI;
+    var why = (C.overview.delivery || {}).why;
+    if (!why) return "";
+
+    var pillars = (why.pillars || []).map(function (pillar) {
       return '<div class="pillar">' +
         '<span class="pillar-mark" aria-hidden="true">' + UI.icon(pillar.icon) + "</span>" +
         '<div class="pillar-copy">' +
@@ -289,17 +326,10 @@
         "</div>";
     }).join("");
 
-    return '<section class="section home-screen" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
-      head({ eyebrow: block.eyebrow, title: block.title }) +
-      '<div class="deliver deliver--stacked reveal">' +
-        '<div class="ladder3' + ladderModifier(list.length) + '">' + steps + "</div>" +
-        (block.footnote ? '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" : "") +
-        '<div class="deliver-why">' +
-          /* One accent per screen: the head eyebrow carries it, so the list's
-             label is the dim eyebrow. */
-          '<p class="eyebrow">' + UI.esc(block.why.title) + "</p>" +
-          '<div class="pillars pillars--list">' + pillars + "</div>" +
-        "</div>" +
+    return '<section class="section home-screen home-why" id="why-softserve"><div class="wrap">' +
+      '<div class="deliver-why reveal">' +
+        '<h2 class="eyebrow eyebrow--accent">' + UI.esc(why.title) + "</h2>" +
+        '<div class="pillars pillars--list">' + pillars + "</div>" +
       "</div>" +
       "</div></section>";
   }
@@ -337,11 +367,15 @@
 
     /* Two rows around the picture, so a phone can stack copy, photograph and
        parts in that order; from 769 px the picture leaves the flow and covers
-       the band. The rows reveal, never the band: a transform on an ancestor
-       would pin the covering picture to it mid-animation. */
+       the band. Only the points reveal, never the band — a transform on an
+       ancestor would pin the covering picture to it mid-animation — and never
+       the copy either, which is this screen's head: a reader landing on
+       Packaged services sees the band's eyebrow and heading under the track at
+       once, where a reveal would hold them back until they cleared the
+       observer's bottom margin (round 18). */
     return '<section class="home-screen home-bespoke" id="' + UI.esc(block.anchor) + '">' +
       '<div class="wrap bespoke-row">' +
-        '<div class="bespoke-copy reveal">' +
+        '<div class="bespoke-copy">' +
           '<p class="eyebrow bespoke-eyebrow">' + UI.esc(block.eyebrow) + "</p>" +
           '<h2 class="h2 bespoke-title">' + UI.esc(block.title) + "</h2>" +
           (block.lead ? '<p class="lead bespoke-lead">' + UI.esc(block.lead) + "</p>" : "") +
@@ -424,44 +458,31 @@
 
   /* A product's Contacts tab, on the home page (Alex, round 18: the form
      "equivalent (texts, CTAs, etc., flow) to what we have on per-product page
-     (though logical difference to be preserved)"). The same switch renders it
-     (UI.contactSwitch): the ask, "Talk to us", open, and the seller's kit
-     behind the second tab. What is the home page's own: Karsten alone on the
-     card, the ask starting on "Not sure yet", and the kit for the whole
-     portfolio or any one product, with the /sellers page's line. Product pages
-     and the header deep-link into this section, so the anchor is read from the
-     data rather than written twice. */
-  function kitOptions() {
-    var tab = window.SITE_CONTENT.salesKit.tab;
-    var talk = "#/#" + window.UI.contactAnchors.talk;
-    return {
-      routeLink: { label: tab.routeLabel, href: talk },
-      next: [{ text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talk } }],
-      again: true
-    };
-  }
-
+     (though logical difference to be preserved)"). The same component renders
+     it (UI.contactSwitch), and what is the home page's own is data: Karsten
+     alone on the card and the ask starting on "Not sure yet". No sales kit
+     (Alex, 2026-09-29: the Get the sales kit tab "should not appear on the main
+     page"): passed no kit, the component renders the ask alone, and a seller
+     finds the kit on each product's Contacts tab and on #/sellers. Product
+     pages and the header deep-link into this section, so the anchor is read
+     from the data rather than written twice. */
   function closing(C) {
     var UI = window.UI;
     var block = C.overview.contact;
     return '<section class="section home-screen home-contact" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
       head({ eyebrow: block.eyebrow, title: block.heading, lead: block.sub }) +
-      UI.contactSwitch({
-        key: "home",
-        kitBody: C.salesKit.page.body,
-        kitOptions: kitOptions()
-      }) +
+      UI.contactSwitch({ key: "home" }) +
       "</div></section>";
   }
 
   function overview() {
     var C = window.SITE_CONTENT;
     return hero(C) + statBand(C) + twoWays(C) + groupTiles(C) + delivery(C) + bespoke(C) +
-      caseStudies(C) + about(C) + closing(C);
+      whyScreen(C) + caseStudies(C) + about(C) + closing(C);
   }
 
   overview.mount = function (params, root) {
-    window.UI.mountContactSwitch(root, { kitOptions: kitOptions() }, params && params.anchor);
+    window.UI.mountContactSwitch(root, {}, params && params.anchor);
   };
 
   overview.title = function () { return window.SITE_CONTENT.site.title; };

@@ -148,16 +148,17 @@
 
   /* Three families, visibly different (VISUAL-GRAMMAR §1.2): the pattern chip
      and the technology pills at the left, the availability badges at the right
-     end of the same row. `tags` entries 0 and 1 repeat the category chip and
-     the facet label — the renderer builds those two from `category` and
-     `facet`, so it skips them rather than emitting the same run twice. */
+     end of the same row. `tags` repeats the category chip, then one platform
+     label per facet — the renderer builds those from `category` and `facet`
+     (one pill per platform, 2026-09-29), so it skips them rather than
+     emitting the same run twice. */
   function heroChips(product) {
     var UI = window.UI;
-    var chips = [
-      UI.tagChip("pattern", product.category),
-      UI.tagChip("tech", product.facet)
-    ];
-    (product.tags || []).slice(2).forEach(function (tag) {
+    var facets = UI.productFacets(product);
+    var chips = [UI.tagChip("pattern", product.category)].concat(facets.map(function (id) {
+      return UI.tagChip("tech", id);
+    }));
+    (product.tags || []).slice(1 + facets.length).forEach(function (tag) {
       chips.push(UI.tagChip("tech", null, { label: tag }));
     });
     return '<div class="tag-row product-hero-chips">' +
@@ -911,15 +912,15 @@
      is emailed automatically from links.json, the repo's one links file, and
      nothing about its contents is rendered here. A customer or partner who
      lands in the kit is routed back to the ask beside it, which is also what
-     the confirmation offers. */
+     the confirmation offers. There is no kit for all offers to offer next
+     (Alex, 2026-09-29), so the confirmation closes on the ask alone. */
   function kitOptions(product) {
     var tab = C().salesKit.tab;
     return {
       product: product.slug,
       routeLink: { label: tab.routeLabel, href: talkHref(product.slug) },
       next: [
-        { text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talkHref(product.slug) } },
-        { text: tab.nextAll, link: { label: tab.nextAllLink, href: "#/sellers" } }
+        { text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talkHref(product.slug) } }
       ]
     };
   }

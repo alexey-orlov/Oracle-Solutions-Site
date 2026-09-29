@@ -110,10 +110,21 @@ investment card, still set their figures in Azurio: one figure face across the s
 is open (START-HERE §9).
 
 `.product-title`'s clamp slope is fitted to the hero's **copy column**, not the
-viewport: `clamp(2rem, -0.55rem + 5.05vw, 4rem)`. At 1024 that column is 435 px,
-where the longest name ("Large docs processing and review") needs 43 px to break
-in two lines rather than three. All seven names hold 1–2 lines at 1024, 1280 and
-1440.
+viewport: `clamp(2rem, -0.55rem + 5.05vw, 4rem)`. It was fitted while every hero
+carried a video frame beside the copy, a 435 px column at 1024, where the longest
+name ("Large docs processing and review") needs 43 px to break in two lines rather
+than three. Since round 18 no product has a recording, so the copy takes the full
+width (832 px at 1024) and a name stops at its `22ch` cap (600 px). All nine names
+hold 1–2 lines at 1440, 1280, 1024, 768 and 375; at 320 the longest takes three.
+
+**A hyphenated compound in a product name never splits** (2026-09-29). Headings
+balance their lines, and balancing broke *Repair-or- / replace decisions* at 375,
+although the compound fits the line. The hero title and the catalog tile's title
+render the name through `keepCompounds()` (`assets/app.js`), a `white-space:
+nowrap` span (`.compound`) per compound, so balancing chooses among the spaces
+only. The data carries no invisible character. `text-wrap: pretty` and `wrap` were
+measured and rejected: each strands a short word on another name at 320 (*Business
+metrics / Q&A*). PROVENANCE §43.
 
 Running prose keeps the brand's 1.2 leading but a shorter measure
 (`.body-text { max-width: 40rem }`): SoftServe measures 20/24 on two- and
@@ -295,8 +306,6 @@ cuts an outline drawn outside the box. `prefers-reduced-motion` drops every scal
 - **The three `site/demo/*` walkthroughs are still dark-themed.** They are out of
   scope for this pass and have their own CSS and their own sessions. A near-black
   demo now opens from a white page. Next round's item.
-- **The Internal review panel** styles itself (`assets/review.js`) and is
-  off-brand amber. It comes off before launch anyway (START-HERE §8).
 - **No Cyrillic.** Azurio and Replica have none; SoftServe forces Roboto under
   `body.uk-ua`. This site is English-only, so no fallback is declared. If a
   UA/RU variant is ever added, copy their rule and self-host Roboto — do not let

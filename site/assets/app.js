@@ -302,11 +302,20 @@
     return '<p class="divider' + (center ? " divider--center" : "") + '"><span>' + esc(label) + "</span></p>";
   }
 
+  /* A product name's hyphenated compound ("Repair-or-replace", "Cross-system")
+     is one unit: balanced headings would otherwise split it at a hyphen on a
+     phone (site.css .compound). Returns escaped HTML. */
+  function keepCompounds(text) {
+    return esc(text).split(/(\s+)/).map(function (part) {
+      return /\S-\S/.test(part) ? '<span class="compound">' + part + "</span>" : part;
+    }).join("");
+  }
+
   function headline(parts, tag, className) {
     var element = tag || "h1";
     var cls = className || "h1";
-    return "<" + element + ' class="' + cls + '"><span class="accent">' + esc(parts.accent) +
-      "</span> " + esc(parts.rest) + "</" + element + ">";
+    return "<" + element + ' class="' + cls + '"><span class="accent">' + keepCompounds(parts.accent) +
+      "</span> " + keepCompounds(parts.rest) + "</" + element + ">";
   }
 
   function sectionHead(options) {
@@ -325,6 +334,15 @@
   function facetLabel(id) {
     var found = C.facets.technology.filter(function (f) { return f.id === id; })[0];
     return found || { label: id, fullLabel: id };
+  }
+
+  /* The platforms a product runs on, in canonical order. `facet` is one id, or
+     an array of ids for a product whose own engine is part of more than one
+     Oracle platform (2026-09-29: the two Q&A products, on AI Lakehouse and AI
+     Data Platform). Every surface reads the list, never `facet` raw. */
+  function productFacets(product) {
+    var facet = product && product.facet;
+    return Array.isArray(facet) ? facet.slice() : (facet ? [facet] : []);
   }
 
   function industryLabel(key) {
@@ -432,7 +450,8 @@
      one function renders it on a product's Contacts tab and on the home page's
      last screen, and only data differs. A product names its lead on the card,
      preselects itself in the ask and fixes its own kit; the home page names
-     Karsten alone, starts on "Not sure yet" and lets a seller pick any kit.
+     Karsten alone, starts on "Not sure yet" and passes no kit (Alex,
+     2026-09-29), so it renders the ask alone, with no switch to pick from.
      The two ids are fixed: `#talk` lands on the ask, `#kit` on an open kit.
      Round 20 (D-design §4): the component wraps itself in a full-bleed
      #edf0f2 band holding one white plate, softserveinc.com's form setting, so
@@ -448,6 +467,9 @@
     var kitTab = base + "-tab-kit";
     var talkPane = base + "-pane-talk";
     var forms = window.FORMS;
+    /* A kit needs its options; without them there is one pane and nothing to
+       switch, so no segmented control and no tab roles. */
+    var withKit = !!opts.kitOptions;
 
     function segment(id, controls, text, on) {
       return '<button class="segment" type="button" role="tab" id="' + id + '"' +
@@ -455,14 +477,14 @@
         ' tabindex="' + (on ? "0" : "-1") + '">' + esc(text) + "</button>";
     }
 
-    var pick = '<div class="segmented contact-segmented" role="tablist" aria-label="' +
+    var pick = !withKit ? "" : '<div class="segmented contact-segmented" role="tablist" aria-label="' +
       esc(sectionLabel("contacts")) + '">' +
         segment(talkTab, talkPane, ask, true) +
         segment(kitTab, CONTACT_ANCHORS.kit, kit.tab.title, false) +
       "</div>";
 
-    var talkPanel = '<div class="contact-pane" role="tabpanel" id="' + talkPane + '"' +
-      ' aria-labelledby="' + talkTab + '">' +
+    var talkPanel = '<div class="contact-pane" id="' + talkPane + '"' +
+      (withKit ? ' role="tabpanel" aria-labelledby="' + talkTab + '"' : "") + ">" +
         '<p class="body-text contact-split-sub">' + esc(C.forms.demo.sub) + "</p>" +
         (forms
           ? '<div class="contact-talk-form">' + forms.render("demo", {
@@ -471,7 +493,7 @@
           : "") +
       "</div>";
 
-    var kitPanel = '<div class="contact-pane" role="tabpanel" id="' + CONTACT_ANCHORS.kit + '"' +
+    var kitPanel = !withKit ? "" : '<div class="contact-pane" role="tabpanel" id="' + CONTACT_ANCHORS.kit + '"' +
       ' aria-labelledby="' + kitTab + '" hidden>' +
         '<p class="eyebrow eyebrow--accent">' + esc(kit.page.eyebrow) + "</p>" +
         '<p class="body-text">' + esc(opts.kitBody) + "</p>" +
@@ -600,7 +622,14 @@
      its own plate, as softserveinc.com's card chips do. */
   function productTile(product, options) {
     var opts = options || {};
-    var facet = facetLabel(product.facet);
+    /* One plate per platform. A product on two platforms carries two plates in
+       one wrapper that wraps under the badge's side, so they never collide on a
+       phone-width tile; a one-platform tile keeps its lone plate. */
+    var plates = productFacets(product).map(function (id) {
+      var facet = facetLabel(id);
+      return '<span class="ptile-facet" title="' + esc(facet.fullLabel) + '">' + esc(facet.label) + "</span>";
+    });
+    var platesHtml = plates.length > 1 ? '<span class="ptile-facets">' + plates.join("") + "</span>" : plates.join("");
     var image = product.hero && product.hero.image;
     var href = "#/products/" + product.slug;
 
@@ -617,7 +646,7 @@
           (opts.eager ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"') +
           ' decoding="async">'
         : "") +
-      '<span class="ptile-facet" title="' + esc(facet.fullLabel) + '">' + esc(facet.label) + "</span>" +
+      platesHtml +
       badgeRow(product.slug, "ptile-badges") +
       "</div>";
 
@@ -625,7 +654,7 @@
       band +
       '<div class="ptile-body">' +
         '<div class="chip-row ptile-chips">' + chips.join("") + "</div>" +
-        '<h3 class="ptile-title"><a href="' + esc(href) + '">' + esc(product.name) + "</a></h3>" +
+        '<h3 class="ptile-title"><a href="' + esc(href) + '">' + keepCompounds(product.name) + "</a></h3>" +
         '<p class="ptile-desc">' + esc(product.oneLiner) + "</p>" +
         (outcomes ? '<ul class="outcome-list ptile-outcomes">' + outcomes + "</ul>" : "") +
         '<p class="ptile-cta">' + linkArrow({ label: "Learn more", href: href }) + "</p>" +
@@ -798,6 +827,7 @@
     figure: figure,
     diagram: diagram,
     facetLabel: facetLabel,
+    productFacets: productFacets,
     industryLabel: industryLabel,
     contactCard: contactCard,
     contactSplit: contactSplit,
@@ -907,6 +937,9 @@
 
   var ROUTES = [
     { pattern: /^\/$/, page: "overview", params: function () { return {}; } },
+    /* The alternative home page, shown beside the live one until Alex picks
+       (pages/overview-alt.js, PROVENANCE §47). */
+    { pattern: /^\/alt$/, page: "overviewAlt", params: function () { return {}; } },
     { pattern: /^\/products$/, page: "products", params: function () { return {}; } },
     { pattern: /^\/products\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1] }; } },
     { pattern: /^\/products\/([^/]+)\/([^/]+)$/, page: "product", params: function (m) { return { slug: m[1], tab: m[2] }; } },
@@ -920,17 +953,24 @@
      is rewritten in place, so Back does not bounce through the redirect. */
   var MOVED = {
     "/services": {
-      "": "how-we-deliver",
-      "how-we-engage": "how-we-deliver",
-      "proof-of-value": "how-we-deliver",
-      "contact": "request-a-demo"
+      "": "#/#how-we-deliver",
+      "how-we-engage": "#/#how-we-deliver",
+      "proof-of-value": "#/#how-we-deliver",
+      "contact": "#/#request-a-demo"
+    },
+    /* 2026-09-29 (Alex): the home page's contact no longer carries the sales
+       kit, so its old `#/#kit` lands on the kit's own page. Every other home
+       anchor stays where it is. */
+    "/": {
+      "kit": "#/sellers"
     }
   };
 
   function followMoved(parsed) {
-    var anchors = MOVED[parsed.path];
-    if (!anchors) return parsed;
-    var hash = "#/#" + (anchors[parsed.anchor] || anchors[""]);
+    var anchors = Object.prototype.hasOwnProperty.call(MOVED, parsed.path) ? MOVED[parsed.path] : {};
+    var own = function (key) { return Object.prototype.hasOwnProperty.call(anchors, key) ? anchors[key] : ""; };
+    var hash = own(parsed.anchor) || own("");
+    if (!hash) return parsed;
     var replaced = false;
     try {
       window.history.replaceState(null, "", hash);
@@ -1112,11 +1152,27 @@
     closeMobileMenu();
 
     if (parsed.anchor) {
-      var target = document.getElementById(parsed.anchor);
-      if (target) {
+      var anchorId = parsed.anchor;
+      if (document.getElementById(anchorId)) {
         var startedAt = window.pageYOffset;
+        /* The target is looked up afresh on every call. One hash navigation can
+           render the page twice (the browser fires both popstate and
+           hashchange), and a delayed call still holding the first render's
+           element read a detached node's zero rect, landing the page one header
+           height short (round 18). A home screen lands with its top edge under
+           the sticky header: its own top padding is the breathing room, so a
+           second 46 px of it would only push what follows the screen off the
+           bottom (round 18: the header's "Services" lands on Packaged services
+           with the Bespoke band's top in view). Anything else — a form, a pane,
+           a product tab — keeps 96 px, the header plus air. */
         var scrollToAnchor = function (force) {
-          var top = target.getBoundingClientRect().top + window.pageYOffset - 96;
+          var target = document.getElementById(anchorId);
+          if (!target || !target.isConnected) return;
+          var masthead = document.getElementById("masthead");
+          var offset = target.classList.contains("home-screen") && masthead
+            ? masthead.getBoundingClientRect().height
+            : 96;
+          var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
           var smooth = !force && sameView && !document.hidden &&
             !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
           window.scrollTo({ top: top, behavior: smooth ? "smooth" : "instant" });

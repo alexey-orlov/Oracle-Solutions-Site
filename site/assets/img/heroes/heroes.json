@@ -64,6 +64,13 @@
     "source": "SoftServe deck imagery",
     "credit": "SoftServe"
   },
+  "repair-or-replace-decisions": {
+    "file": "heroes/repair-or-replace-decisions.jpg",
+    "alt": "Fine glassy ribs sweeping over a curved form in the dark, a thin line of light caught along each ridge",
+    "focal": "60% 50%",
+    "source": "SoftServe deck imagery",
+    "credit": "SoftServe"
+  },
   "services": {
     "file": "heroes/services.jpg",
     "alt": "An engineer seen from behind at a wall of code on dark monitors in a low-lit workspace",

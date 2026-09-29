@@ -114,7 +114,7 @@ var GROUP_TONE_ORDER = ["blue", "orange", "blue-light", "neutral", "blue", "oran
 var GROUP_INK = "#1a1a1a";
 /* Round 4, T3, rewritten in round 9 (Alex): ONE canonical technology set, in
    ONE order, with TWO forms of each name. The SHORT `label` is what the rail,
-   the product chips, the tile band, `tags[1]` and the hero stack render; the
+   the product chips, the tile band, `tags[1…]` and the hero stack render; the
    FULL Oracle product name is `fullLabel`, which the Services cards and the
    page's prose carry. Pairing both here is what stops a product, a glyph or a
    card drifting into a variant of a platform name. */
@@ -134,6 +134,12 @@ var FACET_FULL = {
 /* The one platform no product runs on: it stays in the set for the hero stack
    and the Services cards, and is not offered as a catalog filter. */
 var NON_CATALOG_FACETS = ["oracle-ai-fusion"];
+/* A product's platforms, as the renderers read them (UI.productFacets): `facet`
+   is one id, or an array of ids when the product's own engine is part of more
+   than one Oracle platform (2026-09-29, PROVENANCE §46). */
+function productFacets(p) {
+  return Array.isArray(p.facet) ? p.facet : (p.facet === undefined ? [] : [p.facet]);
+}
 /* The three products with an interactive walkthrough under site/demo/. The
    Demo badge and the Artifacts filter read the walkthrough link (links.json
    `interactiveDemo` since round 12), not the video flag. */
@@ -306,27 +312,58 @@ if (!arr(C.products) || C.products.length !== 9) {
     }
   });
   if (!arr(p.tags) || !p.tags.length) fail(w, "tags missing");
-  /* T3: the platform a product runs on is one of the four canonical facets, and
-     the chip that names it carries that facet's label verbatim. */
-  if (FACET_IDS.indexOf(p.facet) === -1) {
-    fail(w, 'facet "' + p.facet + '" is not one of ' + FACET_IDS.join(" / "));
+  /* T3: every platform a product runs on is one of the four canonical facets,
+     and the chip that names it carries that facet's label verbatim. One
+     platform is written as a string; two or more as an array (2026-09-29), in
+     canonical order with no repeats, so there is one way to write each case. */
+  var pFacets = productFacets(p);
+  if (arr(p.facet) && p.facet.length < 2) {
+    fail(w, "facet is an array of " + p.facet.length + " — one platform is written as a string");
   }
+  if (!pFacets.length) fail(w, "facet missing");
+  pFacets.forEach(function (id, i) {
+    if (FACET_IDS.indexOf(id) === -1) {
+      fail(w, 'facet "' + id + '" is not one of ' + FACET_IDS.join(" / "));
+    } else if (i > 0 && FACET_IDS.indexOf(id) <= FACET_IDS.indexOf(pFacets[i - 1])) {
+      fail(w, "facet lists its platforms out of canonical order or twice — " + FACET_IDS.join(" → "));
+    }
+  });
+  /* A second platform is a claim a seller will repeat, so the Technology tab
+     says how the product runs there: the platform's full name in the
+     narrative and in the Data & platform layer. The Q&A pair's AI Data Platform
+     chip came with exactly that (2026-09-29); a chip without it is a bare
+     assertion. */
+  pFacets.slice(1).forEach(function (id) {
+    var full = FACET_FULL[id];
+    if (!full || !p.technology) return;
+    if (!str(p.technology.narrative) || p.technology.narrative.indexOf(full) === -1) {
+      fail(w, 'runs on "' + full + '" as a second platform, but technology.narrative does not say how');
+    }
+    var dataLayer = (p.technology.stack || []).filter(function (layer) { return layer.key === "data-platform"; })[0];
+    var named = dataLayer && (dataLayer.items || []).some(function (item) { return str(item.name) && item.name.indexOf(full) === 0; });
+    if (!named) {
+      fail(w, 'runs on "' + full + '" as a second platform, but no Data & platform item names it');
+    }
+  });
   /* The hero chip row is built from `category` and `facet` and skips tags[0]
-     and tags[1], so those two have to say what the renderer already says.
-     Anything past them renders as a second technology chip beside the platform
-     one, which is how "AI-Q" and "cuOpt" came to read as part of the platform
-     name — engine detail belongs in the Technology tab, not in the chip row. */
+     and one tag per platform, so those have to say what the renderer already
+     says. Anything past them renders as another technology chip beside the
+     platform ones, which is how "AI-Q" and "cuOpt" came to read as part of the
+     platform name — engine detail belongs in the Technology tab, not in the
+     chip row. */
   if (arr(p.tags)) {
-    if (p.tags.length !== 2) {
-      fail(w, "tags holds " + p.tags.length + " entries — exactly two: the pattern chip and the canonical platform label");
+    if (p.tags.length !== 1 + pFacets.length) {
+      fail(w, "tags holds " + p.tags.length + " entries — exactly " + (1 + pFacets.length) + ": the pattern chip, then one canonical platform label per facet");
     }
     if (str(p.categoryChip) && p.tags[0] !== p.categoryChip) {
       fail(w, 'tags[0] is "' + p.tags[0] + '" but the pattern chip renders "' + p.categoryChip + '"');
     }
-    var wantFacetLabel = FACET_LABELS[p.facet];
-    if (wantFacetLabel && p.tags[1] !== wantFacetLabel) {
-      fail(w, 'tags[1] is "' + p.tags[1] + '" but the technology chip renders "' + wantFacetLabel + '"');
-    }
+    pFacets.forEach(function (id, i) {
+      var wantFacetLabel = FACET_LABELS[id];
+      if (wantFacetLabel && p.tags[1 + i] !== wantFacetLabel) {
+        fail(w, "tags[" + (1 + i) + '] is "' + p.tags[1 + i] + '" but the technology chip renders "' + wantFacetLabel + '"');
+      }
+    });
   }
   if (!p.hero) fail(w, "hero missing"); else checkHeroImage(w, p.hero.image);
   if (!CFG.products[p.slug]) fail(w, "no matching SITE_CONFIG.products entry");
@@ -1319,7 +1356,7 @@ if (!arr(C.products) || C.products.length !== 9) {
       fail("facets.technology[" + id + "]", "must carry catalog: false — no product runs on it, and a filter that can never return anything is not a filter");
     }
     (C.products || []).forEach(function (p) {
-      if (p.facet === id) fail("products[" + p.slug + "]", 'facet "' + id + '" is not a catalog platform — a product cannot run on a platform the rail does not offer');
+      if (productFacets(p).indexOf(id) !== -1) fail("products[" + p.slug + "]", 'facet "' + id + '" is not a catalog platform — a product cannot run on a platform the rail does not offer');
     });
   });
   /* Round 9: two forms of a name is the most a platform gets. A third
@@ -1369,6 +1406,22 @@ if (!arr(C.products) || C.products.length !== 9) {
        the short form and the long form are the same string. */
     if (str(c.chip) && c.chip !== c.full) {
       fail(where, 'chip "' + c.chip + '" differs from full "' + c.full + '" — a group has one name, on the tile, the rail and the product chip');
+    }
+    /* PROVENANCE §45 (Alex, on the six tiles: "some headings now are 2 lines, some 1
+       line, so content looks not so clean; fix line breaks (not allowed to do
+       tile renaming)"): the home tile sets the name on two lines, broken before
+       its last word, and site.css fits the size to the tile so the first line
+       never wraps. That fit is measured on the longest first line there is,
+       "Enterprise knowledge &" at 22 characters; a longer one can wrap to a
+       third line in a narrow tile, so it fails here until .gtile-name's
+       divisor is re-measured. */
+    if (str(c.full)) {
+      var nameCut = c.full.trim().lastIndexOf(" ");
+      if (nameCut === -1) {
+        fail(where, 'full "' + c.full + '" is one word — the home tile sets a group name on two lines, broken before its last word');
+      } else if (nameCut > 22) {
+        fail(where, 'full "' + c.full + '" puts ' + nameCut + ' characters before its last word (max 22, "Enterprise knowledge &") — the tile\'s name size is fitted to that line; re-measure .gtile-name\'s --name-fit before going longer');
+      }
     }
     /* The tile's one line is read in a third of the row, under the image. The
        budget counts words, not the em dashes a parenthetical rides on. */
@@ -1572,8 +1625,9 @@ if (!arr(C.products) || C.products.length !== 9) {
   /* Two items and no "Overview": the logo is the home link. Case studies left
      the header on 2026-09-17 (Alex) — the home page still carries its
      case-study screen. For sellers took the slot in round 8 and left it the
-     same day (Alex): #/sellers stays, reached from the footer's link row and
-     from the Get the full kit link in a product kit confirmation. Round 18
+     same day (Alex): #/sellers stays, reached from the footer's link row (and,
+     until the all-offers kit went on 2026-09-29, from the Get the full kit
+     link in a product kit confirmation). Round 18
      (Alex): the Services page is gone, and "Services" lands on the home page's
      Packaged services screen, as the header's ask lands on its contact. */
   var NAV = [
@@ -1834,7 +1888,7 @@ if (!arr(C.products) || C.products.length !== 9) {
       if (!str((st || {}).label)) fail(aw, "label missing");
     });
     var aboutSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
-    var aboutFn = aboutSrc.slice(aboutSrc.indexOf("function about("), aboutSrc.indexOf("function kitOptions("));
+    var aboutFn = aboutSrc.slice(aboutSrc.indexOf("function about("), aboutSrc.indexOf("function closing("));
     if (/oracleMark|nvidiaMark|oracle-wordmark|nvidia-wordmark|about-partner/.test(aboutFn)) {
       fail("site/pages/overview.js about()", "renders an Oracle or NVIDIA mark — the About band carries SoftServe's own figures only (round 18)");
     }
@@ -1871,6 +1925,17 @@ if (!arr(C.products) || C.products.length !== 9) {
         fail(pair[0], "renders a form or split of its own — the contact switch is the one component (round 18)");
       }
     });
+    /* 2026-09-29 (Alex): the Get the sales kit tab "should not appear on the
+       main page". The home page passes the component no kit, so it renders the
+       ask alone; the kit lives on each product's Contacts tab and on #/sellers. */
+    if (/kitOptions|kitBody|salesKit/.test(home)) {
+      fail("site/pages/overview.js", "hands the contact switch a sales kit — the home page carries the ask alone (Alex, 2026-09-29)");
+    }
+    var appSwitch = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+    if (!/var withKit = !!opts\.kitOptions;/.test(appSwitch) || !/var pick = !withKit \? "" :/.test(appSwitch) ||
+        !/var kitPanel = !withKit \? "" :/.test(appSwitch)) {
+      fail("site/assets/app.js contactSwitch()", "must render no segmented control and no kit pane when passed no kit — the home page's ask stands alone (2026-09-29)");
+    }
   })();
 
   /* --- S4b · bespoke services, the AI factory (round 18) ---
@@ -1917,11 +1982,13 @@ if (!arr(C.products) || C.products.length !== 9) {
     });
     if (bs.cta !== undefined) reqCta("overview.bespoke.cta", bs.cta);
     /* The band is dark, so it is one of the page's two dark screens with S6
-       About; the case studies stand between them, and the renderer order
-       holds it: delivery, bespoke, case studies. */
+       About, and white screens stand between them. It sits directly under the
+       Packaged services track (Alex, round 18: a reader who scrolls to
+       Packaged services must see the band's top, so nothing may come between
+       the two), then the Why list, then the case studies. */
     var order = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8").match(/return hero\(C\)[^;]+;/);
-    if (!order || !/delivery\(C\) \+ bespoke\(C\) \+\s*caseStudies\(C\)/.test(order[0])) {
-      fail("site/pages/overview.js", "overview() must render delivery, then bespoke, then the case studies — Bespoke sits under Packaged services, and a white screen stands between the two dark bands");
+    if (!order || !/delivery\(C\) \+ bespoke\(C\) \+\s*whyScreen\(C\) \+ caseStudies\(C\)/.test(order[0])) {
+      fail("site/pages/overview.js", "overview() must render delivery, bespoke, whyScreen, then the case studies — the Bespoke band sits directly under the Packaged services track, and white screens stand between the two dark bands");
     }
   }
 
@@ -2003,19 +2070,32 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 
   /* Round 16 (Alex): "Why SoftServe on Oracle" sits below the timeline, not
-     beside it. Round 18: the list closes the screen — the button that followed
-     it led to the Services page, and the services' one ask is now the Bespoke
-     band's, directly below. */
+     beside it. Round 18: S4 is the head and the track and nothing else — its
+     button led to the Services page, and the Why list moved to its own screen
+     after the Bespoke band (Alex: a reader who scrolls to Packaged services
+     must see the Bespoke band's top, and the list pushed it ~340 px below the
+     fold at 1440 x 820). The band's copy is its head, so it does not reveal:
+     a peeking band would hold its eyebrow and heading back until they cleared
+     the observer's bottom margin. */
   var overviewSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
-  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function bespoke("));
+  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function whyScreen("));
   var deliveryHtml = deliverySrc.slice(deliverySrc.lastIndexOf("return '<section"));
-  var atTrack = deliveryHtml.indexOf('class="ladder3');
-  var atWhy = deliveryHtml.indexOf('class="deliver-why"');
-  if (!(atTrack > -1 && atWhy > atTrack)) {
-    fail("site/pages/overview.js", "delivery() must render the track, then the Why SoftServe list — the list sits below the timeline");
+  if (deliveryHtml.indexOf('class="ladder3') === -1) {
+    fail("site/pages/overview.js", "delivery() renders no track — S4 is the five-stage track");
+  }
+  if (/deliver-why|pillars/.test(deliveryHtml)) {
+    fail("site/pages/overview.js", "delivery() renders the Why list — it is its own screen after the Bespoke band, so the band shows under the track (round 18)");
   }
   if (/deliver-cta|UI\.button\(/.test(deliveryHtml)) {
-    fail("site/pages/overview.js", "delivery() renders a button — the screen ends on the Why list; the services' ask is the Bespoke band's (round 18)");
+    fail("site/pages/overview.js", "delivery() renders a button — S4 ends on its track; the services' ask is the Bespoke band's (round 18)");
+  }
+  var whySrc = overviewSrc.slice(overviewSrc.indexOf("function whyScreen("), overviewSrc.indexOf("function bespoke("));
+  if (!/function whyScreen\(/.test(overviewSrc) || whySrc.indexOf("pillars pillars--list") === -1) {
+    fail("site/pages/overview.js", "whyScreen() must render the Why list (round 18: its own screen after the Bespoke band)");
+  }
+  var bespokeCopy = overviewSrc.slice(overviewSrc.indexOf("function bespoke("));
+  if (/class="bespoke-copy reveal/.test(bespokeCopy)) {
+    fail("site/pages/overview.js bespoke()", "the band's copy reveals — it is the band's head and shows at once under the Packaged services track (round 18)");
   }
   if ((o.delivery || {}).ctas !== undefined) {
     fail("overview.delivery.ctas", "retired in round 18 — its button led to the Services page; the services' ask closes the Bespoke band");
@@ -2026,6 +2106,14 @@ if (!arr(C.products) || C.products.length !== 9) {
   }
   if (str(((o.bespoke || {}).cta || {}).label) && o.bespoke.cta.label !== (C.site.primaryCta || {}).label) {
     fail("overview.bespoke.cta.label", "must read site.primaryCta.label — one contact ask site-wide (round 10)");
+  }
+  /* PROVENANCE §45 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
+     S3 renders each name on two lines, broken before its last word, never the
+     name as one run left to wrap wherever the tile's width puts it. The space
+     before the break keeps the link's accessible name in words. */
+  var tilesSrc = overviewSrc.slice(overviewSrc.indexOf("function groupTiles("), overviewSrc.indexOf("function delivery("));
+  if (!/" <br>"/.test(tilesSrc) || !/lastIndexOf\(" "\)/.test(tilesSrc) || /class="gtile-name">' \+ UI\.esc\(category\.full\)/.test(tilesSrc)) {
+    fail("site/pages/overview.js groupTiles()", "renders the group name as one run, or breaks it without a space — it breaks before the last word after a space, so every tile's name is two lines, the rows start level and the accessible name stays in words (PROVENANCE §45)");
   }
 
   /* --- every icon the two new screens name is in the registry --- */
@@ -2274,9 +2362,10 @@ if (/request a demo/i.test(raw)) {
   });
 
   /* The ids the home page renders, and so the only anchors a "#/#…" route may
-     name. `talk` and `kit` are the contact switch's two panes. */
+     name. `talk` is its contact's ask; `kit` left the home page on 2026-09-29
+     and redirects to #/sellers (MOVED, below). */
   var HOME_IDS = ["top", "two-ways", "products", "how-we-deliver", ((C.overview || {}).bespoke || {}).anchor,
-    "case-studies", "about", ((C.overview || {}).contact || {}).anchor, "talk", "kit"];
+    "case-studies", "about", ((C.overview || {}).contact || {}).anchor, "talk"];
   var routes = [
     ["site.navCta.route", (site.navCta || {}).route],
     ["site.primaryCta.route", (site.primaryCta || {}).route],
@@ -2298,6 +2387,9 @@ if (/request a demo/i.test(raw)) {
   var appSrcMoved = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
   if (!/"\/services":\s*\{/.test(appSrcMoved)) {
     fail("site/assets/app.js", "MOVED has no \"/services\" entry — a saved link to the old page would land on Page not found");
+  }
+  if (!/"\/":\s*\{\s*"kit":\s*"#\/sellers"\s*\}/.test(appSrcMoved)) {
+    fail("site/assets/app.js", "MOVED does not send \"#/#kit\" to \"#/sellers\" — a saved home kit link would land on a home page with no kit (2026-09-29)");
   }
 })();
 
@@ -2468,16 +2560,41 @@ if (/request a demo/i.test(raw)) {
   }
   need("salesKit.page", page, ["eyebrow", "title", "body", "again", "povTitle", "povBody", "povLink"]);
   if (!page.routeLink || !str(page.routeLink.label) || !str(page.routeLink.route)) fail("salesKit.page.routeLink", "needs { label, route }");
-  need("salesKit.tab", tab, ["title", "body", "routeLabel", "nextDemo", "nextDemoLink", "nextAll", "nextAllLink"]);
+  need("salesKit.tab", tab, ["title", "body", "routeLabel", "nextDemo", "nextDemoLink"]);
   token("salesKit.tab.body", tab.body, "product");
   token("salesKit.tab.nextDemo", tab.nextDemo, "link");
-  token("salesKit.tab.nextAll", tab.nextAll, "link");
-  need("salesKit.form", form, ["emailLabel", "emailPlaceholder", "productLabel", "productAll", "submit", "submitting",
+  need("salesKit.form", form, ["emailLabel", "emailPlaceholder", "productLabel", "productPlaceholder", "submit", "submitting",
     "eligibility", "otherRoute", "kitName", "kitNameAll", "offline"]);
   token("salesKit.form.otherRoute", form.otherRoute, "routeLink");
   token("salesKit.form.kitName", form.kitName, "product");
   token("salesKit.form.offline", form.offline, "mailbox");
-  need("salesKit.form.errors", form.errors || {}, ["email", "domain", "send", "limited"]);
+  need("salesKit.form.errors", form.errors || {}, ["product", "email", "domain", "send", "limited"]);
+  /* 2026-09-29 (Alex): "no 'all kits' option in dropdown". A seller asks for
+     one product's kit: the select lists products only and opens on a prompt
+     that cannot be sent, the form never falls back to a kit for all offers,
+     and no confirmation points to a full kit. (`kitNameAll` stays: the sender
+     still names an all-offers request made without the page with it.) */
+  if (form.productAll !== undefined) fail("salesKit.form.productAll", "retired 2026-09-29 — the kit's select has no all-offers option (Alex)");
+  ["nextAll", "nextAllLink"].forEach(function (k) {
+    if (tab[k] !== undefined) fail("salesKit.tab." + k, "retired 2026-09-29 — there is no kit for all offers to point to (Alex)");
+  });
+  if (/whole portfolio|all offers|full kit/i.test(JSON.stringify([page, tab, form.productLabel, form.productPlaceholder]))) {
+    fail("salesKit", "offers a kit for all offers — a seller asks for one product's kit (Alex, 2026-09-29)");
+  }
+  (function () {
+    var src = fs.readFileSync(path.join(root, "site/assets/forms.js"), "utf8");
+    var kitSrc = src.slice(src.indexOf("function renderKit("), src.indexOf("window.FORMS ="));
+    if (!kitSrc) return warn("site/assets/forms.js", "renderKit not found — the no-all-offers check is reading nothing");
+    if (/["']all["']/.test(kitSrc)) {
+      fail("site/assets/forms.js", 'the kit form still carries an "all" value — no all-offers option and no fallback to one (Alex, 2026-09-29)');
+    }
+    if (!/<option value="" selected disabled>' \+ UI\.esc\(copy\.productPlaceholder\)/.test(kitSrc)) {
+      fail("site/assets/forms.js renderKit()", "the kit's select must open on productPlaceholder, a prompt that cannot be sent (2026-09-29)");
+    }
+    if (!/copy\.errors\.product/.test(kitSrc)) {
+      fail("site/assets/forms.js mountKit()", "must refuse a kit request with no product chosen, with errors.product (2026-09-29)");
+    }
+  })();
   token("salesKit.form.errors.domain", (form.errors || {}).domain, "routeLink");
   token("salesKit.form.errors.send", (form.errors || {}).send, "mailbox");
   token("salesKit.form.errors.limited", (form.errors || {}).limited, "mailbox");
@@ -2866,72 +2983,21 @@ if (/assets\/img\/logos\//.test(raw)) {
   fail("content.js", "references assets/img/logos/ — customer marks stay on disk, unreferenced, pending customer approval");
 }
 
-/* The Internal review panel (2026-09-17, docs/START-HERE.md §8) is temporary,
-   for the prototype only. While index.html loads it, the list must be well
-   formed and name no customer, and every run warns, so it cannot reach a
-   launch unnoticed. */
-(function () {
-  var html = fs.readFileSync(path.join(root, "site/index.html"), "utf8");
-  var loadsData = html.indexOf('<script src="data/review.js"></script>') !== -1;
-  var loadsPanel = html.indexOf('<script src="assets/review.js"></script>') !== -1;
-  if (!loadsData && !loadsPanel) return;
-  if (loadsData !== loadsPanel) {
-    fail("index.html", "loads only one of data/review.js and assets/review.js — the Internal panel is added and removed as a pair");
-    return;
+/* The Internal review panel, a checklist of the brief's open assumptions that
+   anyone with the preview link could open, ran from 2026-09-17 until Alex had
+   it removed on 2026-09-29 (PROVENANCE §44). Nothing internal ships in the
+   site: the brief's record is docs/START-HERE.md §2, so the panel's files and
+   their script tags stay gone, from the archived theme too. */
+["site/data/review.js", "site/assets/review.js"].forEach(function (rel) {
+  if (fs.existsSync(path.join(root, rel))) {
+    fail(rel, "exists again — the Internal review panel was removed on 2026-09-29; the brief's open items live in docs/START-HERE.md §2");
   }
-  var reviewRaw = fs.readFileSync(path.join(root, "site/data/review.js"), "utf8");
-  var box = { window: {} };
-  vm.createContext(box);
-  try {
-    vm.runInContext(reviewRaw, box, { filename: "site/data/review.js" });
-  } catch (e) {
-    fail("data/review.js", "does not load: " + e.message);
-    return;
+});
+["site/index.html", "site/index-legacy.html"].forEach(function (rel) {
+  if (/review\.js/.test(fs.readFileSync(path.join(root, rel), "utf8"))) {
+    fail(rel, "loads a review.js — the Internal review panel was removed on 2026-09-29 (docs/START-HERE.md §8)");
   }
-  var R = box.window.SITE_REVIEW;
-  if (!R || !Array.isArray(R.groups) || !R.groups.length) {
-    fail("data/review.js", "window.SITE_REVIEW.groups must be a non-empty array");
-    return;
-  }
-  /* Alex, 2026-09-17: "much less verbose (1-2 line items)". An item is a
-     line to tick, not an analysis: id, text, and at most a short note on
-     where the site does not match yet. The ticks themselves live in each
-     viewer's browser, not in this file. */
-  var ITEM_KEYS = ["id", "text", "note"];
-  var TEXT_MAX = 70;
-  var TEXT_WITH_NOTE_MAX = 47;
-  var NOTE_MAX = 45;
-  var ids = {};
-  R.groups.forEach(function (group, gi) {
-    var where = "review.groups[" + gi + "]";
-    if (!group.title || !String(group.title).trim()) fail(where, "title is empty");
-    if (!Array.isArray(group.items) || !group.items.length) { fail(where, "has no items"); return; }
-    group.items.forEach(function (item, ii) {
-      var at = where + ".items[" + ii + "]";
-      Object.keys(item || {}).forEach(function (key) {
-        if (ITEM_KEYS.indexOf(key) === -1) fail(at, 'key "' + key + '" — an item is only ' + ITEM_KEYS.join(", ") + " (1–2 lines; detail belongs in the docs)");
-      });
-      if (!item.id || !/^[a-z0-9-]+$/.test(item.id)) fail(at, "id must be kebab-case");
-      else if (ids[item.id]) fail(at, 'duplicate id "' + item.id + '" — ticks are saved by id');
-      else ids[item.id] = true;
-      if (!item.text || !String(item.text).trim()) fail(at, "text is empty");
-      else if (item.text.length > (item.note ? TEXT_WITH_NOTE_MAX : TEXT_MAX)) {
-        fail(at, "text runs " + item.text.length + " characters — keep it to " + (item.note ? TEXT_WITH_NOTE_MAX + " beside a note (one line at the panel's width)" : TEXT_MAX));
-      }
-      if (item.note != null && (!String(item.note).trim() || item.note.length > NOTE_MAX)) {
-        fail(at, "note must be non-empty and " + NOTE_MAX + " characters at most");
-      }
-    });
-  });
-  CUSTOMER_NAMES.forEach(function (name) {
-    if (new RegExp("\\b" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b").test(reviewRaw)) {
-      fail("data/review.js", 'names the customer "' + name + '" — the panel is visible to anyone with the preview link');
-    }
-  });
-  if (R.enabled !== false) {
-    warn("Internal review panel", "on, " + Object.keys(ids).length + " items — delete data/review.js, assets/review.js and their script tags before launch");
-  }
-})();
+});
 
 /* ——— the live theme (site.css + index.html + content-case.js) ——————————
    The current-SoftServe-brand rules, asserted so a later rewrite cannot
@@ -2998,6 +3064,23 @@ if (/assets\/img\/logos\//.test(raw)) {
   if (/\.gtile-(stage|veil|window|band)\b/.test(css)) {
     fail(V2_CSS, "still styles the round-16 stage (.gtile-stage / -veil / -window / -band) — retired in round 17");
   }
+  /* PROVENANCE §45: the two-line name holds only if its first line never wraps, so
+     the body is the name's container and the name's size is clamped to what
+     that container's measure holds; and two across stops at 720, below which a
+     half row holds the longest first line only under 20 px. */
+  if (!/container-type:\s*inline-size/.test(cssRule(".gtile-body"))) {
+    fail(V2_CSS, ".gtile-body must be an inline-size container — the name sizes itself to the tile so its first line never wraps");
+  }
+  var nameRule = cssRule(".gtile-name");
+  if (!/--name-fit:\s*calc\(\(100cqi - 12px\) \/ 10\.6\)/.test(nameRule) || !/font-size:\s*clamp\(1\.25rem, var\(--name-fit\), 1\.75rem\)/.test(nameRule)) {
+    fail(V2_CSS, ".gtile-name must clamp its size to --name-fit, (100cqi - 12px) / 10.6 — the size at which \"Enterprise knowledge &\" holds one line");
+  }
+  if (!/font-size:\s*clamp\(1\.25rem, var\(--name-fit\), 1\.5rem\)/.test(css)) {
+    fail(V2_CSS, "below 1280 the group name's 24 px ceiling must still clamp to --name-fit");
+  }
+  if (!/@media \(max-width: 720px\) \{\s*\.gtiles \{ grid-template-columns: minmax\(0, 1fr\); \}/.test(css)) {
+    fail(V2_CSS, "the group tiles go to one column at 720, not lower — a narrower half row cannot hold the name's first line at 20 px");
+  }
   var whyRule = cssRule(".pillars.pillars--list .pillar");
   if (!whyRule || !/background:\s*none/.test(whyRule)) {
     fail(V2_CSS, "the Why SoftServe rows must carry no fill — they are rows between hairlines, not grey cards");
@@ -3023,6 +3106,36 @@ if (/assets\/img\/logos\//.test(raw)) {
      never on a control, and never text below 24px. */
   var orange = (css.match(/var\(--accent(-dim)?\)/g) || []).length;
   if (orange > 3) fail(V2_CSS, "spends the orange accent " + orange + " times — it belongs on the hero H1's accent line and .chip--accent only");
+
+  /* A product name's hyphenated compound is one unit (2026-09-29). Headings
+     balance their lines, and balancing split "Repair-or-replace decisions" at
+     its hyphen at 375 although the compound fits the line. Both headings that
+     print a product name, the hero's H1 and the catalog tile's title, render
+     it through keepCompounds(), a nowrap span per compound, and the data
+     carries no invisible character. A text-wrap value alone is no fix: pretty
+     and wrap each strand a short word on another name at 320. */
+  var appNames = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  var headlineFn = appNames.slice(appNames.indexOf("function headline("), appNames.indexOf("function sectionHead("));
+  if (!/keepCompounds\(parts\.accent\)/.test(headlineFn) || !/keepCompounds\(parts\.rest\)/.test(headlineFn)) {
+    fail("site/assets/app.js headline()", "must render both parts through keepCompounds() — a balanced heading splits a hyphenated product name at its hyphen");
+  }
+  var tileFn = appNames.slice(appNames.indexOf("function productTile("), appNames.indexOf("function card("));
+  if (!/ptile-title[^\n]*keepCompounds\(product\.name\)/.test(tileFn)) {
+    fail("site/assets/app.js productTile()", "must render the tile title through keepCompounds(product.name) — a balanced heading splits a hyphenated product name at its hyphen");
+  }
+  var heroSrc = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+  if (!/UI\.headline\([^)]*product-title/.test(heroSrc)) {
+    fail("site/pages/product.js", "renders .product-title without UI.headline() — the name's hyphenated compounds would split on a phone");
+  }
+  if (!/white-space:\s*nowrap/.test(cssRule(".compound"))) {
+    fail(V2_CSS, ".compound must be white-space: nowrap — it keeps a product name's hyphenated compound whole");
+  }
+  C.products.forEach(function (p) {
+    var name = [p.name, p.headline && p.headline.accent, p.headline && p.headline.rest].join(" ");
+    if (/[­​-‍‑⁠﻿]/.test(name)) {
+      fail("products." + p.slug + ".name", "carries an invisible or non-breaking character — the renderer keeps a compound whole, never the data");
+    }
+  });
 
   /* The five licensed faces ship with the theme. */
   ["Azurio-Regular.woff", "Azurio-Semibold.woff", "ReplicaLLWeb-Light.woff2",
@@ -3084,4 +3197,4 @@ if (failures.length) {
   failures.forEach(function (f) { console.error("  ✗ " + f); });
   process.exit(1);
 }
-console.log("check-grammar: OK — " + C.products.length + " products, every grammar slot filled, and the home page's eight screens.");
+console.log("check-grammar: OK — " + C.products.length + " products, every grammar slot filled, and the home page's nine screens.");

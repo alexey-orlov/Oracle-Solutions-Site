@@ -739,6 +739,18 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   text-shadow: 0 1px 3px rgba(0, 0, 0, .7);
 }
 
+/* Shared renderer, 2026-09-29: two platform labels share the lone one's corner. */
+.ptile-facets {
+  position: absolute;
+  top: .875rem;
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  max-width: 60%;
+}
+.ptile-facets .ptile-facet { position: static; max-width: none; }
+
 .ptile-badges { position: absolute; top: .75rem; right: 1rem; max-width: calc(100% - 2rem); justify-content: flex-end; }
 /* Black scrim for legibility over photography, teal border and label so the
    badge still reads as the same availability family it is in the hero. */

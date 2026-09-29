@@ -6673,6 +6673,37 @@ The list is repeated in START-HERE §9.
 
 A tile in an equal-height grid takes its tallest peer's height. A sparse tile stretched to it reads as empty; shrinking it breaks the row, and padding it with air is what Alex rejected. So a peer that holds less than its row-mates gets their anatomy, each slot filled with its own content: here, a drawing in the photograph's slot, three lines in the outcomes' slot, the link where *Learn more* sits. Recorded in START-HERE §4 (Design), VISUAL-GRAMMAR §1.1, the checker (the tile's anatomy and its three outcomes), and AO-Personal-OS `.claude/references/slide-design.md` rule 14, which until now let peer height win over a half-empty box.
 
+### 38.8 Same-day follow-up: the Bespoke band shows under Packaged services
+
+**The ask** (Alex, 2026-09-29, after the round): *"Make sure that when I open main page and scroll to Packaged services, the bespoke services block which is the next one is slightly but sufficiently visible (so I don't get under impression that we only have packaged servies if never scroll)."*
+
+**Measured first** (1440 × 820, a 1440 × 900 screen less the browser's bars): S4 was 1,061 px tall — its head, the 267 px track, then the 426 px Why list — and after the header's *Services* the band's top sat 337 px below the bottom of the window. No spacing change closes that; the Why list had to leave the gap.
+
+| Where | Before | After |
+|---|---|---|
+| S4 | head · track · *Why SoftServe on Oracle* | head · track (571 px at 1440 × 820) |
+| *Why SoftServe on Oracle* | the foot of S4 | **S4c**, its own screen after the Bespoke band, round 17's rows unchanged; its label is the screen's `h2`, set as the accent eyebrow (`whyScreen()`, still read from `delivery.why`) |
+| Home anchors | every `#/#…` target landed 96 px under the window's top | a home screen lands with its top edge under the sticky header (its own padding is the air); anything else keeps 96 px |
+| The router | read the target element once, so a delayed call from the first of the two renders one hash navigation causes (popstate, then hashchange) read a detached node's zero rect and landed the page one header short (51 px vs 102 px, run to run) | looks the target up afresh on every call; five landings in a row at 51 px |
+| The band's copy | revealed like a card, so while it peeked in the window's bottom 8% it stayed at opacity 0 for up to 1.4 s | not revealed — it is the band's head, like every screen's head; the points still reveal |
+| The band's top padding | the screens' 56–88 px | 48–64 px |
+| Short desktop windows (≥ 1025 px wide, ≤ 800 px tall) | the standard rhythm | every home screen's padding 40 px, its head's margin 24 px, the band's top padding 32 px |
+| Checker | S4 asserted track → Why list | S4 renders the track and nothing else; `whyScreen()` renders the list; `overview()` runs delivery → bespoke → whyScreen → case studies; the band's copy carries no `reveal` |
+
+**After the header's *Services***, how much of the band shows:
+
+| Window | Band in view | What it shows |
+|---|---|---|
+| 1920 × 950 | 344 px | eyebrow, heading |
+| 1512 × 860 | 254 px | eyebrow, heading |
+| 1440 × 820 | 198 px | eyebrow, heading |
+| 1440 × 780 | 271 px | eyebrow, heading |
+| 1536 × 740 | 251 px | eyebrow, heading |
+| 1366 × 650 | 122 px | eyebrow, heading |
+| 1280 × 620 | 51 px | eyebrow |
+
+On a phone the five stages stack and the track alone is taller than the screen, so the band follows the track rather than showing on landing. **Why the list moved rather than shrank:** a Why row is 120 px of 64 px icon, 28 px title and two lines of body, tuned in round 17 to one line count at every width; compressing it into columns saved ~160 px, not the 337 needed. After the band, its reasons read for both ways to buy. Opus alone, no Fable pass: a layout follow-up inside the round's decisions.
+
 ## 39. A new product: Fleet route optimization, 2026-09-29
 
 _Added by the `oracle-packs-web:listing` skill from the pack spec `packs/fleet-route-optimization/pack-spec.md` (Oracle-Packaging-Skills), while two other sessions were reworking the home and product-page layouts. Only this product's data was written; no renderer, stylesheet or layout file was touched. Not published. Written as §38 and renumbered §39 when round 18 took §38, as this note asked._
@@ -7095,3 +7126,236 @@ From QA, not fixed this round (41.9):
 18. **The preview's "can't send" notes** under both contact forms are intended while the sender is off; confirm they stay until a public host exists.
 
 The list is repeated in START-HERE §9.
+
+## 42. A new product: Repair-or-replace decisions, 2026-09-29
+
+_Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pack spec `packs/repair-or-replace-decisions/pack-spec.md` (Oracle-Packaging-Skills, origin/main 16add02). Two other sessions were reworking the home and product-page layouts at the time. Only this product's data, figure, walkthrough and images were written; no renderer, stylesheet or layout file was touched. Published the same day with the round-19 tree (*Publish*, below). Numbered §42 because §40.6 holds §41 and round 20 for the product-pages merge._
+
+- **The ask (Alex, 2026-09-29):** list the pack as a product, following the site's rules, while two sessions change the layouts. He then passed on earlier feedback on the case, *"there is not enough focus on business value"*, and asked to *"revise the messaging, metrics from that perspective and take that in account when preparing the website page"*. The pack spec was recast value-first and its four print documents rebuilt before the page was written from it.
+- **Clearance (Alex):** the source engagement's customer is never named and its logo never used, anywhere. The site's name gates already list the customer. The plugin's deny-list gained four related brand names (Oracle-Packaging-Skills 3c323d4). The one descriptive mention of the customer in this file (§40.6) was removed. The guards keep the name because they exist to catch it: the name pattern recorded in this file and `CUSTOMER_NAMES` in the checker.
+- **What it is:** the person who books the job (a call agent, a depot surveyor, a claims handler) confirms or overrules a repair-or-replace call measured from photos, before the job is booked. The case is vehicle glass; the listing spans five industries that make the same call on the same pipeline: vehicle glass, shipping containers, rental and lease returns, insurance claims, and aircraft skin. Group: *Video & image intelligence*. Platform chip: *OCI + NVIDIA NeMo* (the site's facet label; the engine is NVIDIA AI Enterprise with VSS and AI-Q, which the Technology tab names). Contact: Alex.
+- **Business value first:**
+  - The eyebrow asks *What if a wrong call were caught before it cost anything?*
+  - The one-liner leads with the saving and the job done once; what the product does comes second.
+  - The problem names who decides and what a wrong call costs: a needless replacement for the payer, a repeat visit for the network.
+  - The measures are the value per unit, not accuracy:
+    - *about £460* saved per needless replacement avoided (UK industry averages for vehicle glazing, 2013; about $250 in the US);
+    - *$300–400 and 4 days* per avoidable recalibration;
+    - wrong calls *45 → 36 per 1,000 cases*.
+    All three are modelled; the metrics note says so, and says the proof of value measures each one on the customer's own cases.
+  - The ROI line carries the spec's two-buyer decision: the saving lands on the payer (the insurer or lessor keeps the price gap) and on the operator (one visit with the right part instead of two).
+  - The walkthrough's value band agrees with the page. Its needless-replacement and repeat-visit rates (3.0% → 2.4%, 1.5% → 1.2%) add up to the page's 45 → 36 per 1,000. Its count lines carry *about £460 kept on each* and *$300–400 and 4 days saved on each*, and its third number is *Avoidable recalibrations*, the page's word.
+- **No case study:** `caseStudy: null`. The engagement is a scoped proposal with nothing delivered yet (the spec's *Delivered* is empty).
+- **Duration:** the site's *4–8 weeks* holds everywhere; the spec's 8-week proof sits inside it.
+- **Assets:**
+  - **Hero:** `heroes/repair-or-replace-decisions.jpg`, 1920×900, 273 KB, graded to the hero set (median 60, p99 209). It is a fallback: SoftServe deck art (IP Customer Stories, image46, a template-layout background with no brand or text), because none of the decks holds a neutral inspection photograph 1920 px wide. It sits close to the Cross-system ERP Q&A hero's ribbed look. Swapping it means one file plus `alt` and `focal` in `heroes.json` and `content.js`.
+  - **Steps:** four images (`steps/repair-or-replace-decisions-1..4.jpg`), captured from the walkthrough at 2.5× and cropped to 1600×1000:
+    1. the photo with its scale tag, before it is read;
+    2. the reading stages mid-run;
+    3. a call with its measurement and rule;
+    4. the flagged call's review controls.
+    The booking file is too wide to crop legibly, so no frame shows the hand-off. No poster, because there is no video.
+- **Walkthrough:** `site/demo/repair-or-replace-decisions/`, on the shared tour engine, with synthetic data and example rules only. `links.json` › `repair-or-replace-decisions.interactiveDemo` holds its path. `interactiveDemoArtifact` and the kit keys stay empty until it is published on its own and the approved finals are in OneDrive. Fixed in this pass:
+  - the value band described above;
+  - a 551 px panel that scrolled the page sideways at 375, because `.work-main` had no column template and took the Cases table's width;
+  - the scale-tag badge, whose label ran past it;
+  - the drawing showed the zone and the measurement before the damage was read; they now appear with the reading.
+  It is stamped with the current spec (sha256:f19841556d00).
+- **Figure:** generated from the pack's architecture model by `diagram_to_site.py`. Two lines were then fitted to their boxes by hand. The target's second line, *into the booking, dispatch or claims system* (398 px in a 216 px box), became *Confirm or overrule, then the job is booked*. The destination moved into the note: *Nothing reaches the booking, dispatch or claims system until a person confirms it*. `check_diagram` still passes, because it reads titles, subs, labels and the note.
+- **Checker:**
+  - The product count went 8 → 9 (*expected exactly 9 products*).
+  - `DEMO_SLUGS` gained the slug.
+  - No contract bump, following §39.
+- **Checks:**
+  - `check-grammar` OK at 9 products, with the two known warnings.
+  - `check_diagram` passes for the site.
+  - The walkthrough runs all 11 tour steps with no script error at 1440, and none of its three tabs scrolls sideways at 375 or 320.
+  - The customer-name sweep finds only the guards.
+- **Seen, not changed (passed to the product-pages session, which answered):**
+  - Every product's Technology figure draws dark boxes with near-invisible titles: `.dg-card` fills `#0B0F13` under `.dg-title` in `var(--text)`. Flagged to Alex as a separate task.
+  - `text-wrap: balance` on headings breaks a hyphenated name at its hyphen on phones (*Repair-or- / replace decisions* at 375, where the whole compound fits). Flagged to Alex as a separate task.
+  - The label *Metrics improved* over modelled figures goes in round 20, where each figure carries a Proven, Forecast or Estimated chip. All three of this product's figures are Estimated.
+- **Open for Alex:**
+  - The PoV price.
+  - The kit links, once the approved finals are in OneDrive.
+  - The solution line's *any recalibration listed*: the spec's feature table marks *Follow-on work and safety flags at decision* as roadmap, delivered in the proof of value, while the line states it as present.
+  - Sharing the two new walkthrough artifacts with anyone who has the link, as the other three are. Until then the *Interactive demo* button on *Fleet route optimization* and on *Repair-or-replace decisions* opens a page only he can see.
+- **Publish (Alex: *"publish the site"*, 2026-09-29):**
+  - The home-page and hyphen sessions confirmed a publishable point first. The product-pages session asked to go ahead without round 20.
+  - Gates: `check-grammar` OK at 9 products and nine home screens; the name grep empty; 48 routes swept (home, catalog, sellers, every product's five tabs) with no script error, broken image or failed request.
+  - The two walkthroughs were published as their own artifacts first: Repair-or-replace `DCgrK6RjucSP7LKBYTKdh3`, Fleet `6KeSmkVC5ASh7UeYXtQNFA`. `links.json` › `interactiveDemoArtifact` holds each, and `data/links.js` was built fresh for the publish.
+  - The site went to version 1790676289-ee3a with 39 map entries: the 13 files changed since the 2026-09-28 publish, 23 new files (the round-18 band photographs and ask tile, the two products' heroes, the Fleet poster, eight step images, both walkthrough folders), the fresh `data/links.js`, and `"pages/services.js": null`. Seven unreferenced new images under `assets/img/` stayed out.
+  - `list_files` shows 135 files, the new ones live, `services.js` gone, and nothing from the never-ship list.
+
+## 43. A product name's hyphenated compound stays whole on phones, 2026-09-29
+
+_A fix between rounds, made in its own session while the product-pages session (round 20, on a branch) and the Repair-or-replace listing (§42) were at work. Opus alone, with no Fable pass: it decides no copy. Touched: `site/assets/app.js` (`keepCompounds()`, used by `headline()` and `productTile()`), `site/assets/site.css` (`.compound`), `tools/check-grammar.js`, SS26-THEME §2, and START-HERE §4 and §10. No content key, switch, tab or publish rule moved._
+
+- **The ask (Alex, from §42's seen-not-changed list):** `h1, h2, h3, h4 { text-wrap: balance }` breaks a hyphenated product name at its hyphen on phones. The hero read *Repair-or- / replace decisions* at 375, although *Repair-or-replace* (253 px) fits the 343 px line, and *Cross-system ERP Q&A* is exposed the same way. Fix it on every heading that prints a product name, with no invisible character added to `content.js`.
+- **The cause:** balancing narrows the line to the least width that keeps the line count, and a hard hyphen is a break opportunity, so 147 / 253 px came out more even than 253 / 139. `hyphens: manual` or `none`, `line-break: strict` and `word-break: keep-all` all leave a hard hyphen breakable; each was measured and changed nothing.
+- **Where a name is a heading:** the hero's H1 (`.product-title`, through `UI.headline`) and the catalog tile's title (`.ptile-title`). The kit confirmation prints the name in body copy, and the forms in their product lists.
+- **Decision: keep `balance` and make the compound one unit.** `keepCompounds()` escapes the name and wraps each hyphenated word in `<span class="compound">`, which `site.css` sets to `white-space: nowrap`, so balancing chooses among the spaces only. The heading's text, its accessible name and the page title are unchanged. The longest compound, 253 px at 32 px, fits the 288 px line at 320; only below a 285 px viewport would it cross into the 16 px gutter (5 px at 280).
+- **Rejected:** `text-wrap: pretty` or `wrap` on the two titles. Both fix Repair-or-replace, and each strands a short word on another name:
+
+| Name, where | `balance`, compounds whole (shipped) | `pretty` | `wrap` |
+|---|---|---|---|
+| Business metrics Q&A, hero 320 | Business / metrics Q&A | Business metrics / Q&A | Business metrics / Q&A |
+| Cross-system ERP Q&A, hero 375 and 320 | Cross-system / ERP Q&A | Cross-system / ERP Q&A | Cross-system ERP / Q&A |
+| Large docs processing and review, hero 1024 and 1440 | Large docs processing / and review | the same | Large docs processing and / review |
+
+- **Before and after,** measured on the saved files in the hero and in the catalog tile at 1440, 1280, 1024, 768, 375 and 320:
+
+| Where | Before | After |
+|---|---|---|
+| Hero, 375 and 320 | Repair-or- / replace decisions | Repair-or-replace / decisions |
+| Catalog tile, 320 | Repair-or- / replace decisions | Repair-or-replace / decisions |
+
+  The other eight names break exactly where they did, at every width. *Cross-system* now renders in its span too, and still reads *Cross-system / ERP Q&A* at 375 and 320.
+- **Checker:** it now fails `headline()` or `productTile()` rendering a name without `keepCompounds()`, a `.product-title` rendered without `UI.headline()`, a `.compound` rule that is not `white-space: nowrap`, and a product name carrying a soft hyphen, a zero-width character, a word joiner or a non-breaking hyphen. Each guard was run against a copy with its part of the fix reverted, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the two known warnings; the console clean on the product pages, the catalog and the archive theme; no horizontal overflow at any width; the deny-list grep returns nothing.
+- **No contract bump:** the new rule binds the site's own renderers, and the names the plugin writes already pass it. Round 20 stays with the product-pages session.
+- **Parallel sessions:** the product-pages session was told that its hero and tile rewrites must keep `keepCompounds()`, which the checker now holds. The session publishing on Alex's word was told when this landed.
+- **Open for Alex:** *Large docs processing and review* takes three lines in the hero at 320 (*Large docs / processing / and review*), before and after this fix. Two lines would need a shorter name or a floor under 32 px.
+- **Seen and left as is:**
+  - At 320 the one-liner under the title breaks *repair- / or-replace*. That is running text meeting the line's end at a hard hyphen: ordinary typesetting, not a heading.
+  - The archive theme renders the same span without the rule, so its titles still split at the hyphen. It is frozen and never republished.
+  - Measured in Chromium only. The fix rests on `white-space: nowrap`, which every engine honours.
+- **Published** in the 2026-09-29 publish, version 1790676289-ee3a (§42, Publish), with `assets/app.js` and `assets/site.css` in its map; the live files carry `keepCompounds()` and `.compound`. The code is autosync `896f80b` and `caa1f84`.
+
+## 44. The Internal review panel removed, 2026-09-29
+
+_A change between rounds, made in its own session while the group-name fix (§45), the facet tagging (§46) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: it writes no copy, and it carries out the removal START-HERE §8 had prescribed since 2026-09-17. Touched: `site/index.html` and `site/index-legacy.html` (two script tags each), `site/data/review.js` and `site/assets/review.js` (deleted), a comment in `site/data/content-case.js`, `tools/check-grammar.js`, `site.manifest.json` (`publish.fullTree`), README, SS26-THEME §7, and START-HERE §1, §2, §4, §6, §8, §9 and §10. No content key, switch or tab moved._
+
+- **The ask (Alex):** *"remove "Internal" widget from the oracle minisite."* The widget is the *Internal · N to confirm* pill at the bottom right of every page and the checklist drawer it opened (§25), which anyone with the preview link could see.
+- **What went:** the list (`site/data/review.js`, 15 items in five groups), the panel (`site/assets/review.js`, which injected its own styles and kept the ticks in `localStorage`) and the two `<script>` tags that loaded them. The tags went from the archive theme too, so that its page does not request two missing files. `enabled: false` would have hidden the pill and kept both files shipping, and Alex asked for removal.
+- **Nothing lost:** START-HERE §2 was already the brief's record, and the ticks were progress marks in one browser. The list's two *Before launch* items, the site name's trademark check and backing for *Frontier AI*, are in START-HERE §9. Two of its notes had gone stale in round 12 (§32): *Forms open the visitor's mail app for now* and *Nothing sends the kit automatically yet*.
+- **Checker:** the block that validated the list (keys, lengths, ids, customer names) and warned on every run is replaced by a guard. It fails if either file exists under `site/` again, or if either index file loads a `review.js`. Each half was run against a copy with the panel put back, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products, the panel's warning gone; on the saved files, the home page loads twelve scripts and no `review.js`, and `#/`, `#/products`, a product page and its Contacts tab, `#/sellers` and the archive theme render no `.review-*` element, define no `SITE_REVIEW`, request no `review.js` and log nothing to the console; the deny-list grep returns nothing.
+- **No contract bump:** the plugin never wrote the panel's files, so its listings pass the new guard as they are. Round 20 stays with the product-pages session.
+- **Published** on Alex's word, which asked for localhost and the claude.ai link both to show the current site: version 1790678606-4e27, 2026-09-29 13:43, from `main` as it stood.
+  - **The map, 15 entries:** the wrapper; a fresh `data/links.js`; the nine changed files (`assets/app.js`, `assets/forms.js`, `assets/site.css`, `data/content.js`, `data/content-case.js`, `pages/overview.js`, `pages/product.js`, `pages/products.js`, `pages/sellers.js`); the two new files of the work-in-progress `#/alt` home (`assets/home-alt.css`, `pages/overview-alt.js`; its session confirmed they were whole and namespaced, §47); and `data/review.js` and `assets/review.js` mapped to `null`. The change set was found by comparing every path `list_files` showed with the local file, and matched the files git shows changed after the previous publish.
+  - **Went out with it:** §45, §46 and §48, all on `main`.
+  - **Left out:** `demo/account-insights/`, mid-build and not named in `links.json` (its session asked); the seven images under `assets/img/` that no page references; the never-publish files.
+  - **Before:** the checker OK; the console clean and no horizontal overflow at 1440 and 375 on every route, `#/alt` included; the deny-list grep clean.
+  - **After:** `list_files` shows 135 files, the two panel files gone and the two `#/alt` files added; the live page renders with no pill. Localhost is `tools/serve.py` on 8765, run by another session, and serves the same tree.
+- **Seen and left as is:**
+  - `docs/HANDOFF-erp-qa-demo.md` records a past QA run whose "one standing warning is the internal review panel". It is a dated record in a walkthrough's own handoff.
+  - Oracle-Packaging-Skills' `deny-list.example.json` still says the checker matches the deny-list against `review.js` as well as `content.js`. That is one comment line in the plugin repo, where plugin changes are made.
+  - Browsers that ticked items keep the `oracle-ai-solutions:review-ticks` key in `localStorage`; nothing reads it now.
+- The code is autosync `f888b89` and `ab824cc`.
+
+## 45. The six group names set on two lines, 2026-09-29
+
+_A fix between rounds, made in the session that built round 18's home page, while the Internal-panel removal (§44), the facet tagging (§46) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: it renames nothing and writes no copy; the call is where the break falls and how the size fits. Touched: `site/pages/overview.js` (`groupTiles()`), `site/assets/site.css` (`.gtile-body`, `.gtile-name`, the `.gtiles` one-column step), `tools/check-grammar.js`, VISUAL-GRAMMAR §9, START-HERE §4 and, in AO-Personal-OS, `slide-design.md` rule 2. No content key, switch, tab or publish rule moved._
+
+- **The ask (Alex, with a screenshot of S3 on a wide screen):** *"some headings now are 2 lines, some 1 line, so content looks not so clean; fix line breaks (not allowed to do tile renaming) - decide how to handle that"*. Two names ran to two lines and four to one, so the one-liners under the four started a line higher than their row-mates'.
+- **The cause:** each name ran as one string and wrapped wherever its tile's width put it. Before the fix some row mixed its counts at every width measured from 320 to 1920; at 561 to 640 the longest names even took three lines.
+- **Decision: every name on two lines, broken before its last word.** `groupTiles()` puts a space and a `<br>` before the last word: *Enterprise knowledge & / analytics*, *Deep research & / investigation*, *Document / processing*, *Transaction & process / execution*, *Forecasting & / optimization*, *Video & image / intelligence*. The noun sits on the second line and the kind of work on the first, and the two names that already wrapped keep their breaks. The data, the rail, the chips and the hero stack keep each name as one string. The space keeps the link's accessible name *Enterprise knowledge & analytics*, not *…&analytics*; a line's trailing space takes no room.
+- **The first line must never wrap, so the size fits the tile.** `.gtile-body` is an inline-size container, and the name is `clamp(20px, (100cqi − 12px) / 10.6, 28px)` with a 24 px ceiling below 1280. The longest first line, *Enterprise knowledge &*, is 303 px at 28 px: 10.43 em of glyphs and 11 px of letter-spacing. The name holds 28 px from 1366 up and 24 px in most narrower tiles. Its lowest are 25.5 px at 1280, 21.4 at 1101, 21.9 at 800 and 21.5 on a 320 phone.
+- **Two across now stops at 720, not 560**, where the rest of the home page already goes to one column: below it a half row holds the longest first line only at 20 px (640) and 16 px (561).
+- **Rejected:**
+  - *Reserving two lines of height* (a `min-height`, or a subgrid row per row of tiles): the one-liners line up, but four names still read one line, with air under or over them. That is the mix Alex asked to remove, and a gap in a tile is what *"looks too empty"* (§38.7) objected to.
+  - *One line for every name at a smaller size*: *Enterprise knowledge & analytics* on one line at 1280 means about 19 px, barely over the one-liners' 16, and two across would still wrap it.
+  - *Breaking at the ampersand* (*Deep research / & investigation*): it reads well on three names, but in *Transaction & process execution* and *Video & image intelligence* the ampersand joins two modifiers, so the break point would have to be chosen name by name. The last-word rule needs no such choice.
+- **Before and after** (name lines per row, measured in Chromium; after the fix the one-liners and arrows are level in every row):
+
+| Width | Before | After |
+|---|---|---|
+| 1920, 1680 | 2 1 1 · 2 1 1 | 2 2 2 · 2 2 2 |
+| 1440 | 2 2 1 · 2 2 1 | 2 2 2 · 2 2 2 |
+| 1366, 1280, 1200, 1101 | 2 2 1 · 2 2 2 | 2 2 2 · 2 2 2 |
+| 1024 | 2 1 · 1 1 · 1 1 | 2 2 · 2 2 · 2 2 |
+| 800 | 2 2 · 1 2 · 2 2 | 2 2 · 2 2 · 2 2 |
+| 561 | 3 2 · 2 3 · 2 2 | one column, 2 each |
+| 390 | 2, 2, 1, 2, 1, 1 | 2 each |
+
+- **The rest of the site, audited in the same pass** for peers in a row whose titles wrap to different counts. The catalog's product names hold one line in every row from 1280 to 1920, and the catalog is one column below. Elsewhere the ragged titles sit where they move nothing: the product step strip wraps titles inside equal cells over one shared body, the hero stack's tiles bottom-align their names, the home case cards bottom-anchor their descriptors so the figures start level, and the stat labels end their tiles. None changed.
+- **Seen and left as is:** in the catalog, descriptions of two to four lines push the outcome lists under them out of line in some rows (at 1440, two of five). Levelling them means air in the shorter tiles or copy edits, so it is Alex's call.
+- **Checker:** it fails a group `full` that is one word or puts more than 22 characters before its last word (the fit is measured on *Enterprise knowledge &*), `groupTiles()` rendering the name as one run or breaking it without the space, `.gtile-body` without `container-type: inline-size`, `.gtile-name` without the `--name-fit` clamp above or below 1280, and the one-column step anywhere but 720. Each guard was run against a copy with its part reverted, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the known About-H2 warning; at 1920, 1680, 1536, 1440, 1366, 1300, 1280, 1279, 1200, 1150, 1101, 1100, 1024, 900, 834, 800, 768, 721, 720, 640, 561, 430, 390, 360 and 320, every name two lines, the one-liners and arrows level, no horizontal overflow; the console clean. The browser pane was hidden, so no screenshot was taken: everything above is measured geometry.
+- **No contract bump:** the rule binds the site's own renderer and stylesheet, and the six names pass it as they are.
+- **Published** in version 1790678606-4e27 on 2026-09-29 (§44, *Published*).
+
+## 46. Cross-system ERP Q&A and Business metrics Q&A on two platforms, 2026-09-29
+
+_A change between rounds, made in its own session while the Internal-panel removal (§44), the group names (§45) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: the call is a fact check, and the copy it adds is one sentence and one stack item per product. Touched: `site/data/content.js` (the two products' `facet`, `tags`, `technology.narrative` and Data & platform layer), `site/assets/app.js` (`productFacets()`, `productTile()`), `site/pages/product.js` (`heroChips()`), `site/pages/products.js` (the search haystack and the platform filter), `site/assets/site.css` and `site-legacy.css` (`.ptile-facets`), `tools/check-grammar.js`, SCHEMA, VISUAL-GRAMMAR, CONFIG, HANDOFF, and START-HERE §4 and §9._
+
+- **The ask (Alex):** *"whether Cross-system ERP Q&A and Business metrics Q&A should be kept as AI lakehouse only, or they should go with both AIDP and AIL tags? I think with both, but u check and act accordingly."*
+- **The check: both, for both.**
+  - Oracle describes AI Data Platform as combining OCI, Autonomous AI Database and its generative AI services ([Constellation Research on AI World 2025](https://www.constellationr.com/insights/news/oracle-ai-world-2025-autonomous-ai-lakehouse-ai-data-platform-launched)), and its documentation has the platform's agents query *"structured data sources registered via external catalogs, such as Oracle Autonomous AI Lakehouse"* ([AI Data Platform Workbench, AI Agents](https://docs.oracle.com/en/cloud/paas/ai-data-platform/aidug/ai-agent-flows.html)). Both products are Select AI over an Autonomous AI Database layer, so each runs on the Lakehouse alone or inside AI Data Platform.
+  - Cross-system ERP Q&A's own walkthrough already runs on both, by design: Data Studio on the Lakehouse and Agent Hub on AI Data Platform, because neither product does the job alone (§22.2). Its product page said *AI Lakehouse* only.
+  - Alex's 2026-09-18 1:1 with Bohdan named Cross-system ERP Q&A the AI Data Platform quick-start (the transcript reads "IDP"), the one product admitted without presale because nothing else covers that platform.
+  - Business metrics Q&A is Oracle's own gold-layer pattern, AI Data Platform, Databricks or Spark holding bronze and silver under an Autonomous gold layer (Oracle's AI Lakehouse enablement, 2026-08-05), and the zero-copy multicloud access it sells is AI Data Platform's own pitch.
+  - Against, and weighed: the red-teamed pattern map (2026-09-07) routes conversational analytics to the Lakehouse motion, and Oracle advised on 2026-09-16 not to create AI Data Platform customer packages yet (START-HERE §9). The platform's SQL tool *"is not an NL2SQL tool"*, so plain-English answering stays with Select AI, and the new copy says only that the platform's catalog registers the layer and its agents read it.
+- **Decision: a product runs on more than one platform when its own engine is part of each.** `facet` takes an array, `tags` carries one label per platform, and every renderer reads `UI.productFacets()`. The NVIDIA products that list AI Data Platform as an optional data layer keep one platform: their engine is not part of it, and Oracle asked not to combine those cases with that platform yet.
+- **Before and after:**
+
+| Where | Before | After |
+|---|---|---|
+| Hero chips, both products | Enterprise knowledge & analytics · AI Lakehouse | … · AI Lakehouse · AI Data Platform |
+| Catalog tile band | one plate, *AI Lakehouse* | two plates: side by side at 1440 (25 px clear of the *Interactive demo* badge), on two lines at 375 |
+| Platform rail | AI Lakehouse 2 · AI Data Platform (disabled) · OCI + NVIDIA NeMo 7 | AI Lakehouse 2 · AI Data Platform 2 · OCI + NVIDIA NeMo 7 |
+| Technology narrative, Cross-system ERP Q&A | two sentences | adds *"Where Oracle AI Data Platform is in place, its catalog registers that model without a copy, and the platform’s agents read the same certified views."* |
+| Technology narrative, Business metrics Q&A | two sentences | adds *"Where Oracle AI Data Platform is in place, its catalog registers that gold layer without a copy, and the platform’s agents read the same definitions."* |
+| Data & platform layer, both | the summary names the Lakehouse only | the summary adds *on its own or inside Oracle AI Data Platform*; a new **Optional** item names the catalog registration and the agents' reuse |
+
+- **Kept out:** Agent Hub is not named in either product's copy, because Oracle's documentation did not confirm its availability label and the Jumpstart promises generally available features only. The AI Data Platform item is Optional: the Jumpstart runs without that platform.
+- **Checker:** `facet` is a string, or an array of two or more canonical ids in canonical order with no repeats; `tags` holds one label per platform; a second platform is named by its full name in `technology.narrative` and in a Data & platform item; the `catalog: false` rule reads every platform in the list. Each rule was run against a copy with its part broken, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products; the console clean on the catalog and both product pages; no horizontal overflow at 1440 or 375; the deny-list grep returns nothing. The archive theme stacks the two labels (`site-legacy.css`).
+- **No contract bump:** the plugin writes `facet` as one string with two `tags`, which still pass. Round 20 stays with the product-pages session, as in §43.
+- **Published** in version 1790678606-4e27 on 2026-09-29 (§44, *Published*).
+- **Parallel sessions:** the product-pages session (round 20, on a branch) was told which regions moved, and its `overview` rewrite leaves the two products' `facet`, `tags` and `technology` alone. §44, §45 and §46 were numbered with the two sessions at work at the same time.
+- **Open for Alex:** START-HERE §9, under §46.
+
+## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
+
+_A fix between rounds, made on its own branch (`fix/home-contact-no-kit`, merged to `main`) while the product-pages redesign (round 20, on a branch) and the other sessions of the day were at work. Opus alone, with no Fable pass: the only new copy is a select prompt and its error line. Touched: `site/assets/app.js` (`contactSwitch()`, `MOVED`), `site/pages/overview.js` (`closing()`, `mount`), `site/pages/product.js` (`kitOptions()`), `site/pages/sellers.js` (a comment), `site/assets/forms.js` (`renderKit()`, `mountKit()`), `site/assets/site.css` (one rule), `site/data/content.js` (`salesKit`, the comment on `overview.contact`), `tools/check-grammar.js`, START-HERE §1, §3, §4, §9 and §10, SCHEMA (`overview.contact`, `site.footer.sellersLink`, `salesKit`), VISUAL-GRAMMAR §8 and §11, README and CONFIG. Numbered §48 because §44 was held for the Internal-panel removal while §45 and §46 landed, and §47 is the alternative home page's (`pages/overview-alt.js`)._
+
+- **The ask (Alex, 2026-09-29):** *"Get the sales kit tab on contact us widget should not appear on the main page of our minisite + no 'all kits' option in dropdown pls."*
+- **What changed:**
+  - **Home S7** renders the product Contacts component with the ask alone: Karsten's card beside the *Talk to us* form, with no segmented control and no kit pane. `UI.contactSwitch` renders the switch and the kit pane only when it is handed `kitOptions`, and `closing()` hands it none. With no switch above it, the Talk pane is its column's first child, and `.contact-pane:first-child` drops its 1.25 rem top margin so it starts level with the card.
+  - **`#/#kit`**, the home kit tab's anchor since round 18 and live on the shared link since the 2026-09-29 publish, redirects to `#/sellers` through `MOVED`. `MOVED` now stores full hashes (the `/services` entries land where they did) and reads its keys as own properties only.
+  - **The kit form's select**, on `#/sellers` (the one placement left that shows it), lists the nine products in `productOrder` and opens on *Choose a product*, a disabled option. A submit with no product puts *Choose the product you're selling.* under the select and focuses it. The form never falls back to `"all"`; it posts one product's slug.
+  - **A product's kit confirmation** closes on *Talk to us* alone. Its *Selling the whole portfolio? Get the full kit* pointed at the all-offers kit.
+  - **`salesKit.page.body`** lost its last sentence, *Ask for the whole portfolio or a single product.*
+- **Decisions:**
+  - **The option left the component, not only the home page.** The home kit tab's select was one of two that offered *All offers*; `#/sellers` was the other, and both render from `FORMS.renderKit`. A product's kit pane has no select: its kit is fixed.
+  - **No default product.** With *All offers* gone, the first product would have been preselected, and a seller who did not look would get the wrong kit by email. The prompt costs one click and cannot be sent.
+  - **No heading over the home ask.** On a product page the selected segment heads the column. Here the section's H2, *Start with one conversation.*, heads the screen. A *Talk to us* H3 would put a third *talk* beside the submit, the repetition that round 18's heading change removed (SCHEMA, `overview.contact`).
+  - **Still one component.** The home page renders `UI.contactSwitch`, so round 18's equivalence rule and its check hold; the kit is now part of what differs by data.
+  - **The sender is unchanged.** `mail/render.js` still accepts `product: "all"`, and `kitNameAll` stays in `content.js` because `tools/sync-links.js` copies it into `mail/catalog.json`. The site never sends such a request now, and changing the live n8n sender was not part of the ask.
+- **Before and after:**
+
+| Where | Before | After |
+|---|---|---|
+| Home S7 | card · switch (*Talk to us* · *Get the sales kit*), the ask open | card · the ask, no switch |
+| `#/#kit` | opens the home kit tab | lands on `#/sellers` |
+| `#/sellers`, *Kit for* | *All offers* (selected), then 9 products | *Choose a product* (disabled, selected), then 9 products |
+| Kit submit, no product chosen | sends the kit for all offers | *Choose the product you're selling.*; nothing sent |
+| Product kit confirmation | *Talk to us* · *Get the full kit* | *Talk to us* |
+| `#/sellers` body | …the first customer conversation. Ask for the whole portfolio or a single product. | …the first customer conversation. |
+
+- **Copy:** new `salesKit.form.productPlaceholder` (*Choose a product*) and `salesKit.form.errors.product` (*Choose the product you're selling.*). Retired: `salesKit.form.productAll` (*All offers*), `salesKit.tab.nextAll` and `nextAllLink` (*Selling the whole portfolio? Get the full kit*).
+- **Checker:** it now fails
+  - `overview.js` handing the component a kit, and `contactSwitch()` without its no-kit branch (no switch, no kit pane);
+  - `MOVED` without `"/": { "kit": "#/sellers" }`, and `HOME_IDS` no longer lists `kit`;
+  - the retired keys `productAll`, `nextAll` and `nextAllLink`;
+  - an `"all"` literal anywhere in the kit form's code, a select that does not open on `productPlaceholder`, and a submit that does not refuse a missing product (`errors.product`);
+  - *whole portfolio*, *all offers* or *full kit* in the kit's page, tab or select copy.
+
+  Each guard was run against a copy with its part of the fix reverted, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the one known warning (`overview.about.title`), before and after rebasing onto §44–§46; the name grep returns nothing. In the browser (Chromium, the branch served on its own port):
+  - the home contact at 1440, 1280 and 1024 (card and ask level) and at 768, 375 and 320 (stacked), with no horizontal overflow at any width;
+  - `#/#kit` rewrites to `#/sellers`; the select, its prompt and its error;
+  - a product's `…/contacts#kit` still opens its kit tab;
+  - both confirmations, reached through a stub that answered the POST inside the page, so nothing was sent; the `#/sellers` request carried `product: "account-insights"`;
+  - 70 routes (the home anchors, the catalog, `#/sellers`, every product's five tabs and both Contacts anchors) with no script error; the archive theme's home contact renders the ask alone.
+
+  The only failed request was `data/endpoint.local.json`, which a copy with no sender does not have.
+- **No contract bump:** the keys that moved are `salesKit`'s, which the packaging plugin neither writes nor reads. Round 20 stays with the product-pages session, as in §43.
+- **Parallel sessions:** round 20 rewrites `contactSwitch()`'s return and the contact CSS on its branch. This fix changes the lines above that return and adds one rule after `.contact-pane`, so its merge meets both; the session was told after this landed. The alternative home page (§47, `#/alt`) takes `overview.js`'s later screens and its `mount` whole, so it carries the same kit-free contact with no change of its own.
+- **Open for Alex:** START-HERE §9, under §48.
+  1. The sender still answers a kit request for all offers made without the page; refusing one is a change to the live n8n sender (`mail/render.js`).
+  2. The home contact's column opens on the ask's own line, with no heading of its own.
+- **Published** in version 1790678606-4e27 on 2026-09-29 (§44, *Published*), with those seven files in its map: `assets/app.js`, `assets/forms.js`, `assets/site.css`, `data/content.js`, `pages/overview.js`, `pages/product.js` and `pages/sellers.js`.
+- **Republished (Alex: *"publish everything, but not touch n8n"*):** version 1790678833-5d88, from `main` at 13:46 (`4e84bd3`), staged in a detached copy. Every live file was checked against `main`, by size and then by hash for the site's own files. The only one behind was `assets/home-alt.css`, the stylesheet of `#/alt`, still being tuned by its session (§47), which confirmed that any snapshot was publishable. So the map held that one file; the wrapper and a freshly built `data/links.js` were byte-identical to the live ones. The checker was OK and the name grep empty on the snapshot. What stayed out: the account-insights walkthrough under `site/demo/account-insights/` (not named in `links.json`, and still being built) and seven unreferenced files under `assets/img/`. `list_files` shows 135 files, with nothing from the never-ship list. The n8n sender was not touched.

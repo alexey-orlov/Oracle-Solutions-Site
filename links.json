@@ -71,7 +71,7 @@
       "salesDeck": "",
       "featureList": "",
       "interactiveDemo": "demo/fleet-route-optimization/index.html",
-      "interactiveDemoArtifact": "",
+      "interactiveDemoArtifact": "https://claude.ai/artifact/6KeSmkVC5ASh7UeYXtQNFA",
       "video": ""
     },
     "repair-or-replace-decisions": {
@@ -79,7 +79,7 @@
       "salesDeck": "",
       "featureList": "",
       "interactiveDemo": "demo/repair-or-replace-decisions/index.html",
-      "interactiveDemoArtifact": "",
+      "interactiveDemoArtifact": "https://claude.ai/artifact/DCgrK6RjucSP7LKBYTKdh3",
       "video": ""
     }
   }

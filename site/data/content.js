@@ -452,13 +452,33 @@ window.SITE_CONTENT = {
       link: { label: "softserveinc.com", url: "https://www.softserveinc.com/en-us/about-us" }
     },
 
-    /* Round 18: the head over the contact switch, the product Contacts tab's
-       own component. No sub: the Talk pane opens with its own (forms.demo.sub),
-       and "talk" is already the switch's segment and the submit. */
+    /* Round 18: the head over the product Contacts tab's own component, which
+       here carries the ask alone since 2026-09-29 (no sales kit on the home
+       page). No sub: the ask opens with its own (forms.demo.sub), and "talk"
+       is already its submit. */
     contact: {
       anchor: "request-a-demo",
       eyebrow: "Contact",
       heading: "Start with one conversation."
+    }
+  },
+
+  /* The alternative home page at #/alt (Alex, 2026-09-29), shown beside the
+     live one until he picks. It keeps every word of `overview` and adds only
+     what is new: the hero's photograph, which the S2 products panel carried
+     until S2 lost its photographs, and S2's umbrella heading over the whole
+     offer — products and services, packaged and bespoke, on Oracle —
+     replacing "A head start that scales.", which named the packaged path
+     only. PROVENANCE §47. */
+  overviewAlt: {
+    hero: {
+      image: {
+        file: "assets/img/heroes/overview.jpg",
+        alt: "A tall oval of light standing open in a dark wall, its reflection running out across still water"
+      }
+    },
+    offer: {
+      title: "Everything to go live with AI."
     }
   },
 
@@ -2336,11 +2356,11 @@ window.SITE_CONTENT = {
       headline: { accent: "CROSS-SYSTEM", rest: "ERP Q&A" },
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
-      facet: "oracle-ai-lakehouse",
+      facet: ["oracle-ai-lakehouse", "oracle-ai-data-platform"],
       oneLiner: "Managers get answers across the ERP and CRM on their own, while the decision is still open, instead of weeks later in a report.",
       heroLine: "Which late orders hurt our best accounts?",
       badges: ["ERP + CRM + THE SYSTEMS AROUND THEM", "PREBUILT PIPELINES", "ANSWERS IN MINUTES"],
-      tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
+      tags: ["Enterprise knowledge & analytics", "AI Lakehouse", "AI Data Platform"],
       hero: {
         image: {
           file: "assets/img/heroes/cross-system-erp-qa.jpg",
@@ -2514,7 +2534,7 @@ window.SITE_CONTENT = {
         caseStudy: null
       },
       technology: {
-        narrative: "Oracle Autonomous AI Lakehouse is the governed layer. Data from Oracle applications arrives through pipelines that ship with the products, one or two other sources are linked alongside, and Select AI answers in plain language over that model.",
+        narrative: "Oracle Autonomous AI Lakehouse is the governed layer. Data from Oracle applications arrives through pipelines that ship with the products, one or two other sources are linked alongside, and Select AI answers in plain language over that model. Where Oracle AI Data Platform is in place, its catalog registers that model without a copy, and the platform’s agents read the same certified views.",
         stack: [
           {
             key: "application",
@@ -2531,7 +2551,7 @@ window.SITE_CONTENT = {
           {
             key: "data-platform",
             label: "Data & platform",
-            summary: "Oracle Autonomous AI Lakehouse is the governed layer, with Select AI answering over it.",
+            summary: "Oracle Autonomous AI Lakehouse is the governed layer, with Select AI answering over it, on its own or inside Oracle AI Data Platform.",
             vendors: ["oracle"],
             items: [
               { name: "Oracle Autonomous AI Database 26ai as the governed layer", required: true },
@@ -2539,7 +2559,8 @@ window.SITE_CONTENT = {
               { name: "Data Studio for ELT", required: true },
               { name: "Database links for federation", required: true },
               { name: "Apache Iceberg", required: false },
-              { name: "Vector search", required: false }
+              { name: "Vector search", required: false },
+              { name: "Oracle AI Data Platform — the governed layer registered in its catalog, so its agents reuse the certified views", required: false }
             ]
           },
           {
@@ -2660,11 +2681,11 @@ window.SITE_CONTENT = {
       headline: { accent: "BUSINESS", rest: "METRICS Q&A" },
       category: "knowledge-analytics",
       categoryChip: "Enterprise knowledge & analytics",
-      facet: "oracle-ai-lakehouse",
+      facet: ["oracle-ai-lakehouse", "oracle-ai-data-platform"],
       oneLiner: "Every team asks in plain words and gets the same number for the same metric, wherever the data sits.",
       heroLine: "Answers in seconds, not a week of extracts.",
       badges: ["MULTI-CLOUD", "ON-PREM TOO", "NO MIGRATION"],
-      tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
+      tags: ["Enterprise knowledge & analytics", "AI Lakehouse", "AI Data Platform"],
       hero: {
         image: {
           file: "assets/img/heroes/business-metrics-qa.jpg",
@@ -2837,7 +2858,7 @@ window.SITE_CONTENT = {
         caseStudy: null
       },
       technology: {
-        narrative: "Bronze and silver stay where they are. Oracle Autonomous AI Lakehouse becomes the governed gold layer — existing catalogs mounted, other databases linked — and Select AI answers across all of them with no data movement.",
+        narrative: "Bronze and silver stay where they are. Oracle Autonomous AI Lakehouse becomes the governed gold layer — existing catalogs mounted, other databases linked — and Select AI answers across all of them with no data movement. Where Oracle AI Data Platform is in place, its catalog registers that gold layer without a copy, and the platform’s agents read the same definitions.",
         stack: [
           {
             key: "application",
@@ -2853,7 +2874,7 @@ window.SITE_CONTENT = {
           {
             key: "data-platform",
             label: "Data & platform",
-            summary: "Oracle Autonomous AI Lakehouse becomes the governed gold layer; bronze and silver stay where they are.",
+            summary: "Oracle Autonomous AI Lakehouse becomes the governed gold layer, on its own or inside Oracle AI Data Platform; bronze and silver stay where they are.",
             vendors: ["oracle"],
             items: [
               { name: "Oracle Autonomous AI Database 26ai as the governed gold layer", required: true },
@@ -2862,7 +2883,8 @@ window.SITE_CONTENT = {
               { name: "Database links", required: true },
               { name: "Vector search", required: false },
               { name: "Data Studio", required: false },
-              { name: "Exadata", required: false }
+              { name: "Exadata", required: false },
+              { name: "Oracle AI Data Platform — the gold layer registered in its catalog, so its agents reuse the same definitions", required: false }
             ]
           },
           {
@@ -3333,8 +3355,8 @@ window.SITE_CONTENT = {
   "hero": {
     "image": {
       "file": "assets/img/heroes/repair-or-replace-decisions.jpg",
-      "alt": "A sheet of laminated glass seen edge-on in low light, one fine crack catching the light across it",
-      "focal": "50% 50%"
+      "alt": "Fine glassy ribs sweeping over a curved form in the dark, a thin line of light caught along each ridge",
+      "focal": "60% 50%"
     }
   },
   "tile": {
@@ -3751,7 +3773,7 @@ window.SITE_CONTENT = {
     page: {
       eyebrow: "For sellers",
       title: "Get the sales kit",
-      body: "Enter your SoftServe or Oracle work email and we’ll email you the sales kit — what an account team needs to position SoftServe’s AI agents on Oracle and open the first customer conversation. Ask for the whole portfolio or a single product.",
+      body: "Enter your SoftServe or Oracle work email and we’ll email you the sales kit — what an account team needs to position SoftServe’s AI agents on Oracle and open the first customer conversation.",
       again: "Request another kit",
       routeLink: { label: "Talk to us", route: "#/#talk" },
       povTitle: "See the fit in an account?",
@@ -3763,22 +3785,24 @@ window.SITE_CONTENT = {
       body: "Enter your SoftServe or Oracle work email and we’ll email you the {product} sales kit — what an account team needs to position it and open the first customer conversation.",
       routeLabel: "Talk to us",
       nextDemo: "Have an account in mind? {link} — after a workshop, a Jumpstart proof of value on the customer’s own data runs 4–8 weeks and ends in measurable KPIs.",
-      nextDemoLink: "Talk to us",
-      nextAll: "Selling the whole portfolio? {link}",
-      nextAllLink: "Get the full kit"
+      nextDemoLink: "Talk to us"
     },
     form: {
       emailLabel: "Work email",
       emailPlaceholder: "you@oracle.com",
       productLabel: "Kit for",
-      productAll: "All offers",
+      productPlaceholder: "Choose a product",
       submit: "Send me the kit",
       submitting: "Sending…",
       eligibility: "For @softserveinc.com and @oracle.com addresses only.",
       otherRoute: "Customer or partner? {routeLink}, or ask your SoftServe or Oracle point of contact.",
       kitName: "{product} sales kit",
+      /* The site offers no kit for all offers (2026-09-29). The sender still
+         answers such a request made without the page, and names it with this
+         (tools/sync-links.js copies it into mail/catalog.json). */
       kitNameAll: "full sales kit",
       errors: {
+        product: "Choose the product you’re selling.",
         email: "Enter your work email.",
         domain: "The kit only goes to @softserveinc.com and @oracle.com addresses. Customer or partner? {routeLink} instead.",
         send: "That didn’t send. Please try again, or email {mailbox}.",
