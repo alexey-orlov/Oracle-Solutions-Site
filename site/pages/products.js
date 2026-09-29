@@ -63,9 +63,22 @@
       product.tags.join(" "),
       product.tile.outcomes.join(" "),
       /* The one-liner sells the business value and names no engine (2026-09-29),
-         so a seller who searches "cuOpt" or "AI-Q" finds it in the narrative. */
-      (product.technology && product.technology.narrative) || ""
+         so a seller who searches "cuOpt" or "AI-Q" finds it in the Technology
+         tab's words: the strip's boxes, its line and the Oracle products. */
+      techWords(product)
     ].join(" ").toLowerCase();
+  }
+
+  function techWords(product) {
+    var tech = product.technology || {};
+    var d = tech.diagram || {};
+    var items = ((window.SITE_CONTENT.shared || {}).oracleProducts || {}).items || {};
+    var boxes = [d.source, d.app, d.engine, d.platform].concat(d.destinations || []);
+    return [tech.line || ""].concat(boxes.map(function (box) {
+      return box ? [box.name, box.note, box.label, box.services].join(" ") : "";
+    }), (tech.oracle || []).map(function (pick) {
+      return (items[pick.id] || {}).name || "";
+    })).join(" ");
   }
 
   function matches(product, filters) {
