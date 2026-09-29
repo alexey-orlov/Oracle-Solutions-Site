@@ -7748,6 +7748,7 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
   - ***AI* on the first screen:** three times in the lead (his words) and in the rail's platform names beside it.
   - **Two SoftServe marks on one screen:** the header's wordmark and the hero's spark, as softserveinc.com shows them.
   - **Phones:** mostly the photograph's dark side, the man's lit back at the right edge, and three of the four lines.
+- **A QA rule, from this one:** the session checked the archive's catalog in the browser pane and left the pane on it, and Alex took the near-black page for the new design (*"that's obsolete archive, we don't use it"*). START-HERE §6 now says to leave the pane on the live page you changed, and to check the archive, if at all, by script in a hidden frame.
 - **The contract round stays 20:** the packaging plugin never writes the catalog's head, and it reads no `site.tagline`.
 
 ## 55. The product hero: a frame that opens the recording or the walkthrough, on softserveinc.com's gradient, 2026-09-29

@@ -313,21 +313,22 @@ if Alex would rather the band not repeat the corporate site's picture.
 ## 2d. The catalog's hero — `assets/img/heroes/products.jpg` (2026-09-29, §54)
 
 The photograph behind *Products* and its lead (`productsPage.image`), the page's head
-styled after softserveinc.com's About Us hero. Alex asked for a photograph of
-*"sufficient resolution and brightness"*, so it is the full-resolution original of
-the home Products panel's picture (`heroes/overview.jpg`, the graded 1920 px copy):
-the SoftServe 2026 deck template's own title image (the template and the media file
-are named in PROVENANCE §54, not in the served `heroes.json`).
+styled after softserveinc.com's About Us hero, on that hero's own photograph: a team
+at a laptop in a dark room, one of them lit orange by a low sun. Alex asked for
+*"sufficient resolution and brightness"* and for no background the `#/alt` hero
+shares, then approved the download (PROVENANCE §54, where the first cut on the oval
+of light is recorded).
 
 | File | Source | Size |
 |---|---|---|
-| `products.jpg` | the template's title image, 2912 × 1632, its dark left 437 px cropped off with `sips` so the oval stands at 63–89 % of the frame | 2475 × 1632, JPEG quality 74, 241 KB |
+| `products.jpg` | `assets.softserveinc.com/images/assets/about-us-hero-image.png` (3840 × 1268), resized with `sips` | 2880 × 951, JPEG quality 72, 141 KB |
 
-It is not graded: the orange rim on the oval and the beam on the water are the
-brand's own light. The dark wall right of the oval carries the spark, and the
-lead's measure stops short of the oval at every width from 721 px; up to 720 px the
-frame is widened past the hero's right edge (`VISUAL-GRAMMAR.md` §1.4). The checker
-wants it on disk and at least 2400 px wide.
+SoftServe's photograph on a SoftServe property, like the Bespoke band's; it has not
+been through the heroes' grade. The hero draws it in a frame a quarter wider and 50 px
+taller than itself, so it shows the dark side, the man in the cap, the lit wall and
+the laptop, and never the man in white or the woman at the window
+(`VISUAL-GRAMMAR.md` §1.4). The checker wants it on disk, at least 2400 px wide, and
+no other picture on the site by path or bytes.
 
 ---
 
