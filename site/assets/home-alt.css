@@ -367,9 +367,10 @@
 .amap-block--products .amap-pic,
 .amap-block--bespoke .amap-pic { margin-top: auto; padding-top: 14px; }
 
-/* Products: the six groups, in their order, each in its home tile's fill
-   with its icon in ink. */
-.amap-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+/* Products: the six groups, three by two as on the products screen, in
+   their order, each in its home tile's fill with its icon in ink. Two rows
+   fill the block, so it has no empty band above its picture. */
+.amap-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 
 .amap-tile {
   --cut: 4px;
@@ -377,7 +378,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1;
+  aspect-ratio: 2 / 1;
   background: var(--tile-fill);
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
@@ -512,8 +513,6 @@
   .amap-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "packaged" "products" "bespoke"; }
   .amap-block--products .amap-pic,
   .amap-block--bespoke .amap-pic { margin-top: 14px; padding-top: 0; }
-  .amap-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .amap-tile { aspect-ratio: 2 / 1; }
   .amap-pods { grid-template-columns: repeat(3, minmax(0, 44px)); gap: 6px; }
   .amap-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

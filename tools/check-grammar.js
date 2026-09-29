@@ -1072,6 +1072,30 @@ if (!arr(C.products) || C.products.length !== 9) {
     else if (/\.jpe?g$/i.test(file) && jpegWidth(file) < 2400) {
       fail("productsPage.image.file", "is " + jpegWidth(file) + " px wide — a full-bleed hero needs 2400 or more (Alex: \"sufficient resolution\")");
     }
+    /* Alex, the same day: "make sure we don't use same background image as
+       the background for the main page (alt version) and for product page".
+       The hero's photograph is no other picture on the site, by path or by
+       bytes. The first cut showed the brand template's oval of light, another
+       file of the scene the #/alt hero shows: bytes cannot see a scene, so
+       START-HERE §4 keeps the rule for the eye as well. */
+    if (fs.existsSync(file)) {
+      var crypto = require("crypto");
+      var md5 = function (p) { return crypto.createHash("md5").update(fs.readFileSync(p)).digest("hex"); };
+      var own = md5(file);
+      var raw = fs.readFileSync(path.join(root, "site/data/content.js"), "utf8");
+      if (raw.split(im.file).length - 1 > 1) {
+        fail("productsPage.image.file", '"' + im.file + '" is another picture on the site too — the catalog\'s hero shares no background');
+      }
+      var seen = {};
+      (raw.match(/assets\/img\/[\w\/.-]+\.(?:jpe?g|png|webp)/g) || []).forEach(function (p) {
+        if (seen[p] || p === im.file) return;
+        seen[p] = true;
+        var other = path.join(root, "site", p);
+        if (fs.existsSync(other) && md5(other) === own) {
+          fail("productsPage.image.file", "is the same photograph as " + p + " — the catalog's hero shares no background");
+        }
+      });
+    }
   }
   var src = fs.readFileSync(path.join(root, "site/pages/products.js"), "utf8");
   var heroFn = (src.match(/function hero\(C\) \{[\s\S]*?\n  \}\n/) || [""])[0];
