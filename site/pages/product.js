@@ -687,7 +687,6 @@
     '<path d="M2 6h24M6.5 1.5 2 6l4.5 4.5M21.5 1.5 26 6l-4.5 4.5"></path></svg>';
 
   function flowStrip(diagram) {
-    var UI = window.UI;
     var d = diagram || {};
     if (!d.source || !d.platform || !d.app || !d.engine) return "";
     var systems = [flowBox(d.source, "flow-sys")].concat((d.destinations || []).map(function (box) {

@@ -1,9 +1,10 @@
 /* ——————————————————————————————————————————————————————————————————————
    home-alt.css — the alternative home page at #/alt (2026-09-29).
 
-   What pages/overview-alt.js draws or re-arranges: the hero (.ahero, one dark
-   screen: a photograph carrying the claim, its promise and the ask, which
-   dissolves into a solid ground carrying the figures), S2's two tiles (.aoffer: the live page's two
+   What pages/overview-alt.js draws or re-arranges: the hero (.ahero, a dark
+   photograph carrying the claim, its promise and the ask, dissolving into
+   its darkest tone at its foot; the figures follow on white, in the live
+   page's own proof strip), S2's two tiles (.aoffer: the live page's two
    ways in, re-laid as dark tiles with the words off the picture), and the
    Why screen (.awhy: the portfolio diagram, .amap, on the left of the three
    reasons). Everything else is the live page's, styled by
@@ -22,20 +23,23 @@
 .ahero { background: #040d16; color: #ffffff; }
 
 /* The photograph carries the H1, its promise and the two actions, set low
-   in it, so the claim leads straight into the figures under it. It is held
-   to the window's height less the band and the next screen's heading, so
-   S2's heading shows at 1280 x 800 and 1366 x 768. */
+   in it, so the claim leads straight into the figures on white under it.
+   It is held to the window's height less the header and the proof strip's
+   figures, so the strip shows whole under it from 1366 x 768 up: at
+   1440 x 900 it is 610 px, where the version with the figures on a dark
+   band under it stood 658 tall (Alex, 2026-09-29: the hero "can be
+   slightly smaller (but not for the full height of the metrics")). */
 .ahero-photo {
   position: relative;
   isolation: isolate;
   display: flex;
   align-items: flex-end;
-  height: clamp(400px, calc(100vh - 380px), 700px);
+  height: clamp(480px, calc(100vh - 290px), 800px);
 }
 
 /* The picture, its scrim, the line and the spark, as one layer that holds
-   to the top half and fades out over the bottom half. The oval dissolves
-   into the ground, and the figures below sit on solid colour. The layer
+   to the top half and fades out over the bottom half, so the oval
+   dissolves into the ground and the ask sits on solid colour. The layer
    stacks at 0 and the copy at 1: Chromium does not paint a masked layer at
    z-index -1 inside an isolated parent. */
 .ahero-media {
@@ -101,9 +105,9 @@
   display: flex;
   flex-direction: column;
   width: calc(var(--ahero-share) * 100%);
-  /* The foot keeps the ask clear of the figures, so the proof reads as its
-     own row, not as part of the ask. */
-  padding-block: 20px clamp(44px, 6.5vh, 60px);
+  /* The hero's foot: a band of its dark ground under the ask, so the ask
+     does not sit on the white strip's edge. */
+  padding-block: 20px clamp(48px, 8vh, 80px);
 }
 
 /* Three sentences, one line each, at every width (Alex, 2026-09-29). Sized
@@ -146,12 +150,11 @@
 /* On load the words rise and the spark lands; motion is never needed to
    read the hero. */
 @media (prefers-reduced-motion: no-preference) {
-  .ahero-sentence, .ahero-lead, .ahero-actions, .ahero-band-inner { animation: ahero-rise .7s var(--ease-out) both; }
+  .ahero-sentence, .ahero-lead, .ahero-actions { animation: ahero-rise .7s var(--ease-out) both; }
   .ahero-sentence:nth-child(2) { animation-delay: .1s; }
   .ahero-sentence:nth-child(3) { animation-delay: .2s; }
   .ahero-lead { animation-delay: .3s; }
   .ahero-actions { animation-delay: .4s; }
-  .ahero-band-inner { animation-delay: .55s; }
   .ahero-line { animation: ahero-fade 1s var(--ease) .4s both; }
   .ahero-spark { animation: ahero-fade .8s var(--ease-out) .8s both; }
 }
@@ -159,61 +162,14 @@
 @keyframes ahero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes ahero-fade { from { opacity: 0; } to { opacity: 1; } }
 
-/* ——— S1: the proof, on the solid ground ————————————————————————————— */
+/* ——— S1: the proof, on white ——————————————————————————————————————— */
 
-/* The band continues the hero's ground and holds the three figures alone,
-   in white, the first on the H1's left edge. */
-.ahero-band-inner { padding-block: 8px clamp(36px, 5vh, 52px); }
-
-/* Three equal columns across the page and a wide gap. A figure is sized
-   with room to spare in its column, never fitted to fill it, so no two
-   figures ever run together. */
-.ahero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: clamp(28px, 3vw, 48px);
-  min-width: 0;
-}
-
-.ahero-stat { min-width: 0; }
-
-.ahero-stat-value {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  white-space: nowrap;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(30px, 2.6vw, 40px);
-  line-height: 1;
-  letter-spacing: 0;
-  color: #ffffff;
-}
-
-/* "from 30 days" is one fact on one line, the word set small beside it. */
-.ahero-stat-prefix {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: 16px;
-  color: rgba(255, 255, 255, .72);
-}
-
-/* Two even lines under each figure, whatever the column's width. */
-.ahero-stat-label {
-  max-width: 17em;
-  margin-top: 8px;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, .64);
-  text-wrap: balance;
-}
+/* The three figures are the live page's proof strip (.stat-band--home,
+   site.css), rendered by overview.js and left in place under this hero, so
+   they stand as they do on #/: on white, in three columns between
+   hairlines. S2 follows it with its hairline and its spacing, as on #/. */
 
 /* ——— S2: the two ways in, as dark tiles ————————————————————————————— */
-
-/* After a dark hero the screen needs no hairline, and a shorter top lets
-   its heading show under the hero at 1280 x 800 and 1366 x 768. */
-.aoffer.home-screen { border-top: 0; padding-top: 44px; }
 
 /* After softserveinc.com's Solutions tile (services/agentic-business-process):
    the words on a flat dark field and the picture where the words are not
@@ -474,16 +430,6 @@
   .ahero-title { font-size: min(40px, var(--ahero-fit)); }
   .ahero-lead { text-wrap: pretty; }
   .ahero-line, .ahero-spark { display: none; }
-}
-
-/* Under 681 px three columns no longer give "from 30 days" room to spare
-   or a label its two lines, so each figure becomes a row, its label beside
-   it. */
-@media (max-width: 680px) {
-  .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
-  .ahero-stat-value { font-size: 34px; }
-  .ahero-stat-label { margin-top: 0; }
 }
 
 /* A phone: the blocks stack in reading order, the pods in one row and the
