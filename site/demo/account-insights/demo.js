@@ -179,15 +179,19 @@
     ce.textContent = approved;
   }
 
+  /* The strip shows the four outside sources and one card for the team's own
+     records (the CRM and the service lines), which ground every move. */
   function renderSources() {
-    $("#sources").innerHTML = D.sources.map(function (s) {
+    var cards = D.sources.filter(function (s) { return !s.first; }).map(function (s) {
       var state;
-      if (s.first) state = '<span class="src-state is-first">Your records</span>';
-      else if (s.status === "warn") state = '<span class="src-state is-warn">' + (S.ran ? "Read · 1 feed down" : s.count + " new · 1 feed down") + "</span>";
+      if (s.status === "warn") state = '<span class="src-state is-warn">' + (S.ran ? "Read · 1 feed down" : s.count + " new · 1 feed down") + "</span>";
       else state = '<span class="src-state">' + (S.ran ? "Read " + D.lastCheck.after : s.count + " new since 18:00") + "</span>";
-      return '<div class="src' + (s.first ? " is-first" : "") + '"><div class="src-top"><span class="src-ico">' + icon(s.icon) +
+      return '<div class="src"><div class="src-top"><span class="src-ico">' + icon(s.icon) +
         "</span><b>" + esc(s.name) + '</b></div><span class="src-line">' + esc(s.line) + "</span>" + state + "</div>";
-    }).join("");
+    });
+    cards.push('<div class="src is-first"><div class="src-top"><span class="src-ico">' + icon("crm") + '</span><b>Your records</b></div>' +
+      '<span class="src-line">CRM: 24 accounts · 12 service lines</span><span class="src-state is-first">Grounds every move</span></div>');
+    $("#sources").innerHTML = cards.join("");
   }
 
   function renderHead() {
