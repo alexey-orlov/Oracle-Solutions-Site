@@ -34,7 +34,6 @@
   var RECASE = [
     /* Products index */
     ["productsPage.title", "PRODUCTS", "Products"],
-    ["productsPage.bottomBlock.heading", "HAVE A WORKFLOW IN MIND?", "Have a workflow in mind?"],
 
     /* Product 0 — Account insights */
     ["products[0].headline.accent", "ACCOUNT", "Account"],
@@ -84,15 +83,7 @@
     ["products[6].overview.problemSolution.solution.title", "THE SOLUTION", "The solution"],
     /* Two moreDetail titles whose siblings in the same list are sentence case. */
     ["products[6].overview.moreDetail[4].title", "TIME — every answer is a project", "Time — every answer is a project"],
-    ["products[6].overview.moreDetail[5].title", "TRUST — AI is stuck in security review", "Trust — AI is stuck in security review"],
-
-    /* Services hero */
-    ["services.hero.headline.accent", "FRONTIER AI", "Frontier AI"],
-    ["services.hero.headline.rest", "ON ORACLE.", "on Oracle."],
-
-    /* Form headings */
-    ["forms.demo.secondaryHeading", "SEND A REQUEST", "Send a request"],
-    ["forms.contact.heading", "LET’S TALK", "Let’s talk"]
+    ["products[6].overview.moreDetail[5].title", "TRUST — AI is stuck in security review", "Trust — AI is stuck in security review"]
   ];
 
   var C = window.SITE_CONTENT;
