@@ -45,26 +45,20 @@ var INDUSTRIES = [
   "automotive", "life-sciences", "professional-services", "construction",
   "travel-transport", "cross-industry"
 ];
-/* E3: the solution stack renders top → bottom in this order. A product may
-   omit a layer (the Lakehouse pair has no NVIDIA engine) but may never
-   re-order them — the Technology tab is the surface a technical buyer
-   compares most directly across products. */
-var STACK_KEYS = ["application", "ai-engine", "data-platform", "infrastructure", "custom"];
-var STACK_VENDORS = ["oracle", "nvidia", "softserve"];
-var DIRECTIONS = ["inbound", "outbound", "both"];
-/* G: the Jumpstart block is the same three pillars on all seven, in this order. */
-var PILLARS = ["fast", "low-risk", "tangible"];
-/* Round 9: the tiers are PoV Jumpstart / Integration / Scaling everywhere (the
-   2026-09-18 decision), because the hero stack's top band says "Scaling" and one
-   page may not carry both words for one thing. */
-var NEXT_TIERS = ["Integration", "Scaling"];
+/* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
+   service-packages table. Its tiers are the site's three, in this order and
+   under these names (the 2026-09-18 decision: PoV Jumpstart / Integration /
+   Scaling, never "Roll-out" or "Scale"), sized S / M / L as the one-pager
+   tags them, each cell one of the one-pager's four marks. */
+var DELIVERY_TIERS = ["Jumpstart proof of value", "Integration", "Scaling"];
+var DELIVERY_SIZES = ["S", "M", "L"];
+var DELIVERY_MARKS = ["partial", "included", "advanced", "none"];
+/* The Oracle products widget's two groups, platforms first. */
+var ORACLE_GROUPS = ["platform", "connected"];
 /* Round 16 (Alex): the delivery method is five stages, on the home track and
    on the Services track alike, under these names. "Managed services" matches
    the hero stack's fourth service tile. */
 var DELIVERY_STAGES = ["Workshop", "Jumpstart proof of value", "Integration", "Scaling", "Managed services"];
-/* A matrix row carrying a restrictive asterisk is PARTIAL: an unqualified
-   SUPPORTED tag on it would overstate the source. */
-var CAP_STATES = ["supported", "partial", "roadmap"];
 /* Round 4, C1: a case study is measured, modeled against a historical baseline,
    or in preparation. The status drives the chip and the metric eyebrow — both
    have to say the same word as the story, which is what the eyebrow map below
@@ -270,7 +264,6 @@ if (!arr(C.products) || C.products.length !== 9) {
   var w = "products[" + p.slug + "]";
   var o = p.overview || {};
   var t = p.technology || {};
-  var v = p.jumpstart || {};
 
   /* identity + hero */
   ["slug", "name", "oneLiner"].forEach(function (k) {
@@ -290,7 +283,7 @@ if (!arr(C.products) || C.products.length !== 9) {
       fail(w, k + ' names the implementation ("' + term + '") — it sells the business value; the platform, engine and data architecture belong on the chips and the Technology tab');
     });
   });
-  if (p.pov !== undefined) fail(w, "pov is superseded by jumpstart — nothing renders it");
+  if (p.pov !== undefined) fail(w, "pov is superseded by delivery — nothing renders it");
   /* Round 4, T1: the three availability states became two badges driven by
      config flags. Nothing renders the chip model any more. */
   ["availability", "availabilityChip", "availabilityTooltip"].forEach(function (k) {
@@ -329,22 +322,16 @@ if (!arr(C.products) || C.products.length !== 9) {
       fail(w, "facet lists its platforms out of canonical order or twice — " + FACET_IDS.join(" → "));
     }
   });
-  /* A second platform is a claim a seller will repeat, so the Technology tab
-     says how the product runs there: the platform's full name in the
-     narrative and in the Data & platform layer. The Q&A pair's AI Data Platform
-     chip came with exactly that (2026-09-29); a chip without it is a bare
-     assertion. */
-  pFacets.slice(1).forEach(function (id) {
-    var full = FACET_FULL[id];
-    if (!full || !p.technology) return;
-    if (!str(p.technology.narrative) || p.technology.narrative.indexOf(full) === -1) {
-      fail(w, 'runs on "' + full + '" as a second platform, but technology.narrative does not say how');
-    }
-    var dataLayer = (p.technology.stack || []).filter(function (layer) { return layer.key === "data-platform"; })[0];
-    var named = dataLayer && (dataLayer.items || []).some(function (item) { return str(item.name) && item.name.indexOf(full) === 0; });
-    if (!named) {
-      fail(w, 'runs on "' + full + '" as a second platform, but no Data & platform item names it');
-    }
+  /* A platform chip is a claim a seller will repeat, so the Technology tab's
+     Oracle products widget names every platform the product runs on (round
+     22; before it, the narrative and the Data & platform layer did). The Q&A
+     pair's AI Data Platform chip came with exactly that (2026-09-29). */
+  var FACET_TO_ORACLE = { "oci-nvidia": "oci", "oracle-ai-data-platform": "ai-data-platform", "oracle-ai-lakehouse": "ai-lakehouse" };
+  pFacets.forEach(function (id) {
+    var want = FACET_TO_ORACLE[id];
+    if (!want) return;
+    var listed = ((p.technology || {}).oracle || []).some(function (pick) { return pick.id === want; });
+    if (!listed) fail(w, 'runs on "' + (FACET_FULL[id] || id) + '" but technology.oracle does not list "' + want + '"');
   });
   /* The hero chip row is built from `category` and `facet` and skips tags[0]
      and one tag per platform, so those have to say what the renderer already
@@ -698,156 +685,107 @@ if (!arr(C.products) || C.products.length !== 9) {
      keep in sync. */
   if (o.sideFacts !== undefined) fail(w, "overview.sideFacts is superseded — the At-a-glance card was removed; nothing renders it");
 
-  /* 3.1 narrative */
-  if (!str(t.narrative)) fail(w, "technology.narrative missing");
-  else {
-    var narrativeSentences = sentences(t.narrative);
-    if (narrativeSentences > 3) fail(w, "technology.narrative is " + narrativeSentences + " sentences (max 3)");
-  }
-
-  /* The shapes the layered stack and the capability list replaced are gone from
-     the data. A re-introduced one would render nowhere and drift out of sync in
-     silence. `flow` went with the How-it-runs diagram (the stack reads top to
-     bottom instead); `security` went with the Security-and-deployment block,
-     its facts folded into the layer summaries, the scope lists and the
-     Jumpstart pillars. */
-  ["groups", "layers", "integration", "notUsed", "flow", "security"].forEach(function (k) {
-    if (t[k] !== undefined) fail(w, "technology." + k + " is superseded — nothing renders it");
+  /* Round 22 · the Technology tab (Alex, 2026-09-29: "I don't like current
+     Technology tabs … we have beautiful diagrams in one-pagers … You can have
+     some one-liner explainers etc added, but no more than that"): the pack
+     one-pager's data-flow strip, one line under it, and the Oracle products
+     widget. The shapes it replaced render nowhere, so a returning one fails
+     by name. */
+  ["narrative", "stack", "capabilities", "groups", "layers", "integration", "notUsed", "flow", "security", "architecture"].forEach(function (k) {
+    if (t[k] !== undefined) fail(w, "technology." + k + " is superseded by round 22's strip and widget — nothing renders it");
   });
-
-  /* E3 · the layered solution stack */
-  if (!arr(t.stack) || t.stack.length < 4 || t.stack.length > 5) {
-    fail(w, "technology.stack must hold 4–5 layers, got " + (arr(t.stack) ? t.stack.length : "none"));
-  } else {
-    var lastIdx = -1;
-    var sawSoftServe = false;
-    t.stack.forEach(function (layer, i) {
-      var lw = w + ".stack[" + i + "]";
-      var idx = STACK_KEYS.indexOf(layer.key);
-      if (idx === -1) return fail(lw, 'key "' + layer.key + '" is not one of ' + STACK_KEYS.join(" / "));
-      if (idx <= lastIdx) fail(lw, 'layer "' + layer.key + '" is out of order — the stack renders ' + STACK_KEYS.join(" → "));
-      lastIdx = idx;
-      ["label", "summary"].forEach(function (k) {
-        if (!str(layer[k])) fail(lw, k + " missing");
-      });
-      if (str(layer.summary) && sentences(layer.summary) > 1) fail(lw, "summary is " + sentences(layer.summary) + " sentences (the accordion row holds one line)");
-      if (!arr(layer.vendors) || !layer.vendors.length) fail(lw, "vendors missing — every layer carries at least one vendor mark");
-      else layer.vendors.forEach(function (vn) {
-        if (STACK_VENDORS.indexOf(vn) === -1) fail(lw, 'vendor "' + vn + '" is not oracle / nvidia / softserve');
-        if (vn === "softserve") sawSoftServe = true;
-      });
-      if (!arr(layer.items) || !layer.items.length) return fail(lw, "items empty");
-      var required = 0;
-      layer.items.forEach(function (item, j) {
-        var iw = lw + ".items[" + j + "]";
-        if (!str(item.name)) fail(iw, "name missing");
-        if (typeof item.required !== "boolean") fail(iw, "required must be a boolean — Required / Optional is a tag, not a guess");
-        else if (item.required) required += 1;
-        if (item.direction !== undefined && DIRECTIONS.indexOf(item.direction) === -1) {
-          fail(iw, 'direction "' + item.direction + '" is not inbound / outbound / both');
-        }
-        if (item.direction !== undefined && layer.key !== "custom") {
-          fail(iw, "direction belongs on the custom layer — that is where integrations render as Inbound / Outbound lines");
-        }
-      });
-      if (!required) fail(lw, "no Required item — a layer with nothing required is not a layer of this stack");
-    });
-    var keys = t.stack.map(function (l) { return l.key; });
-    ["application", "data-platform", "infrastructure", "custom"].forEach(function (k) {
-      if (keys.indexOf(k) === -1) fail(w, 'technology.stack has no "' + k + '" layer');
-    });
-    if (!sawSoftServe) fail(w, "technology.stack carries no SoftServe vendor mark");
-    var custom = t.stack.filter(function (l) { return l.key === "custom"; })[0];
-    if (custom && arr(custom.items)) {
-      var dirs = custom.items.map(function (x) { return x.direction; }).filter(Boolean);
-      if (dirs.indexOf("inbound") === -1 && dirs.indexOf("both") === -1) {
-        fail(w, "stack custom layer names no inbound integration");
-      }
-      if (dirs.indexOf("outbound") === -1 && dirs.indexOf("both") === -1) {
-        fail(w, "stack custom layer names no outbound integration");
-      }
-    }
-  }
-
-  /* F · the capability list, grouped by the four workflow stages */
-  if (!arr(t.capabilities) || t.capabilities.length !== 4) {
-    fail(w, "technology.capabilities must hold exactly 4 workflow stages, got " + (arr(t.capabilities) ? t.capabilities.length : "none"));
-  } else {
-    var seenStages = [];
-    t.capabilities.forEach(function (group, i) {
-      var gw = w + ".capabilities[" + i + "]";
-      if (!str(group.stage)) fail(gw, "stage missing");
-      else if (seenStages.indexOf(group.stage) !== -1) fail(gw, 'stage "' + group.stage + '" appears twice');
-      else seenStages.push(group.stage);
-      if (!arr(group.items) || group.items.length < 3) fail(gw, "items needs ≥3 capabilities");
-      else group.items.forEach(function (item, j) {
-        if (!str(item.name)) fail(gw + ".items[" + j + "]", "name missing");
-        if (item.state !== undefined && CAP_STATES.indexOf(item.state) === -1) {
-          fail(gw + ".items[" + j + "]", 'state "' + item.state + '" is not supported / partial / roadmap — omit the key where no source states one');
-        }
-      });
-    });
-  }
-
-  /* G · the Jumpstart Proof-of-Value block */
-  if (!v || !Object.keys(v).length) fail(w, "jumpstart missing");
+  if (!str(t.line)) fail(w, "technology.line missing — the one line under the strip");
   else {
-    ["title", "promise", "cta"].forEach(function (k) {
-      if (k === "cta" ? !(v.cta && str(v.cta.label) && str(v.cta.route)) : !str(v[k])) {
-        fail(w, "jumpstart." + k + " missing");
-      }
+    if (sentences(t.line) !== 1) fail(w, "technology.line is " + sentences(t.line) + " sentences — one line and no more");
+    if (words(t.line) > 20) fail(w, "technology.line is " + words(t.line) + " words (max 20)");
+  }
+  var dg = t.diagram;
+  function flowBox(where, box, max) {
+    var bw = w + ".technology.diagram." + where;
+    if (!box || !str(box.name)) return fail(bw, "name missing");
+    if (box.note !== undefined && box.note !== null && !str(box.note)) fail(bw, "note must be a non-empty string, null or absent");
+    if (str(box.note) && words(box.note) > max) fail(bw, "note is " + words(box.note) + " words (max " + max + ")");
+  }
+  if (!dg) fail(w, "technology.diagram missing — the strip is the tab's picture");
+  else {
+    flowBox("source", dg.source, 14);
+    if (!arr(dg.destinations) || dg.destinations.length > 2) {
+      fail(w, "technology.diagram.destinations must be an array of at most 2 — empty where the source is also the destination");
+    } else dg.destinations.forEach(function (box, i) { flowBox("destinations[" + i + "]", box, 12); });
+    ["toPlatform", "fromPlatform"].forEach(function (k) {
+      if (!str(dg[k])) fail(w, "technology.diagram." + k + " missing — every pipe carries its label");
+      else if (words(dg[k]) > 10) fail(w, "technology.diagram." + k + " is " + words(dg[k]) + " words (max 10)");
     });
-    if (str(v.title) && v.title !== "Jumpstart Proof-of-Value") {
-      fail(w, 'jumpstart.title is "' + v.title + '" — the block title is the same on all seven');
+    if (!dg.platform || !str(dg.platform.label)) fail(w, "technology.diagram.platform.label missing — the cloud box names its platform");
+    else if (dg.platform.label.indexOf("Oracle") !== 0) fail(w, 'technology.diagram.platform.label "' + dg.platform.label + '" is not an Oracle platform');
+    flowBox("app", dg.app, 8);
+    flowBox("engine", dg.engine, 8);
+  }
+  /* The widget: every entry comes from the one registry, so a system has one
+     name and one glyph on every page ("same names and icons … across all
+     products"); only its role is the product's, two to four words. */
+  var oracleReg = ((C.shared || {}).oracleProducts || {}).items || {};
+  if (!arr(t.oracle) || !t.oracle.length) fail(w, "technology.oracle missing — the Oracle products widget");
+  else {
+    var seenOracle = [];
+    t.oracle.forEach(function (pick, i) {
+      var ow = w + ".technology.oracle[" + i + "]";
+      if (!pick || !oracleReg[pick.id]) return fail(ow, 'id "' + (pick || {}).id + '" is not in shared.oracleProducts.items');
+      if (seenOracle.indexOf(pick.id) !== -1) fail(ow, 'id "' + pick.id + '" is listed twice');
+      seenOracle.push(pick.id);
+      if (!str(pick.role)) fail(ow, "role missing");
+      else if (words(pick.role) < 2 || words(pick.role) > 4) fail(ow, 'role "' + pick.role + '" is ' + words(pick.role) + " words (2–4, Alex)");
+      if (pick.name !== undefined || pick.icon !== undefined) fail(ow, "carries its own name or icon — both come from the registry");
+    });
+    if (!t.oracle.some(function (pick) { return oracleReg[(pick || {}).id] && oracleReg[pick.id].group === "platform"; })) {
+      fail(w, "technology.oracle names no platform — every product runs on one");
     }
-    if (!arr(v.pillars) || v.pillars.length !== 3) fail(w, "jumpstart.pillars must hold exactly 3");
-    else v.pillars.forEach(function (pillar, i) {
-      if (pillar.key !== PILLARS[i]) fail(w, 'pillars[' + i + '].key is "' + pillar.key + '", expected "' + PILLARS[i] + '"');
-      ["title", "text"].forEach(function (k) {
-        if (!str(pillar[k])) fail(w, "pillars[" + i + "]." + k + " missing");
+  }
+
+  /* Round 22 · the Delivery tab (Alex, 2026-09-29: "same structure and
+     content as we have in packaging table in our one-pager. Add approx.
+     duration of phases (with very short footnote that it's confirmed at
+     scoping); don't add prices. Everything else should be gone from this
+     tab."). The Jumpstart tab's shapes render nowhere. */
+  if (p.jumpstart !== undefined) fail(w, "jumpstart is superseded by delivery (round 22) — nothing renders it");
+  var dl = p.delivery;
+  var tierCount = DELIVERY_TIERS.length;
+  if (!dl) fail(w, "delivery missing — the Delivery tab's packages table");
+  else {
+    if (!arr(dl.scope) || dl.scope.length !== tierCount) fail(w, "delivery.scope must hold one line per tier (" + tierCount + ")");
+    else dl.scope.forEach(function (line, i) {
+      if (!str(line)) fail(w, "delivery.scope[" + i + "] missing");
+      else if (words(line) > 18) fail(w, "delivery.scope[" + i + "] is " + words(line) + " words (max 18) — one line under the tier's name");
+    });
+    if (dl.durations !== undefined && (!arr(dl.durations) || dl.durations.length !== tierCount || !dl.durations.every(str))) {
+      fail(w, "delivery.durations, where present, overrides the standing durations with one string per tier");
+    }
+    if (!arr(dl.rows) || dl.rows.length < 4 || dl.rows.length > 8) {
+      fail(w, "delivery.rows must hold 4–8 capability areas, got " + (arr(dl.rows) ? dl.rows.length : "none"));
+    } else dl.rows.forEach(function (row, i) {
+      var rw = w + ".delivery.rows[" + i + "]";
+      if (!str(row.area)) fail(rw, "area missing");
+      if (!arr(row.cells) || row.cells.length !== tierCount) return fail(rw, "cells must hold one per tier (" + tierCount + ")");
+      row.cells.forEach(function (cell, j) {
+        var cw = rw + ".cells[" + j + "]";
+        if (!cell || DELIVERY_MARKS.indexOf(cell.mark) === -1) fail(cw, 'mark "' + (cell || {}).mark + '" is not ' + DELIVERY_MARKS.join(" / "));
+        if (cell && cell.text !== undefined && cell.text !== null && !str(cell.text)) fail(cw, "text must be a non-empty string, null or absent");
+        if (cell && str(cell.text) && words(cell.text) > 24) fail(cw, "text is " + words(cell.text) + " words (max 24) — a cell holds a phrase");
+        if (cell && cell.mark !== "none" && !str(cell.text)) fail(cw, "a " + cell.mark + " cell says what it includes");
       });
     });
-    if (!arr(v.outcomes) || v.outcomes.length < 3 || v.outcomes.length > 4) {
-      fail(w, "jumpstart.outcomes must hold 3–4 outcome lines, got " + (arr(v.outcomes) ? v.outcomes.length : "none"));
-    }
-    if (!arr(v.timeline) || v.timeline.length < 3 || v.timeline.length > 4) {
-      fail(w, "jumpstart.timeline must hold 3–4 nodes, got " + (arr(v.timeline) ? v.timeline.length : "none"));
-    } else v.timeline.forEach(function (node, i) {
-      if (!str(node.label) || !str(node.text)) fail(w, "timeline[" + i + "] needs { label, text }");
-    });
-    if (!arr(v.needs) || v.needs.length !== 3) fail(w, "jumpstart.needs must hold exactly 3 items");
-    var inv = v.investment;
-    if (!inv) fail(w, "jumpstart.investment missing");
-    else {
-      /* A figure is a string or null: where nothing is published the card
-         prints one scope line, not two tiles both reading the same
-         placeholder. The footnote stays required — it renders with the
-         figures, and a figure never renders without it. */
-      ["price", "duration"].forEach(function (k) {
-        if (!(inv[k] === null || str(inv[k]))) {
-          fail(w, "jumpstart.investment." + k + " must be a non-empty string, or null where none is published");
-        }
-      });
-      if (!str(inv.footnote)) fail(w, "jumpstart.investment.footnote missing — a figure never renders without it");
-      if (!arr(inv.includes) || inv.includes.length < 3) fail(w, "jumpstart.investment.includes needs ≥3 lines");
-      /* One footnote, not a disclaimer stack: the packaging-internal sentences
-         were removed site-wide in round 3. */
-      if (str(inv.footnote) && sentences(inv.footnote) > 2) {
-        fail(w, "jumpstart.investment.footnote is " + sentences(inv.footnote) + " sentences — one footnote line, not a disclaimer stack");
-      }
-    }
-    if (!arr(v.next) || v.next.length !== 2) fail(w, "jumpstart.next must hold exactly 2 steps — Integration and Scale");
-    else v.next.forEach(function (step, i) {
-      if (step.tier !== NEXT_TIERS[i]) fail(w, 'next[' + i + '].tier is "' + step.tier + '", expected "' + NEXT_TIERS[i] + '"');
-      if (!str(step.text)) fail(w, "next[" + i + "].text missing");
-      if (!str(step.price)) fail(w, "next[" + i + "].price missing — it reads Scoped per engagement where none is published");
-    });
-    if (v.cta && str(v.cta.route) && v.cta.route !== "#/products/" + p.slug + "/contacts") {
-      fail(w, 'jumpstart.cta.route "' + v.cta.route + '" must point at this product’s contacts tab');
-    }
-    ["facts", "deliverables", "pricing", "disclaimers", "ladder", "ladderFootnote", "capabilityMatrix", "statStrip", "statNotes", "howItRuns", "prerequisites"].forEach(function (k) {
-      if (v[k] !== undefined) fail(w, "jumpstart." + k + " is a superseded POV-tab shape — nothing renders it");
-    });
+    if (!str(dl.advanced)) fail(w, "delivery.advanced missing — the legend's words for the two-dot mark");
+    /* No price anywhere in the tab's data (Alex: "don't add prices"), and a
+       duration only in the Duration row, never in a phrase. */
+    var dlWords = [].concat(dl.scope || [], (dl.rows || []).map(function (row) {
+      return [row.area].concat((row.cells || []).map(function (cell) { return (cell || {}).text || ""; })).join(" ");
+    })).join(" ");
+    var money = dlWords.match(/[€$£]|\b\d+(\.\d+)?\s?[KkMm]\b|\bpric(e|ed|es|ing)\b|\bfee\b|\bcost of the (proof|package)\b/);
+    if (money) fail(w, 'delivery names a price ("' + money[0] + '") — the tab states durations, never prices (Alex, round 22)');
+    var clock = dlWords.match(/\b\d+\s?(–|-|to)?\s?\d*\s?(weeks?|months?|days?)\b/i);
+    if (clock) fail(w, 'delivery states a duration in a phrase ("' + clock[0] + '") — durations live in the Duration row only');
+    var tierWord = dlWords.match(/\bPoV\b|\bRoll-?out\b|\bPOV\b/);
+    if (tierWord) fail(w, 'delivery says "' + tierWord[0] + '" — the tiers are ' + DELIVERY_TIERS.join(" · "));
   }
 
   /* invariants carried over from SCHEMA.md */
@@ -931,7 +869,7 @@ if (!arr(C.products) || C.products.length !== 9) {
      request is the Contacts tab's second row, because a page that repeats one
      form under two names is a structure bug. Every retired segment redirects,
      so `legacyIds` is a list, not a single key. */
-  var TAB_IDS = ["overview", "use-cases", "technology", "jumpstart", "contacts"];
+  var TAB_IDS = ["overview", "use-cases", "technology", "delivery", "contacts"];
   var tabList = C.shared.productTabs || [];
   var tabs = tabList.map(function (x) { return x.id; });
   if (tabs.join(",") !== TAB_IDS.join(",")) {
@@ -950,9 +888,14 @@ if (!arr(C.products) || C.products.length !== 9) {
     var found = tabList.filter(function (x) { return x.id === id; })[0];
     return (found && found.legacyIds) || [];
   }
-  if (legacyIds("jumpstart").indexOf("pov") === -1) {
-    fail("shared.productTabs[jumpstart]", 'legacyIds must include "pov" so the old route still lands');
-  }
+  /* Round 22 (Alex): the Jumpstart tab is Delivery; both of its old segments land. */
+  ["jumpstart", "pov"].forEach(function (seg) {
+    if (legacyIds("delivery").indexOf(seg) === -1) {
+      fail("shared.productTabs[delivery]", 'legacyIds must include "' + seg + '" so /' + seg + ' still lands on the Delivery tab');
+    }
+  });
+  var deliveryTab = tabList.filter(function (x) { return x.id === "delivery"; })[0];
+  if (deliveryTab && deliveryTab.label !== "Delivery") fail("shared.productTabs[delivery]", 'label is "' + deliveryTab.label + '" — Alex named it "Delivery"');
   ["demo", "sellers"].forEach(function (seg) {
     if (legacyIds("contacts").indexOf(seg) === -1) {
       fail("shared.productTabs[contacts]", 'legacyIds must include "' + seg + '" — /' + seg + ' redirects to the Contacts tab');
@@ -1087,7 +1030,7 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (!str(intro)) { fail("productsPage.intro", "missing"); return; }
   var note = intro.match(/Jumpstart|proof of value|Workshop|Integration|Scaling|tenancy|fixed[- ]scope|fixed[- ]price|\bpric(e|ed|es|ing)\b|\bscop(e|ed|ing)\b|per engagement|where one is|otherwise|published/i);
   if (note) {
-    fail("productsPage.intro", 'names "' + note[0] + '" — the lead is the promise; the hosting, the stages and the price belong to each product\'s Jumpstart tab');
+    fail("productsPage.intro", 'names "' + note[0] + '" — the lead is the promise; the hosting and the stages belong to each product\'s Delivery tab');
   }
   var how = intro.match(/\b(filter|search|browse|click|tap|scroll|rail)\w*/i);
   if (how) {
@@ -2822,14 +2765,16 @@ if (/request a demo/i.test(raw)) {
    ("From 4 weeks"), and the hero tile has said "from 30 days" since round 9. */
 (function () {
   var POV = "4–8 weeks";
+  /* Round 22: the Delivery tab states it, the first tier's standing duration,
+     and a product's override may not change it. */
+  var dlShared = (C.shared || {}).delivery || {};
+  var dlTiers = dlShared.tiers || [];
+  if (!dlTiers[0] || dlTiers[0].duration !== POV) {
+    fail("shared.delivery.tiers[0].duration", 'must be "' + POV + '" — the proof of value is "' + POV + '" everywhere');
+  }
   (C.products || []).forEach(function (p) {
-    var j = p.jumpstart || {};
-    var where = "products[" + p.slug + "].jumpstart";
-    if (j.durationShort !== POV) fail(where + ".durationShort", '"' + j.durationShort + '" — the proof of value is "' + POV + '" everywhere');
-    if (!j.investment || j.investment.duration !== POV) fail(where + ".investment.duration", 'must be "' + POV + '"');
-    if (!str(j.promise) || j.promise.indexOf(POV) === -1) fail(where + ".promise", 'must state "' + POV + '"');
-    var fast = (j.pillars || []).filter(function (x) { return x.key === "fast"; })[0];
-    if (fast && !/4–8 weeks|Four weeks/.test(fast.text || "")) fail(where + ".pillars[fast]", "must state the " + POV + " duration");
+    var ds = (p.delivery || {}).durations;
+    if (arr(ds) && ds[0] !== POV) fail("products[" + p.slug + "].delivery.durations[0]", '"' + ds[0] + '" — the proof of value is "' + POV + '" everywhere');
   });
   var o = C.overview || {};
   /* Round 16 (Alex: "4-8 weeks, 3-5 months, 3-12 months -> say 'from 4
