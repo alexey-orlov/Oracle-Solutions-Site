@@ -1,35 +1,35 @@
 /* ——————————————————————————————————————————————————————————————————————
-   home-alt.css — the alternative home page at #/alt (2026-09-29).
+   home-alt.css — the alternative home page at #/alt (2026-09-29), version 2.
 
-   Only the two screens pages/overview-alt.js draws itself: the photographic
-   hero (.ahero) and the whole-offer screen (.aoffer). Every screen after them
-   is the live home page's, styled by site.css. Kept in its own file while the
-   two versions are compared; adopting this page folds it into site.css
-   (PROVENANCE §47). The theme's rules hold here too: Azurio 400 display in
+   Only the two screens pages/overview-alt.js draws itself: the hero (.ahero:
+   a photograph, then a light band) and the whole-offer screen (.aoffer: two
+   photographic tiles beside the portfolio diagram, .amap). Every screen after
+   them is the live home page's, styled by site.css. Kept in its own file
+   while the two versions are compared; adopting this page folds it into
+   site.css (PROVENANCE §47). The theme's rules hold: Azurio 400 display,
    sentence case, orange only as the H1's accent line, octagonal cuts, no
-   shadow, no radius, and the four home-tile fills only on the six groups.
+   shadow, no radius, blue only on what acts, the four home-tile fills only on
+   the six groups, and no resting grey card on the home page.
    —————————————————————————————————————————————————————————————————————— */
 
-/* ——— S1: the claim, on a photograph ——————————————————————————————— */
+/* ——— S1: the claim on a photograph ——————————————————————————————————— */
 
-/* softserveinc.com/en-us/services: a dark photograph edge to edge, the H1 in
-   white at display size, a hairline across it and the spark where a second
-   line crosses. Not a viewport high: the hero is its content's height, sized
-   so that at 1440 x 900 the next screen's heading shows under it. The ground
-   is the photograph's own darkest tone, which is what a reader sees if the
-   picture fails to load. */
-.ahero {
-  --foot-gap: clamp(2rem, 4vw, 4rem);
-  --stats-w: clamp(30rem, 40vw, 36rem);
+/* The photograph carries the H1 and the two actions and nothing else. It is
+   held to the window's height less the band under it and the next screen's
+   heading, so both show at 1280 x 800 and 1366 x 768. */
+.ahero-photo {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  height: clamp(420px, calc(100vh - 360px), 720px);
   background: #060d18;
   color: #ffffff;
 }
 
-/* The oval of light sits in the right third; from 1101 px up it stays clear
-   of the copy, and below that the picture shows its dark left half. */
+/* The oval of light stays at the right (67–91 % of the width from 769 px
+   up) and no copy is ever set over it. */
 .ahero-img {
   position: absolute;
   inset: 0;
@@ -41,286 +41,196 @@
   object-position: 100% 50%;
 }
 
-/* Two layers: dark under the copy on the left, fading out before the oval,
-   and dark along the foot, where the figures sit over the light on the
-   water. */
 .ahero-scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(0deg, rgba(3, 8, 18, .86) 0%, rgba(3, 8, 18, .5) 24%, rgba(3, 8, 18, 0) 50%),
-    linear-gradient(90deg, rgba(3, 8, 18, .8) 0%, rgba(3, 8, 18, .62) 38%, rgba(3, 8, 18, .2) 60%, rgba(3, 8, 18, 0) 76%);
+    linear-gradient(90deg, rgba(0, 0, 0, .42) 0, rgba(0, 0, 0, .2) 40%, rgba(0, 0, 0, 0) 62%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, .35) 100%);
 }
 
-/* Vertical spacing follows the window's height as well as its width: on a
-   1366 x 768 or 1280 x 800 laptop the next screen's heading still shows. */
-.ahero-inner {
-  position: relative;
-  padding-block: clamp(2.5rem, 6.5vh, 5rem) clamp(1.75rem, 4vh, 2.75rem);
+/* One line, no horizontal: the photograph splits in two, not four. It runs
+   in the dark gap between the copy and the oval and crosses neither. */
+.ahero-line {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
 }
 
-.ahero-eyebrow { color: rgba(255, 255, 255, .76); }
+.ahero-line line {
+  stroke: rgba(255, 255, 255, .55);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
 
-/* The brand's hero face and weight, as large as four lines allow and still
-   leave the next screen in view: 74 px at 1440 x 900, 89 at 1920 x 1080,
-   less on a short window. The em cap breaks the first sentence after
-   "agents", never after "and"; each sentence opens its own line. */
+.ahero-line-narrow { display: none; }
+
+/* The spark sits on the line at a third of the photograph's height, turned
+   by overview-alt.js so its long axis follows the line. */
+.ahero-spark {
+  position: absolute;
+  left: 61.92%;
+  top: 34%;
+  z-index: -1;
+  width: 40px;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(var(--spark-turn, 0deg));
+}
+
+.ahero-inner { width: 100%; }
+
+.ahero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 64%;
+  padding-block: 28px;
+}
+
+/* Four lines: the first sentence breaks after "agents" (the em cap), the
+   other two stand on their own lines. */
 .ahero-title {
-  margin-top: 1.5rem;
   max-width: 11em;
-  font-size: clamp(2.25rem, min(1.2rem + 4.2vw, 8.2vh), 6rem);
-  line-height: 1;
+  font-size: clamp(40px, 5.2vw, 88px);
+  line-height: .95;
   letter-spacing: .01em;
   color: #ffffff;
 }
 
-.ahero-line { display: block; text-wrap: balance; }
+.ahero-sentence { display: block; text-wrap: balance; }
 
-/* The hairline and the crossing on it. The rule spans the copy's measure, so
-   the crossing can be placed against the copy; the line itself is the
-   ::before, drawn edge to edge, so drawing it in never stretches the spark. */
-.ahero-rule {
-  position: relative;
-  height: 1px;
-  margin-block: clamp(1.25rem, 3vh, 2.25rem);
-}
+.ahero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; }
 
-.ahero-rule::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(50% - 50vw);
-  right: calc(50% - 50vw);
-  background: rgba(255, 255, 255, .5);
-  transform-origin: 0 50%;
-}
+/* The brand's ask on a dark ground: white fill, ink label. */
+.ahero .btn--dark:hover { --fill: #edf0f2; }
+.ahero .btn--dark:active { --fill: #e1e7eb; }
+.ahero .btn--dark:focus-visible::after { background: #ffffff; }
 
-/* The second line runs at 25.5 degrees off vertical, the long axis of the
-   spark glyph, so line and spark read as one mark. The crossing sits just
-   left of the figures, where above the hairline the line clears the H1's
-   line ends. Below the hairline its arm fades out within 90 px, while it is
-   still in the gap beside the lead, so it never runs through a word or a
-   button. */
-.ahero-cross {
-  position: absolute;
-  left: calc(100% - var(--stats-w) - .5rem);
-  top: 0;
-  width: 0;
-  height: 0;
-}
+.ahero .ahero-link { color: #ffffff; }
+.ahero .ahero-link:hover { color: #c1dff4; }
+.ahero-photo :focus-visible { outline-color: #ffffff; }
 
-.ahero-diag {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
-  height: 300vh;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, 0) calc(50% + 90px));
-  transform: translate(-50%, -50%) rotate(25.5deg);
-}
-
-.ahero-spark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2.5rem;
-  height: auto;
-  max-width: none;
-  transform: translate(-50%, -50%);
-}
-
-/* Under the hairline: the promise and the two buttons on the left, the three
-   figures on the right, both ending on one line. */
-.ahero-foot {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, var(--stats-w));
-  gap: var(--foot-gap);
-  align-items: end;
-}
-
-.ahero-copy { min-width: 0; }
-
-.ahero-lead { max-width: 36rem; color: rgba(255, 255, 255, .86); text-wrap: pretty; }
-.ahero-cta { margin-top: clamp(1.25rem, 3vh, 2rem); }
-
-/* On the photograph the grey secondary would read as a disabled button. */
-.ahero .btn--secondary { --fill: rgba(255, 255, 255, .14); color: #ffffff; }
-.ahero .btn--secondary:hover { --fill: rgba(255, 255, 255, .24); }
-.ahero .btn--secondary:active { --fill: rgba(255, 255, 255, .3); }
-.ahero .btn:focus-visible::after { background: #ffffff; }
-.ahero :focus-visible { outline-color: #ffffff; }
-
-.ahero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.ahero-stat { min-width: 0; padding-left: .875rem; border-left: 1px solid rgba(255, 255, 255, .3); }
-
-/* Sized so "from 30 days" holds one line in a third of the figures' column
-   at every width the column stands beside the lead. */
-.ahero-stat-value {
-  display: flex;
-  align-items: baseline;
-  white-space: nowrap;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.625rem, .9rem + 1.3vw, 2.25rem);
-  line-height: 1;
-  letter-spacing: 0;
-  color: #ffffff;
-}
-
-/* "from 30 days" is one fact on one line, the word set small beside it. */
-.ahero-stat-prefix {
-  margin-right: .35em;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: .45em;
-  color: rgba(255, 255, 255, .76);
-}
-
-.ahero-stat-label {
-  margin-top: .625rem;
-  font-size: .875rem;
-  font-weight: 400;
-  line-height: 1.3;
-  color: rgba(255, 255, 255, .76);
-}
-
-/* On load the words rise line by line, the hairline draws from the left and
-   the spark lands last. Motion is never needed to read the hero. */
+/* On load the words rise and the spark lands; motion is never needed to
+   read the hero. */
 @media (prefers-reduced-motion: no-preference) {
-  .ahero-eyebrow, .ahero-line, .ahero-foot { animation: ahero-rise .7s var(--ease-out) both; }
-  .ahero-line:nth-child(1) { animation-delay: .08s; }
-  .ahero-line:nth-child(2) { animation-delay: .18s; }
-  .ahero-line:nth-child(3) { animation-delay: .28s; }
-  .ahero-foot { animation-delay: .45s; }
-  .ahero-rule::before { animation: ahero-draw 1.1s var(--ease) .3s both; }
-  .ahero-diag { animation: ahero-fade 1s var(--ease) .85s both; }
-  .ahero-spark { animation: ahero-spark .8s var(--ease-out) 1.05s both; }
+  .ahero-sentence, .ahero-actions { animation: ahero-rise .7s var(--ease-out) both; }
+  .ahero-sentence:nth-child(2) { animation-delay: .1s; }
+  .ahero-sentence:nth-child(3) { animation-delay: .2s; }
+  .ahero-actions { animation-delay: .35s; }
+  .ahero-line { animation: ahero-fade 1s var(--ease) .4s both; }
+  .ahero-spark { animation: ahero-fade .8s var(--ease-out) .8s both; }
 }
 
 @keyframes ahero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes ahero-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes ahero-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes ahero-spark {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(.35) rotate(-50deg); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-}
 
-/* Below 1280 px a third of the figures' column no longer holds "from 30
-   days" on one line, so the figures move under the buttons. The crossing
-   moves right, over the photograph's light, and its line runs only upward
-   from the spark, since below the hairline every column now holds words. */
-@media (max-width: 1279px) {
-  .ahero-foot { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
-  .ahero-stats { max-width: 40rem; }
-  .ahero-cross { left: 80%; }
-  .ahero-diag {
-    height: 150vh;
-    background: rgba(255, 255, 255, .4);
-    transform-origin: 50% 100%;
-    transform: translate(-50%, -100%) rotate(25.5deg);
-  }
-}
+/* ——— S1: the promise band ———————————————————————————————————————————— */
 
-/* Below 1101 px the oval would stand behind the copy, so the picture shows
-   its dark half. */
-@media (max-width: 1100px) {
-  .ahero-img { object-position: 22% 50%; }
-  .ahero-scrim {
-    background:
-      linear-gradient(0deg, rgba(3, 8, 18, .82) 0%, rgba(3, 8, 18, .4) 40%, rgba(3, 8, 18, .25) 100%),
-      linear-gradient(90deg, rgba(3, 8, 18, .55) 0%, rgba(3, 8, 18, .15) 100%);
-  }
-}
+/* The promise and the proof, on a band that starts in Lviv blue 50 and
+   dissolves into the next screen's white. */
+.ahero-band { background: linear-gradient(180deg, #c1dff4 0, #ffffff 100%); }
 
-/* On a phone three figures side by side cannot hold "from 30 days" on one
-   line, so each figure takes a row, its label beside it. The spark moves
-   further right, so its line clears the H1's last line ends. At 36 px the
-   H1 holds each short sentence on one line down to 320 px. */
-@media (max-width: 540px) {
-  .ahero-title { margin-top: 1.25rem; }
-  .ahero-cross { left: 88%; }
-  .ahero-spark { width: 2rem; }
-  .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: .875rem; }
-  .ahero-stat {
-    display: grid;
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    align-items: baseline;
-    column-gap: .75rem;
-    padding-left: .75rem;
-  }
-  .ahero-stat-value { font-size: 1.5rem; }
-  .ahero-stat-label { margin-top: 0; font-size: .8125rem; }
-}
-
-/* At 320 "Proven in weeks." runs to within 30 px of the edge. */
-@media (max-width: 359px) {
-  .ahero-cross { left: 95%; }
-}
-
-/* ——— S2: the whole offer ——————————————————————————————————————————— */
-
-/* The screen follows a dark hero, so it needs no hairline over it, and a
-   shorter top so its heading shows under the hero at 1440 x 900. */
-.aoffer.home-screen { border-top: 0; padding-top: clamp(2.25rem, 3.5vw, 3.5rem); }
-
-/* Two columns, one per way in, each block over its own layer of the
-   diagram; the Oracle foundation spans both. The DOM runs block, layer,
-   connectors, block, layer, connectors, foundation, which is the reading
-   order on a phone. */
-.aoffer-grid {
+.ahero-band-inner {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas:
-    "pb sb"
-    "pp sp"
-    "pl sl"
-    "ba ba";
-  column-gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+  padding-block: 24px;
 }
 
-.ablock--products { grid-area: pb; }
-.ablock--practice { grid-area: sb; }
-.apanel--products { grid-area: pp; }
-.apanel--services { grid-area: sp; }
-.alinks-cell--products { grid-area: pl; }
-.alinks-cell--services { grid-area: sl; }
-.abase { grid-area: ba; }
+.ahero-promise { grid-column: 1 / 7; min-width: 0; }
 
-/* The two blocks: the live S2's words, in ink on the white ground. Both
-   CTAs sit on one baseline, over their own layer. */
-.ablock {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.ahero-dash { display: block; width: 62px; height: 2px; margin-bottom: 10px; background: #000000; }
+
+.ahero-lead {
+  max-width: 36rem;
+  font-weight: 300;
+  font-size: clamp(18px, 1.53vw, 24px);
+  line-height: 1.4;
+  color: #26292b;
+  text-wrap: pretty;
+}
+
+.ahero-stats {
+  grid-column: 7 / 13;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
   min-width: 0;
-  padding-bottom: clamp(1.5rem, 2.4vw, 2rem);
 }
 
-.ablock-title {
+/* Each figure fits its third of the column: 48 px wherever "from 30 days"
+   holds one line at that size, smaller where it would not, never under 30.
+   The three stay one size, since their columns are equal. */
+.ahero-stat { min-width: 0; container-type: inline-size; }
+
+.ahero-stat-value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 48px;
+  font-size: clamp(30px, calc((100cqi - 46px) / 3.3), 48px);
+  line-height: 1;
+  letter-spacing: 0;
+  color: #000000;
+}
+
+.ahero-stat-prefix {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: clamp(1.5rem, 1.15rem + .9vw, 1.75rem);
-  line-height: 1.2;
-  color: var(--text);
+  font-size: 16px;
+  color: #4c5156;
 }
 
-.ablock-body { max-width: 36rem; text-wrap: pretty; }
-.ablock-cta { margin-top: auto; padding-top: .25rem; }
+.ahero-stat-label {
+  margin-top: 4px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.35;
+  color: #4c5156;
+}
 
-/* A layer: a black panel with a 12 px cut, its owner named in its top row.
-   The brand's Offers band sets its flat fills on black, and so does this. */
-.apanel, .abase {
-  --cut: var(--cut-12);
+/* ——— S2: the whole offer —————————————————————————————————————————————— */
+
+.aoffer.home-screen { border-top: 0; padding-block: 44px 80px; }
+.aoffer .home-head { margin-bottom: 40px; }
+
+/* The two tiles stacked on the left, the diagram beside them at their full
+   height, its lanes in their order: products, then services. */
+.aoffer-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+}
+
+.away--products { grid-column: 1 / 7; grid-row: 1; }
+.away--practice { grid-column: 1 / 7; grid-row: 2; }
+.amap { grid-column: 7 / 13; grid-row: 1 / 3; }
+
+/* A way in: its photograph under a scrim, the copy in white on it. The tile
+   is not a link; its arrow link is. */
+.away {
+  --cut: 8px;
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  min-height: 320px;
+  padding: 32px;
   background: #000000;
   color: #ffffff;
   clip-path: polygon(
@@ -330,55 +240,57 @@
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
-.apanel {
-  display: flex;
-  flex-direction: column;
-  gap: .875rem;
-  padding: 1rem;
+.away-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transition: transform .4s var(--ease);
 }
 
-.apanel-owner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-  min-height: 1rem;
+.away-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .74) 0, rgba(0, 0, 0, .56) 60%, rgba(0, 0, 0, .34) 100%);
 }
 
-.apanel-label {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: var(--fs-xs);
-  line-height: 1.2;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .72);
+.away-title { font-family: var(--font-sans); font-weight: 400; font-size: 28px; line-height: 1.2; color: #ffffff; }
+.away-body { margin-top: 12px; font-weight: 300; font-size: 17px; line-height: 1.5; color: #edf0f2; text-wrap: pretty; }
+.away-list { margin-top: 16px; gap: 8px; }
+.away-list li { font-weight: 400; font-size: 16px; line-height: 1.4; color: #ffffff; }
+.away-list .icon { width: 16px; height: 16px; margin-top: .125rem; color: #ffffff; }
+.away-cta { margin-top: auto; padding-top: 20px; }
+.away .link-arrow { color: #ffffff; }
+.away .link-arrow:hover { color: #c1dff4; }
+.away :focus-visible { outline-color: #ffffff; }
+
+@media (hover: hover) {
+  .away:hover .away-img, .away:focus-within .away-img { transform: scale(1.04); }
 }
 
-/* The ink marks, turned white for the black panels. */
-.apanel-mark { height: .75rem; width: auto; filter: brightness(0) invert(1); }
+@media (prefers-reduced-motion: reduce) {
+  .away-img { transition: none; }
+  .away:hover .away-img, .away:focus-within .away-img { transform: none; }
+}
 
-/* Both layers hold two rows of tiles, so the two panels end level. */
-.atiles { display: grid; gap: .5rem; grid-auto-rows: 1fr; flex: 1; }
-.atiles--products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.atiles--services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* ——— S2: the portfolio diagram ————————————————————————————————————————— */
 
-/* One tile anatomy in both layers: the glyph at the top, the name at the
-   foot. A group tile takes its home tile's fill (a group keeps its colour
-   wherever it appears); a service tile is white and carries its step
-   number. Everything on a fill is #1a1a1a, as on the home tiles. */
-.atile {
-  --cut: var(--cut-8);
-  --tile-fill: #bdcbd7;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
+/* Two cards on the white page, light grounds only: colour is a product
+   group, an outline is a service, the blue tint is Oracle's platform. The
+   type is 12–13 px, a deliberate exception for a schematic; nothing in it
+   is a control. */
+.amap { display: flex; flex-direction: column; min-width: 0; }
+
+.amap-card {
+  --cut: 8px;
+  position: relative;
   min-width: 0;
-  min-height: 6.5rem;
-  padding: .75rem .75rem .875rem;
-  background: var(--tile-fill);
-  color: #1a1a1a;
+  padding: 20px;
   clip-path: polygon(
     var(--cut) 0, calc(100% - var(--cut)) 0,
     100% var(--cut), 100% calc(100% - var(--cut)),
@@ -386,168 +298,228 @@
     0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
-.atile--blue { --tile-fill: #459fdd; }        /* Lviv blue 75 */
-.atile--orange { --tile-fill: #fe8d6b; }      /* Austin orange 75 */
-.atile--blue-light { --tile-fill: #c1dff4; }  /* Lviv blue 50 */
-.atile--neutral { --tile-fill: #bdcbd7; }     /* neutral 400 */
-.atile--service { --tile-fill: #ffffff; }
-
-.atile-mark { display: inline-flex; color: #1a1a1a; }
-.atile-mark .icon { width: 1.375rem; height: 1.375rem; }
-
-.atile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
-.atile-index {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.75rem;
-  line-height: .9;
-  color: #1a1a1a;
+/* A home card rests white with a hairline (START-HERE §4: #edf0f2 is a
+   hover step, never a resting fill), and grows to the tiles' height. */
+.amap-card--softserve {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #ffffff;
+  border: 1px solid #d1dae2;
 }
 
-.atile-name {
+.amap-card--oracle { display: flex; flex-direction: column; gap: 8px; background: #c1dff4; }
+
+/* One mark per company: SoftServe's heads the card that holds its three
+   lanes, Oracle's heads its own. */
+.amap-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.amap-mark { flex: none; height: auto; }
+.amap-mark--softserve { width: 96px; }
+.amap-mark--oracle { width: 84px; }
+.amap-caption { font-weight: 300; font-size: 13px; line-height: 1.3; color: #4c5156; text-align: right; }
+
+.amap-label {
+  margin-bottom: 8px;
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: .9375rem;
+  font-size: 12px;
   line-height: 1.2;
-  letter-spacing: 0;
-  color: #1a1a1a;
-  overflow-wrap: anywhere;
-  text-wrap: balance;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #4c5156;
 }
 
-/* A group name is two lines, broken before its last word (overview-alt.js),
-   and its size fits the tile so the longer first line, "Enterprise
-   knowledge &" at 10.5 em, holds one line: 15 px wherever the tile has the
-   room, never under 13. */
-.atiles--products .atile { container-type: inline-size; }
-.atiles--products .atile-name {
-  font-size: .9375rem;
-  font-size: clamp(.8125rem, calc((100cqi - 4px) / 10.5), .9375rem);
+.amap-card--oracle .amap-label { margin-bottom: 0; }
+
+.amap-lane { min-width: 0; }
+
+/* The products lane takes the card's spare height, so the chips grow into
+   it rather than leaving air under the lanes. */
+.amap-lane--products { flex: 1; display: flex; flex-direction: column; }
+
+.amap-chips { display: grid; gap: 8px; }
+.amap-chips--products { flex: 1; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+.amap-chips--platforms { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.amap-chip {
+  --cut: 4px;
+  --chip-fill: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  background: var(--chip-fill);
+  color: #000000;
+  clip-path: polygon(
+    var(--cut) 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%,
+    0 calc(100% - var(--cut)), 0 var(--cut));
 }
 
-/* The connectors: one short line per tile column, down to the foundation. */
-.alinks-cell { height: 1.25rem; }
-.alinks { display: block; width: 100%; height: 100%; }
+/* A group keeps its home tile's fill. */
+.amap-chip--blue { --chip-fill: #459fdd; }        /* Lviv blue 75 */
+.amap-chip--orange { --chip-fill: #fe8d6b; }      /* Austin orange 75 */
+.amap-chip--blue-light { --chip-fill: #c1dff4; }  /* Lviv blue 50 */
+.amap-chip--neutral { --chip-fill: #bdcbd7; }     /* neutral 400 */
 
-.alink {
-  fill: none;
-  stroke: #1a1a1a;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 16;
-  stroke-dashoffset: 0;
-}
+.amap-chip .icon { width: 16px; height: 16px; color: #000000; }
+.amap-chip-name { font-family: var(--font-sans); font-weight: 400; font-size: 13px; line-height: 1.25; letter-spacing: 0; }
 
-/* The foundation: Oracle's mark a step larger than the owners' above it,
-   and the four platforms in a row between hairlines. */
-.abase {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
-}
-
-.abase .apanel-owner { flex-direction: column; align-items: flex-start; gap: .625rem; }
-.abase .apanel-mark { height: 1rem; }
-
-.aplats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-.aplat {
+.amap-link {
   display: flex;
   align-items: center;
-  gap: .625rem;
-  min-width: 0;
-  padding: .375rem 1rem;
-  border-left: 1px solid rgba(255, 255, 255, .22);
+  gap: 8px;
+  min-height: 24px;
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: .9375rem;
+  font-size: 12px;
   line-height: 1.2;
-  color: #ffffff;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #4c5156;
 }
 
-.aplat .icon { width: 1.375rem; height: 1.375rem; flex: none; color: rgba(255, 255, 255, .88); }
-.aplat-name { min-width: 0; }
+.amap-link .icon { flex: none; width: 16px; height: 16px; }
 
-/* The diagram assembles from the bottom up when it scrolls in, the one thing
-   a still picture cannot say: the foundation first, then the lines up from
-   it, then the products, then the services. The resting state is visible
-   with no script; the page's reveal observer adds is-in. */
-.js-reveal .aoffer-grid.reveal { opacity: 1; transform: none; }
-.js-reveal .aoffer-grid.reveal .ablock { opacity: 0; transform: translateY(8px); transition: opacity .45s var(--ease-out), transform .45s var(--ease-out); }
-.js-reveal .aoffer-grid.reveal :is(.apanel, .abase) { opacity: 0; transition: opacity .45s var(--ease); }
-.js-reveal .aoffer-grid.reveal .aplat { opacity: 0; transition: opacity .4s var(--ease); transition-delay: calc(.15s + var(--i) * .07s); }
-.js-reveal .aoffer-grid.reveal .atile { opacity: 0; transform: translateY(6px); transition: opacity .4s var(--ease-out), transform .4s var(--ease-out); }
-.js-reveal .aoffer-grid.reveal .atiles--products .atile { transition-delay: calc(.6s + var(--i) * .06s); }
-.js-reveal .aoffer-grid.reveal .atiles--services .atile { transition-delay: calc(.95s + var(--i) * .07s); }
-.js-reveal .aoffer-grid.reveal .alink { stroke-dashoffset: 16; transition: stroke-dashoffset .9s var(--ease) .35s; }
-.js-reveal .aoffer-grid.reveal .apanel { transition-delay: .5s; }
-.js-reveal .aoffer-grid.reveal .ablock--practice { transition-delay: .1s; }
+/* The outlined chips: a path, so the stroke follows the cut corners; dashed
+   where the thing is optional or still to come. */
+.amap-node { position: relative; display: inline-flex; flex: none; align-items: center; justify-content: center; }
+.amap-node--28 { width: 28px; height: 28px; }
+.amap-node--36 { width: 36px; height: 36px; }
+.amap-node-shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.amap-node-shape path { fill: #ffffff; stroke: #000000; stroke-width: 1.5; }
+.amap-node--dashed .amap-node-shape path { stroke-dasharray: 3 2.5; }
+.amap-pods .amap-node--dashed .amap-node-shape path { stroke: #4c5156; }
+.amap-node .icon { position: relative; width: 16px; height: 16px; color: #000000; }
 
-.js-reveal .aoffer-grid.reveal.is-in :is(.ablock, .apanel, .abase, .aplat, .atile) { opacity: 1; transform: none; }
-.js-reveal .aoffer-grid.reveal.is-in .alink { stroke-dashoffset: 0; }
+/* The packaged track: five steps equally spaced on one line, the names
+   under them. */
+.amap-track { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
 
-@media (prefers-reduced-motion: reduce) {
-  .js-reveal .aoffer-grid.reveal :is(.ablock, .apanel, .abase, .aplat, .atile, .alink) { transition: none; }
+.amap-track::before {
+  content: "";
+  position: absolute;
+  top: 13.25px;
+  left: 10%;
+  right: 10%;
+  height: 1.5px;
+  background: #bdcbd7;
 }
 
-/* From 1024 to 1439 the two columns hold, but a third of a column is too
-   narrow for a group name's first line at 13 px: the groups go two across,
-   the services one per row (the two panels still end level, since their
-   row stretches the shorter), and below 1280 the four platforms two across. */
-@media (max-width: 1439px) {
-  .atiles--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .atiles--services { grid-template-columns: minmax(0, 1fr); }
+.amap-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; text-align: center; }
+.amap-stage-name { font-family: var(--font-sans); font-weight: 400; font-size: 12px; line-height: 1.25; letter-spacing: 0; color: #26292b; text-wrap: balance; }
+.amap-optional { color: #4c5156; }
+
+.amap-pods-row { display: flex; align-items: center; gap: 16px; }
+.amap-pods { display: flex; flex: none; gap: 8px; }
+.amap-pods-caption { min-width: 0; font-weight: 300; font-size: 13px; line-height: 1.35; color: #4c5156; }
+
+.amap-builton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 40px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #4c5156;
 }
 
-@media (max-width: 1279px) {
-  .aplats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: .5rem; }
+.amap-builton .icon { width: 16px; height: 16px; }
+
+/* ——— widths ——————————————————————————————————————————————————————————— */
+
+@media (max-width: 1365px) {
+  .ahero-stat-label { font-size: 14px; }
+  .amap-chips--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* Below 1024 the blocks and their layers stack, each block over its own
-   layer, and the connectors go: a line from the products panel would point
-   at the services block under it. A layer then has the full measure again. */
-@media (max-width: 1023px) {
-  .aoffer-grid {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "pb"
-      "pp"
-      "sb"
-      "sp"
-      "ba";
-  }
-  .alinks-cell { display: none; }
-  .apanel--products, .apanel--services { margin-bottom: 2.5rem; }
-  .apanel--services { margin-bottom: .75rem; }
-  .atiles--products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .atiles--services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Below 1181 px a half row no longer holds the lead in three lines beside
+   the figures: the lead takes the full measure, the figures three across
+   under it. */
+@media (max-width: 1180px) {
+  .ahero-promise, .ahero-stats { grid-column: 1 / -1; }
+  .ahero-stats { max-width: 44rem; }
 }
 
-@media (max-width: 720px) {
-  .abase { grid-template-columns: minmax(0, 1fr); padding: 1.125rem 1rem; }
-  .abase .apanel-owner { flex-direction: row; align-items: center; justify-content: space-between; }
-  .aplats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: .5rem; }
-  .aplat { padding: .5rem .75rem; }
-  .aplat:nth-child(odd) { border-left: 0; padding-left: 0; }
+/* 1024: the tiles side by side, the diagram at full width under them, where
+   the six groups go three across again. */
+@media (max-width: 1100px) {
+  .aoffer-grid { grid-template-rows: auto auto; }
+  .away { min-height: 400px; }
+  .away--products { grid-column: 1 / 7; grid-row: 1; }
+  .away--practice { grid-column: 7 / 13; grid-row: 1; }
+  .amap { grid-column: 1 / -1; grid-row: 2; }
+  .amap-chips--products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-@media (max-width: 720px) {
-  .atiles--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* 768: the tiles stacked at full width, the diagram under them. */
+@media (max-width: 900px) {
+  .away--products, .away--practice { grid-column: 1 / -1; }
+  .away--practice { grid-row: 2; }
+  .amap { grid-row: 3; }
+  .away { min-height: 0; }
+  .amap-chips--products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 560px) {
-  .atile { min-height: 5.75rem; }
+/* The photograph takes its content's height, the oval becomes a glow at the
+   right edge, and the line moves right with it. */
+@media (max-width: 768px) {
+  .ahero-photo { height: auto; min-height: 440px; }
+  .ahero-img { object-position: 56% 50%; }
+  .ahero-title { font-size: 44px; }
+  .ahero-line-desk { display: none; }
+  .ahero-line-narrow { display: inline; }
+  .ahero-spark { left: 80.56%; }
 }
 
-/* Paper keeps the words and drops the photograph and the black grounds. */
+/* A phone: the copy takes the full width, so the line and the spark would
+   cross it and go; the button spans the row, the link sits under it; the
+   figures and the diagram's lanes become rows. */
+@media (max-width: 540px) {
+  .ahero-copy { width: 100%; }
+  .ahero-title { max-width: none; font-size: 40px; }
+  .ahero-line, .ahero-spark { display: none; }
+  .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
+  .ahero-actions .btn { width: 100%; }
+  .ahero-actions .ahero-link { align-self: flex-start; }
+  .ahero-lead { font-size: 18px; }
+  .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ahero-stat { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
+  .ahero-stat-value { font-size: 40px; }
+  .ahero-stat-label { margin-top: 0; font-size: 14px; }
+  .away { padding: 24px; }
+  .away-title { font-size: 24px; }
+  .amap-card { padding: 16px; }
+  .amap-track { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .amap-track::before { top: 14px; bottom: 14px; left: 13.25px; right: auto; width: 1.5px; height: auto; }
+  .amap-stage { flex-direction: row; gap: 12px; text-align: left; }
+  .amap-pods-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .amap-chips--platforms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* At 320 "Built on Oracle." holds one line only at 36 px. */
+@media (max-width: 359px) {
+  .ahero-title { font-size: 36px; }
+  .ahero-stat { grid-template-columns: 8.5rem minmax(0, 1fr); }
+  .ahero-stat-value { font-size: 34px; }
+}
+
+/* Paper keeps the words and drops the photographs. */
 @media print {
-  .ahero-img, .ahero-scrim, .ahero-rule { display: none !important; }
-  .ahero { background: #ffffff !important; color: #111111; }
-  .ahero-title, .ahero-stat-value { color: #111111 !important; }
-  .ahero-lead, .ahero-eyebrow, .ahero-stat-label, .ahero-stat-prefix { color: #333333 !important; }
-  .apanel, .abase { background: #ffffff !important; color: #111111; border: 1px solid #bbbbbb; }
-  .apanel-label, .aplat, .aplat .icon { color: #333333 !important; }
-  .apanel-mark { filter: none; }
+  .ahero-img, .ahero-scrim, .ahero-line, .ahero-spark, .away-img, .away-scrim { display: none !important; }
+  .ahero-photo { height: auto; background: #ffffff !important; color: #111111; }
+  .ahero-title { color: #111111 !important; }
+  .away { background: #ffffff !important; color: #111111; border: 1px solid #bbbbbb; }
+  .away-title, .away-list li, .away .link-arrow { color: #111111 !important; }
+  .away-body { color: #333333 !important; }
 }
