@@ -3413,6 +3413,8 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     z-index: auto;
     margin-block: 1.5rem 2.5rem;
     aspect-ratio: 12 / 5;
+    min-height: 0;          /* or the image's own height overrides the ratio */
+    overflow: hidden;
     -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 45%);
     mask-image: linear-gradient(180deg, transparent 0%, #000 45%);
   }
