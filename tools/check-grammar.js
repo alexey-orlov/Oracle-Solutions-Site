@@ -1107,7 +1107,7 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (str(c.chip) && c.chip !== c.full) {
       fail(where, 'chip "' + c.chip + '" differs from full "' + c.full + '" — a group has one name, on the tile, the rail and the product chip');
     }
-    /* PROVENANCE §44 (Alex, on the six tiles: "some headings now are 2 lines, some 1
+    /* PROVENANCE §45 (Alex, on the six tiles: "some headings now are 2 lines, some 1
        line, so content looks not so clean; fix line breaks (not allowed to do
        tile renaming)"): the home tile sets the name on two lines, broken before
        its last word, and site.css fits the size to the tile so the first line
@@ -1795,12 +1795,12 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (str(((o.bespoke || {}).cta || {}).label) && o.bespoke.cta.label !== (C.site.primaryCta || {}).label) {
     fail("overview.bespoke.cta.label", "must read site.primaryCta.label — one contact ask site-wide (round 10)");
   }
-  /* PROVENANCE §44 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
+  /* PROVENANCE §45 (Alex: group names "some 2 lines, some 1 line … fix line breaks"):
      S3 renders each name on two lines, broken before its last word, never the
      name as one run left to wrap wherever the tile's width puts it. */
   var tilesSrc = overviewSrc.slice(overviewSrc.indexOf("function groupTiles("), overviewSrc.indexOf("function delivery("));
   if (!/"<br>"/.test(tilesSrc) || !/lastIndexOf\(" "\)/.test(tilesSrc) || /class="gtile-name">' \+ UI\.esc\(category\.full\)/.test(tilesSrc)) {
-    fail("site/pages/overview.js groupTiles()", "renders the group name as one run — it breaks before the last word, so every tile's name is two lines and the rows start level (PROVENANCE §44)");
+    fail("site/pages/overview.js groupTiles()", "renders the group name as one run — it breaks before the last word, so every tile's name is two lines and the rows start level (PROVENANCE §45)");
   }
 
   /* --- every icon the two new screens name is in the registry --- */
@@ -2634,7 +2634,7 @@ if (/assets\/img\/logos\//.test(raw)) {
   if (/\.gtile-(stage|veil|window|band)\b/.test(css)) {
     fail(V2_CSS, "still styles the round-16 stage (.gtile-stage / -veil / -window / -band) — retired in round 17");
   }
-  /* PROVENANCE §44: the two-line name holds only if its first line never wraps, so
+  /* PROVENANCE §45: the two-line name holds only if its first line never wraps, so
      the body is the name's container and the name's size is clamped to what
      that container's measure holds; and two across stops at 720, below which a
      half row holds the longest first line only under 20 px. */

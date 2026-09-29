@@ -227,7 +227,7 @@
        renaming)". Every name sets on two lines, broken before its last word, so
        the kind of work reads on the first line and the noun on the second, and
        the one-liners and arrows start level in every row. site.css sizes the
-       name to its tile, so the first line never wraps (PROVENANCE §44). */
+       name to its tile, so the first line never wraps (PROVENANCE §45). */
     function twoLineName(name) {
       var cut = name.lastIndexOf(" ");
       if (cut === -1) return UI.esc(name);
