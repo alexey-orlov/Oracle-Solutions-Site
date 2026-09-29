@@ -949,6 +949,22 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 .ptile-title a:hover { color: var(--action); }
+
+/* The whole tile is its link (Alex, 2026-09-29: "make images on the tiles (or
+   entire tiles? what's intuitive?) clickable, not just the heading and learn
+   more links"). The tile already answered a hover as one object, its ground
+   deepening and its picture easing in, so all of it now answers a click. The
+   title's link stretches over the tile: a real link, so a modifier-click opens
+   a tab and the address shows on hover, and the tile keeps one accessible
+   name. The demo badge, the tile's one other action, stands above it. The
+   Learn more link lies under the stretch (the same address) and takes its
+   hover from the tile's. */
+.ptile { position: relative; }
+.ptile-title a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.ptile-badges { z-index: 2; }
+.ptile:hover .ptile-title a { color: var(--action); }
+.ptile:hover .ptile-cta .link-arrow { color: var(--action); border-bottom-color: transparent; }
+.ptile:hover .ptile-cta .link-arrow .icon { transform: translateX(2px); }
 .ptile-desc { font-size: var(--fs-sm); line-height: 1.6; color: var(--text-muted); }
 .ptile-outcomes { margin-top: .125rem; }
 .ptile-cta { margin-top: auto; padding-top: .625rem; }

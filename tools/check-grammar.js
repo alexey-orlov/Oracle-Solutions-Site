@@ -1169,6 +1169,15 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (C.shared.sectionLabels && C.shared.sectionLabels.successStory !== undefined) {
     fail("shared.sectionLabels", "successStory is superseded by caseStudy");
   }
+  /* A catalog tile is one link (Alex, 2026-09-29: "make images on the tiles (or
+     entire tiles? what's intuitive?) clickable"): the title's link stretches
+     over the tile, and the demo badge, its one other action, stands above. */
+  var tileCss = fs.readFileSync(path.join(root, "site/assets/site.css"), "utf8");
+  if (!/\.ptile \{ position: relative; \}/.test(tileCss) ||
+      !/\.ptile-title a::after \{[^}]*position: absolute;[^}]*inset: 0;[^}]*z-index: 1;/.test(tileCss) ||
+      !/\.ptile-badges \{ z-index: 2; \}/.test(tileCss)) {
+    fail("site/assets/site.css", "a catalog tile is one link: .ptile-title a::after stretches over the positioned .ptile, the demo badge above it (Alex, 2026-09-29)");
+  }
   /* The chip is the product page's alone since §62 (Alex, 2026-09-29: "remove
      'Forecast', 'Proven' etc labels on the main page in case studies"). */
   var appCode = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
