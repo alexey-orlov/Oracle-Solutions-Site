@@ -447,6 +447,12 @@ Exact commands are in HANDOFF §4.
   - **the header's *Talk to us*** is still the grey secondary button on white; the ask was about the blue hero;
   - **not re-checked at 1280, 1024 and 768** (the usage cap);
   - **the checker still reads `overviewAlt.*`:** the keys keep their names until the fold.
+- **§62 (the form, the home copy, the S2 pictures):**
+  - **the S2 pictures** are the careers site's own (`about-us/focus1` and `focus3.webp`), likely licensed stock, so §60's licence question covers them too; the 4× upscale's fine detail (faces, screens) is the model's, not the photographer's;
+  - **personal mailboxes:** `formDomains.personal` is a short list; an address at an unlisted provider fills that provider's name as the company until the visitor edits it;
+  - **the case-studies lead** dropped the copy pass's *measured in production or modeled on real data*: with the chips gone the home page says a figure's status nowhere, except a forecast's *simulated* in its small line;
+  - **the Why H2** is the copy pass's *AI experts who know Oracle.*; *Experts in AI and Oracle.* is Alex's wording, one key away;
+  - **the legend** is *Role* rather than *I am a…*, which read *I am a… An Oracle seller*; *Writing as* is the warmer alternative.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
