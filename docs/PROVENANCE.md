@@ -7322,6 +7322,78 @@ _A change between rounds, made in its own session while the Internal-panel remov
 - **Parallel sessions:** the product-pages session (round 20, on a branch) was told which regions moved, and its `overview` rewrite leaves the two products' `facet`, `tags` and `technology` alone. §44, §45 and §46 were numbered with the two sessions at work at the same time.
 - **Open for Alex:** START-HERE §9, under §46.
 
+## 47. An alternative home page at `#/alt`: a photographic hero and the whole offer beside a diagram, 2026-09-29
+
+- **The ask (Alex):** a new version of the home page beside the live one, at `<url>/alt`:
+  - a first screen *"really bold and cool, without diagram"*, styled as softserveinc.com/en-us/services, *"but not full screen, so next screen is visible"*;
+  - the built-on diagram *"not so boring and grayish"*, moved to the second screen together with the two ways in;
+  - S2's heading to replace *A head start that scales.* as *"all encompassing heading for this holistic view of our offering"*.
+- **Where it lives:** `#/alt` (`pages/overview-alt.js`, `assets/home-alt.css`, `overviewAlt` in `content.js`, one route in `app.js`), with `site/alt/index.html` redirecting the plain path `/alt` there. The page renders the live home page and swaps only its first screens, so everything from S3 down stays the live page's own while the two are compared. While it is open, links into a home screen (`#/#…`, the header's *Services* and *Talk to us*) land on the same screen of `#/alt`.
+- **S2's heading:** *Everything to go live with AI.* A fresh-context copy pass (Fable) proposed *Products, plus a delivery team.*; it was not taken, because it names the two halves but not what the buyer gets, and *delivery team* undersells the practice and the bespoke team. *Everything* covers products and services, packaged and bespoke; *go live* is the gain, AI in production and not in pilots. It keeps clear of *time to value* (already three times on the page), the H1's words and *AI factory*.
+- **Version 1**, Opus, same day, rejected in review:
+  - the hero: a full-bleed dark photograph with the whole hero on it (the eyebrow, the H1, the lead, two buttons, the three figures) and the brand's hairline and spark crossing it;
+  - S2: the two ways in as text above a split diagram, a black panel under each, on a black Oracle band.
+  - The version the shared link carries is this draft: version 1790678606-4e27 (§44, *Published*), then its stylesheet at 4e84bd3 in version 1790678833-5d88 (§48).
+- **Alex's review of version 1:**
+  - *"Remove … subheading"* (the eyebrow);
+  - *"the buttons with their layout and colors look weird on this background"*;
+  - *"left side looks overloaded with content"*;
+  - *"metrics look too tiny"*;
+  - *"the lines from the logo divide content into smth like 4 cells"*;
+  - for the diagram:
+    - *"make sure we don't have SoftServe logo twice"*;
+    - *"Services should be split in 2 parts; packaged services and bespoke services; those are our pods"*;
+    - *"I don't like too much contrast between black and white, or black and color, so black background is not so good"*;
+    - *"Placing the image under the respective block is not best practice. I thought about it to be compact and sit on the left or right, while Enterprise AI agents and workflows and Expert services, from proof to scale remain tiles, as previously"*;
+  - and *"don't stick to this layout too much … maybe redo from the very beginning"*.
+- **Version 2 — the split:** a fresh-context design pass (Fable) worked from the brief, this review, the brand system and the references, without version 1's reasoning, and wrote the spec. Opus built it and ran the QA.
+- **Version 2 — what it is:**
+  - **S1:**
+    - The photograph (`heroes/overview.jpg`) carries only the H1, a white *Explore the products →* button (the brand's ask on a dark ground) and a white *How we deliver →* arrow link.
+    - One line and the spark run in the dark gap between the copy and the oval. The spark turns with the photograph's shape so its long axis follows the line. There is no horizontal line.
+    - Under the photograph, a band from Lviv blue 50 to white holds the lead and the three figures in Azurio at up to 48 px, one size, fitted so *from 30 days* holds one line. That is 48 px from about 1640 px up, 41 at 1440 and 34 at 1280.
+    - The photograph is held to the window less the band and the next heading. S2's heading shows whole at 1280 × 800, 1366 × 768, 1440 × 900, 1536 × 864 and 1920 × 1080, but not at 1024 × 768, where the band stacks.
+  - **S2:**
+    - The two ways in are photographic tiles again (new photographs, `heroes/workforce-optimization.jpg` and `heroes/services.jpg`, since the oval went to the hero), stacked on the left.
+    - The diagram sits beside them at their height. One white SoftServe card carries the one SoftServe mark and three lanes:
+      - products, in their home-tile fills;
+      - the packaged track, five outlined steps on a line, the managed one dashed;
+      - the bespoke team, three pods and a dashed open one.
+    - *Built on* leads to the Oracle card in Lviv blue 50, with Oracle's mark and the four platforms.
+    - Light grounds only.
+- **Where the build departs from the spec:**
+  - The spec's SoftServe card rested on `#edf0f2`; the build makes it white with a hairline, per START-HERE §4 (*"#edf0f2 is a hover step, never a resting fill"*).
+  - S2 keeps the home page's standard screen head rather than a 14 px eyebrow.
+  - The 48 px figures fit their columns only from about 1640 px, so they scale down under that.
+  - 320 px takes a 36 px H1, so *Built on Oracle.* holds one line.
+- **Before and after (the live `#/` against `#/alt` version 2):**
+
+| Screen | Live `#/` | `#/alt` v2 |
+|---|---|---|
+| S1 | white wash; H1, lead and two buttons at the left, the three-band stack at the right; the figures in their own strip under it | a photograph with the H1 and one ask; the lead and big figures on a light band under it |
+| S2 head | *What we offer* · *A head start that scales.* | *What we offer* · *Everything to go live with AI.* |
+| S2 body | two photographic panels side by side | two photographic tiles stacked, the portfolio diagram beside them |
+| Diagram | three grey bands in the hero: 4 services · 6 groups · 4 platforms | light cards: 6 groups · a 5-step packaged track · bespoke pods · 4 platforms |
+
+- **New micro-copy, in `overviewAlt` only:**
+  - the diagram's captions: *Products, and the services that take them live*; *A standing team of delivery pods, sized per project and re-sized as it grows. Builds what the catalog does not hold.*; *The data and AI platforms everything runs on*;
+  - its connectors: *Services prove, integrate, scale and run the products*; *Built on*;
+  - *(optional)* on the managed step.
+- **Checks:**
+  - `node --check`; `check-grammar` OK, its one warning being the About H2 as before;
+  - the console clean on `#/alt`, and no horizontal overflow at 1920, 1536, 1440, 1366, 1280, 1024, 768, 375 and 320;
+  - S2's heading in view at the five laptop sizes;
+  - the hero's line at least 85 px clear of every word at 1280 and up;
+  - the six group names on two lines, the figures on one line, *Built on Oracle.* on one line at 320;
+  - the deny-list grep clean.
+- **Not published:** the shared link still shows version 1 (above). A shared link opens the home page anyway, because the artifact drops the route. Publishing is Alex's call.
+- **Open for Alex:**
+  - the heading;
+  - the diagram's new micro-copy;
+  - reusing Workforce optimization's hero photograph on the products tile;
+  - the third figure's label, *Fortune 500 clients in the data and analytics practice*, which wraps to three lines under 1920;
+  - adopting `#/alt` as the home page: `hero()` and `offer()` move into `overview.js`, `home-alt.css` folds into `site.css`, and the checker learns the two screens.
+
 ## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
 
 _A fix between rounds, made on its own branch (`fix/home-contact-no-kit`, merged to `main`) while the product-pages redesign (round 20, on a branch) and the other sessions of the day were at work. Opus alone, with no Fable pass: the only new copy is a select prompt and its error line. Touched: `site/assets/app.js` (`contactSwitch()`, `MOVED`), `site/pages/overview.js` (`closing()`, `mount`), `site/pages/product.js` (`kitOptions()`), `site/pages/sellers.js` (a comment), `site/assets/forms.js` (`renderKit()`, `mountKit()`), `site/assets/site.css` (one rule), `site/data/content.js` (`salesKit`, the comment on `overview.contact`), `tools/check-grammar.js`, START-HERE §1, §3, §4, §9 and §10, SCHEMA (`overview.contact`, `site.footer.sellersLink`, `salesKit`), VISUAL-GRAMMAR §8 and §11, README and CONFIG. Numbered §48 because §44 was held for the Internal-panel removal while §45 and §46 landed, and §47 is the alternative home page's (`pages/overview-alt.js`)._
