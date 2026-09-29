@@ -84,11 +84,8 @@ window.SITE_CONTENT = {
     },
 
     "repair-or-replace-decisions": {
-
       diagram: "repair-or-replace-decisions",
-
-      alt: "Media from the operator's capture channel and the asset master record flow into Oracle Cloud Infrastructure, where the SoftServe app and the NVIDIA vision and reasoning engine produce the call, and a reviewer confirms or overrules it before it reaches the booking, dispatch or claims system."
-
+      alt: "Flow diagram: media from the capture channel and the asset record enter the Repair-or-replace decisions app and the NVIDIA AI Enterprise vision and reasoning engine on Oracle Cloud Infrastructure; a reviewer confirms or overrules each call before it reaches the booking, dispatch or claims system"
     }
 
   },
