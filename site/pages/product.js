@@ -408,7 +408,11 @@
   function kpiBar(kind, value, from) {
     var v = share(value);
     var o = from ? share(from) : 0;
-    return '<span class="kpi-bar kpi-bar--' + kind + (v === 0 ? " is-zero" : "") +
+    /* Zero is judged on the value, not its rounded share: minutes against a
+       fortnight rounds to 0 and still draws its 3px sliver; only a real 0
+       ("3 → 0") draws nothing. */
+    var zero = !(Number(value) > 0);
+    return '<span class="kpi-bar kpi-bar--' + kind + (zero ? " is-zero" : "") +
       '" style="--v: ' + v + (o ? "; --o: " + o : "") + '" aria-hidden="true"></span>';
   }
 
@@ -449,7 +453,7 @@
       var up = viz.direction !== "down";
       var end = up ? 100 + hi : 100;
       var solid = up ? 100 + lo : 100 - hi;
-      rows = kpiRow(today, kpiBar("today", 100 / end), "", false) +
+      rows = kpiRow(today, kpiBar("today", 100 / end), before.label, false) +
         kpiRow(then, kpiBar("after", solid / end) + kpiBar("span", (hi - lo) / end), text, true);
     } else if (viz.form === "baseline") {
       var max = Number(scale.max);
@@ -460,6 +464,10 @@
         var dots = "";
         for (var i = 0; i < 10; i += 1) dots += '<span class="kpi-dot' + (i < value ? " is-on" : "") + '"></span>';
         rows = kpiRow(today, '<span class="kpi-dots" aria-hidden="true">' + dots + "</span>", text, true);
+      } else {
+        /* No whole to fill: the Today row alone, so the figure reads as
+           today's number and never as the saving. */
+        rows = kpiRow(today, "", text, true);
       }
     }
     /* An empty chart still takes its row, so the tiles' lines stay level. */
