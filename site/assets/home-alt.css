@@ -75,7 +75,7 @@
   vector-effect: non-scaling-stroke;
 }
 
-.ahero-line-narrow { display: none; }
+.ahero-line-mid, .ahero-line-narrow { display: none; }
 
 /* The spark sits on the line at a third of the photograph's height, turned
    by overview-alt.js so its long axis follows the line. */
@@ -454,6 +454,15 @@
   .awhy-map { max-width: 44rem; }
 }
 
+/* From 769 to 1239 px the promise and the ask reach further across the
+   photograph, so the line runs steeper, clear of both and of the oval, and
+   the spark moves onto it (64 - 3.5 x .34 = 62.81 %). */
+@media (min-width: 769px) and (max-width: 1239px) {
+  .ahero-line-desk { display: none; }
+  .ahero-line-mid { display: inline; }
+  .ahero-spark { left: 62.81%; }
+}
+
 /* The photograph takes its content's height, the oval becomes a glow at the
    right edge, and the line moves right with it, so the copy widens to the
    line's side of it; the promise runs past two lines here. */
@@ -468,6 +477,15 @@
   .ahero-spark { left: 80.56%; }
 }
 
+/* Under 641 px three columns no longer give "from 30 days" room to spare,
+   so each figure becomes a row, its label beside it. */
+@media (max-width: 640px) {
+  .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
+  .ahero-stat-value { font-size: 34px; }
+  .ahero-stat-label { margin-top: 0; }
+}
+
 /* A phone: the blocks stack in reading order, the pods in one row and the
    platforms two by two. */
 @media (max-width: 560px) {
@@ -479,8 +497,7 @@
 }
 
 /* A phone: the copy takes the full width, so the line and the spark would
-   cross it and go; the button spans the row, the link sits under it; the
-   figures become rows. */
+   cross it and go; the button spans the row, the link sits under it. */
 @media (max-width: 540px) {
   .ahero-img { object-position: 45% 50%; }
   .ahero-copy { --ahero-share: 1; }
@@ -489,10 +506,6 @@
   .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
   .ahero-actions .btn { width: 100%; }
   .ahero-actions .ahero-link { align-self: flex-start; }
-  .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .ahero-stat { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
-  .ahero-stat-value { font-size: 34px; }
-  .ahero-stat-label { margin-top: 0; }
 }
 
 /* At 320 the figures and their rows step down; the H1 follows its fit. */
