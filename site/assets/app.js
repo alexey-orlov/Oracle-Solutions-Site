@@ -368,18 +368,20 @@
      guard drops the <img>. Round 10 retired the "Bring to the call" list: the
      card is a person, not a briefing. Round 13: `people` adds names after
      `shared.contact` (a product's own lead). Round 20 (D-design §4): every
-     person is a row on both surfaces, the round portrait on a square brand-fill
-     tile (blue 75 first, orange 75 second, as softserveinc.com shoots its team
-     on brand grounds) beside the name and title, over the one address and the
-     one line: the people are several, the mailbox is one. */
+     person is a row on both surfaces, the round portrait beside the name and
+     title, over the one address and the one line: the people are several, the
+     mailbox is one. The portrait stands on the plate itself: the square brand
+     tile round 20 first set behind it read as a blue frame around an office
+     photograph (Alex, 2026-09-29), because softserveinc.com's team shots are
+     cut out onto their ground and these are not. */
   function contactPhoto(person) {
-    return '<span class="contact-tile" aria-hidden="true"><span class="contact-photo">' +
+    return '<span class="contact-photo" aria-hidden="true">' +
       '<span class="contact-initials">' + esc(initials(person.name)) + "</span>" +
       (person.photo
         ? '<img class="contact-photo-img" src="' + esc(person.photo) +
           '" alt="" loading="lazy" decoding="async">'
         : "") +
-      "</span></span>";
+      "</span>";
   }
 
   function contactWho(person) {
