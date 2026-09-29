@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="pack-spec" content="pack-spec sha256:4766f681bfa8 commit:uncommitted">
+<title>Fleet route optimization — guided walkthrough</title>
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="o">Oracle Field Service</span><span class="plus"> + </span><span class="n">NVIDIA cuOpt</span></div>
+  <div class="sub" id="hdr-sub">Northgate region · replay of Tuesday 9 September</div>
+  <div class="spacer"></div>
+  <div class="status">Synthetic data · GPU solve on OCI</div>
+  <button type="button" id="btn-arch">How it works</button>
+  <span class="pill" id="tour-pill" hidden>Guided walkthrough</span>
+  <button type="button" id="tour-toggle">Exit guide</button>
+</header>
+
+<div class="app">
+  <aside class="side">
+    <section class="card" id="sources">
+      <h3>Sources <span class="tag">3 connected</span></h3>
+      <div class="src"><i>✓</i><b>Oracle Fusion Field Service</b><span>72 booked visits · 12 engineers · skills · booked slots</span></div>
+      <div class="src"><i>✓</i><b>Telematics and charging history</b><span>trips, GPS traces, battery state · 8 electric vans</span></div>
+      <div class="src"><i>✓</i><b>Traffic and charger data</b><span>travel times by time of day · 4 chargers in range</span></div>
+    </section>
+
+    <section class="card" id="fleet">
+      <h3>The day as it ran</h3>
+      <div class="facts">
+        <div class="fact"><b>72</b><span>visits booked</span></div>
+        <div class="fact"><b>12</b><span>vans · 8 electric</span></div>
+      </div>
+      <div class="problems" id="problems"></div>
+    </section>
+
+    <section class="card" id="constraints">
+      <h3>Rules for the re-plan</h3>
+      <div class="toggle"><span class="sw"></span>Keep booked slots</div>
+      <div class="toggle"><span class="sw"></span>Match skills and certificates</div>
+      <div class="toggle"><span class="sw"></span>Weigh job priority against travel</div>
+      <div class="toggle"><span class="sw"></span>Plan charging for electric vans</div>
+      <div class="toggle"><span class="sw"></span>Battery reserve 15% on every leg</div>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="ghost" id="btn-replay">Replay the day</button>
+      <button type="button" class="go" id="btn-opt" disabled>Optimize with cuOpt</button>
+    </div>
+
+    <section class="card result" id="result" hidden>
+      <h3>Result <span class="tag" id="res-tag">Feasible</span></h3>
+      <div class="grid" id="res-grid"></div>
+    </section>
+
+    <section class="card" id="routes-card">
+      <h3>Routes <span class="muted" id="routes-plan" style="text-transform:none;letter-spacing:0;font-weight:400">as it ran</span></h3>
+      <div class="routes" id="routes"></div>
+    </section>
+  </aside>
+
+  <main class="main">
+    <section class="log" id="log" hidden><h4 id="log-title">Working</h4><div id="log-lines"></div></section>
+
+    <section class="card" id="calib" hidden>
+      <h3>Replay checked against what really happened</h3>
+      <div class="calib" id="calib-row"></div>
+    </section>
+
+    <section id="band-wrap" hidden>
+      <div class="band" id="band"></div>
+      <p class="band-note" id="band-note">Same day, same bookings, same method: the replayed day against the re-plan. Synthetic day; illustrative numbers.</p>
+    </section>
+
+    <nav class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="map" id="tab-map">Map</button>
+      <button type="button" data-tab="changes" id="tab-changes" disabled>Changes</button>
+      <button type="button" data-tab="export" id="tab-export" disabled>Send to Field Service</button>
+    </nav>
+
+    <section class="view" id="view-map">
+      <div class="map-bar">
+        <div class="seg" id="seg-plan">
+          <button type="button" data-plan="actual" class="on" id="seg-actual">As it ran</button>
+          <button type="button" data-plan="new" id="seg-new" disabled>Re-planned</button>
+        </div>
+        <div class="legend"><span class="l-act">as it ran</span><span>re-planned</span><span class="l-chg">charging stop</span></div>
+      </div>
+      <div class="map-wrap"><svg class="map" id="map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" aria-label="Schematic map of the synthetic region"></svg></div>
+    </section>
+
+    <section class="view" id="view-changes" hidden>
+      <div class="ch-bar">
+        <span class="count" id="ch-count"></span>
+        <button type="button" id="btn-replan" disabled>Re-plan with my note</button>
+        <button type="button" class="primary" id="btn-accept">Accept remaining</button>
+      </div>
+      <div class="changes" id="changes"></div>
+      <div class="open-flags" id="open-flags"></div>
+    </section>
+
+    <section class="view" id="view-export" hidden>
+      <div class="exp-bar">
+        <span class="muted" id="exp-note"></span>
+        <button type="button" class="primary" id="btn-send">Send to Field Service</button>
+      </div>
+      <table class="exp" id="exp"></table>
+    </section>
+  </main>
+</div>
+<p class="foot">Synthetic region, fleet and visits. Numbers are illustrative, not a customer result. Nothing leaves this page.</p>
+
+<!-- How it works (after the product's own architecture page) -->
+<div class="modal" id="arch" hidden>
+  <div class="modal-card wide">
+    <h2>How it works</h2>
+    <p class="muted" style="margin:0">Oracle Field Service holds the work; NVIDIA cuOpt finds the best way to do it. A past day is replayed and checked first, then re-planned, compared and sent back for a dispatcher to approve.</p>
+    <div class="flow">
+      <div><i>1</i><b>Read from Field Service</b>visits, engineers, skills, slots</div>
+      <div><i>2</i><b>Replay and check</b>against telematics and outcomes</div>
+      <div><i>3</i><b>Build the request</b>slots, skills, priorities, fleet</div>
+      <div class="gpu"><i>4</i><b>Solve on cuOpt</b>GPU route solve</div>
+      <div><i>5</i><b>Charging and battery</b>stops placed, every leg checked</div>
+      <div><i>6</i><b>Compare, approve, send</b>dispatcher approves write-back</div>
+    </div>
+    <div class="feeds">
+      <div><b>Traffic data</b>travel times by time of day</div>
+      <div><b>Telematics and charging</b>trips, battery state, charge events</div>
+      <div><b>Charger registry</b>locations, connectors, speeds</div>
+    </div>
+    <table class="comp">
+      <tr><th>Component</th><th>Role</th><th>Package</th></tr>
+      <tr><td><b>Oracle Fusion Field Service</b></td><td>System of record: the day's visits in, approved routes and charging stops back.</td><td>files at PoV Jumpstart · API at Integration</td></tr>
+      <tr><td><b>Fleet route optimization by SoftServe</b></td><td>Replay and check, travel times, charging stops, battery check, comparison and review.</td><td>PoV Jumpstart</td></tr>
+      <tr><td><b>NVIDIA cuOpt</b></td><td>GPU route solve with booked slots, skills, priorities and charging stops.</td><td>PoV Jumpstart</td></tr>
+      <tr><td><b>Oracle Cloud Infrastructure</b></td><td>GPU instance, Kubernetes, Object Storage, Oracle AI Database, API Gateway, Vault.</td><td>all packages</td></tr>
+      <tr><td><b>Re-planning during the day</b></td><td>Re-plans as jobs overrun or vans break down.</td><td>Scaling</td></tr>
+    </table>
+    <div class="gate-actions"><button type="button" class="primary" id="arch-close">Back to the plan</button></div>
+  </div>
+</div>
+
+<!-- welcome / end card (the tour engine's gate) -->
+<div class="modal" id="gate" hidden>
+  <div class="modal-card">
+    <h2 id="gate-title">Fleet route optimization</h2>
+    <p id="gate-body" class="muted" style="margin:0">Replay a past day of a van fleet and re-plan it on GPU. See what improves, overrule what you disagree with, and send the approved routes to dispatch.</p>
+    <p class="gate-steps" id="gate-steps">6 steps · about 3 minutes</p>
+    <div class="gate-actions">
+      <button class="primary" id="gate-start" type="button">Start the walkthrough</button>
+      <button id="gate-free" type="button">Explore freely</button>
+    </div>
+    <div id="gate-try" hidden></div>
+    <p class="gate-note">Synthetic data. Nothing leaves this page.</p>
+  </div>
+</div>
+
+<!-- tour callout -->
+<div class="tour" id="tour" hidden>
+  <div class="tour-card">
+    <div class="tour-top">
+      <span class="tour-step" id="tour-step"></span>
+      <button class="tour-close" id="tour-skip" type="button" aria-label="Skip this step">Skip</button>
+    </div>
+    <strong id="tour-title"></strong>
+    <p id="tour-body"></p>
+    <div class="tour-progress" id="tour-progress"></div>
+    <button class="primary" id="tour-next" type="button" hidden style="margin-top:10px">Next</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="tour-engine.js"></script>
+<script src="data.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>
