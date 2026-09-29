@@ -261,7 +261,7 @@ Every product in `content.js` needs an entry with all six keys; an empty string 
 |---|---|---|
 | `onePager`, `salesDeck`, `featureList` | The kit documents, as full `https://` links anyone at Oracle or SoftServe can open. A SharePoint or OneDrive link generated "for people in SoftServe" will not open for an Oracle seller, and SoftServe's OneDrive makes no other kind today (tenant policy, checked 2026-09-24; START-HERE §9). | the kit email only |
 | `interactiveDemo` | The walkthrough: a path inside `site/` (`demo/<slug>/index.html`), or a full `https://` link. Never a localhost or preview address: the local server, the published site and the email each resolve the path against their own address | the site and the kit email |
-| `interactiveDemoArtifact` | The same walkthrough published as its own claude.ai artifact | the site on claude.ai, and the kit email while `siteUrl` is a claude.ai link |
+| `interactiveDemoArtifact` | The same walkthrough standing on its own: a claude.ai artifact, or (Account insights, §49) its single-file copy on OneDrive | the site on claude.ai, and the kit email while `siteUrl` is a claude.ai link |
 | `video` | The recorded demo: YouTube, Vimeo, SharePoint or Stream | the site and the kit email |
 | `siteUrl` (top level) | The address the kit email links product pages to | the kit email |
 
@@ -269,7 +269,7 @@ Every product in `content.js` needs an entry with all six keys; an empty string 
 
 ### `interactiveDemo`
 
-The interactive walkthrough — a self-contained guided demo of the product on prepared data, described in `README.md` ("The interactive walkthroughs"). Set today on `large-document-extraction`, `workforce-optimization` and `cross-system-erp-qa`, each pointed at a folder **inside** `site/`, so it deploys with the site and the link stays relative.
+The interactive walkthrough — a self-contained guided demo of the product on prepared data, described in `README.md` ("The interactive walkthroughs"). Set today on six products (`large-document-extraction`, `workforce-optimization`, `cross-system-erp-qa`, `fleet-route-optimization`, `repair-or-replace-decisions`, `account-insights`), each pointed at a folder **inside** `site/`, so it deploys with the site and the link stays relative.
 
 **It is the single source for everything that claims an interactive demo exists** (round 9). Non-empty → three things appear together:
 
@@ -277,11 +277,13 @@ The interactive walkthrough — a self-contained guided demo of the product on p
 - the **Interactive demo** badge (`cursor-click` glyph) in that product's hero chip row and on its Products-page tile;
 - the count beside the **Interactive demo** checkbox in the rail's *Artifacts* group (`demo=1`), which filters on the same link.
 
-Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the three products whose walkthrough ships under `site/demo/`, and `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
+Both buttons open the walkthrough in a **new tab** — it carries its own guide and locks every control but the one it points at, and a seller mid-call must keep the product page behind it. Empty → none of them exists. The resolution of where the badge and the button point lives once, in `UI.demoHref` (`assets/app.js`), and `pages/product.js` delegates to it, so the two controls cannot open different things. On a product page with a video frame the badge scrolls to the frame and opens it; on one without, it opens the walkthrough itself; from a tile it goes to the product page. `tools/check-grammar.js` asserts that the link is set for exactly the products whose walkthrough ships under `site/demo/` (its `DEMO_SLUGS`), and `tools/sync-links.js` fails a path that is not on disk or not in the product's own folder, `demo/<slug>/`.
 
 ### `interactiveDemoArtifact`
 
 Only matters while the site itself runs as a **claude.ai artifact**. There, a relative walkthrough link opens the artifact's supporting file as a top-level page, which the artifact host refuses (`ERR_BLOCKED_BY_RESPONSE`, seen 2026-09-16). So on that host — and only there (`assets/app.js` checks the hostname) — the two buttons go to this URL instead: the walkthrough published as its **own** artifact. The kit email uses it on the same condition: while `siteUrl` is a claude.ai link, the email's *Interactive demo* opens this artifact.
+
+Account insights' is a OneDrive link to the walkthrough's single-file copy, Alex's choice (§49), rather than an artifact: it opens only as far as its sharing setting allows (see `onePager` above for what SoftServe's OneDrive permits), and OneDrive may offer the HTML file as a download rather than a page.
 
 On a real host it is ignored and the relative path is used, so nothing has to change at deployment. Keep it in step with the walkthrough: republish the standalone artifact **at the same URL** whenever the walkthrough changes, or the preview shows an older demo than the site ships (the ERP Q&A demo was rebuilt on 2026-09-17, `docs/PROVENANCE.md` §22.20). `sync-links.js` fails this key set while `interactiveDemo` is empty.
 

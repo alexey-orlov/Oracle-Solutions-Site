@@ -423,19 +423,27 @@
      open with a heading on the same baseline, so the card and the form start
      level; neither is stretched to the other's height (round 10). `formId` names
      the right column, so a link elsewhere on the page can land on the form
-     itself rather than re-entering the route and wiping what was typed. */
+     itself rather than re-entering the route and wiping what was typed. `intro`
+     is a section's own eyebrow and H2, set at the top of the card's column,
+     inside the plate: softserveinc.com's "Let's talk" sits there, and a heading
+     left above the band read as a caption to the screen before (2026-09-29). */
   function contactSplit(options) {
     var opts = options || {};
     var card = contactCard({ className: "contact-card--panel", people: opts.people });
+    var intro = !opts.intro ? "" : '<div class="contact-intro">' +
+      (opts.intro.eyebrow ? '<p class="eyebrow eyebrow--accent">' + esc(opts.intro.eyebrow) + "</p>" : "") +
+      '<h2 class="h2 contact-intro-title">' + esc(opts.intro.title) + "</h2>" +
+      "</div>";
     var right = '<div class="contact-split-form"' +
       (opts.formId ? ' id="' + esc(opts.formId) + '"' : "") + ">" +
       (opts.heading ? '<h3 class="h3 block-title">' + esc(opts.heading) + "</h3>" : "") +
       (opts.sub ? '<p class="body-text contact-split-sub">' + esc(opts.sub) + "</p>" : "") +
       (opts.form || "") +
       "</div>";
-    if (!card) return right;
+    if (!card) return intro + right;
     return '<div class="contact-split">' +
       '<div class="contact-split-card">' +
+        intro +
         (opts.cardHeading ? '<h3 class="h3 block-title">' + esc(opts.cardHeading) + "</h3>" : "") +
         card +
       "</div>" +
@@ -457,7 +465,10 @@
      The two ids are fixed: `#talk` lands on the ask, `#kit` on an open kit.
      Round 20 (D-design §4): the component wraps itself in a full-bleed
      #edf0f2 band holding one white plate, softserveinc.com's form setting, so
-     both surfaces get the same ground without a page rule of their own. */
+     both surfaces get the same ground without a page rule of their own. A
+     surface with a heading of its own (the home page) passes it as `intro`,
+     and it opens the plate's left column; a product's tab bar already names
+     the tab, so a product passes none. */
   var CONTACT_ANCHORS = { talk: "talk", kit: "kit" };
 
   function contactSwitch(options) {
@@ -505,6 +516,7 @@
     return '<div class="contact-band"><div class="contact-plate">' +
       contactSplit({
         formId: CONTACT_ANCHORS.talk,
+        intro: opts.intro,
         people: opts.people || [],
         form: '<div class="contact-tabs" data-contact-tabs="' + esc(opts.key || "site") + '">' +
           pick + talkPanel + kitPanel + "</div>"

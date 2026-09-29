@@ -465,13 +465,16 @@
      page"): passed no kit, the component renders the ask alone, and a seller
      finds the kit on each product's Contacts tab and on #/sellers. Product
      pages and the header deep-link into this section, so the anchor is read
-     from the data rather than written twice. */
+     from the data rather than written twice. The eyebrow and the H2 open the
+     plate's left column rather than sitting above the band (2026-09-29, Alex:
+     the form read "unattached from the heading"), so the screen is one grey
+     band from its first pixel and the whole ask, button included, fits one
+     screen. */
   function closing(C) {
     var UI = window.UI;
     var block = C.overview.contact;
     return '<section class="section home-screen home-contact" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
-      head({ eyebrow: block.eyebrow, title: block.heading, lead: block.sub }) +
-      UI.contactSwitch({ key: "home" }) +
+      UI.contactSwitch({ key: "home", intro: { eyebrow: block.eyebrow, title: block.heading } }) +
       "</div></section>";
   }
 
