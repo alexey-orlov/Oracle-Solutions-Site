@@ -471,8 +471,11 @@ window.SITE_CONTENT = {
          ask. */
       lead: "SoftServe’s leading AI practice and fast-track method, with the full power of Oracle’s data and cloud platforms, accelerate your time to value.",
       image: {
-        file: "assets/img/heroes/overview.jpg",
-        alt: "A tall oval of light standing open in a dark wall, its reflection running out across still water"
+        /* The careers site's AI & ML picture (career.softserveinc.com,
+           about-us/focus0.webp, 800 x 452), upscaled four times with
+           Real-ESRGAN and saved at 2400 px (PROVENANCE §60). */
+        file: "assets/img/heroes/home-team.jpg",
+        alt: "A white humanoid robot, one hand at its chin, among people walking past under a warm peach sky"
       }
     },
     offer: {

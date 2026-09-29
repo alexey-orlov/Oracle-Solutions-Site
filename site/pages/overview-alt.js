@@ -8,13 +8,13 @@
      lands on #/. It is round 18's home page, rendered by overview.js, with
      three changes:
 
-     S1, the hero, is one dark photograph carrying the H1, its promise and
-     the two actions, after softserveinc.com/en-us/services, with one line and
-     the spark in the dark gap between the copy and the oval of light. It
-     dissolves into its own darkest tone at its foot. The three figures sit
-     under it on white, in the live page's own proof strip (Alex: "same or
-     similar to how they are placed on the current main"), so the strip
-     shows under the hero on a laptop.
+     S1, the hero, carries the H1, its promise and the two actions on the
+     left, and on the right a white robot among people under a warm sky
+     (Alex, 2026-09-29: "robots and people ... ai automation bundled with
+     humans"; PROVENANCE §60). The three figures sit under it on white, in
+     the live page's own proof strip (Alex: "same or similar to how they are
+     placed on the current main"), so the strip shows under the hero on a
+     laptop.
 
      S2 keeps the live page's two ways in, under the umbrella heading, as
      dark tiles after softserveinc.com's Solutions tile: the picture across
@@ -64,35 +64,23 @@
     var primary = ctas.filter(function (cta) { return cta.kind === "primary"; })[0] || ctas[0];
     var secondary = ctas.filter(function (cta) { return cta !== primary; })[0];
 
-    /* The one ask is the brand's ask on a dark ground, a white button; the
-       second route is an arrow link beside it. */
+    /* The one ask is the site's blue button on the light hero; the second
+       route is an arrow link beside it. */
     var actions = (primary
-      ? UI.button({ label: primary.label, href: primary.route, kind: "dark", iconAfter: "arrow", className: "ahero-primary" })
+      ? UI.button({ label: primary.label, href: primary.route, kind: "primary", iconAfter: "arrow", className: "ahero-primary" })
       : "") +
       (secondary ? UI.linkArrow({ label: secondary.label, href: secondary.route, className: "ahero-link" }) : "");
 
-    var spark = window.brandAsset("ssSparkWhite", "assets/img/softserve-star-white.svg");
-
     return '<section class="ahero" id="top">' +
       '<div class="ahero-photo">' +
-        /* Everything pictorial sits in one layer, which dissolves into the
-           hero's solid ground at its foot; the words are outside it. */
+        /* The picture's sky, the scene and the veil, in one layer behind
+           the words (home-alt.css); under 1024 px the scene stacks above
+           them. */
         '<div class="ahero-media" aria-hidden="true">' +
           (image.file
-            ? '<img class="ahero-img" src="' + UI.esc(image.file) + '" alt="" decoding="async" fetchpriority="high">'
+            ? '<img class="ahero-img" src="' + UI.esc(image.file) + '" alt="" width="2400" height="1352" decoding="async" fetchpriority="high">'
             : "") +
           '<span class="ahero-scrim"></span>' +
-          /* One line in the dark gap between the copy and the oval, the spark
-             on it, turned to the line's angle in mount(). From 1024 to
-             1239 px the copy fills more of the photograph's width, so a
-             steeper line keeps clear of the promise and the ask. Under
-             1024 px the copy meets the oval and no gap is left, so both go
-             (home-alt.css). */
-          '<svg class="ahero-line" viewBox="0 0 100 100" preserveAspectRatio="none">' +
-            '<line class="ahero-line-desk" x1="54" y1="100" x2="66" y2="0"></line>' +
-            '<line class="ahero-line-mid" x1="60.5" y1="100" x2="64" y2="0"></line>' +
-          "</svg>" +
-          '<img class="ahero-spark" src="' + UI.esc(spark) + '" alt="" width="135" height="154" decoding="async">' +
         "</div>" +
         '<div class="wrap ahero-inner">' +
           /* The claim, its promise, then the ask: the reader has the reason
@@ -290,26 +278,6 @@
     return hero(C) + liveScreens(C, params);
   }
 
-  /* The spark glyph's long axis stands 25.5 degrees off vertical; the line
-     runs between two fixed points of the photograph, so its angle changes
-     with the photograph's shape. The spark is turned by the difference on
-     every resize, so glyph and line always read as one mark. */
-  var sparkObserver = null;
-
-  function alignSpark(photo) {
-    var spark = photo.querySelector(".ahero-spark");
-    var line = Array.prototype.filter.call(photo.querySelectorAll(".ahero-line line"), function (candidate) {
-      return window.getComputedStyle(candidate).display !== "none";
-    })[0];
-    if (!spark || !line) return;
-    var box = photo.getBoundingClientRect();
-    var dx = (Number(line.getAttribute("x2")) - Number(line.getAttribute("x1"))) / 100 * box.width;
-    var dy = (Number(line.getAttribute("y1")) - Number(line.getAttribute("y2"))) / 100 * box.height;
-    if (!dy) return;
-    var degrees = Math.atan2(dx, dy) * 180 / Math.PI;
-    spark.style.setProperty("--spark-turn", (degrees - 25.5).toFixed(2) + "deg");
-  }
-
   var mapObserver = null;
 
   overviewAlt.mount = function (params, root) {
@@ -322,14 +290,6 @@
         mapObserver = new ResizeObserver(function () { fitNodes(map); });
         mapObserver.observe(map);
       }
-    }
-    var photo = root.querySelector(".ahero-photo");
-    if (sparkObserver) sparkObserver.disconnect();
-    if (!photo) return;
-    alignSpark(photo);
-    if ("ResizeObserver" in window) {
-      sparkObserver = new ResizeObserver(function () { alignSpark(photo); });
-      sparkObserver.observe(photo);
     }
   };
 

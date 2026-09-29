@@ -16,26 +16,28 @@
    light grounds under a schematic.
    —————————————————————————————————————————————————————————————————————— */
 
-/* ——— S1: one dark screen ———————————————————————————————————————————— */
+/* ——— S1: one light screen ——————————————————————————————————————————— */
 
-/* The ground is the photograph's own darkest tone (#030e14–#030e17 at its
-   left edge), so the picture dissolves into it without a seam. */
-.ahero { background: #040d16; color: #ffffff; }
+/* Alex, 2026-09-29: the hero shows "robots and people ... the idea of ai
+   automation bundled with humans", in SoftServe's own imagery: the careers
+   site's AI & ML picture, a white humanoid robot among people walking past
+   under a warm peach sky, upscaled four times (Real-ESRGAN) from its 800 px
+   original, so a 2x screen never draws it past its pixels (PROVENANCE §60).
+   Its sky is one vertical gradient, so the hero paints the same gradient
+   behind it and the scene stands at the right, half the window wide, on the
+   hero's foot, with no seam. A white veil from the left keeps the copy on
+   white, where the accent line holds its contrast, and the one ask is the
+   site's blue button. The figures follow on white, in the live page's own
+   proof strip. */
+.ahero { background: #ffffff; color: var(--text); }
 
-/* The photograph carries the H1, its promise and the two actions, centred
-   in its height (Alex, 2026-09-29: "make sure to properly center the
-   text"; .ahero-copy sets the optical centre), with the figures on white
-   under it. It is held to the window's height less the header and the
-   proof strip's figures, so the strip's figures show under it from
-   1366 x 768 up: at 1440 x 900 it is 610 px, where the version with the
-   figures on a dark band under it stood 658 tall (Alex, 2026-09-29: the
-   hero "can be slightly smaller (but not for the full height of the
-   metrics")). It is never taller than 47 % of its width: the picture is
-   then drawn at the full width, not cropped from the left, so the oval of
-   light keeps its place clear of the line on any window from 1024 px up,
-   a squarish monitor or a tablet held upright included. A minimum, not a
-   height, so the copy is never taller than its photograph. */
+/* Held to the window's height less the header and the proof strip's
+   figures, so the strip shows under it from 1366 x 768 up, and never taller
+   than 47 % of its width. A minimum, not a height, so the copy is never
+   taller than its ground. */
 .ahero-photo {
+  --scene-w: 50vw;
+  --scene-h: calc(var(--scene-w) / 1.7751);
   position: relative;
   isolation: isolate;
   display: flex;
@@ -43,68 +45,54 @@
   min-height: clamp(480px, min(calc(100vh - 290px), 47vw), 800px);
 }
 
-/* The picture, its scrim, the line and the spark, as one layer that holds
-   to the top half and fades out over the bottom half, so the oval
-   dissolves into the ground and the ask sits on solid colour. The layer
-   stacks at 0 and the copy at 1: Chromium does not paint a masked layer at
-   z-index -1 inside an isolated parent. */
+/* The sky, sampled from the picture's own left edge every tenth of its
+   height, and flat above the picture's top. */
 .ahero-media {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, #000000 0%, #000000 50%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to bottom, #000000 0%, #000000 50%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom,
+    #ff997a calc(100% - var(--scene-h)),
+    #ffa285 calc(100% - var(--scene-h) * .9),
+    #ffaf96 calc(100% - var(--scene-h) * .8),
+    #ffbba5 calc(100% - var(--scene-h) * .7),
+    #ffc6b4 calc(100% - var(--scene-h) * .6),
+    #ffd1c2 calc(100% - var(--scene-h) * .5),
+    #ffdace calc(100% - var(--scene-h) * .4),
+    #ffe2db calc(100% - var(--scene-h) * .3),
+    #ffebe7 calc(100% - var(--scene-h) * .2),
+    #fff7f0 calc(100% - var(--scene-h) * .1),
+    #ffffff 100%);
 }
 
-/* The oval of light stays at the right (66–91 % of the width from 1024 px
-   up) and no copy is ever set over it. */
+/* The scene, cut by the hero's foot as the picture cuts it, its last tenth
+   dissolving into the white. */
 .ahero-img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  right: 0;
+  bottom: 0;
+  width: var(--scene-w);
+  height: auto;
   max-width: none;
-  object-fit: cover;
-  object-position: 100% 50%;
+  -webkit-mask-image: linear-gradient(to bottom, #000000 90%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, #000000 90%, rgba(0, 0, 0, 0) 100%);
 }
 
+/* The veil: white under the copy, gone just inside the scene's left edge,
+   so sky and picture meet without a seam. */
 .ahero-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(0, 0, 0, .42) 0, rgba(0, 0, 0, .2) 40%, rgba(0, 0, 0, 0) 62%);
-}
-
-/* One line, no horizontal: the photograph splits in two, not four. It runs
-   in the dark gap between the copy and the oval and crosses neither. */
-.ahero-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-
-.ahero-line line {
-  stroke: rgba(255, 255, 255, .55);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.ahero-line-mid { display: none; }
-
-/* The spark sits on the line at a third of the photograph's height, turned
-   by overview-alt.js so its long axis follows the line. */
-.ahero-spark {
-  position: absolute;
-  left: 61.92%;
-  top: 34%;
-  width: 40px;
-  height: auto;
-  max-width: none;
-  transform: translate(-50%, -50%) rotate(var(--spark-turn, 0deg));
+  background: linear-gradient(90deg, #ffffff 0%, #ffffff calc(50% - 4vw), rgba(255, 255, 255, 0) calc(50% + 2vw));
 }
 
 .ahero-inner { position: relative; z-index: 1; width: 100%; }
 
-/* The copy takes a share of the page's column: 58 % beside the oval, more
-   where the oval moves to the edge (768 px and under), all of it on a
-   phone. --ahero-fit is the H1 size at which its longest sentence, "ROI
-   proven in weeks." at 9.8 em, fills that share with 3 % to spare. */
+/* The copy takes a share of the page's column: 58 % beside the scene, all
+   of it once the scene stacks above it. --ahero-fit is the H1 size at which
+   its longest sentence, "ROI proven in weeks." at 9.8 em, fills that share
+   with 3 % to spare. */
 .ahero-copy {
   --ahero-share: .58;
   --ahero-fit: calc(min(100vw - 2 * var(--gutter), var(--container-max)) * var(--ahero-share) / 10.1);
@@ -117,59 +105,47 @@
   /* Centred as the eye reads the block: from the top of the H1's capitals
      to the foot of the ask. The H1's first line box holds .145 em of air
      above its capitals (Azurio at 1.02 leading, measured), so the foot's
-     padding adds it back, and the two gaps come out equal. The padding is
-     also the least room either side, which sets the gaps on a phone,
-     where the copy sets the photograph's height. */
+     padding adds it back, and the two gaps come out equal. */
   padding-block: var(--ahero-pad) calc(var(--ahero-pad) + .145 * var(--ahero-h1));
 }
 
-/* Three sentences, one line each, at every width (Alex, 2026-09-29). Sized
-   as a block, not as large as the photograph allows: 65 px at 1440 x 900,
-   76 at most, so the oval and the spark keep their room; and never larger
-   than the fit, so no sentence ever breaks. */
+/* Three sentences, one line each, at every width (Alex, 2026-09-29), sized
+   as a block and never larger than the fit. */
 .ahero-title {
   max-width: 11em;
   font-size: var(--ahero-h1);
   line-height: 1.02;
   letter-spacing: .01em;
-  color: #ffffff;
+  color: var(--text);
 }
 
 .ahero-sentence { display: block; text-wrap: balance; }
 
-/* The promise, between the claim and the ask: body copy, not a second
-   headline, two even lines on a laptop or a desktop screen. */
+/* The promise, between the claim and the ask: body copy in the brand's
+   neutral 700, two even lines on a laptop or a desktop screen. */
 .ahero-lead {
   max-width: 35em;
   margin-top: clamp(16px, 2.4vh, 24px);
   font-weight: 300;
   font-size: clamp(17px, 1.35vw, 20px);
   line-height: 1.45;
-  color: rgba(255, 255, 255, .85);
+  color: #4c5156;
   text-wrap: balance;
 }
 
 .ahero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: clamp(24px, 3.6vh, 36px); }
 
-/* The brand's ask on a dark ground: white fill, ink label. */
-.ahero .btn--dark:hover { --fill: #edf0f2; }
-.ahero .btn--dark:active { --fill: #e1e7eb; }
-.ahero .btn--dark:focus-visible::after { background: #ffffff; }
+.ahero .ahero-link { color: var(--text); }
+.ahero .ahero-link:hover { color: var(--action); }
 
-.ahero .ahero-link { color: #ffffff; }
-.ahero .ahero-link:hover { color: #c1dff4; }
-.ahero :focus-visible { outline-color: #ffffff; }
-
-/* On load the words rise and the spark lands; motion is never needed to
-   read the hero. */
+/* On load the words rise; motion is never needed to read the hero. */
 @media (prefers-reduced-motion: no-preference) {
   .ahero-sentence, .ahero-lead, .ahero-actions { animation: ahero-rise .7s var(--ease-out) both; }
   .ahero-sentence:nth-child(2) { animation-delay: .1s; }
   .ahero-sentence:nth-child(3) { animation-delay: .2s; }
   .ahero-lead { animation-delay: .3s; }
   .ahero-actions { animation-delay: .4s; }
-  .ahero-line { animation: ahero-fade 1s var(--ease) .4s both; }
-  .ahero-spark { animation: ahero-fade .8s var(--ease-out) .8s both; }
+  .ahero-img { animation: ahero-fade 1s var(--ease) .2s both; }
 }
 
 @keyframes ahero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -499,37 +475,18 @@
   .awhy-map { max-width: 44rem; }
 }
 
-/* From 1024 to 1239 px the promise and the ask reach further across the
-   photograph, so the line runs steeper, clear of both and of the oval, and
-   the spark moves onto it (64 - 3.5 x .34 = 62.81 %). */
-@media (min-width: 1024px) and (max-width: 1239px) {
-  .ahero-line-desk { display: none; }
-  .ahero-line-mid { display: inline; }
-  .ahero-spark { left: 62.81%; }
-}
-
-/* Under 1024 px the photograph's 480 px floor is more than 47 % of its
-   width, so the picture is cropped from the left and the oval moves in to
-   meet the copy: no dark gap is left for the line, so the line and the
-   spark go. The copy column is too narrow for the ask and its link side by
-   side, so the link goes under the ask. Its line box keeps .26 em of air
-   under its letters (no descenders), which the negative margin hangs below
-   the block, so the block ends where its words end and the centre above
-   holds. */
+/* Under 1024 px the scene would meet the copy, so it stacks above it, the
+   window's full width, and the copy follows on white at the column's full
+   width. The link goes under the ask; its line box keeps .26 em of air
+   under its letters, which the negative margin hangs below the block. */
 @media (max-width: 1023px) {
-  .ahero-line, .ahero-spark { display: none; }
+  .ahero-photo { flex-direction: column; align-items: stretch; min-height: 0; }
+  .ahero-media { position: relative; inset: auto; background: none; }
+  .ahero-img { position: relative; display: block; width: 100%; }
+  .ahero-scrim { display: none; }
+  .ahero-copy { --ahero-share: 1; --ahero-h1: min(44px, var(--ahero-fit)); --ahero-pad: 36px; }
   .ahero-actions { flex-direction: column; align-items: flex-start; }
   .ahero-actions .ahero-link { margin-bottom: -.26em; }
-}
-
-/* The photograph takes its content's height and the oval moves to the right
-   edge. The copy widens up to the oval, and the promise runs past two lines
-   here. */
-@media (max-width: 768px) {
-  .ahero-photo { min-height: 440px; }
-  .ahero-img { object-position: 56% 50%; }
-  .ahero-copy { --ahero-share: .68; --ahero-h1: min(40px, var(--ahero-fit)); }
-  .ahero-lead { text-wrap: pretty; }
 }
 
 /* A phone: the blocks stack in reading order, the team three across as
@@ -549,11 +506,9 @@
   .ahero-actions .ahero-link { margin-bottom: calc(-.625rem - .26em); }
 }
 
-/* A phone: the copy takes the full width; the button spans the row, the
-   link sits under it. */
+/* A phone: the button spans the row, the link sits under it. */
 @media (max-width: 540px) {
-  .ahero-img { object-position: 45% 50%; }
-  .ahero-copy { --ahero-share: 1; --ahero-h1: min(38px, var(--ahero-fit)); }
+  .ahero-copy { --ahero-h1: min(38px, var(--ahero-fit)); }
   .ahero-title { max-width: none; }
   .ahero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
   .ahero-actions .btn { width: 100%; }
@@ -566,10 +521,9 @@
   .ahero-actions .btn { padding-inline: 16px; }
 }
 
-/* Paper keeps the words and drops the photograph and the dark ground. */
+/* Paper keeps the words and drops the picture and its sky. */
 @media print {
   .ahero-media { display: none !important; }
-  .ahero { background: #ffffff !important; color: #111111; }
   .ahero-photo { min-height: 0; }
   .ahero-title { color: #111111 !important; }
   .ahero-lead { color: #333333 !important; }
