@@ -6886,3 +6886,38 @@ _Added by the `oracle-packs-web:listing` skill (oracle-packs 0.2.3) from the pac
   - The kit links, once the approved finals are in OneDrive.
   - The solution line's *any recalibration listed*: the spec's feature table marks *Follow-on work and safety flags at decision* as roadmap, delivered in the proof of value, while the line states it as present.
   - Publishing, which waits for his word and for the layout sessions.
+
+## 43. A product name's hyphenated compound stays whole on phones, 2026-09-29
+
+_A fix between rounds, made in its own session while the product-pages session (round 20, on a branch) and the Repair-or-replace listing (§42) were at work. Opus alone, with no Fable pass: it decides no copy. Touched: `site/assets/app.js` (`keepCompounds()`, used by `headline()` and `productTile()`), `site/assets/site.css` (`.compound`), `tools/check-grammar.js`, SS26-THEME §2, and START-HERE §4 and §10. No content key, switch, tab or publish rule moved._
+
+- **The ask (Alex, from §42's seen-not-changed list):** `h1, h2, h3, h4 { text-wrap: balance }` breaks a hyphenated product name at its hyphen on phones. The hero read *Repair-or- / replace decisions* at 375, although *Repair-or-replace* (253 px) fits the 343 px line, and *Cross-system ERP Q&A* is exposed the same way. Fix it on every heading that prints a product name, with no invisible character added to `content.js`.
+- **The cause:** balancing narrows the line to the least width that keeps the line count, and a hard hyphen is a break opportunity, so 147 / 253 px came out more even than 253 / 139. `hyphens: manual` or `none`, `line-break: strict` and `word-break: keep-all` all leave a hard hyphen breakable; each was measured and changed nothing.
+- **Where a name is a heading:** the hero's H1 (`.product-title`, through `UI.headline`) and the catalog tile's title (`.ptile-title`). The kit confirmation prints the name in body copy, and the forms in their product lists.
+- **Decision: keep `balance` and make the compound one unit.** `keepCompounds()` escapes the name and wraps each hyphenated word in `<span class="compound">`, which `site.css` sets to `white-space: nowrap`, so balancing chooses among the spaces only. The heading's text, its accessible name and the page title are unchanged. The longest compound, 253 px at 32 px, fits the 288 px line at 320; only below a 285 px viewport would it cross into the 16 px gutter (5 px at 280).
+- **Rejected:** `text-wrap: pretty` or `wrap` on the two titles. Both fix Repair-or-replace, and each strands a short word on another name:
+
+| Name, where | `balance`, compounds whole (shipped) | `pretty` | `wrap` |
+|---|---|---|---|
+| Business metrics Q&A, hero 320 | Business / metrics Q&A | Business metrics / Q&A | Business metrics / Q&A |
+| Cross-system ERP Q&A, hero 375 and 320 | Cross-system / ERP Q&A | Cross-system / ERP Q&A | Cross-system ERP / Q&A |
+| Large docs processing and review, hero 1024 and 1440 | Large docs processing / and review | the same | Large docs processing and / review |
+
+- **Before and after,** measured on the saved files in the hero and in the catalog tile at 1440, 1280, 1024, 768, 375 and 320:
+
+| Where | Before | After |
+|---|---|---|
+| Hero, 375 and 320 | Repair-or- / replace decisions | Repair-or-replace / decisions |
+| Catalog tile, 320 | Repair-or- / replace decisions | Repair-or-replace / decisions |
+
+  The other eight names break exactly where they did, at every width. *Cross-system* now renders in its span too, and still reads *Cross-system / ERP Q&A* at 375 and 320.
+- **Checker:** it now fails `headline()` or `productTile()` rendering a name without `keepCompounds()`, a `.product-title` rendered without `UI.headline()`, a `.compound` rule that is not `white-space: nowrap`, and a product name carrying a soft hyphen, a zero-width character, a word joiner or a non-breaking hyphen. Each guard was run against a copy with its part of the fix reverted, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the two known warnings; the console clean on the product pages, the catalog and the archive theme; no horizontal overflow at any width; the deny-list grep returns nothing.
+- **No contract bump:** the new rule binds the site's own renderers, and the names the plugin writes already pass it. Round 20 stays with the product-pages session.
+- **Parallel sessions:** the product-pages session was told that its hero and tile rewrites must keep `keepCompounds()`, which the checker now holds. The session publishing on Alex's word was told when this landed.
+- **Open for Alex:** *Large docs processing and review* takes three lines in the hero at 320 (*Large docs / processing / and review*), before and after this fix. Two lines would need a shorter name or a floor under 32 px.
+- **Seen and left as is:**
+  - At 320 the one-liner under the title breaks *repair- / or-replace*. That is running text meeting the line's end at a hard hyphen: ordinary typesetting, not a heading.
+  - The archive theme renders the same span without the rule, so its titles still split at the hyphen. It is frozen and never republished.
+  - Measured in Chromium only. The fix rests on `white-space: nowrap`, which every engine honours.
+- **Not published:** the fix is on `main` (autosync `896f80b`, `caa1f84`) and ships with the next publish.
