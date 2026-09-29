@@ -2183,7 +2183,7 @@ window.SITE_CONTENT = {
       categoryChip: "Enterprise knowledge & analytics",
       facet: "oracle-ai-lakehouse",
       oneLiner: "Managers get answers across the ERP and CRM on their own, while the decision is still open, instead of weeks later in a report.",
-      heroLine: "Which delayed orders are hurting our best accounts?",
+      heroLine: "Which late orders hurt our best accounts?",
       badges: ["ERP + CRM + THE SYSTEMS AROUND THEM", "PREBUILT PIPELINES", "ANSWERS IN MINUTES"],
       tags: ["Enterprise knowledge & analytics", "AI Lakehouse"],
       hero: {
