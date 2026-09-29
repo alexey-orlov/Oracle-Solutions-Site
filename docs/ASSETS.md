@@ -213,7 +213,7 @@ in `heroes.json` keeps its own.
 
 | Panel | File | Focal on the panel | Focal in `heroes.json` |
 |---|---|---|---|
-| Products | `heroes/overview.jpg` — the home hero's photograph until round 5, unreferenced from then until this round | **`35% 45%`** — keeps the bright oval at the panel's right edge, out from under the body copy at every two-column width (lowest body contrast 4.88:1) | `50% 45%` |
+| Products | `heroes/overview.jpg` — the home hero's photograph until round 5 and again in §47–§59 (the home hero is `heroes/home-team.jpg` since §60: the careers site's `about-us/focus0.webp`, 800 × 452, upscaled 4× with Real-ESRGAN x4plus and saved at 2400 × 1352), unreferenced from then until this round | **`35% 45%`** — keeps the bright oval at the panel's right edge, out from under the body copy at every two-column width (lowest body contrast 4.88:1) | `50% 45%` |
 | Practice | `heroes/services.jpg` — the Services hero until that page left the site in round 18; this panel is its one use now | `50% 50%` | `50% 50%` |
 
 Both render decoratively (`alt=""`); `image.alt` carries the `heroes.json` wording
