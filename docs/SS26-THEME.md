@@ -103,8 +103,8 @@ buttons and kickers. It never appears in display type.
 **The figure face: Replica Light, never Azurio, on the product pages** (round 20).
 softserveinc.com sets its KPI figures in 64 px Replica Light, black, each under an
 orange-75 dash (PROVENANCE §41.1), and a serif at figure size reads as decoration
-rather than as a number. So the product Overview's KPI band and the Use cases case
-study set every figure in Replica 300 under that dash, and the checker holds both.
+rather than as a number. So the product Overview's numbers widget and the Use cases
+case study set every figure in Replica 300 under that dash, and the checker holds both.
 The home page's proof strip, case cards and About tiles, and the Jumpstart
 investment card, still set their figures in Azurio: one figure face across the site
 is open (START-HERE §9).
@@ -140,7 +140,7 @@ lines         #bdcbd7 control · #e1e7eb hairline · #d1dae2 panel rule
 action        #1485c4 · hover #459fdd · pressed #0e5e8b · tint #c1dff4
 accent        #f46a4a · tint #ffcec0
 fact marker   #fe8d6b (orange 75): the 32 × 4 px dash over a KPI or case figure
-KPI band      linear-gradient(to top, #edf1f6, #fafaf8)
+KPI charts    Today bar #9aa8b4 · After bar #1485c4 · span #8ec3e6 (validated as a set; values printed on every bar)
 secondary btn #d1dae2 · hover #e1e7eb · pressed #bdcbd7
 footer ink    #fafaf8 · footer glyphs #e0e0e0 (#ffffff on hover)
 ```
@@ -179,8 +179,10 @@ contrast plate per screen.**
 - **The contrast plate** is the `#1a1a1a` plate with its own 12 px cut, one per
   tab view: What changes on the Overview and the case study on Use cases (§5).
   On it, the type is white, secondary text `#bdcbd7`, and rules white at 20%.
-- **The KPI band** takes softserveinc.com's KPI ground, the light gradient above,
-  full-bleed; its figures sit on it with no tile behind them.
+- **The numbers widget** (round 21) is a white card on a 1 px `#d1dae2` ring with a
+  12 px cut, beside the Overview's main column. Round 20's full-bleed band on
+  softserveinc.com's light KPI gradient left with it: as a card beside the grey
+  problem plate, the gradient read as a second grey.
 - **The contact portraits** are round photographs standing on the white plate,
   with no fill behind them. Round 20 first set them on square blue-75 and
   orange-75 tiles, as the brand shoots its team on brand grounds, and the tile
@@ -256,7 +258,7 @@ Everything else is `#ffffff`, with `#edf0f2` for cards and the pre-footer band. 
 page that ends on the contact band draws no pre-footer band** (round 20): the band is
 the page's last grey and runs straight into the black footer, because the two greys
 back to back read as one grey mass (`VISUAL-GRAMMAR.md` §8). The product Overview's
-KPI band is a light gradient, not a dark screen.
+numbers widget is a white card, not a dark screen.
 **A photograph is not a dark band.** The home page's two photographic panels (S2, round
 11) and its case cards' photo bands (S5) sit on black and `#1a1a1a` grounds, but those
 grounds only show if a photograph fails to load; what the reader sees is a photograph
