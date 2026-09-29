@@ -59,13 +59,10 @@
     var meta = instance(kind);
     var uid = "form-" + kind + "-" + Math.random().toString(36).slice(2, 8);
     var submitLabel = opts.submitLabel || labels.submitDemo;
-    /* `role: null` leaves every option unchecked — for an entry both audiences use. */
-    var selectedRole = opts.role === null ? null : (opts.role || C.forms.roles[0].value);
-
+    /* Every role starts unpicked: the email's domain picks one (bindDomain). */
     var roles = C.forms.roles.map(function (role) {
       return '<label class="radioline">' +
-        '<input type="radio" name="' + uid + '-role" value="' + UI.esc(role.value) + '"' +
-        (role.value === selectedRole ? " checked" : "") + ">" +
+        '<input type="radio" name="' + uid + '-role" value="' + UI.esc(role.value) + '">' +
         "<span>" + UI.esc(role.label) + "</span></label>";
     }).join("");
 
@@ -196,6 +193,87 @@
     };
   }
 
+  /* ————— the email picks "I am a…" and fills Company (2026-09-29) ————— */
+
+  /* Alex: nothing is picked until the email has a domain; then an Oracle or
+     SoftServe address picks its seller and names its company, and any other
+     picks a customer and names the company after its domain, the last part
+     dropped and the first letter capped. SITE_CONFIG.formDomains holds the
+     rules. The visitor's own choice wins: a role they clicked stays put, and
+     Company follows the email only while it is empty or still holds what the
+     form put there. */
+  var SECOND_LEVEL = ["ac", "co", "com", "edu", "go", "gov", "ltd", "ne", "net", "or", "org", "plc"];
+
+  function emailDomain(email) {
+    var value = String(email || "").trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) return "";
+    return value.slice(value.lastIndexOf("@") + 1);
+  }
+
+  function underDomain(domain, rootDomain) {
+    return domain === rootDomain || domain.slice(-(rootDomain.length + 1)) === "." + rootDomain;
+  }
+
+  /* acme.com → Acme; the organisation's own label, so mail.acme.com and
+     acme.co.uk name Acme too, never "Mail" or "Co". */
+  function companyFromDomain(domain) {
+    var parts = domain.split(".").filter(Boolean);
+    parts.pop();
+    if (parts.length > 1 && SECOND_LEVEL.indexOf(parts[parts.length - 1]) !== -1) parts.pop();
+    var name = parts[parts.length - 1] || "";
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  /* { role, company } for an email, or null while it has no domain. */
+  function fromEmail(email) {
+    var domain = emailDomain(email);
+    if (!domain) return null;
+    var rules = config().formDomains || {};
+    var known = (rules.known || []).filter(function (entry) { return underDomain(domain, entry.domain); })[0];
+    if (known) return { role: known.role, company: known.company };
+    var personal = (rules.personal || []).some(function (entry) { return underDomain(domain, entry); });
+    return { role: rules.otherRole || "", company: personal ? "" : companyFromDomain(domain) };
+  }
+
+  /* Binds the email to the role and Company fields, and returns the function
+     that applies it now: a submit calls it first, so a request sent straight
+     after typing still carries both. While the visitor types, it waits for a
+     pause, so oracle.co never flashes Customer on the way to oracle.com. */
+  function bindDomain(form) {
+    var uid = form.getAttribute("data-uid");
+    var email = form.querySelector('input[name="email"]');
+    var company = form.querySelector('input[name="company"]');
+    var radios = Array.prototype.slice.call(form.querySelectorAll('input[name="' + uid + '-role"]'));
+    var roleChosen = false;
+    var filled = "";
+    var timer = null;
+    if (!email) return function () {};
+
+    radios.forEach(function (radio) {
+      radio.addEventListener("change", function () { roleChosen = true; });
+    });
+
+    function apply() {
+      window.clearTimeout(timer);
+      var found = fromEmail(email.value);
+      if (!roleChosen) {
+        radios.forEach(function (radio) { radio.checked = !!found && radio.value === found.role; });
+      }
+      if (company && (company.value === "" || company.value === filled)) {
+        filled = found ? found.company : "";
+        company.value = filled;
+      }
+    }
+
+    email.addEventListener("input", function () {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(apply, 400);
+    });
+    email.addEventListener("change", apply);
+    apply();
+    return apply;
+  }
+
   /* The line under a form's button: the cannot-send notice on a copy with no
      endpoint, "Sending…" while a request runs, the error when one fails. */
   function setStatus(node, html, tone) {
@@ -254,9 +332,11 @@
     var form = block.querySelector("form.site-form");
     if (!form || form.getAttribute("data-bound") === "1") return;
     form.setAttribute("data-bound", "1");
+    var applyDomain = bindDomain(form);
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
+      applyDomain();
       var data = values(form);
       if (data.trap) return;
       if (!validate(form, data)) return;
@@ -519,5 +599,5 @@
     noteIfOffline(form, kitCopy().offline);
   }
 
-  window.FORMS = { render: render, mount: mount, renderKit: renderKit, mountKit: mountKit };
+  window.FORMS = { render: render, mount: mount, renderKit: renderKit, mountKit: mountKit, fromEmail: fromEmail };
 })();
