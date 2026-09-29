@@ -33,11 +33,13 @@
 
 /* The picture, its scrim, the line and the spark, as one layer that holds
    to the top half and fades out over the bottom half. The oval dissolves
-   into the ground, and the figures below sit on solid colour. */
+   into the ground, and the figures below sit on solid colour. The layer
+   stacks at 0 and the copy at 1: Chromium does not paint a masked layer at
+   z-index -1 inside an isolated parent. */
 .ahero-media {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to bottom, #000000 0%, #000000 50%, rgba(0, 0, 0, 0) 100%);
   mask-image: linear-gradient(to bottom, #000000 0%, #000000 50%, rgba(0, 0, 0, 0) 100%);
@@ -85,7 +87,7 @@
   transform: translate(-50%, -50%) rotate(var(--spark-turn, 0deg));
 }
 
-.ahero-inner { width: 100%; }
+.ahero-inner { position: relative; z-index: 1; width: 100%; }
 
 .ahero-copy {
   display: flex;

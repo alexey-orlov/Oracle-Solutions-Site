@@ -239,51 +239,57 @@
       "</section>";
   }
 
-  /* How it works, round 20 (Alex: the block has to fit one screen, the step
-     heads line up, two sizes of type, screenshots large and legible). A
-     vertical list of steps beside one frame: the walkthrough's own screen at
+  /* How it works (round 20: the block fits one screen, the step heads line
+     up, two sizes of type, screenshots large and legible). Round 21 (Alex,
+     2026-09-29: the block shares the main column with the problem and the
+     solution, the numbers widget beside it) put the steps in a row of tabs
+     over one frame, because a list beside the frame left the frame too small
+     to read in that column. Under the row, the open step's text, so the
+     description sits between the control that selects it and the screen it
+     explains (START-HERE §4); then the frame: the walkthrough's own screen at
      16:10, the step's region outlined in blue and a zoom of that region inset
-     at the corner it leaves free (`anchor`), so the UI text reads at 1:1. A row
-     is a button; choosing it opens its text under its title and crossfades the
-     frame. From 768 to 1099px the frame sits over the same list; on a phone the
-     block is the steps as four static cards, each ending on its zoom, which
-     carries the legible part of the screen at that width. Both layouts are in
-     the markup and CSS shows one, so neither needs script. */
+     at the corner it leaves free (`anchor`), so the UI text reads at about
+     1:1. Every step's text and frame share two row tracks, so switching steps
+     never moves the frame. On a phone the block is the steps as static cards,
+     each ending on its zoom, which carries the legible part of the screen at
+     that width. Both layouts are in the markup and CSS shows one. */
   function howItWorks(product) {
     var UI = window.UI;
     var steps = product.overview.steps;
     if (!steps || !steps.length) return "";
     var base = "hiw-" + product.slug;
 
-    var rows = steps.map(function (step, index) {
+    var tabs = steps.map(function (step, index) {
       var on = index === 0;
-      return '<li class="hiw-step' + (on ? " is-active" : "") + '">' +
-        '<button class="hiw-head" type="button" id="' + base + "-head-" + index + '"' +
-          ' aria-expanded="' + (on ? "true" : "false") + '"' +
-          ' aria-controls="' + base + "-text-" + index + " " + base + "-shot-" + index + '">' +
-          '<span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
-          '<span class="hiw-title">' + UI.esc(step.title) + "</span>" +
-        "</button>" +
-        '<p class="hiw-text" id="' + base + "-text-" + index + '">' + UI.esc(step.text) + "</p>" +
-        "</li>";
+      return '<button class="hiw-tab' + (on ? " is-active" : "") + '" type="button" role="tab"' +
+        ' id="' + base + "-tab-" + index + '" aria-controls="' + base + "-panel-" + index + '"' +
+        ' aria-selected="' + (on ? "true" : "false") + '" tabindex="' + (on ? "0" : "-1") + '">' +
+        '<span class="hiw-num nums">' + UI.esc(step.n) + "</span>" +
+        '<span class="hiw-title">' + UI.esc(step.title) + "</span>" +
+        "</button>";
     }).join("");
 
-    var shots = steps.map(function (step, index) {
+    var panels = steps.map(function (step, index) {
       var shot = step.shot || {};
-      var region = shotRegion(shot.region);
+      var region = shotRegion(shot.region, shot.anchor);
       var anchor = /^(tl|tr|bl|br)$/.test(shot.anchor || "") ? shot.anchor : "br";
-      return '<figure class="hiw-shot' + (index === 0 ? " is-active" : "") + '" id="' + base + "-shot-" + index + '">' +
-        '<div class="hiw-canvas"><div class="hiw-pic">' +
-          '<img class="hiw-full" src="' + UI.esc(shot.full) + '" alt="' + UI.esc(shot.alt) + '"' +
-            ' decoding="async" loading="' + (index === 0 ? "eager" : "lazy") + '">' +
-          (region
-            ? '<span class="hiw-region" aria-hidden="true" style="left: ' + region.x + "%; top: " + region.y +
-                "%; width: " + region.w + "%; height: " + region.h + '%"></span>' +
-              '<span class="hiw-zoom hiw-zoom--' + anchor + '" aria-hidden="true" style="--za: ' + region.za + '">' +
-                '<img src="' + UI.esc(shot.zoom) + '" alt="" decoding="async" loading="lazy"></span>'
-            : "") +
-        "</div></div>" +
-        "</figure>";
+      return '<div class="hiw-panel' + (index === 0 ? " is-active" : "") + '" role="tabpanel"' +
+        ' id="' + base + "-panel-" + index + '" aria-labelledby="' + base + "-tab-" + index + '" tabindex="0">' +
+        '<p class="hiw-text">' + UI.esc(step.text) + "</p>" +
+        '<figure class="hiw-shot">' +
+          '<div class="hiw-canvas"><div class="hiw-pic">' +
+            '<img class="hiw-full" src="' + UI.esc(shot.full) + '" alt="' + UI.esc(shot.alt) + '"' +
+              ' decoding="async" loading="' + (index === 0 ? "eager" : "lazy") + '">' +
+            (region
+              ? '<span class="hiw-region" aria-hidden="true" style="left: ' + region.x + "%; top: " + region.y +
+                  "%; width: " + region.w + "%; height: " + region.h + '%"></span>' +
+                '<span class="hiw-zoom hiw-zoom--' + anchor + '" aria-hidden="true" style="--za: ' + region.za +
+                  "; --zfit: " + region.zfit + '">' +
+                  '<img src="' + UI.esc(shot.zoom) + '" alt="" decoding="async" loading="lazy"></span>'
+              : "") +
+          "</div></div>" +
+        "</figure>" +
+        "</div>";
     }).join("");
 
     var cards = steps.map(function (step) {
@@ -298,10 +304,10 @@
     }).join("");
 
     return '<section class="hiw reveal" data-hiw="' + UI.esc(product.slug) + '">' +
-      '<h2 class="h2 ov-h2">' + UI.esc(label("howItWorks")) + "</h2>" +
+      '<h2 class="h2 ov-h2" id="' + base + '-title">' + UI.esc(label("howItWorks")) + "</h2>" +
       '<div class="hiw-body">' +
-        '<ol class="hiw-list">' + rows + "</ol>" +
-        '<div class="hiw-frame">' + shots + "</div>" +
+        '<div class="hiw-tabs" role="tablist" aria-labelledby="' + base + '-title">' + tabs + "</div>" +
+        '<div class="hiw-panels">' + panels + "</div>" +
       "</div>" +
       '<ol class="hiw-cards">' + cards + "</ol>" +
       "</section>";
@@ -309,12 +315,35 @@
 
   /* The region is [x, y, w, h] in percent of the frame. `za` is the zoom's own
      aspect: the frame is 16:10, so a region w% by h% is 1.6·w/h wide per unit
-     of height, which is what the inset's size is worked out from (site.css). */
-  function shotRegion(region) {
+     of height, which is what the inset's size is worked out from (site.css).
+     `zfit` is the widest the inset may grow, as a share of the frame's width,
+     and still clear its own ring by 1.5% of that width on one axis (round 21):
+     in the main column the frame is narrower than the 872px the zooms were
+     made for, and a zoom that has room grows back toward its 401px there
+     instead of shrinking with the frame. The inset sits in from its corner by
+     2.75% of the frame's width and 4.4% of its height, which is the same
+     distance (4.4% of 0.625), and its height is its width over `za`. */
+  var ZOOM_INSET = 0.0275;
+  var ZOOM_CLEAR = 0.015;
+
+  function zoomFit(r, za, anchor) {
+    var h = 0.625;
+    var o = ZOOM_INSET;
+    var m = ZOOM_CLEAR;
+    var left = r[0] / 100, right = (r[0] + r[2]) / 100;
+    var top = r[1] / 100 * h, bottom = (r[1] + r[3]) / 100 * h;
+    var byX = anchor.charAt(1) === "r" ? (1 - o) - (right + m) : (left - m) - o;
+    var byY = anchor.charAt(0) === "b" ? ((h - o) - (bottom + m)) * za : ((top - m) - o) * za;
+    return Math.max(0, Math.round(Math.max(byX, byY) * 1000) / 1000);
+  }
+
+  function shotRegion(region, anchor) {
     if (!region || region.length !== 4) return null;
     var r = region.map(Number);
     if (r.some(function (v) { return !isFinite(v); }) || !(r[2] > 0 && r[3] > 0)) return null;
-    return { x: r[0], y: r[1], w: r[2], h: r[3], za: Math.round(1.6 * r[2] / r[3] * 1000) / 1000 };
+    var za = Math.round(1.6 * r[2] / r[3] * 1000) / 1000;
+    var corner = /^(tl|tr|bl|br)$/.test(anchor || "") ? anchor : "br";
+    return { x: r[0], y: r[1], w: r[2], h: r[3], za: za, zfit: zoomFit(r, za, corner) };
   }
 
   /* Round 13 (Alex): the block prints no heading. It opens the Use cases tab,
