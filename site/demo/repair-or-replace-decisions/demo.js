@@ -36,8 +36,8 @@
 
   /* kpis(applied): a pure function of the applied change ids. kpis([]) is the
      baseline exactly; deltas are taken from these raw values, never from the
-     rounded displays. Follow-on work is the needless-replacement rate times
-     the modelled share of assets whose replacement triggers dependent work. */
+     rounded displays. Avoidable recalibrations are the needless-replacement
+     rate times the modelled share of assets whose replacement triggers one. */
   function kpis(applied) {
     var k = { needless: D.kpis.needless.base, repeat: D.kpis.repeat.base };
     CHANGES.forEach(function (ch) {
@@ -97,10 +97,10 @@
     if (r === 0) return "0.00 pts";
     return (r < 0 ? "−" : "+") + Math.abs(r).toFixed(2) + " pts";
   }
-  function countText(x, per) {
+  function countText(x, per, each) {
     var n = Math.abs(x - Math.round(x)) < 0.05 ? String(Math.round(x)) : x.toFixed(1);
     if (Number(n) === 0) return "No change per 1,000 " + per;
-    return n + " fewer per 1,000 " + per;
+    return n + " fewer per 1,000 " + per + (each ? " · " + each : "");
   }
 
   /* ---- illustrations (drawn, not photographed) ---- */
@@ -219,7 +219,7 @@
       el.querySelector(".k-before").textContent = pct(b[id], dp);
       el.querySelector(".k-after").textContent = pct(a[id], dp);
       el.querySelector(".k-delta").textContent = (rel < 0 ? "−" : "+") + Math.abs(rel).toFixed(0) + "%";
-      el.querySelector(".k-count").textContent = countText((b[id] - a[id]) * 10, def.per);
+      el.querySelector(".k-count").textContent = countText((b[id] - a[id]) * 10, def.per, def.each);
       el.querySelector(".k-whose").textContent = def.whose;
       el.classList.toggle("is-selected", S.kpi === id);
     });
@@ -469,7 +469,7 @@
       auto: run },
     { id: "value", major: 2, passive: true, side: "bottom", scroll: "center",
       title: "Fewer needless replacements, fewer returns",
-      body: "Before and after on the same cases, modelled on industry rates. Needless replacements, repeat visits and the follow-on work each fall by a fifth.",
+      body: "Before and after on the same cases, modelled on industry figures. Each needless replacement caught keeps about £460 with the payer, and each recalibration avoided saves $300–400 and 4 days.",
       target: function () { return $("#band"); },
       anchor: function () { return $("#kpi-needless"); },
       auto: function () { tour.next(); } },
@@ -502,7 +502,7 @@
       auto: function () { overrule("RR-24826"); tour.next(); } },
     { id: "follow", major: 5, passive: true, side: "bottom", scroll: "center",
       title: "The numbers follow your call",
-      body: "Needless replacements rise by that call's modelled share, and the follow-on work with it. Restore the call and they return.",
+      body: "Needless replacements rise by that call's modelled share, and the avoidable recalibrations with it. Restore the call and they return.",
       target: function () { return $("#band"); },
       anchor: function () { return $("#kpi-needless"); },
       auto: function () { tour.next(); } },
