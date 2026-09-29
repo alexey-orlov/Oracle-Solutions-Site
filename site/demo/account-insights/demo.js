@@ -423,9 +423,9 @@
     $("#export-table").innerHTML = "<thead><tr>" + D.exportColumns.map(function (c) { return "<th>" + c + "</th>"; }).join("") + "</tr></thead><tbody>" +
       (rows.length ? rows.map(function (m) {
         var a = acc(m.account), s = sig(m.signal);
-        return '<tr><td class="nowrap"><b>' + esc(a.name) + "</b></td><td>" + a.id + '</td><td class="nowrap">' + esc(person(a.owner).name) + "</td><td>" + s.id +
-          "</td><td>" + REL[m.rel] + "</td><td>" + (m.kind === "sell" ? "Sell" : "Protect") + "</td><td>" + esc(lineName(m.line)) + '</td><td class="wrap">' + esc(m.next) +
-          "</td><td>" + m.m + "</td><td>" + m.c + "</td><td>" + m.sources.length + ' cited</td><td class="nowrap">Robin Hale</td></tr>';
+        return '<tr><td><b>' + esc(a.name) + "</b></td><td>" + esc(person(a.owner).name) + "</td><td>" + kindChip(m) + "</td><td>" + esc(lineName(m.line)) +
+          '</td><td><span class="sc">' + m.m + '/10</span></td><td><span class="sc">' + m.c + "/10</span></td><td>" + m.sources.length + " cited</td><td>" + s.id +
+          "</td><td>" + REL[m.rel] + '</td><td class="wrap">' + esc(m.next) + "</td><td>" + a.id + "</td><td>Robin Hale</td></tr>";
       }).join("") : '<tr><td colspan="' + D.exportColumns.length + '"><span class="sub">Approve moves on the Today screen; they appear here.</span></td></tr>') + "</tbody>";
     $("#export-json").textContent = rows.length ? JSON.stringify(recordOf(rows[0]), null, 2) : "{}";
     var kept = MOVES.filter(function (m) { var st = status(m); return st === "rejected" || st === "held" || st === "open" || st === "admitted"; });

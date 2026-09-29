@@ -335,5 +335,5 @@ window.AIX = {
 
   /* The CRM import file, one record per account. */
   exportFile: "crm-import.csv",
-  exportColumns: ["Account", "Account id", "Owner", "Signal", "Reached as", "Move", "Service line", "Next step", "Magnitude", "Confidence", "Sources", "Decided by"]
+  exportColumns: ["Account", "Owner", "Move", "Service line", "Magnitude", "Confidence", "Sources", "Story", "Reached as", "Next step", "Account id", "Decided by"]
 };

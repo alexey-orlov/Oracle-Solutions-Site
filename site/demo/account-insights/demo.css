@@ -196,7 +196,7 @@ body.ui-clean .foot, body.ui-clean #tour-toggle, body.ui-clean #tour-pill { disp
   padding: 8px 10px; margin: 2px 0; border: 1px solid transparent; border-radius: 9px; cursor: pointer; }
 .read::before { content: ""; position: absolute; left: -17px; top: 50%; width: 14px; height: 2px; background: var(--line); }
 .read:hover { background: var(--line-3); }
-.read.is-open { background: var(--primary-soft); border-color: var(--primary-line); }
+.read.is-open { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 3px 0 0 var(--primary); }
 .read.is-dim { opacity: .45; }
 .read.is-hit { background: #f8fbff; border-color: var(--primary-line); }
 .read.is-rejected .r-name b { text-decoration: line-through; text-decoration-color: var(--faint); }
