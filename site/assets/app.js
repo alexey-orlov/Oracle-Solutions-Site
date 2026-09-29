@@ -40,6 +40,7 @@
     filter: '<path d="M4 6h16M7 12h10M10 18h4"></path>',
     external: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>',
     close: '<path d="M6 6l12 12M18 6 6 18"></path>',
+    expand: '<path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path>',
     chevron: '<path d="m9 6 6 6-6 6"></path>',
     chevronDown: '<path d="m6 9 6 6 6-6"></path>',
     mail: '<rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3.5 7 8.5 6 8.5-6"></path>',

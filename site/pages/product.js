@@ -247,12 +247,10 @@
      to read in that column. Under the row, the open step's text, so the
      description sits between the control that selects it and the screen it
      explains (START-HERE §4); then the frame: the walkthrough's own screen at
-     16:10, the step's region outlined in blue and a zoom of that region inset
-     at the corner it leaves free (`anchor`), so the UI text reads at about
-     1:1. Every step's text and frame share two row tracks, so switching steps
-     never moves the frame. On a phone the block is the steps as static cards,
-     each ending on its zoom, which carries the legible part of the screen at
-     that width. Both layouts are in the markup and CSS shows one. */
+     16:10, nothing drawn over it. Every step's text and frame share two row
+     tracks, so switching steps never moves the frame. On a phone the block is
+     the steps as static cards, each ending on its screen. Both layouts are in
+     the markup and CSS shows one. */
   function howItWorks(product) {
     var UI = window.UI;
     var steps = product.overview.steps;
@@ -1069,6 +1067,18 @@
       tab.addEventListener("click", function () { select(index); });
     });
     roving(tabs, select, "horizontal");
+
+    /* A screen opens full size in the site's modal, its step named over it. */
+    Array.prototype.forEach.call(block.querySelectorAll(".hiw-open"), function (button) {
+      button.addEventListener("click", function () {
+        var UI = window.UI;
+        var title = button.getAttribute("data-shot-title");
+        UI.modal.open('<h2 class="h3 modal-title">' + UI.esc(title) + "</h2>" +
+          '<img class="modal-shot" src="' + UI.esc(button.getAttribute("data-shot")) + '"' +
+            ' alt="' + UI.esc(button.getAttribute("data-shot-alt")) + '">',
+          { label: title, className: "modal-panel--media modal-panel--shot" });
+      });
+    });
   }
 
   /* Round 21: beside the main column the numbers widget stays in view under

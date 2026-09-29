@@ -227,6 +227,7 @@ window.SITE_CONTENT = {
       statePartial: "Partial",
       stateRoadmap: "Roadmap",
       howItWorks: "How it works",
+      shotOpen: "Open the screen full size",
       industryCases: "By industry",
       caseProblem: "The problem",
       caseSolution: "The solution",

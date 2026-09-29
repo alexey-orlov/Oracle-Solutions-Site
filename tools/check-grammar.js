@@ -1932,6 +1932,30 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (/oracleMark|nvidiaMark|oracle-wordmark|nvidia-wordmark|about-partner/.test(aboutFn)) {
       fail("site/pages/overview.js about()", "renders an Oracle or NVIDIA mark — the About band carries SoftServe's own figures only (round 18)");
     }
+    /* 2026-09-29 (Alex): "add softserve logo to the tile". The tile opens on
+       SoftServe's lockup, read through brandAsset so a theme can swap it, and
+       the lockup is the tile's one mark (one mark per company in one graphic):
+       no spark or wordmark beside it (PROVENANCE §53). */
+    if (!/brandAsset\("ssLogoWhite"/.test(aboutFn) || !/class="about-logo"/.test(aboutFn)) {
+      fail("site/pages/overview.js about()", 'the tile opens on SoftServe\'s logo: brandAsset("ssLogoWhite") in an .about-logo image (PROVENANCE §53)');
+    }
+    var aboutImgs = (aboutFn.match(/<img\b/g) || []).length;
+    if (aboutImgs !== 1 || /ssMark|ssSpark|softserve-star|softserve-wordmark/.test(aboutFn)) {
+      fail("site/pages/overview.js about()", aboutImgs + " image(s) or a second SoftServe mark in the tile — the logo is its one mark (PROVENANCE §53)");
+    }
+    var aboutLogo = "site/assets/img/brand/softserve-logo-white.svg";
+    if (fs.readFileSync(path.join(root, "site/index.html"), "utf8").indexOf('ssLogoWhite: "assets/img/brand/softserve-logo-white.svg"') < 0) {
+      fail("site/index.html window.BRAND", 'must declare ssLogoWhite: "assets/img/brand/softserve-logo-white.svg", the About tile\'s logo (PROVENANCE §53)');
+    }
+    if (!fs.existsSync(path.join(root, aboutLogo))) fail(aboutLogo, "missing — the About tile's logo (PROVENANCE §53)");
+    else {
+      var aboutLogoSvg = fs.readFileSync(path.join(root, aboutLogo), "utf8");
+      var aboutLogoFills = (aboutLogoSvg.match(/fill="[^"]*"/g) || []).filter(function (f, i, all) { return all.indexOf(f) === i; });
+      if (aboutLogoFills.length !== 1 || aboutLogoFills[0] !== 'fill="#FFFFFF"') {
+        fail(aboutLogo, "must be one white ink on the dark tile, found " + (aboutLogoFills.join(" ") || "no fill"));
+      }
+      if (/<style|class=/.test(aboutLogoSvg)) fail(aboutLogo, "carries a style block or classes — the brand kit's file, cleaned (ASSETS.md)");
+    }
     if (!ab.link || !str(ab.link.label) || !str(ab.link.url)) fail("overview.about.link", "needs { label, url }");
     else if (ab.link.url.indexOf("https://www.softserveinc.com") !== 0) {
       fail("overview.about.link", 'url "' + ab.link.url + '" must be on https://www.softserveinc.com — the block links to the site that prints the figures');
