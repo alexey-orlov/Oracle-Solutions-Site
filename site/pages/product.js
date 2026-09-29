@@ -78,30 +78,56 @@
     return "";
   }
 
-  /* The frame is the recording: it renders only when links.json holds the
-     product's `video` link, and the click plays it. Round 18 (Alex: "no fake
-     and placeholder links"): the frame that promised a recording before one
-     existed, and its "being prepared" note, are gone, so a product without a
-     video has the single-column hero until its recording lands. */
+  /* A recording plays inside the page only where its host lets another site
+     frame it: YouTube, Vimeo or a plain video file. A SharePoint or Stream
+     link is a page that refuses to be framed and opens only for a signed-in
+     viewer, so it opens in its own tab, as the walkthrough does. */
+  function playsInPage(url) {
+    return /youtube\.com|youtu\.be|youtube-nocookie\.com|vimeo\.com/i.test(url) ||
+      /\.(mp4|webm|m4v|mov)(\?|#|$)/i.test(url);
+  }
+
+  /* The hero's frame (Alex, 2026-09-29: "a nice preview screen and play
+     button overlay"): the product's own screen, `videoPoster`, under one round
+     button. It opens the recording where links.json holds one, else the
+     interactive walkthrough, else there is no frame and the hero is one
+     column (round 18: nothing promises what does not exist). The glyph says
+     which it opens: `play` for the recording, the badge's `cursor-click` for
+     the walkthrough (round 9). The recording's frame carries its caption,
+     which tells it apart from the walkthrough the CTA row opens beside it;
+     the walkthrough's frame carries none, since that button already says it. */
   function heroMedia(product) {
     var UI = window.UI;
-    var videoLink = lnk(product.slug).video;
-    if (!videoLink) return "";
+    var link = lnk(product.slug);
+    var videoLink = link.video || "";
+    var walkthrough = demoHref(link);
+    if (!videoLink && !walkthrough) return "";
     var poster = posterFor(product);
     var caption = C().shared.videoCaption;
-    var hook = ' data-video="' + UI.esc(videoLink) + '"' +
-      ' data-video-title="' + UI.esc(product.name) + '"';
+    var name = (videoLink ? caption : C().shared.demoCta) + " — " + product.name;
+    var tag = "a";
+    var hook;
+    if (!videoLink) {
+      hook = ' href="' + UI.esc(walkthrough) + '" target="_blank" rel="noopener"';
+    } else if (playsInPage(videoLink)) {
+      tag = "button";
+      hook = ' type="button" data-video="' + UI.esc(videoLink) + '"' +
+        ' data-video-title="' + UI.esc(product.name) + '"';
+    } else {
+      hook = ' href="' + UI.esc(videoLink) + '" target="_blank" rel="noopener"';
+    }
     return '<div class="hero-media">' +
-      '<button class="video-card' + (poster ? "" : " video-card--plate") + '" type="button"' + hook +
-        ' aria-label="' + UI.esc(caption + " — " + product.name) + '">' +
+      "<" + tag + ' class="video-card' + (videoLink ? "" : " video-card--demo") +
+        (poster ? "" : " video-card--plate") + '"' + hook + ' aria-label="' + UI.esc(name) + '">' +
         (poster
           ? '<img class="video-card-poster" src="' + UI.esc(poster) +
             '" alt="" loading="eager" decoding="async">'
           : "") +
-        '<span class="video-card-veil" aria-hidden="true"></span>' +
-        '<span class="video-card-play" aria-hidden="true">' + UI.icon("play", "icon--solid") + "</span>" +
-        '<span class="video-card-caption">' + UI.esc(caption) + "</span>" +
-      "</button></div>";
+        (videoLink ? '<span class="video-card-veil" aria-hidden="true"></span>' : "") +
+        '<span class="video-card-play" aria-hidden="true">' +
+          (videoLink ? UI.icon("play", "icon--solid") : UI.icon("cursor-click")) + "</span>" +
+        (videoLink ? '<span class="video-card-caption" aria-hidden="true">' + UI.esc(caption) + "</span>" : "") +
+      "</" + tag + "></div>";
   }
 
   /* Where the walkthrough button goes — the same resolution the demo badge
@@ -113,7 +139,7 @@
     return link.interactiveDemo || "";
   }
 
-  function heroCtas(product, hasMedia) {
+  function heroCtas(product) {
     var UI = window.UI;
     var link = lnk(product.slug);
     var out = [UI.button({
@@ -134,15 +160,10 @@
         attrs: { target: "_blank", rel: "noopener" }
       }));
     }
-    if (link.video && !hasMedia) {
-      out.push(UI.button({
-        label: C().shared.videoCaption, kind: "secondary", icon: "play",
-        attrs: { "data-video": link.video, "data-video-title": product.name }
-      }));
-    }
-    /* No Marketplace button here: the Marketplace badge in the chip row is the
-       link to the listing, and no success-story button either — the case study
-       owns its one link out. */
+    /* No video button: a recording always has the frame beside this row, and
+       the frame is the way to it. No Marketplace button either: the
+       Marketplace badge in the chip row is the link to the listing; and no
+       success-story button — the case study owns its one link out. */
     return '<div class="cta-row product-hero-cta">' + out.join("") + "</div>";
   }
 
