@@ -381,123 +381,89 @@
      on the right") set the tiles in one white card beside the main column,
      where round 20 had a full-bleed band between the plates and the screens. */
 
+  /* The chart (round 21; Alex, 2026-09-29: the round-20 charts were "hard to
+     understand from graphics", and "matching between number and the visual
+     is absolutely unclear"). Each chart is the plainest comparison a
+     dashboard has: one row per state, named Today and After, each a bar from
+     the same zero line with its value printed at the bar's end, so no legend
+     and no scale is left to decode. The tile's figure is always printed on
+     the chart, in bold, on the mark it names: on the After row when it is the
+     result (5–15 min), on Today's when it is the starting point (from weeks),
+     as the After bar's lighter span when it is a change (+4 to +10%, on bars
+     indexed to today), and on both rows when it is a pair (3.0 → 2.4%). A
+     baseline with no promised end is one Today row: a meter when the number
+     is a share of a whole (a 0–100 scale), ten dots when it is a count in ten,
+     and no chart at all otherwise, where the figure alone is the tile. The
+     bars are aria-hidden; the rows are text, so a screen reader hears
+     "Today ~2 days, After ~30 min". */
   var KPI_FORMS = { compression: true, range: true, dumbbell: true, baseline: true };
 
-  /* A value's place on the metric's own scale, in percent of the chart's
-     width, clamped to it. */
-  function kpiPos(value, scale) {
-    var min = Number(scale && scale.min);
-    var max = Number(scale && scale.max);
-    var v = Number(value);
-    if (!isFinite(min) || !isFinite(max) || !(max > min) || !isFinite(v)) return 0;
-    return Math.max(0, Math.min(100, (v - min) / (max - min) * 100));
+  function share(v) {
+    var n = Number(v);
+    return isFinite(n) ? Math.round(Math.max(0, Math.min(1, n)) * 1000) / 1000 : 0;
   }
 
-  function pct(p) { return (Math.round(p * 100) / 100) + "%"; }
-
-  /* A swatch is drawn in the shape of the mark it names (a bar, a tick, a
-     dot), so the pairing never rests on colour alone. `place`, where given, is
-     { at, align }: the label is set under its own mark, starting at, ending
-     at or centred on the mark's x in percent. */
-  function kpiLabel(text, swatch, place) {
-    var where = place
-      ? ' kpi-label--' + place.align + '" style="left: ' + pct(place.at)
-      : "";
-    return '<span class="kpi-label' + where + '"><span class="kpi-swatch kpi-swatch--' + swatch + '" aria-hidden="true"></span>' +
-      "<span>" + window.UI.esc(text) + "</span></span>";
+  /* `from`, where given, starts the bar that far along the axis: the gap row
+     floats from the After bar's end to Today's. */
+  function kpiBar(kind, value, from) {
+    var v = share(value);
+    var o = from ? share(from) : 0;
+    return '<span class="kpi-bar kpi-bar--' + kind + (v === 0 ? " is-zero" : "") +
+      '" style="--v: ' + v + (o ? "; --o: " + o : "") + '" aria-hidden="true"></span>';
   }
 
-  /* Where a label centred on x would run past an end of the chart, it starts
-     at the left end or ends at the right one instead. */
-  function kpiPlace(at) {
-    if (at < 15) return { at: at, align: "start" };
-    if (at > 85) return { at: at, align: "end" };
-    return { at: at, align: "center" };
-  }
-
-  /* The four forms (D-design §2.2), all 40px tall with the track at y 17, on
-     one convention (Q1): a value axis, low on the left, so a metric that
-     improves by going down improves leftward, and every label sits under or
-     beside the mark it names, never in a fixed left or right slot.
-     compression — measured before → after, the after bar its share of the
-       before one, at least 8px so a minutes-against-days bar still shows; both
-       labels start at the bars' origin (site.css);
-     range — a modelled band beside today's tick, each label under its mark; a
-       range that improves downward is drawn mirrored, today at the right end
-       and the band to its left;
-     dumbbell — a modelled before → after on the axis, the labels in the order
-       of their dots;
-     baseline — a sourced "from X" with no promised end: the scale filled to X,
-       the tick, and a chevron pointing the way the number improves. */
-  function kpiVisual(viz) {
+  function kpiRow(name, marks, value, strong) {
     var UI = window.UI;
-    var scale = viz.scale || {};
+    return '<div class="kpi-row">' +
+      '<span class="kpi-row-name">' + UI.esc(name) + "</span>" +
+      '<span class="kpi-row-plot">' + marks +
+        (value ? '<span class="kpi-row-value' + (strong ? " is-figure" : "") + '">' + UI.esc(value) + "</span>" : "") +
+      "</span></div>";
+  }
+
+  function kpiChart(viz, figure) {
     var before = viz.before || {};
     var after = viz.after || {};
     var range = viz.range || {};
-    var at = pct(kpiPos(before.value, scale));
-    var track = '<rect class="kv-track" x="0" y="17" width="100%" height="6"></rect>';
-    var tick = '<line class="kv-tick" x1="' + at + '" x2="' + at + '" y1="10" y2="30"></line>';
-    var marks = "";
-    var labels = "";
-    var placed = false;
-    var hidden = "";
+    var scale = viz.scale || {};
+    var today = label("metricToday");
+    var then = label("metricAfter");
+    var text = figure.text;
+    var rows = "";
 
-    if (viz.form === "compression") {
-      var share = Number(before.value) > 0
-        ? Math.max(0, Math.min(100, Number(after.value) / Number(before.value) * 100))
-        : 0;
-      marks = '<rect class="kv-before" x="0" y="4" width="100%" height="10"></rect>' +
-        '<rect class="kv-after" x="0" y="22" width="8" height="10"></rect>' +
-        '<rect class="kv-after" x="0" y="22" width="' + pct(share) + '" height="10"></rect>';
-      labels = kpiLabel(before.label, "before") + kpiLabel(after.label, "after");
+    if (viz.form === "compression" || viz.form === "dumbbell") {
+      var top = Math.max(Number(before.value), Number(after.value)) || 1;
+      var pair = viz.form === "dumbbell";
+      rows = kpiRow(today, kpiBar("today", before.value / top), before.label, pair || before.label === text) +
+        kpiRow(then, kpiBar("after", after.value / top), after.label, pair || after.label === text);
+      /* A figure that is the difference (about $250 between a $350 call and a
+         $99 one) gets its own row, the gap drawn where it is. */
+      if (viz.gap) {
+        rows += kpiRow(viz.gap, kpiBar("span", (before.value - after.value) / top, after.value / top), text, true);
+      }
     } else if (viz.form === "range") {
-      /* x = (v − min)/(max − min), or (max − v)/(max − min) when down. */
-      var down = viz.direction === "down";
-      var rpos = function (v) { var p = kpiPos(v, scale); return down ? 100 - p : p; };
-      var t = rpos(before.value);
-      var a = rpos(range.lo);
-      var b = rpos(range.hi);
-      var x0 = Math.min(a, b);
-      var x1 = Math.max(a, b);
-      var tx = pct(t);
-      marks = track +
-        '<rect class="kv-band" x="' + pct(x0) + '" y="15" width="' + pct(x1 - x0) + '" height="10"></rect>' +
-        '<line class="kv-tick" x1="' + tx + '" x2="' + tx + '" y1="10" y2="30"></line>';
-      labels = kpiLabel(label("metricToday") || before.label, "tick", kpiPlace(t)) +
-        kpiLabel(range.label, "band", kpiPlace((x0 + x1) / 2));
-      placed = true;
-    } else if (viz.form === "dumbbell") {
-      var pb = kpiPos(before.value, scale);
-      var pa = kpiPos(after.value, scale);
-      var to = pct(pa);
-      marks = track +
-        '<line class="kv-link" x1="' + at + '" x2="' + to + '" y1="20" y2="20"></line>' +
-        '<circle class="kv-dot kv-dot--before" cx="' + at + '" cy="20" r="7"></circle>' +
-        '<circle class="kv-dot kv-dot--after" cx="' + to + '" cy="20" r="7"></circle>';
-      var beforeLabel = kpiLabel(before.label, "dot-before");
-      var afterLabel = kpiLabel(after.label, "dot-after");
-      labels = pa < pb ? afterLabel + beforeLabel : beforeLabel + afterLabel;
+      /* Indexed to today = 100: up, After runs to 100 + lo solid and on to
+         100 + hi lighter; down, it runs to 100 − hi solid and on to 100 − lo. */
+      var lo = Number(range.lo);
+      var hi = Number(range.hi);
+      var up = viz.direction !== "down";
+      var end = up ? 100 + hi : 100;
+      var solid = up ? 100 + lo : 100 - hi;
+      rows = kpiRow(today, kpiBar("today", 100 / end), "", false) +
+        kpiRow(then, kpiBar("after", solid / end) + kpiBar("span", (hi - lo) / end), text, true);
     } else if (viz.form === "baseline") {
-      var up = viz.direction === "up";
-      /* The nested svg carries the chevron to the tick's x; the path is drawn
-         beside it, on the side the number improves toward. */
-      marks = track +
-        '<rect class="kv-fill" x="0" y="17" width="' + at + '" height="6"></rect>' +
-        tick +
-        '<svg x="' + at + '" y="15" width="1" height="10" overflow="visible">' +
-          '<path class="kv-chevron" d="' + (up ? "M6 0 11 5 6 10" : "M-6 0 -11 5 -6 10") + '"></path></svg>';
-      labels = kpiLabel(before.label, "fill");
-      var end = up ? scale.max : scale.min;
-      hidden = '<span class="sr-only">' +
-        UI.esc([label("metricToward"), end, viz.unit].filter(function (x) { return x !== undefined && x !== ""; }).join(" ")) +
-        "</span>";
+      var max = Number(scale.max);
+      var value = Number(before.value);
+      if (max === 100) {
+        rows = kpiRow(today, '<span class="kpi-meter" aria-hidden="true">' + kpiBar("today", value / 100) + "</span>", text, true);
+      } else if (max === 10 && value === Math.round(value)) {
+        var dots = "";
+        for (var i = 0; i < 10; i += 1) dots += '<span class="kpi-dot' + (i < value ? " is-on" : "") + '"></span>';
+        rows = kpiRow(today, '<span class="kpi-dots" aria-hidden="true">' + dots + "</span>", text, true);
+      }
     }
-
-    return {
-      svg: '<svg class="kpi-svg" width="100%" height="40" aria-hidden="true" focusable="false">' + marks + "</svg>",
-      labels: '<p class="kpi-labels' + (placed ? " kpi-labels--placed" : "") + '">' + labels + hidden + "</p>"
-    };
+    /* An empty chart still takes its row, so the tiles' lines stay level. */
+    return '<div class="kpi-chart' + (rows ? " kpi-chart--" + viz.form : "") + '">' + rows + "</div>";
   }
 
   /* The figure's width in ems of its own size, estimated per glyph, so the CSS
@@ -524,7 +490,7 @@
     var kind = (C().shared.metricKinds || {})[metric.kind] || {};
     var viz = metric.visual || {};
     var figure = metric.figure || {};
-    var visual = KPI_FORMS[viz.form] ? kpiVisual(viz) : { svg: "", labels: "" };
+    var chart = KPI_FORMS[viz.form] ? kpiChart(viz, figure) : '<div class="kpi-chart"></div>';
     return '<article class="kpi">' +
       '<span class="kpi-dash" aria-hidden="true"></span>' +
       '<div class="kpi-head">' +
@@ -538,8 +504,7 @@
         (figure.prefix ? '<span class="kpi-prefix">' + UI.esc(figure.prefix) + "</span> " : "") +
         '<span class="kpi-value">' + UI.esc(figure.text) + "</span>" +
       "</p>" +
-      '<div class="kpi-viz kpi-viz--' + UI.esc(viz.form) + '">' + visual.svg + "</div>" +
-      visual.labels +
+      chart +
       '<p class="kpi-line">' + UI.esc(metric.line) + "</p>" +
       '<p class="kpi-owner">' + UI.esc(label("metricOwner")) + " · " + UI.esc(metric.owner) + "</p>" +
       "</article>";
