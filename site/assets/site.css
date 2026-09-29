@@ -1548,18 +1548,20 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .catalog-hero-media { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 
 /* softserveinc.com's own About Us photograph: dark on its left half, the
-   team from 55 % of the frame on. The crop sits a quarter in, so the lead's
-   measure stops short of the first figure from 721 px up and the spark lands
-   where About Us puts it, by the man in white and the window. */
+   team from 55 % of the frame on. The frame is drawn a quarter wider than the
+   hero and 50 px taller, from its left edge, as About Us's runs under its
+   header: the hero shows at most the left 80 %, so the man in the cap stands
+   clear of the lead and the crossing meets the laptop and the lit wall, never
+   a face. */
 .catalog-hero-img {
   position: absolute;
-  top: 0;
+  top: -3.125rem;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 125%;
+  height: calc(100% + 3.125rem);
   max-width: none;
   object-fit: cover;
-  object-position: var(--focal, 25% 0%);
+  object-position: var(--focal, 0 30%);
 }
 
 .catalog-hero-scrim {
@@ -1613,12 +1615,10 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .catalog-hero { --ch-pt: 4.5rem; --ch-pb: 4.5rem; --ch-gap: 3.25rem; --ch-under: 1rem; --sp-w: 3.5rem; --sp-r: 1.25rem; }
 }
 
-/* On a phone the lead takes the full measure over the team, as About Us's does
-   over its photograph, so the scrim evens the whole frame down, and the line
-   down from the spark, which would cross the lead, is not drawn. */
+/* On a phone the hero shows the photograph's dark side and the lead takes the
+   full measure, so the line down from the spark, which would cross the lead,
+   is not drawn. */
 @media (max-width: 720px) {
-  .catalog-hero-img { object-position: 50% 0%; }
-  .catalog-hero-scrim { background: linear-gradient(180deg, rgba(3, 7, 12, .5) 0%, rgba(3, 7, 12, .62) 100%); }
   .catalog-hero-lead { max-width: 36rem; }
   .catalog-hero-line--down { display: none; }
 }
