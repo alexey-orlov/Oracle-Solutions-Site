@@ -25,16 +25,19 @@
 /* The photograph carries the H1, its promise and the two actions, set low
    in it, so the claim leads straight into the figures on white under it.
    It is held to the window's height less the header and the proof strip's
-   figures, so the strip shows whole under it from 1366 x 768 up: at
+   figures, so the strip's figures show under it from 1366 x 768 up: at
    1440 x 900 it is 610 px, where the version with the figures on a dark
    band under it stood 658 tall (Alex, 2026-09-29: the hero "can be
-   slightly smaller (but not for the full height of the metrics")). */
+   slightly smaller (but not for the full height of the metrics")). The
+   60vw cap bites only on a tall, narrow window (a tablet held upright),
+   where the photograph would otherwise tower over its copy and push the
+   figures below the fold. */
 .ahero-photo {
   position: relative;
   isolation: isolate;
   display: flex;
   align-items: flex-end;
-  height: clamp(480px, calc(100vh - 290px), 800px);
+  height: clamp(480px, min(calc(100vh - 290px), 60vw), 800px);
 }
 
 /* The picture, its scrim, the line and the spark, as one layer that holds
