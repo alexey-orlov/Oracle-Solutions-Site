@@ -516,21 +516,21 @@ window.SITE_CONTENT = {
         label: "AI Lakehouse",
         fullLabel: "Oracle Autonomous AI Lakehouse",
         description: "The self-managing governed gold layer, with Iceberg, vector search and Select AI.",
-        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind."
+        emptyState: "SoftServe’s Oracle dedicated practice delivers on this platform. Tell us the workflow you have in mind."
       },
       {
         id: "oracle-ai-data-platform",
         label: "AI Data Platform",
         fullLabel: "Oracle AI Data Platform",
         description: "Governed enterprise data for AI — structured, unstructured and real-time, multi-cloud.",
-        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind."
+        emptyState: "SoftServe’s Oracle dedicated practice delivers on this platform. Tell us the workflow you have in mind."
       },
       {
         id: "oracle-ai-fusion",
         label: "AI for Fusion Applications",
         fullLabel: "Oracle AI for Fusion Applications",
         description: "Embedded AI agents and AI Agent Studio across ERP, SCM, HCM and CX.",
-        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind.",
+        emptyState: "SoftServe’s Oracle dedicated practice delivers on this platform. Tell us the workflow you have in mind.",
         catalog: false
       },
       {
@@ -538,7 +538,7 @@ window.SITE_CONTENT = {
         label: "OCI + NVIDIA NeMo",
         fullLabel: "Oracle Cloud Infrastructure + NVIDIA NeMo",
         description: "GPU cloud plus the NVIDIA agent, extraction and optimization engines — AI-Q, cuOpt, NeMo.",
-        emptyState: "The practice delivers on this platform. Tell us the workflow you have in mind."
+        emptyState: "SoftServe’s Oracle dedicated practice delivers on this platform. Tell us the workflow you have in mind."
       }
     ],
     categoryLabel: "What it does",
@@ -3775,10 +3775,10 @@ window.SITE_CONTENT = {
     confirmations: {
       posted: {
         title: "Thanks, your request is in",
-        body: "Someone from the Oracle practice will reply within two working days."
+        body: "Someone from SoftServe’s Oracle dedicated practice will reply within two working days."
       }
     },
-    offline: "This preview can’t send forms. Email {mailbox} and the Oracle practice will reply within two working days.",
+    offline: "This preview can’t send forms. Email {mailbox} and SoftServe’s Oracle dedicated practice will reply within two working days.",
     errors: {
       send: "That didn’t send. Please try again, or email {mailbox}.",
       limited: "Not sent: the site has had too many requests in the last hour. Please try again later, or email {mailbox}."
