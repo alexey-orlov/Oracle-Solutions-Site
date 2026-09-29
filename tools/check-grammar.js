@@ -1325,8 +1325,9 @@ if (!arr(C.products) || C.products.length !== 9) {
   /* Two items and no "Overview": the logo is the home link. Case studies left
      the header on 2026-09-17 (Alex) — the home page still carries its
      case-study screen. For sellers took the slot in round 8 and left it the
-     same day (Alex): #/sellers stays, reached from the footer's link row and
-     from the Get the full kit link in a product kit confirmation. Round 18
+     same day (Alex): #/sellers stays, reached from the footer's link row (and,
+     until the all-offers kit went on 2026-09-29, from the Get the full kit
+     link in a product kit confirmation). Round 18
      (Alex): the Services page is gone, and "Services" lands on the home page's
      Packaged services screen, as the header's ask lands on its contact. */
   var NAV = [
@@ -1587,7 +1588,7 @@ if (!arr(C.products) || C.products.length !== 9) {
       if (!str((st || {}).label)) fail(aw, "label missing");
     });
     var aboutSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
-    var aboutFn = aboutSrc.slice(aboutSrc.indexOf("function about("), aboutSrc.indexOf("function kitOptions("));
+    var aboutFn = aboutSrc.slice(aboutSrc.indexOf("function about("), aboutSrc.indexOf("function closing("));
     if (/oracleMark|nvidiaMark|oracle-wordmark|nvidia-wordmark|about-partner/.test(aboutFn)) {
       fail("site/pages/overview.js about()", "renders an Oracle or NVIDIA mark — the About band carries SoftServe's own figures only (round 18)");
     }
@@ -1624,6 +1625,17 @@ if (!arr(C.products) || C.products.length !== 9) {
         fail(pair[0], "renders a form or split of its own — the contact switch is the one component (round 18)");
       }
     });
+    /* 2026-09-29 (Alex): the Get the sales kit tab "should not appear on the
+       main page". The home page passes the component no kit, so it renders the
+       ask alone; the kit lives on each product's Contacts tab and on #/sellers. */
+    if (/kitOptions|kitBody|salesKit/.test(home)) {
+      fail("site/pages/overview.js", "hands the contact switch a sales kit — the home page carries the ask alone (Alex, 2026-09-29)");
+    }
+    var appSwitch = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+    if (!/var withKit = !!opts\.kitOptions;/.test(appSwitch) || !/var pick = !withKit \? "" :/.test(appSwitch) ||
+        !/var kitPanel = !withKit \? "" :/.test(appSwitch)) {
+      fail("site/assets/app.js contactSwitch()", "must render no segmented control and no kit pane when passed no kit — the home page's ask stands alone (2026-09-29)");
+    }
   })();
 
   /* --- S4b · bespoke services, the AI factory (round 18) ---
@@ -1962,9 +1974,10 @@ if (/request a demo/i.test(raw)) {
   });
 
   /* The ids the home page renders, and so the only anchors a "#/#…" route may
-     name. `talk` and `kit` are the contact switch's two panes. */
+     name. `talk` is its contact's ask; `kit` left the home page on 2026-09-29
+     and redirects to #/sellers (MOVED, below). */
   var HOME_IDS = ["top", "two-ways", "products", "how-we-deliver", ((C.overview || {}).bespoke || {}).anchor,
-    "case-studies", "about", ((C.overview || {}).contact || {}).anchor, "talk", "kit"];
+    "case-studies", "about", ((C.overview || {}).contact || {}).anchor, "talk"];
   var routes = [
     ["site.navCta.route", (site.navCta || {}).route],
     ["site.primaryCta.route", (site.primaryCta || {}).route],
@@ -1986,6 +1999,9 @@ if (/request a demo/i.test(raw)) {
   var appSrcMoved = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
   if (!/"\/services":\s*\{/.test(appSrcMoved)) {
     fail("site/assets/app.js", "MOVED has no \"/services\" entry — a saved link to the old page would land on Page not found");
+  }
+  if (!/"\/":\s*\{\s*"kit":\s*"#\/sellers"\s*\}/.test(appSrcMoved)) {
+    fail("site/assets/app.js", "MOVED does not send \"#/#kit\" to \"#/sellers\" — a saved home kit link would land on a home page with no kit (2026-09-29)");
   }
 })();
 
@@ -2156,16 +2172,41 @@ if (/request a demo/i.test(raw)) {
   }
   need("salesKit.page", page, ["eyebrow", "title", "body", "again", "povTitle", "povBody", "povLink"]);
   if (!page.routeLink || !str(page.routeLink.label) || !str(page.routeLink.route)) fail("salesKit.page.routeLink", "needs { label, route }");
-  need("salesKit.tab", tab, ["title", "body", "routeLabel", "nextDemo", "nextDemoLink", "nextAll", "nextAllLink"]);
+  need("salesKit.tab", tab, ["title", "body", "routeLabel", "nextDemo", "nextDemoLink"]);
   token("salesKit.tab.body", tab.body, "product");
   token("salesKit.tab.nextDemo", tab.nextDemo, "link");
-  token("salesKit.tab.nextAll", tab.nextAll, "link");
-  need("salesKit.form", form, ["emailLabel", "emailPlaceholder", "productLabel", "productAll", "submit", "submitting",
+  need("salesKit.form", form, ["emailLabel", "emailPlaceholder", "productLabel", "productPlaceholder", "submit", "submitting",
     "eligibility", "otherRoute", "kitName", "kitNameAll", "offline"]);
   token("salesKit.form.otherRoute", form.otherRoute, "routeLink");
   token("salesKit.form.kitName", form.kitName, "product");
   token("salesKit.form.offline", form.offline, "mailbox");
-  need("salesKit.form.errors", form.errors || {}, ["email", "domain", "send", "limited"]);
+  need("salesKit.form.errors", form.errors || {}, ["product", "email", "domain", "send", "limited"]);
+  /* 2026-09-29 (Alex): "no 'all kits' option in dropdown". A seller asks for
+     one product's kit: the select lists products only and opens on a prompt
+     that cannot be sent, the form never falls back to a kit for all offers,
+     and no confirmation points to a full kit. (`kitNameAll` stays: the sender
+     still names an all-offers request made without the page with it.) */
+  if (form.productAll !== undefined) fail("salesKit.form.productAll", "retired 2026-09-29 — the kit's select has no all-offers option (Alex)");
+  ["nextAll", "nextAllLink"].forEach(function (k) {
+    if (tab[k] !== undefined) fail("salesKit.tab." + k, "retired 2026-09-29 — there is no kit for all offers to point to (Alex)");
+  });
+  if (/whole portfolio|all offers|full kit/i.test(JSON.stringify([page, tab, form.productLabel, form.productPlaceholder]))) {
+    fail("salesKit", "offers a kit for all offers — a seller asks for one product's kit (Alex, 2026-09-29)");
+  }
+  (function () {
+    var src = fs.readFileSync(path.join(root, "site/assets/forms.js"), "utf8");
+    var kitSrc = src.slice(src.indexOf("function renderKit("), src.indexOf("window.FORMS ="));
+    if (!kitSrc) return warn("site/assets/forms.js", "renderKit not found — the no-all-offers check is reading nothing");
+    if (/["']all["']/.test(kitSrc)) {
+      fail("site/assets/forms.js", 'the kit form still carries an "all" value — no all-offers option and no fallback to one (Alex, 2026-09-29)');
+    }
+    if (!/<option value="" selected disabled>' \+ UI\.esc\(copy\.productPlaceholder\)/.test(kitSrc)) {
+      fail("site/assets/forms.js renderKit()", "the kit's select must open on productPlaceholder, a prompt that cannot be sent (2026-09-29)");
+    }
+    if (!/copy\.errors\.product/.test(kitSrc)) {
+      fail("site/assets/forms.js mountKit()", "must refuse a kit request with no product chosen, with errors.product (2026-09-29)");
+    }
+  })();
   token("salesKit.form.errors.domain", (form.errors || {}).domain, "routeLink");
   token("salesKit.form.errors.send", (form.errors || {}).send, "mailbox");
   token("salesKit.form.errors.limited", (form.errors || {}).limited, "mailbox");

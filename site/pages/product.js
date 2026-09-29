@@ -788,15 +788,15 @@
      is emailed automatically from links.json, the repo's one links file, and
      nothing about its contents is rendered here. A customer or partner who
      lands in the kit is routed back to the ask beside it, which is also what
-     the confirmation offers. */
+     the confirmation offers. There is no kit for all offers to offer next
+     (Alex, 2026-09-29), so the confirmation closes on the ask alone. */
   function kitOptions(product) {
     var tab = C().salesKit.tab;
     return {
       product: product.slug,
       routeLink: { label: tab.routeLabel, href: talkHref(product.slug) },
       next: [
-        { text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talkHref(product.slug) } },
-        { text: tab.nextAll, link: { label: tab.nextAllLink, href: "#/sellers" } }
+        { text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talkHref(product.slug) } }
       ]
     };
   }

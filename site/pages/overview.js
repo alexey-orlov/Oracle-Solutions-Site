@@ -458,33 +458,20 @@
 
   /* A product's Contacts tab, on the home page (Alex, round 18: the form
      "equivalent (texts, CTAs, etc., flow) to what we have on per-product page
-     (though logical difference to be preserved)"). The same switch renders it
-     (UI.contactSwitch): the ask, "Talk to us", open, and the seller's kit
-     behind the second tab. What is the home page's own: Karsten alone on the
-     card, the ask starting on "Not sure yet", and the kit for the whole
-     portfolio or any one product, with the /sellers page's line. Product pages
-     and the header deep-link into this section, so the anchor is read from the
-     data rather than written twice. */
-  function kitOptions() {
-    var tab = window.SITE_CONTENT.salesKit.tab;
-    var talk = "#/#" + window.UI.contactAnchors.talk;
-    return {
-      routeLink: { label: tab.routeLabel, href: talk },
-      next: [{ text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talk } }],
-      again: true
-    };
-  }
-
+     (though logical difference to be preserved)"). The same component renders
+     it (UI.contactSwitch), and what is the home page's own is data: Karsten
+     alone on the card and the ask starting on "Not sure yet". No sales kit
+     (Alex, 2026-09-29: the Get the sales kit tab "should not appear on the main
+     page"): passed no kit, the component renders the ask alone, and a seller
+     finds the kit on each product's Contacts tab and on #/sellers. Product
+     pages and the header deep-link into this section, so the anchor is read
+     from the data rather than written twice. */
   function closing(C) {
     var UI = window.UI;
     var block = C.overview.contact;
     return '<section class="section home-screen home-contact" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
       head({ eyebrow: block.eyebrow, title: block.heading, lead: block.sub }) +
-      UI.contactSwitch({
-        key: "home",
-        kitBody: C.salesKit.page.body,
-        kitOptions: kitOptions()
-      }) +
+      UI.contactSwitch({ key: "home" }) +
       "</div></section>";
   }
 
@@ -495,7 +482,7 @@
   }
 
   overview.mount = function (params, root) {
-    window.UI.mountContactSwitch(root, { kitOptions: kitOptions() }, params && params.anchor);
+    window.UI.mountContactSwitch(root, {}, params && params.anchor);
   };
 
   overview.title = function () { return window.SITE_CONTENT.site.title; };

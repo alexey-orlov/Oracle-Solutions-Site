@@ -431,9 +431,10 @@ window.SITE_CONTENT = {
       link: { label: "softserveinc.com", url: "https://www.softserveinc.com/en-us/about-us" }
     },
 
-    /* Round 18: the head over the contact switch, the product Contacts tab's
-       own component. No sub: the Talk pane opens with its own (forms.demo.sub),
-       and "talk" is already the switch's segment and the submit. */
+    /* Round 18: the head over the product Contacts tab's own component, which
+       here carries the ask alone since 2026-09-29 (no sales kit on the home
+       page). No sub: the ask opens with its own (forms.demo.sub), and "talk"
+       is already its submit. */
     contact: {
       anchor: "request-a-demo",
       eyebrow: "Contact",
@@ -3526,7 +3527,7 @@ window.SITE_CONTENT = {
     page: {
       eyebrow: "For sellers",
       title: "Get the sales kit",
-      body: "Enter your SoftServe or Oracle work email and we’ll email you the sales kit — what an account team needs to position SoftServe’s AI agents on Oracle and open the first customer conversation. Ask for the whole portfolio or a single product.",
+      body: "Enter your SoftServe or Oracle work email and we’ll email you the sales kit — what an account team needs to position SoftServe’s AI agents on Oracle and open the first customer conversation.",
       again: "Request another kit",
       routeLink: { label: "Talk to us", route: "#/#talk" },
       povTitle: "See the fit in an account?",
@@ -3538,22 +3539,24 @@ window.SITE_CONTENT = {
       body: "Enter your SoftServe or Oracle work email and we’ll email you the {product} sales kit — what an account team needs to position it and open the first customer conversation.",
       routeLabel: "Talk to us",
       nextDemo: "Have an account in mind? {link} — after a workshop, a Jumpstart proof of value on the customer’s own data runs 4–8 weeks and ends in measurable KPIs.",
-      nextDemoLink: "Talk to us",
-      nextAll: "Selling the whole portfolio? {link}",
-      nextAllLink: "Get the full kit"
+      nextDemoLink: "Talk to us"
     },
     form: {
       emailLabel: "Work email",
       emailPlaceholder: "you@oracle.com",
       productLabel: "Kit for",
-      productAll: "All offers",
+      productPlaceholder: "Choose a product",
       submit: "Send me the kit",
       submitting: "Sending…",
       eligibility: "For @softserveinc.com and @oracle.com addresses only.",
       otherRoute: "Customer or partner? {routeLink}, or ask your SoftServe or Oracle point of contact.",
       kitName: "{product} sales kit",
+      /* The site offers no kit for all offers (2026-09-29). The sender still
+         answers such a request made without the page, and names it with this
+         (tools/sync-links.js copies it into mail/catalog.json). */
       kitNameAll: "full sales kit",
       errors: {
+        product: "Choose the product you’re selling.",
         email: "Enter your work email.",
         domain: "The kit only goes to @softserveinc.com and @oracle.com addresses. Customer or partner? {routeLink} instead.",
         send: "That didn’t send. Please try again, or email {mailbox}.",

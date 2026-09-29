@@ -7007,3 +7007,55 @@ _A change between rounds, made in its own session while the Internal-panel remov
 - **Not published:** the shared link shows round 17 until Alex says publish (START-HERE §1).
 - **Parallel sessions:** the product-pages session (round 20, on a branch) was told which regions moved, and its `overview` rewrite leaves the two products' `facet`, `tags` and `technology` alone. §44, §45 and §46 were numbered with the two sessions at work at the same time.
 - **Open for Alex:** START-HERE §9, under §46.
+
+## 48. The home contact without the sales kit, and one product's kit per request, 2026-09-29
+
+_A fix between rounds, made on its own branch (`fix/home-contact-no-kit`, merged to `main`) while the product-pages redesign (round 20, on a branch) and the other sessions of the day were at work. Opus alone, with no Fable pass: the only new copy is a select prompt and its error line. Touched: `site/assets/app.js` (`contactSwitch()`, `MOVED`), `site/pages/overview.js` (`closing()`, `mount`), `site/pages/product.js` (`kitOptions()`), `site/pages/sellers.js` (a comment), `site/assets/forms.js` (`renderKit()`, `mountKit()`), `site/assets/site.css` (one rule), `site/data/content.js` (`salesKit`, the comment on `overview.contact`), `tools/check-grammar.js`, START-HERE §1, §3, §4, §9 and §10, SCHEMA (`overview.contact`, `site.footer.sellersLink`, `salesKit`), VISUAL-GRAMMAR §8 and §11, README and CONFIG. Numbered §48 because §44 was held for the Internal-panel removal while §45 and §46 landed, and §47 is the alternative home page's (`pages/overview-alt.js`)._
+
+- **The ask (Alex, 2026-09-29):** *"Get the sales kit tab on contact us widget should not appear on the main page of our minisite + no 'all kits' option in dropdown pls."*
+- **What changed:**
+  - **Home S7** renders the product Contacts component with the ask alone: Karsten's card beside the *Talk to us* form, with no segmented control and no kit pane. `UI.contactSwitch` renders the switch and the kit pane only when it is handed `kitOptions`, and `closing()` hands it none. With no switch above it, the Talk pane is its column's first child, and `.contact-pane:first-child` drops its 1.25 rem top margin so it starts level with the card.
+  - **`#/#kit`**, the home kit tab's anchor since round 18 and live on the shared link since the 2026-09-29 publish, redirects to `#/sellers` through `MOVED`. `MOVED` now stores full hashes (the `/services` entries land where they did) and reads its keys as own properties only.
+  - **The kit form's select**, on `#/sellers` (the one placement left that shows it), lists the nine products in `productOrder` and opens on *Choose a product*, a disabled option. A submit with no product puts *Choose the product you're selling.* under the select and focuses it. The form never falls back to `"all"`; it posts one product's slug.
+  - **A product's kit confirmation** closes on *Talk to us* alone. Its *Selling the whole portfolio? Get the full kit* pointed at the all-offers kit.
+  - **`salesKit.page.body`** lost its last sentence, *Ask for the whole portfolio or a single product.*
+- **Decisions:**
+  - **The option left the component, not only the home page.** The home kit tab's select was one of two that offered *All offers*; `#/sellers` was the other, and both render from `FORMS.renderKit`. A product's kit pane has no select: its kit is fixed.
+  - **No default product.** With *All offers* gone, the first product would have been preselected, and a seller who did not look would get the wrong kit by email. The prompt costs one click and cannot be sent.
+  - **No heading over the home ask.** On a product page the selected segment heads the column. Here the section's H2, *Start with one conversation.*, heads the screen. A *Talk to us* H3 would put a third *talk* beside the submit, the repetition that round 18's heading change removed (SCHEMA, `overview.contact`).
+  - **Still one component.** The home page renders `UI.contactSwitch`, so round 18's equivalence rule and its check hold; the kit is now part of what differs by data.
+  - **The sender is unchanged.** `mail/render.js` still accepts `product: "all"`, and `kitNameAll` stays in `content.js` because `tools/sync-links.js` copies it into `mail/catalog.json`. The site never sends such a request now, and changing the live n8n sender was not part of the ask.
+- **Before and after:**
+
+| Where | Before | After |
+|---|---|---|
+| Home S7 | card · switch (*Talk to us* · *Get the sales kit*), the ask open | card · the ask, no switch |
+| `#/#kit` | opens the home kit tab | lands on `#/sellers` |
+| `#/sellers`, *Kit for* | *All offers* (selected), then 9 products | *Choose a product* (disabled, selected), then 9 products |
+| Kit submit, no product chosen | sends the kit for all offers | *Choose the product you're selling.*; nothing sent |
+| Product kit confirmation | *Talk to us* · *Get the full kit* | *Talk to us* |
+| `#/sellers` body | …the first customer conversation. Ask for the whole portfolio or a single product. | …the first customer conversation. |
+
+- **Copy:** new `salesKit.form.productPlaceholder` (*Choose a product*) and `salesKit.form.errors.product` (*Choose the product you're selling.*). Retired: `salesKit.form.productAll` (*All offers*), `salesKit.tab.nextAll` and `nextAllLink` (*Selling the whole portfolio? Get the full kit*).
+- **Checker:** it now fails
+  - `overview.js` handing the component a kit, and `contactSwitch()` without its no-kit branch (no switch, no kit pane);
+  - `MOVED` without `"/": { "kit": "#/sellers" }`, and `HOME_IDS` no longer lists `kit`;
+  - the retired keys `productAll`, `nextAll` and `nextAllLink`;
+  - an `"all"` literal anywhere in the kit form's code, a select that does not open on `productPlaceholder`, and a submit that does not refuse a missing product (`errors.product`);
+  - *whole portfolio*, *all offers* or *full kit* in the kit's page, tab or select copy.
+
+  Each guard was run against a copy with its part of the fix reverted, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the one known warning (`overview.about.title`), before and after rebasing onto §44–§46; the name grep returns nothing. In the browser (Chromium, the branch served on its own port):
+  - the home contact at 1440, 1280 and 1024 (card and ask level) and at 768, 375 and 320 (stacked), with no horizontal overflow at any width;
+  - `#/#kit` rewrites to `#/sellers`; the select, its prompt and its error;
+  - a product's `…/contacts#kit` still opens its kit tab;
+  - both confirmations, reached through a stub that answered the POST inside the page, so nothing was sent; the `#/sellers` request carried `product: "account-insights"`;
+  - 70 routes (the home anchors, the catalog, `#/sellers`, every product's five tabs and both Contacts anchors) with no script error; the archive theme's home contact renders the ask alone.
+
+  The only failed request was `data/endpoint.local.json`, which a copy with no sender does not have.
+- **No contract bump:** the keys that moved are `salesKit`'s, which the packaging plugin neither writes nor reads. Round 20 stays with the product-pages session, as in §43.
+- **Parallel sessions:** round 20 rewrites `contactSwitch()`'s return and the contact CSS on its branch. This fix changes the lines above that return and adds one rule after `.contact-pane`, so its merge meets both; the session was told after this landed. The alternative home page (§47, `#/alt`) takes `overview.js`'s later screens and its `mount` whole, so it carries the same kit-free contact with no change of its own.
+- **Open for Alex:** START-HERE §9, under §48.
+  1. The sender still answers a kit request for all offers made without the page; refusing one is a change to the live n8n sender (`mail/render.js`).
+  2. The home contact's column opens on the ask's own line, with no heading of its own.
+- **Not published:** on `main`, and ships with the next publish, whose map carries `assets/app.js`, `assets/forms.js`, `assets/site.css`, `data/content.js`, `pages/overview.js`, `pages/product.js` and `pages/sellers.js`.

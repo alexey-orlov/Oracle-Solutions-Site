@@ -456,7 +456,8 @@
      one function renders it on a product's Contacts tab and on the home page's
      last screen, and only data differs. A product names its lead on the card,
      preselects itself in the ask and fixes its own kit; the home page names
-     Karsten alone, starts on "Not sure yet" and lets a seller pick any kit.
+     Karsten alone, starts on "Not sure yet" and passes no kit (Alex,
+     2026-09-29), so it renders the ask alone, with no switch to pick from.
      The two ids are fixed: `#talk` lands on the ask, `#kit` on an open kit. */
   var CONTACT_ANCHORS = { talk: "talk", kit: "kit" };
 
@@ -469,6 +470,9 @@
     var kitTab = base + "-tab-kit";
     var talkPane = base + "-pane-talk";
     var forms = window.FORMS;
+    /* A kit needs its options; without them there is one pane and nothing to
+       switch, so no segmented control and no tab roles. */
+    var withKit = !!opts.kitOptions;
 
     function segment(id, controls, text, on) {
       return '<button class="segment" type="button" role="tab" id="' + id + '"' +
@@ -476,14 +480,14 @@
         ' tabindex="' + (on ? "0" : "-1") + '">' + esc(text) + "</button>";
     }
 
-    var pick = '<div class="segmented contact-segmented" role="tablist" aria-label="' +
+    var pick = !withKit ? "" : '<div class="segmented contact-segmented" role="tablist" aria-label="' +
       esc(sectionLabel("contacts")) + '">' +
         segment(talkTab, talkPane, ask, true) +
         segment(kitTab, CONTACT_ANCHORS.kit, kit.tab.title, false) +
       "</div>";
 
-    var talkPanel = '<div class="contact-pane" role="tabpanel" id="' + talkPane + '"' +
-      ' aria-labelledby="' + talkTab + '">' +
+    var talkPanel = '<div class="contact-pane" id="' + talkPane + '"' +
+      (withKit ? ' role="tabpanel" aria-labelledby="' + talkTab + '"' : "") + ">" +
         '<p class="body-text contact-split-sub">' + esc(C.forms.demo.sub) + "</p>" +
         (forms
           ? '<div class="contact-talk-form">' + forms.render("demo", {
@@ -492,7 +496,7 @@
           : "") +
       "</div>";
 
-    var kitPanel = '<div class="contact-pane" role="tabpanel" id="' + CONTACT_ANCHORS.kit + '"' +
+    var kitPanel = !withKit ? "" : '<div class="contact-pane" role="tabpanel" id="' + CONTACT_ANCHORS.kit + '"' +
       ' aria-labelledby="' + kitTab + '" hidden>' +
         '<p class="eyebrow eyebrow--accent">' + esc(kit.page.eyebrow) + "</p>" +
         '<p class="body-text">' + esc(opts.kitBody) + "</p>" +
@@ -950,17 +954,24 @@
      is rewritten in place, so Back does not bounce through the redirect. */
   var MOVED = {
     "/services": {
-      "": "how-we-deliver",
-      "how-we-engage": "how-we-deliver",
-      "proof-of-value": "how-we-deliver",
-      "contact": "request-a-demo"
+      "": "#/#how-we-deliver",
+      "how-we-engage": "#/#how-we-deliver",
+      "proof-of-value": "#/#how-we-deliver",
+      "contact": "#/#request-a-demo"
+    },
+    /* 2026-09-29 (Alex): the home page's contact no longer carries the sales
+       kit, so its old `#/#kit` lands on the kit's own page. Every other home
+       anchor stays where it is. */
+    "/": {
+      "kit": "#/sellers"
     }
   };
 
   function followMoved(parsed) {
-    var anchors = MOVED[parsed.path];
-    if (!anchors) return parsed;
-    var hash = "#/#" + (anchors[parsed.anchor] || anchors[""]);
+    var anchors = Object.prototype.hasOwnProperty.call(MOVED, parsed.path) ? MOVED[parsed.path] : {};
+    var own = function (key) { return Object.prototype.hasOwnProperty.call(anchors, key) ? anchors[key] : ""; };
+    var hash = own(parsed.anchor) || own("");
+    if (!hash) return parsed;
     var replaced = false;
     try {
       window.history.replaceState(null, "", hash);

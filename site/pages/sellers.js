@@ -5,12 +5,13 @@
 
   function C() { return window.SITE_CONTENT; }
 
-  /* ————— #/sellers: the sales kit for all offers (round 8) ————— */
+  /* ————— #/sellers: the sales kit for any product (round 8) ————— */
 
   /* One screen with a URL a seller can paste into a thread: the kit request with
-     the product select visible (All offers first), then the demo route for a
-     seller who already has an account in mind. Customers and partners who land
-     here are routed out by the form's own line and its domain error. */
+     the product select visible (a product to choose, no kit for all offers
+     since 2026-09-29), then the demo route for a seller who already has an
+     account in mind. Customers and partners who land here are routed out by
+     the form's own line and its domain error. */
   function kitOptions() {
     var page = C().salesKit.page;
     return {

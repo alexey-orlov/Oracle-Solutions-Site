@@ -83,7 +83,7 @@ Where both forms send their data: *Talk to us* and the sales kit (the Services p
 }
 ```
 
-`form` is `"demo"` or `"contact"`. `role` is one of `customer`, `oracle-seller`, `oracle-partner`, `softserve`, `other`. `product` is a product slug or `""` when the visitor chose "Not sure yet". The sender stamps the time itself. The kit posts `{ form: "kit", email, product: "all" | <slug>, consent, page }`.
+`form` is `"demo"` or `"contact"`. `role` is one of `customer`, `oracle-seller`, `oracle-partner`, `softserve`, `other`. `product` is a product slug or `""` when the visitor chose "Not sure yet". The sender stamps the time itself. The kit posts `{ form: "kit", email, product: <slug>, consent, page }`: one product's kit, never `"all"` since 2026-09-29.
 
 The endpoint must answer with a 2xx status and must allow cross-origin POSTs from the site's origin. The workflow allows only the origins in `tools/n8n-workflow.js`, so a new host is added there before its first test (`mail/README.md`, "Moving to a public host").
 

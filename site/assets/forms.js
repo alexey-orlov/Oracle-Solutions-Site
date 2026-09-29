@@ -344,15 +344,19 @@
     var opts = options || {};
     var uid = "form-kit-" + Math.random().toString(36).slice(2, 8);
 
+    /* One product's kit per request, and no kit for all offers (Alex,
+       2026-09-29). No product is the right default, so the select opens on a
+       prompt that cannot be sent: nobody gets a kit they did not pick. */
     var select = opts.product ? "" :
       '<div class="field kit-field">' +
         '<label class="field-label" for="' + uid + '-product">' + UI.esc(copy.productLabel) + "</label>" +
-        '<select class="select" id="' + uid + '-product" name="product">' +
-          '<option value="all">' + UI.esc(copy.productAll) + "</option>" +
+        '<select class="select" id="' + uid + '-product" name="product" required>' +
+          '<option value="" selected disabled>' + UI.esc(copy.productPlaceholder) + "</option>" +
           UI.orderedProducts().map(function (product) {
             return '<option value="' + UI.esc(product.slug) + '">' + UI.esc(product.name) + "</option>";
           }).join("") +
         "</select>" +
+        '<p class="field-error" data-error-for="' + uid + '-product" role="alert" hidden></p>' +
       "</div>";
 
     return '<div class="form-block kit-block" data-form-kind="kit">' +
@@ -448,24 +452,24 @@
       var consentInput = form.querySelector('input[name="consent"]');
       var select = form.querySelector('select[name="product"]');
       var email = emailInput.value.trim();
-      var slug = form.getAttribute("data-product") || (select ? select.value : "") || "all";
+      var slug = form.getAttribute("data-product") || (select ? select.value : "");
       if (form.querySelector('input[name="' + HONEYPOT + '"]').value) return;
 
       clearErrors(form);
+      var productError = slug ? "" : copy.errors.product;
+      if (productError) setError(form, uid + "-product", productError);
       var emailError = "";
       if (!email) emailError = UI.esc(copy.errors.email);
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) emailError = UI.esc(labels.invalidEmail);
       else if (!kitAllowed(email)) emailError = fill(copy.errors.domain, { routeLink: linkHtml(opts.routeLink) });
       if (emailError) setHtmlError(form, uid + "-email", emailError);
       if (!consentInput.checked) setError(form, "consent", labels.required);
-      if (emailError || !consentInput.checked) {
-        (emailError ? emailInput : consentInput).focus();
+      if (productError || emailError || !consentInput.checked) {
+        (productError ? select : emailError ? emailInput : consentInput).focus();
         return;
       }
 
-      var all = slug === "all";
-      var name = all ? "" : productName(slug);
-      var kitName = all ? copy.kitNameAll : copy.kitName.replace("{product}", name);
+      var kitName = copy.kitName.replace("{product}", productName(slug));
       var vars = { kitName: UI.esc(kitName), email: UI.esc(email), mailbox: mailboxLink() };
       var remember = function () {
         try { if (gateConfig().kitEmailKey) window.localStorage.setItem(gateConfig().kitEmailKey, email); }
@@ -483,7 +487,7 @@
         window.fetch(target, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ form: "kit", email: email, product: all ? "all" : slug, consent: true, page: window.location.href })
+          body: JSON.stringify({ form: "kit", email: email, product: slug, consent: true, page: window.location.href })
         }).then(function (response) {
           if (!response.ok) throw new Error(response.status === 429 ? "limited" : "rejected");
           remember();

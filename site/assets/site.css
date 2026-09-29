@@ -2792,6 +2792,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .contact-tabs { display: flex; flex-direction: column; min-width: 0; }
 .contact-segmented { max-width: 30rem; }
 .contact-pane { display: flex; flex-direction: column; gap: 1rem; min-width: 0; margin-top: 1.25rem; }
+/* With no kit there is no switch above the ask (the home page, 2026-09-29),
+   so the pane starts level with the card beside it. */
+.contact-pane:first-child { margin-top: 0; }
 
 /* The kit form fills its panel here, like the ask form in the other tab: two
    tabs of one switch may not print two form widths. */
