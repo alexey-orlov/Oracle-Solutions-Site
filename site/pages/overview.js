@@ -339,11 +339,12 @@
 
   /* ————— S6: who builds it ————— */
 
-  /* The one inverted screen on the page. The partner wordmarks sit on a navy
-     strip inside the light panel rather than on the panel itself: navy is the
-     surface this design system reserves for a stated fact, and the marks are
-     white. The company address is a link and reads as one — the filled buttons
-     on this page are kept for the two places that ask the reader for something. */
+  /* The company, in one inverted band: who SoftServe is on the left, four
+     figures on the right. Round 18 (Alex): the Oracle and NVIDIA wordmarks
+     that stood under the figures ("Built with") are gone, so the band carries
+     SoftServe's own marks only, as the footer has since round 14. The company
+     address is a link and reads as one — the filled buttons on this page are
+     kept for the places that ask the reader for something. */
   function about(C) {
     var UI = window.UI;
     var block = C.overview.about;
@@ -353,12 +354,6 @@
         '<p class="about-stat-value nums">' + UI.esc(stat.value) + "</p>" +
         '<p class="about-stat-label">' + UI.esc(stat.label) + "</p>" +
         "</div>";
-    }).join("");
-
-    var partners = (block.partners || []).map(function (partner) {
-      return '<img class="about-partner-mark" src="' + UI.esc(partner.file) +
-        '" alt="' + UI.esc(partner.name) + '" width="' + UI.esc(partner.width) +
-        '" height="' + UI.esc(partner.height) + '" loading="lazy" decoding="async">';
     }).join("");
 
     return '<section class="section home-screen" id="about"><div class="wrap">' +
@@ -373,10 +368,6 @@
         "</div>" +
         '<div class="light-band-copy">' +
           '<div class="about-stats">' + stats + "</div>" +
-          '<div class="about-partners">' +
-            '<span class="about-partners-label">' + UI.esc(block.partnerLine) + "</span>" +
-            '<span class="about-partner-marks">' + partners + "</span>" +
-          "</div>" +
         "</div>" +
       "</div>" +
       "</div></section>";
@@ -384,44 +375,46 @@
 
   /* ————— S7: the way to start ————— */
 
-  /* The same two-column component the Services page and a product's Contacts
-     tab render, from the same objects: one named human on the left, one form on
-     the right. Product pages deep-link into this section, so the anchor is read
-     from the data rather than written twice. */
+  /* A product's Contacts tab, on the home page (Alex, round 18: the form
+     "equivalent (texts, CTAs, etc., flow) to what we have on per-product page
+     (though logical difference to be preserved)"). The same switch renders it
+     (UI.contactSwitch): the ask, "Talk to us", open, and the seller's kit
+     behind the second tab. What is the home page's own: Karsten alone on the
+     card, the ask starting on "Not sure yet", and the kit for the whole
+     portfolio or any one product, with the /sellers page's line. Product pages
+     and the header deep-link into this section, so the anchor is read from the
+     data rather than written twice. */
+  function kitOptions() {
+    var tab = window.SITE_CONTENT.salesKit.tab;
+    var talk = "#/#" + window.UI.contactAnchors.talk;
+    return {
+      routeLink: { label: tab.routeLabel, href: talk },
+      next: [{ text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talk } }],
+      again: true
+    };
+  }
+
   function closing(C) {
     var UI = window.UI;
     var block = C.overview.contact;
-    var demo = C.forms.demo;
-    var form = window.FORMS && typeof window.FORMS.render === "function"
-      ? '<div id="demo-form-slot">' +
-          window.FORMS.render("demo", { heading: false, submitLabel: C.forms.labels.submitRequest }) +
-        "</div>"
-      : '<div id="demo-form-slot"></div>';
-
-    return '<section class="closing" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
-      '<div class="contact-head">' +
-        '<h2 class="h2">' + UI.esc(block.heading) + "</h2>" +
-        '<p class="lead">' + UI.esc(block.sub) + "</p>" +
-      "</div>" +
-      UI.contactSplit({
-        cardHeading: UI.sectionLabel("contacts"),
-        heading: demo.secondaryHeading,
-        form: form
+    return '<section class="section home-screen home-contact" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
+      head({ eyebrow: block.eyebrow, title: block.heading, lead: block.sub }) +
+      UI.contactSwitch({
+        key: "home",
+        kitBody: C.salesKit.page.body,
+        kitOptions: kitOptions()
       }) +
       "</div></section>";
   }
 
   function overview() {
     var C = window.SITE_CONTENT;
-    return hero(C) + statBand(C) + twoWays(C) + groupTiles(C) + delivery(C) +
+    return hero(C) + statBand(C) + twoWays(C) + groupTiles(C) + delivery(C) + bespoke(C) +
       caseStudies(C) + about(C) + closing(C);
   }
 
   overview.mount = function (params, root) {
-    var slot = root.querySelector("#demo-form-slot");
-    if (slot && window.FORMS && typeof window.FORMS.mount === "function") {
-      window.FORMS.mount(slot, "demo");
-    }
+    window.UI.mountContactSwitch(root, { kitOptions: kitOptions() }, params && params.anchor);
   };
 
   overview.title = function () { return window.SITE_CONTENT.site.title; };
