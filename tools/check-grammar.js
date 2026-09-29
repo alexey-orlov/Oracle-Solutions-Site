@@ -1465,11 +1465,17 @@ if (!arr(C.products) || C.products.length !== 7) {
   reqStr("overview.caseStudiesIntro", o.caseStudiesIntro, ["eyebrow", "title", "body", "ndaLine"]);
   reqCta("overview.caseStudiesIntro.cta", (o.caseStudiesIntro || {}).cta);
 
-  /* --- S6 · about SoftServe, the page's one light band --- */
+  /* --- S6 · about SoftServe, one of the page's two dark bands --- */
   var ab = o.about;
   if (!ab) fail("overview.about", "missing — S6, the light band");
   else {
-    reqStr("overview.about", ab, ["eyebrow", "title", "body", "partnerLine"]);
+    reqStr("overview.about", ab, ["eyebrow", "title", "body"]);
+    /* Round 18 (Alex): "Remove oracle and nvidia logos from About SoftServe
+       block". The band carries SoftServe's own figures only, as the footer
+       has carried SoftServe's marks only since round 14. */
+    ["partners", "partnerLine"].forEach(function (k) {
+      if (ab[k] !== undefined) fail("overview.about." + k, "retired in round 18 — the About band carries no Oracle or NVIDIA marks");
+    });
     /* Corporate figures only where softserveinc.com prints them — a tile with
        no public source is left out rather than filled from memory. */
     if (!arr(ab.stats) || ab.stats.length < 1 || ab.stats.length > 4) {
@@ -1480,25 +1486,11 @@ if (!arr(C.products) || C.products.length !== 7) {
       else if (st.value.length > 12) fail(aw, 'value "' + st.value + '" is too long for a tile in the 2×2 grid');
       if (!str((st || {}).label)) fail(aw, "label missing");
     });
-    if (!arr(ab.partners) || !ab.partners.length) {
-      fail("overview.about.partners", "needs at least one wordmark — the partner strip is what `partnerLine` labels");
-    } else ab.partners.forEach(function (pt, i) {
-      var pw = "overview.about.partners[" + i + "]";
-      if (!str((pt || {}).name)) fail(pw, "name missing — it is the image's alt text");
-      if (!str((pt || {}).file)) fail(pw, "file missing");
-      else if (pt.file.indexOf("assets/img/") !== 0) {
-        fail(pw, 'file "' + pt.file + '" must be a path under assets/img/');
-      } else if (pt.file.indexOf("logos/") !== -1) {
-        fail(pw, 'file "' + pt.file + '" is under assets/img/logos/ — those are customer marks and stay unreferenced');
-      } else {
-        checkAsset(pw, "partner wordmark", pt.file);
-      }
-      /* Both dimensions ship so the strip reserves its space and does not
-         reflow the band when the SVGs arrive. */
-      ["width", "height"].forEach(function (k) {
-        if (typeof (pt || {})[k] !== "number") fail(pw, k + " must be a number");
-      });
-    });
+    var aboutSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
+    var aboutFn = aboutSrc.slice(aboutSrc.indexOf("function about("), aboutSrc.indexOf("function kitOptions("));
+    if (/oracleMark|nvidiaMark|oracle-wordmark|nvidia-wordmark|about-partner/.test(aboutFn)) {
+      fail("site/pages/overview.js about()", "renders an Oracle or NVIDIA mark — the About band carries SoftServe's own figures only (round 18)");
+    }
     if (!ab.link || !str(ab.link.label) || !str(ab.link.url)) fail("overview.about.link", "needs { label, url }");
     else if (ab.link.url.indexOf("https://www.softserveinc.com") !== 0) {
       fail("overview.about.link", 'url "' + ab.link.url + '" must be on https://www.softserveinc.com — the block links to the site that prints the figures');
@@ -1512,14 +1504,85 @@ if (!arr(C.products) || C.products.length !== 7) {
     if (ct.anchor !== "request-a-demo") {
       fail("overview.contact", 'anchor is "' + ct.anchor + '", expected "request-a-demo" — every product page deep-links to #/#request-a-demo');
     }
-    reqStr("overview.contact", ct, ["heading", "sub"]);
+    reqStr("overview.contact", ct, ["heading"]);
+  }
+  /* Round 18 (Alex): the home form is "equivalent (texts, CTAs, etc., flow) to
+     what we have on per-product page (though logical difference to be
+     preserved)". Equivalence is structural: both surfaces render the one
+     UI.contactSwitch, and neither renders a form of its own beside it. */
+  (function () {
+    var home = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
+    var prod = fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8");
+    var closingFn = home.slice(home.indexOf("function closing("), home.indexOf("function overview("));
+    var contactsFn = prod.slice(prod.indexOf("function contactsTab("), prod.indexOf("function product("));
+    [["site/pages/overview.js closing()", closingFn], ["site/pages/product.js contactsTab()", contactsFn]].forEach(function (pair) {
+      if (!pair[1]) return warn(pair[0], "not found — the contact-equivalence check is reading nothing");
+      if (pair[1].indexOf("UI.contactSwitch(") === -1) {
+        fail(pair[0], "does not render UI.contactSwitch — the home and product contacts are one component (round 18)");
+      }
+      if (/FORMS\.render\(|contactSplit\(/.test(pair[1])) {
+        fail(pair[0], "renders a form or split of its own — the contact switch is the one component (round 18)");
+      }
+    });
+  })();
+
+  /* --- S4b · bespoke services, the AI factory (round 18) ---
+     Alex: under Packaged services, "one more block called Bespoke Services
+     (subheading) + full heading", on a dark photograph after softserveinc.com's
+     "Confidence earned" banner, with "subheading and heading + content like
+     others", its message on four elements — Oracle experts; decades of
+     enterprise experience in AI and data; proven governance and scalable
+     POD-based delivery; AI-enabled teams and lifecycle — and a heading that
+     "revolve[s] around 'AI factory'". */
+  var bs = o.bespoke;
+  if (!bs) fail("overview.bespoke", "missing — S4b, the Bespoke services band under Packaged services");
+  else {
+    reqStr("overview.bespoke", bs, ["anchor", "eyebrow", "title", "lead"]);
+    if (bs.eyebrow !== "Bespoke services") fail("overview.bespoke.eyebrow", 'must be "Bespoke services" — Alex\'s name for the offer (round 18)');
+    if (str(bs.title) && !/\bAI factory\b/i.test(bs.title)) fail("overview.bespoke.title", 'must carry "AI factory" — Alex: the heading revolves around it');
+    if (str(bs.lead) && bs.lead.length > 220) fail("overview.bespoke.lead", "is " + bs.lead.length + " characters (max 220 — two sentences on the photograph's dark half)");
+    if (!arr(bs.points) || bs.points.length !== 4) {
+      fail("overview.bespoke.points", "must hold exactly 4 — Alex's four elements, got " + (arr(bs.points) ? bs.points.length : "none"));
+    } else {
+      var lens = [];
+      bs.points.forEach(function (pt, i) {
+        var pw = "overview.bespoke.points[" + i + "]";
+        reqStr(pw, pt, ["title", "body"]);
+        if (str(pt.title) && words(pt.title) > 4) fail(pw, "title is " + words(pt.title) + " words (max 4)");
+        if (str(pt.body)) {
+          if (sentences(pt.body) > 1) fail(pw, "body is " + sentences(pt.body) + " sentences — one line under its title");
+          lens.push(pt.body.length);
+        }
+      });
+      /* Peers in one row wrap to the same number of lines only when their
+         bodies sit in one length band. */
+      if (lens.length === 4 && Math.max.apply(null, lens) - Math.min.apply(null, lens) > 15) {
+        fail("overview.bespoke.points", "bodies run " + Math.min.apply(null, lens) + "–" + Math.max.apply(null, lens) + " characters — the four stay within 15 of each other so the row ends level");
+      }
+    }
+    if (/PROVISIONAL/.test(JSON.stringify(bs))) fail("overview.bespoke", "still carries provisional copy");
+    var bim = bs.image || {};
+    ["wide", "tall", "alt"].forEach(function (k) { if (!str(bim[k])) fail("overview.bespoke.image", k + " missing"); });
+    ["wide", "tall"].forEach(function (k) {
+      if (!str(bim[k])) return;
+      if (!/^assets\/img\/bands\/[a-z0-9-]+\.(jpg|jpeg|webp)$/.test(bim[k])) fail("overview.bespoke.image." + k, '"' + bim[k] + '" must be a photograph under assets/img/bands/');
+      else checkAsset("overview.bespoke.image." + k, "band photograph", bim[k]);
+    });
+    if (bs.cta !== undefined) reqCta("overview.bespoke.cta", bs.cta);
+    /* The band is dark, so it is one of the page's two dark screens with S6
+       About; the case studies stand between them, and the renderer order
+       holds it: delivery, bespoke, case studies. */
+    var order = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8").match(/return hero\(C\)[^;]+;/);
+    if (!order || !/delivery\(C\) \+ bespoke\(C\) \+\s*caseStudies\(C\)/.test(order[0])) {
+      fail("site/pages/overview.js", "overview() must render delivery, then bespoke, then the case studies — Bespoke sits under Packaged services, and a white screen stands between the two dark bands");
+    }
   }
 
   /* --- what the old home page carried, and must not carry again --- */
   [
     ["trustStrip", "the three-wordmark strip — the partner wordmarks sit inside the About band now"],
     ["productsIntro", "the products intro — S3's head is overview.catalog"],
-    ["servicesTeaser", "the platform-card teaser — S4 is overview.delivery, and the four platform cards live on Services"]
+    ["servicesTeaser", "the platform-card teaser — S4 is overview.delivery"]
   ].forEach(function (pair) {
     if (o[pair[0]] !== undefined) {
       fail("overview." + pair[0], "is superseded by the round-5 home page (" + pair[1] + ") — nothing renders it");
@@ -1540,21 +1603,21 @@ if (!arr(C.products) || C.products.length !== 7) {
   });
 
   /* --- H2 budget (START-HERE §4: five words or fewer, ≤ ~30 characters) ---
-     The three screens round 9 rewrote are held to it; the two it did not touch
-     warn, so the debt is visible without failing a build over old copy.
-     S3's and S4's are Alex's own lines (round 17: "Kick off your AI adoption
-     with accelerator apps", the noun that names the offer restored after
-     round 16 had cut it; "Service delivery that accelerates time to value",
-     the benefit restored after round 16's "The method behind the speed."), so
-     each is held at its own 48 characters instead: it may not grow, and a
-     rewrite still fails over it. */
+     The screens round 9 rewrote, and every screen since, are held to it; the
+     two it did not touch warn, so the debt is visible without failing a build
+     over old copy. S3's and S4's are Alex's own lines, each held at its own
+     length instead: it may not grow, and a rewrite still fails over it. S3 is
+     round 18's "Ready-to-use solutions to kick off your AI adoption" (52; his
+     "kick-off" set as the verb), S4 round 17's "Service delivery that
+     accelerates time to value" (48). */
   [
     ["overview.twoWays.title", (o.twoWays || {}).title, true],
-    ["overview.catalog.title", (o.catalog || {}).title, true, 48],
+    ["overview.catalog.title", (o.catalog || {}).title, true, 52],
     ["overview.caseStudiesIntro.title", (o.caseStudiesIntro || {}).title, true],
     ["overview.delivery.title", (o.delivery || {}).title, true, 48],
+    ["overview.bespoke.title", (o.bespoke || {}).title, true],
     ["overview.about.title", (o.about || {}).title, false],
-    ["overview.contact.heading", (o.contact || {}).heading, false]
+    ["overview.contact.heading", (o.contact || {}).heading, true]
   ].forEach(function (row) {
     var max = row[3] || 30;
     if (!str(row[1]) || row[1].length <= max) return;
@@ -1595,7 +1658,7 @@ if (!arr(C.products) || C.products.length !== 7) {
   /* Round 16 (Alex): "Why SoftServe on Oracle" sits below the timeline, not
      beside it, and the screen ends on its one button. */
   var overviewSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
-  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function caseStudies("));
+  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function bespoke("));
   var deliveryHtml = deliverySrc.slice(deliverySrc.lastIndexOf("return '<section"));
   var atTrack = deliveryHtml.indexOf('class="ladder3');
   var atWhy = deliveryHtml.indexOf('class="deliver-why"');
