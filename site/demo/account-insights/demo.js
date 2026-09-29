@@ -97,7 +97,7 @@
     MOVES.forEach(function (m) {
       var f = (m.flags || []).slice();
       if (isHeld(m)) f.unshift({ kind: "decision", decision: true, text: "“Keswick” matches two of your accounts: confirm which" });
-      if (m.filtered && !S.admitted[m.id]) f.unshift({ kind: "warn", text: "Below the confidence line (" + D.threshold + " of 10): filtered, not deleted" });
+      if (m.filtered && !S.admitted[m.id]) f.unshift({ kind: "warn", text: "Below the confidence line of " + D.threshold + ": filtered, not deleted" });
       if (m.filtered && S.admitted[m.id]) f.unshift({ kind: "info", text: "Admitted below the confidence line by the reviewer" });
       var d = S.decided[m.id];
       if (d && d.state === "rejected") f.unshift({ kind: "info", text: "Rejected: " + d.reason + ". The reason is kept" });
@@ -197,7 +197,7 @@
   function renderHead() {
     var k = kpis(appliedIds());
     var helper;
-    if (!S.ran && !S.busy) helper = "214 stories on your 24 accounts since 18:00, none read yet.";
+    if (!S.ran && !S.busy) helper = "214 stories on your 24 accounts since 18:00, unread.";
     else if (S.busy) helper = "Reading 214 stories against your 24 accounts…";
     else if (S.sent) helper = "Sent: " + plural(MOVES.filter(function (m) { return status(m) === "approved"; }).length, "record", "records") + " for the CRM, one per account.";
     else helper = plural(k.after.moves, "next move", "next moves") + " from 5 signals, waiting for your call.";
@@ -395,7 +395,7 @@
     $("#setup-lines").innerHTML = D.lines.map(function (l) { return '<li class="' + (used.indexOf(l.id) !== -1 && S.ran ? "is-used" : "") + '">' + esc(l.name) + "</li>"; }).join("");
     $("#lines-helper").textContent = S.ran ? "Every move names one; blue: named this morning" : "Every move names one of these";
     $("#setup-rules").innerHTML = D.rules.map(function (r) { return "<li><span>" + esc(r) + "</span></li>"; }).join("");
-    $("#setup-tiers").innerHTML = D.tiers.map(function (t) { return "<li><span>" + esc(t.what) + '</span><span class="t t--' + t.tier + '">' + t.tier + "</span></li>"; }).join("");
+    $("#setup-tiers").innerHTML = D.tiers.map(function (t) { return "<li><span>" + esc(t.what) + '</span><span class="t t--' + t.cls + '">' + t.tier + "</span></li>"; }).join("");
   }
 
   function exportRows() {
@@ -416,7 +416,7 @@
   function renderExport() {
     var rows = exportRows();
     $("#export-file").textContent = D.exportFile;
-    $("#export-helper").textContent = rows.length ? plural(rows.length, "record", "records") + ", one per account" : "Nothing approved yet";
+    $("#export-helper").textContent = rows.length ? plural(rows.length, "record", "records") + ", one per account" : "Approved moves appear here";
     $$(".seg-btn").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.mode === S.mode)); });
     $("#export-table-wrap").hidden = S.mode !== "table";
     $("#export-json").hidden = S.mode !== "json";
@@ -431,7 +431,7 @@
     var kept = MOVES.filter(function (m) { var st = status(m); return st === "rejected" || st === "held" || st === "open" || st === "admitted"; });
     $("#kept").innerHTML = '<div class="card-h"><b>Kept out of the file</b><span class="helper">Only approved moves are exported</span></div><ul>' +
       (kept.length ? kept.map(function (m) {
-        var st = status(m), why = st === "rejected" ? "Rejected: " + S.decided[m.id].reason : st === "held" ? "Waiting: confirm which Keswick" : "Not decided yet";
+        var st = status(m), why = st === "rejected" ? "Rejected: " + S.decided[m.id].reason : st === "held" ? "Waiting: confirm which Keswick" : "Waiting for a decision";
         return "<li><b>" + esc(acc(m.account).name) + "</b><span>" + esc(why) + "</span></li>";
       }).join("") : "<li><span>Nothing: every move in front of the team was approved.</span></li>") + "</ul>";
   }

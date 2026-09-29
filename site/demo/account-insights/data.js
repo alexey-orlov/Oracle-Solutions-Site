@@ -81,22 +81,22 @@ window.AIX = {
     "Only your 24 accounts get a move; anyone else is context.",
     "Knock-on effects are followed up to two steps, through your own records.",
     "Every move names one of your 12 service lines.",
-    "Confidence line at 5 of 10: below it, moves are filtered and counted.",
+    "Confidence line at 5: below it, moves are filtered and counted.",
     "Checked every 30 minutes; your team can submit a story by hand.",
     "Nothing reaches the CRM without a reviewer's approval."
   ],
 
   /* Where each capability arrives, in the pack's own delivery tiers. */
   tiers: [
-    { what: "Checks on a schedule, or a story submitted by hand", tier: "Jumpstart" },
-    { what: "One signal per story, matched to your accounts", tier: "Jumpstart" },
-    { what: "Opportunities and risks mapped to your service lines", tier: "Jumpstart" },
-    { what: "Knock-on effects, up to two steps", tier: "Jumpstart" },
-    { what: "Scores, cited sources, approve or reject", tier: "Jumpstart" },
-    { what: "Approved moves exported as a file for your CRM", tier: "Jumpstart" },
-    { what: "Your own licensed feeds; moves straight into the CRM", tier: "Integration" },
-    { what: "Each move routed to its account owner", tier: "Integration" },
-    { what: "What became of each move, fed back into the scores", tier: "Scaling" }
+    { what: "Checks on a schedule, or a story submitted by hand", tier: "Proof of value", cls: "pov" },
+    { what: "One signal per story, matched to your accounts", tier: "Proof of value", cls: "pov" },
+    { what: "Opportunities and risks mapped to your service lines", tier: "Proof of value", cls: "pov" },
+    { what: "Knock-on effects, up to two steps", tier: "Proof of value", cls: "pov" },
+    { what: "Scores, cited sources, approve or reject", tier: "Proof of value", cls: "pov" },
+    { what: "Approved moves exported as a file for your CRM", tier: "Proof of value", cls: "pov" },
+    { what: "Your own licensed feeds; moves straight into the CRM", tier: "Integration", cls: "int" },
+    { what: "Each move routed to its account owner", tier: "Integration", cls: "int" },
+    { what: "What became of each move, fed back into the scores", tier: "Scaling", cls: "scale" }
   ],
 
   /* ---- the book: 24 accounts from the CRM extract ---- */
