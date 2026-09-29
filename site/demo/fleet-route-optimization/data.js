@@ -79,6 +79,14 @@
   JOBS[56].type = "Boiler service";      /* J57 — booked on E-110, who holds no gas certificate */
   JOBS[46].type = "EV charger install";  /* J47 — needs a charger installer */
   JOBS[58].type = "Fault diagnosis"; JOBS[58].high = true; /* J59 — no-heating fault */
+  /* Visits the recorded day sent across the region: each sits in the area of the
+     engineer the re-plan hands it to, so the re-plan visibly shortens the drive. */
+  function place(n, x, y) { JOBS[n - 1].x = x; JOBS[n - 1].y = y; }
+  place(60, 205, 430);   /* booked on E-110 (Carlow Park), sits in Elmstead → E-111 */
+  place(62, 655, 165);   /* booked on E-111 (Elmstead), sits in Carlow Park → E-110 */
+  place(33, 845, 470);   /* booked on E-106 (Fairholt), sits in Hollin Vale → E-108 */
+  place(45, 455, 440);   /* booked on E-108 (Hollin Vale), sits in Fairholt → E-106 */
+  place(57, 700, 395);   /* boiler service at Glenwick's edge → gas-certified E-107 */
 
   /* The replayed actual day: what went wrong on it (recorded, then replayed). */
   var MISSED = { J57: "Booked on an engineer without a gas certificate",
