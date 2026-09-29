@@ -594,7 +594,11 @@
      solid body. Text never sits on the photograph — the band carries only the
      platform label and the availability badges, and everything a reader has to
      read is on the solid surface below it. One CTA, because a tile with two
-     actions makes the reader choose before they know what the product is. */
+     actions makes the reader choose before they know what the product is.
+     Round 18 (Alex: tiles "more similar to softserveinc.com … boundary between
+     image and block underneath should not be blurred"): no veil, so the
+     photograph meets the body on a clean edge, and the platform label sits on
+     its own plate, as softserveinc.com's card chips do. */
   function productTile(product, options) {
     var opts = options || {};
     var facet = facetLabel(product.facet);
@@ -614,7 +618,6 @@
           (opts.eager ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"') +
           ' decoding="async">'
         : "") +
-      '<span class="ptile-veil" aria-hidden="true"></span>' +
       '<span class="ptile-facet" title="' + esc(facet.fullLabel) + '">' + esc(facet.label) + "</span>" +
       badgeRow(product.slug, "ptile-badges") +
       "</div>";
