@@ -204,9 +204,29 @@ from the same decks, graded identically, so the strip reads as one system.
 is a silhouette, seen from behind, blurred, or cropped below the head. No logo,
 no shopfront name and no legible screen text survives in any crop.
 
-### Two hero photographs behind the home page's two ways in (round 11)
+### The home page's two ways in: the careers site's pictures (§62)
 
-No new file: S2's two panels reuse two graded hero photographs from
+Since 2026-09-29 the home page draws S2's two tiles from files of their own,
+set in `overviewAlt.offer` (Alex: *"Find smth better resolution while matching the
+content as much as possible here: https://career.softserveinc.com/en-us/about-us"*):
+
+| Tile | File | Source | Focal |
+|---|---|---|---|
+| Products | `heroes/offer-products.jpg` | the careers page's *Data & Analytics* focus tile, `app-images/about-us/focus1.webp`: two monitors, one with a line chart, and a laptop on a dark desk under a beam of warm light | `50% 50%` |
+| Services | `heroes/offer-services.jpg` | its *Research & Development* tile, `focus3.webp`: three engineers working together over hardware in a clear case, in cool blue light | `50% 30%` (the faces clear of the fade) |
+
+Both originals are 800 × 452, the largest the site serves. Each was upscaled 4× with
+Real-ESRGAN (`realesrgan-x4plus`, the build §60 used) and saved at **2400 × 1356**,
+JPEG q84 progressive (140 KB and 240 KB). A tile draws the picture at 2 : 1 and at most
+612 CSS px wide on a desktop, so a 2× screen gets 3.9 file pixels per screen pixel
+(7 at 375); the heading starts at 88–93 % of the picture's height, where the fade is
+near black. The hero already shows the careers page's *AI & ML* tile (`focus0`), so no
+picture repeats on the page. Licence: the careers site's own imagery, likely stock, as
+§60's (START-HERE §9).
+
+### Two hero photographs behind the two ways in, before §62 (round 11)
+
+The archive theme still draws these; the home page replaces both at render. No new file: S2's two panels reuse two graded hero photographs from
 `assets/img/heroes/` (SoftServe deck imagery; grade and sources in PROVENANCE §11.1),
 each under its own focal point in `overview.twoWays.panels[].image` — the hero entry
 in `heroes.json` keeps its own.

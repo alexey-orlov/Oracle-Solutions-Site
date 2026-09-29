@@ -154,6 +154,27 @@ The `localStorage` key the last successful kit email is remembered under, to pre
 
 The retired gate's "unlocked" flag. The kit form removes it on load; delete this key once no browser can still hold the old flag.
 
+### `formDomains` — *Role* and *Company* from the work email (§62)
+
+Alex, 2026-09-29: *"As long as I input email with domain, option should be auto-picked (Oracle, SS by domain, otherwise - Customer is the default). Until domain is typed - nothing is selected. Company is autopopulated by domain"*. `assets/forms.js` (`fromEmail`, `bindDomain`) applies these rules to the *Talk to us* form:
+
+```js
+formDomains: {
+  known: [
+    { domain: "oracle.com", role: "oracle-seller", company: "Oracle" },
+    { domain: "softserveinc.com", role: "softserve", company: "SoftServe" }
+  ],
+  otherRole: "customer",
+  personal: ["gmail.com", "outlook.com", /* … */]
+}
+```
+
+- **Nothing is picked** until the email passes the form's own address check (a domain with a dot and a two-letter ending). Clearing the domain unpicks the role and empties a company the form filled.
+- **`known`:** a domain or any subdomain of it (`us.oracle.com`) picks `role` and fills `company`. The checker holds these domains equal to `sellerGate.allowedDomains`: whoever may receive the kit is the seller the form picks.
+- **Any other domain** picks `otherRole` (*Customer*) and fills the company from the domain: the ending dropped, a second-level ending too (`co.uk`, `com.au`), subdomains ignored, the first letter capped (`mail.acme.co.uk` → *Acme*). A `personal` mailbox fills no company.
+- **The visitor wins:** a role they click stays, and *Company* follows the email only while it is empty or still holds what the form put there. The form waits for a 400 ms pause in typing, and applies at once on leaving the field or submitting.
+- The checker runs sample addresses through `forms.js` and fails any drift.
+
 ---
 
 ## 3. Per-product keys — `products["<slug>"]`
