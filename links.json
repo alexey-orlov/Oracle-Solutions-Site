@@ -22,8 +22,8 @@
       "onePager": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQBmRDm6WVVKS5kFzwsO8dg_AW6Fb4yuFsrvvwke3dEn7P4?e=4bGqkF",
       "salesDeck": "https://softserveinc-my.sharepoint.com/:f:/p/olekorlov/IgAhayxwbIf1QIcz3m3jwrWPAYKdzl0dgQm82I0Ui9kRaJ0?e=cJAJ74",
       "featureList": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQBskCX_mH3ORosST1NhtKW4AbWikAJNwcq6yL5baDXcxvI?e=RrxH8e",
-      "interactiveDemo": "",
-      "interactiveDemoArtifact": "",
+      "interactiveDemo": "demo/account-insights/index.html",
+      "interactiveDemoArtifact": "https://softserveinc-my.sharepoint.com/:u:/p/olekorlov/IQBCOOtpgLoqQZLBdiFk2XZWAeekC1x0vNF-CkMWVcRdCAE?e=DhKUlg",
       "video": ""
     },
     "workforce-optimization": {
