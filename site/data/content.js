@@ -448,10 +448,14 @@ window.SITE_CONTENT = {
        tile's anatomy so it does not stand empty beside one. */
     askTile: {
       title: "Looking for another solution?",
-      body: "PROVISIONAL",
-      outcomes: ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL"],
+      body: "Tell us the workflow you need fixed, and we will say how we would do it.",
+      outcomes: [
+        "The closest product, if one fits",
+        "A new one, scoped to your own data and systems",
+        "A workshop with your team as the first step"
+      ],
       image: "assets/img/groups/ask.svg",
-      cta: { label: "Let’s talk", route: "#/#request-a-demo" }
+      cta: { label: "Talk to us", route: "#/#request-a-demo" }
     }
   },
 

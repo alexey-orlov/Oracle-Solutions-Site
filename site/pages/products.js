@@ -89,17 +89,14 @@
      filter returns, the next step sits where the reader's eye already is.
      It is a product tile's peer in anatomy, not only in size (Alex, the same
      day: the first cut, a title and two lines stretched to its neighbour's
-     height, "looks too empty"): a drawing where the photograph sits, the chip
-     row, the title, one line, three outcomes and the link at the foot, on a
-     flat brand fill so it reads as the site's own tile, not another product.
-     The chip names the offer that answers the question, the home page's
-     Bespoke services; the drawing is tools/draw-groups.js's "ask". */
+     height, "looks too empty"): where a product carries its photograph, a
+     band of flat brand fill with the family's line drawing (tools/draw-
+     groups.js, "ask"), so it reads as the site's own tile; then the body every
+     tile has — the title, one line, three outcomes, the link at the foot. */
   function askTile() {
     var UI = window.UI;
-    var C = window.SITE_CONTENT;
-    var ask = C.productsPage.askTile;
+    var ask = window.SITE_CONTENT.productsPage.askTile;
     if (!ask) return "";
-    var offer = (C.overview.bespoke || {}).eyebrow;
     var outcomes = (ask.outcomes || []).map(function (line) {
       return "<li>" + UI.icon("check") + "<span>" + UI.esc(line) + "</span></li>";
     }).join("");
@@ -108,7 +105,6 @@
         '<img class="ptile-draw" src="' + UI.esc(ask.image) + '" alt="" loading="lazy" decoding="async">' +
       "</div>" +
       '<div class="ptile-body">' +
-        (offer ? '<div class="chip-row ptile-chips">' + UI.chip({ label: offer, kind: "outline", className: "chip--tag" }) + "</div>" : "") +
         '<h3 class="ptile-title"><a href="' + UI.esc(ask.cta.route) + '">' + UI.esc(ask.title) + "</a></h3>" +
         '<p class="ptile-desc">' + UI.esc(ask.body) + "</p>" +
         (outcomes ? '<ul class="outcome-list ptile-outcomes">' + outcomes + "</ul>" : "") +
