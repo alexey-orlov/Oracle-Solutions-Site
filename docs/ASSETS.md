@@ -496,6 +496,7 @@ were derived, not drawn.
 | File | How it was made |
 |---|---|
 | `softserve-wordmark-ink.svg`, `-white.svg` | the wordmark served on softserveinc.com (`assets.softserveinc.com/logos/softserve-logo.svg`, `viewBox 0 0 1010 173`, nine glyph paths, no `fill` attributes so it inherits `currentColor`), re-emitted twice with an explicit `#1A1A1A` and `#FFFFFF` fill because an `<img>` cannot inherit colour. 3,196 bytes each |
+| `softserve-logo-white.svg` | **the About tile's logo** since 2026-09-29 (PROVENANCE §53): the brand kit's lockup of spark and wordmark, `assets/img/softserve-logo-white.svg` (`BRAND/logos/`, PROVENANCE §5, `viewBox 0 0 324.12 96.2`), re-emitted with its ten paths and their `#FFFFFF` fill untouched, its viewBox cut to the marks' own box (`20.33 19.75 283.46 56.7`) so the image's edges are the logo's, and the Office export's `<style>` block, classes and ids dropped. 4,445 bytes. Drawn 32 px tall on the black tile; print inverts it |
 | `oracle-wordmark-ink.svg` | `assets/img/oracle-wordmark-white.svg` with its single `#FFFFFF` fill (in the file's own `<style>` block) recoloured to `#1A1A1A` |
 | `nvidia-wordmark-ink.svg` | `assets/img/nvidia-wordmark.svg` with the `#D9D9D9` masked rect recoloured to `#1A1A1A`; the mark is a masked raster pattern, so only that one fill exists to change |
 | `header-divider-ink.svg` | the white divider's path with the stroke set to the brand separator `#BDCBD7` |

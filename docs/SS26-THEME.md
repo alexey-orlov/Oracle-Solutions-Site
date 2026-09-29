@@ -9,7 +9,7 @@ theme is kept, runnable, as an archive. Both live in one tree.
 | Entry | `site/index.html` | `site/index-legacy.html` |
 | Stylesheet | `site/assets/site.css` | `site/assets/site-legacy.css` |
 | Copy | `site/data/content.js` + `site/data/content-case.js` (re-casing overlay) | `site/data/content.js` alone |
-| Brand marks | `site/assets/img/brand/*.svg` (ink), resolved by `assets/brand.js` | `site/assets/img/*.svg` (white) |
+| Brand marks | `site/assets/img/brand/*.svg` (ink, and white where a mark sits on a dark ground: the About tile's logo since 2026-09-29), resolved by `assets/brand.js` | `site/assets/img/*.svg` (white) |
 | Artifact | https://claude.ai/artifact/HTEJADBQF3ZevFPuSoTHri | https://claude.ai/artifact/98wafGUphFSyGSr6ctJiiN (frozen) |
 
 The archive is a frozen snapshot: it is published from before this pass, so its
