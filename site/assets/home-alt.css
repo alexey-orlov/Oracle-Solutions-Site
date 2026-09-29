@@ -487,6 +487,7 @@
    cross it and go; the button spans the row, the link sits under it; the
    figures and the diagram's lanes become rows. */
 @media (max-width: 540px) {
+  .ahero-img { object-position: 45% 50%; }
   .ahero-copy { width: 100%; }
   .ahero-title { max-width: none; font-size: 40px; }
   .ahero-line, .ahero-spark { display: none; }
