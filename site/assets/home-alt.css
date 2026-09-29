@@ -289,8 +289,8 @@
 /* Alex's layout: the packaged services over the products, the bespoke
    services beside both, Oracle's platforms under all three. Light grounds
    only: white blocks with a hairline, the groups' own fills, outlined
-   services, and Lviv blue 50 for Oracle. Each block is a name in the display
-   face, one line in the body face and a picture; nothing in it is a
+   services, and Lviv blue 50 for Oracle. Each block is a name, set as the
+   page's headings are, one lighter line and a picture; nothing in it is a
    control. */
 .amap { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 
@@ -328,7 +328,7 @@
 .amap-block--bespoke { grid-area: bespoke; }
 .amap-block--oracle { grid-area: oracle; gap: 14px; background: #c1dff4; border-color: #c1dff4; }
 
-.amap-name { font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 1.15; letter-spacing: 0; color: #000000; }
+.amap-name { font-family: var(--font-sans); font-weight: 400; font-size: 18px; line-height: 1.15; letter-spacing: 0; color: #000000; }
 .amap-line { margin-top: 4px; font-family: var(--font-sans); font-weight: 300; font-size: 14px; line-height: 1.3; color: #4c5156; }
 .amap-pic { margin-top: 16px; }
 
