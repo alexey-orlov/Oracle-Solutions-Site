@@ -253,10 +253,12 @@
      wants from it: how long it takes. Round 16 (Alex): a Workshop comes first,
      the managed service is a stage of its own and the customer's choice, and
      the durations are floors ("From 4 weeks"), so the block carries no caveat.
-     The three reasons to pick this team follow the track as a hairline list
-     across the full width, not a column beside it. Round 18: the screen ends
-     on that list. Its button led to the Services page, which is gone, and the
-     services' one ask now closes the Bespoke band directly below. */
+     Round 18: the screen ends on the track. Its button led to the Services
+     page, which is gone, and the services' one ask closes the Bespoke band
+     directly below. The Why list that followed the track moved after that
+     band the same day (Alex: a reader who scrolls to Packaged services must
+     see the Bespoke band's top, or the packaged track reads as the whole
+     offer), so this screen is short enough for the band to show under it. */
   function ladderModifier(count) {
     return count === 5 ? " ladder3--five" : count === 4 ? " ladder3--four" : "";
   }
@@ -279,7 +281,28 @@
         "</div>";
     }).join("");
 
-    var pillars = ((block.why && block.why.pillars) || []).map(function (pillar) {
+    return '<section class="section home-screen" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
+      head({ eyebrow: block.eyebrow, title: block.title }) +
+      '<div class="deliver deliver--stacked reveal">' +
+        '<div class="ladder3' + ladderModifier(list.length) + '">' + steps + "</div>" +
+        (block.footnote ? '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" : "") +
+      "</div>" +
+      "</div></section>";
+  }
+
+  /* ————— S4c: why SoftServe on Oracle ————— */
+
+  /* The three reasons to pick this team, as round 17 drew them — the label,
+     then three rows between hairlines, the brand's feature icons — on a screen
+     of their own since round 18, after both ways to buy the practice, where
+     each reason reads for either. The label opens the screen, so it is the
+     screen's heading and takes the accent eyebrow. */
+  function whyScreen(C) {
+    var UI = window.UI;
+    var why = (C.overview.delivery || {}).why;
+    if (!why) return "";
+
+    var pillars = (why.pillars || []).map(function (pillar) {
       return '<div class="pillar">' +
         '<span class="pillar-mark" aria-hidden="true">' + UI.icon(pillar.icon) + "</span>" +
         '<div class="pillar-copy">' +
@@ -289,17 +312,10 @@
         "</div>";
     }).join("");
 
-    return '<section class="section home-screen" id="' + UI.esc(block.anchor) + '"><div class="wrap">' +
-      head({ eyebrow: block.eyebrow, title: block.title }) +
-      '<div class="deliver deliver--stacked reveal">' +
-        '<div class="ladder3' + ladderModifier(list.length) + '">' + steps + "</div>" +
-        (block.footnote ? '<p class="footnote deliver-note">' + UI.esc(block.footnote) + "</p>" : "") +
-        '<div class="deliver-why">' +
-          /* One accent per screen: the head eyebrow carries it, so the list's
-             label is the dim eyebrow. */
-          '<p class="eyebrow">' + UI.esc(block.why.title) + "</p>" +
-          '<div class="pillars pillars--list">' + pillars + "</div>" +
-        "</div>" +
+    return '<section class="section home-screen home-why" id="why-softserve"><div class="wrap">' +
+      '<div class="deliver-why reveal">' +
+        '<h2 class="eyebrow eyebrow--accent">' + UI.esc(why.title) + "</h2>" +
+        '<div class="pillars pillars--list">' + pillars + "</div>" +
       "</div>" +
       "</div></section>";
   }
@@ -457,7 +473,7 @@
   function overview() {
     var C = window.SITE_CONTENT;
     return hero(C) + statBand(C) + twoWays(C) + groupTiles(C) + delivery(C) + bespoke(C) +
-      caseStudies(C) + about(C) + closing(C);
+      whyScreen(C) + caseStudies(C) + about(C) + closing(C);
   }
 
   overview.mount = function (params, root) {

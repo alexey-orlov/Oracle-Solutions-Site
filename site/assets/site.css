@@ -3460,11 +3460,15 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 /* Round 16: the stacked S4. The track takes the full width, five across, and
-   the reasons follow it as a list, which closes the screen since round 18 (its
-   button led to the Services page; the services' ask is the Bespoke band's). */
+   since round 18 it closes the screen: the button that followed it led to the
+   Services page, and the Why list moved after the Bespoke band, so the band's
+   top shows under a reader who scrolls to Packaged services (S4c, below). */
 .deliver.deliver--stacked { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
 .deliver--stacked .deliver-note { margin-top: 1.5rem; }
-.deliver--stacked .deliver-why { margin-top: 4rem; gap: 1.5rem; }
+
+/* S4c: the Why list on its own screen (round 18), round 17's rows unchanged;
+   its label is the screen's heading. */
+.home-why .deliver-why { gap: 1.5rem; }
 
 .ladder3--five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 
@@ -3555,6 +3559,10 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
    the copy on black, the tall crop (already dark at its top, so no seam), then
    the four parts on black. Black is also what remains if the image guard
    drops the photograph. */
+/* The band's top padding is a step under the other screens' (48-64 px, not
+   56-88): it is the band a reader should see the top of while the Packaged
+   services track above it is still in view (round 18), and its eyebrow and
+   heading are what say "a second way to buy" at a glance. */
 .home-bespoke {
   position: relative;
   isolation: isolate;
@@ -3564,6 +3572,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   justify-content: space-between;
   gap: clamp(3rem, 7vw, 6.5rem);
   min-height: clamp(34rem, 44vw, 40rem);
+  padding-top: clamp(3rem, 4.5vw, 4rem);
   border-top: 0;
   background: #000000;
   color: #ffffff;
