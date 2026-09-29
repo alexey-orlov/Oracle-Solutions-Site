@@ -81,7 +81,7 @@ because the real faces render:
 
 | Role | Desktop | Mobile 375 | Face / weight / leading / tracking |
 |---|---|---|---|
-| H1 (`.products-head .h1`) | 96 px | 48 px | Azurio 400 / 1.1 / 0 |
+| H1 (`.catalog-hero-title`, white on the catalog's photograph, §54) | 96 px | 48 px | Azurio 400 / .95 / 0, as on softserveinc.com's About Us |
 | Product name (`.product-title`) | 64 px | 32 px | Azurio 400 / 1.05 / 0 |
 | Home H1 (`.home-title`) | **64 px** | 32 px | Azurio 400 — held at the 64 px step, see §7 |
 | H2 | 48 px | 32 px | Replica 400 / 1.2 / 0 |

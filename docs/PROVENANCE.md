@@ -7698,3 +7698,43 @@ _A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with n
   - **Phones:** the dark side of the photograph with the oval's glow at the edge, and three of the four lines.
   - **Rights:** the photograph is the brand template's own title image, but §11.1's note on that deck imagery stands: it is generated art, to confirm with the deck's owner before the site goes public.
 - **The contract round stays 20:** the packaging plugin never writes the catalog's head, and it reads no `site.tagline`.
+
+## 57. The Bespoke band re-cut: the copy on the right, the ask after its reasons, a ribbons render, 2026-09-29
+
+_A fix between rounds, in a session opened in AO-Personal-OS. Opus alone, with no Fable pass: one band's layout and its picture. Touched: `bespoke()` in `site/pages/overview.js`, the S4b block in `site/assets/site.css` (and its print block), `overview.bespoke.image.alt` and its comment in `site/data/content.js`, `site/assets/img/bands/bespoke-wide.jpg` and `bespoke-tall.jpg` (replaced), `tools/check-grammar.js`, ASSETS §2c, VISUAL-GRAMMAR (§3's photograph rule, §9 S4b and the peek measurements), SCHEMA (a `bespoke` row, missing since round 18), SS26-THEME §5, README, START-HERE §1, §3, §4, §7, §9 and §10. `#/alt` renders the band through `overview.js`, so one edit changed both pages._
+
+- **The ask (Alex, 2026-09-29, with a screenshot of the band):**
+  - *"content should be centered on the right to balance the page"*;
+  - *"placing CTA button above 4 bullets - is it a good practice?"*;
+  - *"Make sure to find more relevant image; maybe something associated with parallelism and infinity, like https://www.softserveinc.com/en-us/services/artificial-intelligence on the "Moore’s Law of LLMs" tile."*;
+  - *"Apply changes to both the current main and the alt version."*
+  - Mid-build, with a screenshot of the new picture under the old layout: *"very poor visibility of text and button placement"* (below, *The half-built state*).
+- **The reading of the first point:** every other home screen reads from the left, so the band's copy moves to the right as one column and the picture takes the left. *Centered* is read as the column sitting centred in the band's height (equal padding at the top and the foot) and filling the right-hand grid column, not as centred text.
+- **The button, answered:** above the points is the hero pattern: on a page's first screen the ask must show before any scroll. Mid-page, for a considered buy (a standing team), the reader needs the reasons first, and a button between the lead and the points split the head from its reasons. The band now reads claim, reasons, ask: eyebrow, H2, lead, the four points two by two, then *Talk to us*.
+- **The picture:**
+  - The *Moore’s Law of LLMs* tile is `assets.softserveinc.com/images/assets/moores-law-of-llms.jpg`, served at 800 × 412 at most, too small for a band. Its family, parallel chrome ribbons in a flow that runs out of the frame, is softserveinc.com's own library of renders. The largest member is the home page's *Agentic AI* banner, `agentic-ai-banner-home-image.jpg` at 3400 × 900, with a tablet crop at 1376 × 1412: the same pair of crops the previous photograph came in.
+  - Also looked at: `physical-ai-desktop.jpg` (1700 × 450, too small), `hero-home-fallback.jpg` (a light ground), `solution-data-platform-foundations.jpg` (1700 × 450, a block rather than a flow).
+  - Both crops are mirrored, so the wave runs in from the band's left edge, away from the copy. The source carries a white and a black corner cut on its left edge, cropped off (32 px). Details in ASSETS §2c.
+- **What changed:**
+  - **From 1025 px** the band is the wrap's grid at 5 : 7. The picture is a box on the band's left half at full height, `object-position: 55% 50%`, masked to fade out between 62% and 94% of its width, so it is gone before the copy column, whose left edge lands at 45–47% of the band at every width from 1025 to 2560. No word sits on the picture, and the scrim is gone.
+  - **The ground** is the render's own dark, `#131516` at the top to `#23272a` at the foot (sampled from the render), so the fade, a phone's rows and a picture the image guard drops all meet one colour.
+  - **Up to 1024 px** the band stacks: the head; the tall crop on a row of its own (12 : 5, and 16 : 10 from 768 down) showing the wave along its foot, its top faded into the ground; then the four points (two by two from 541 px) and the button.
+  - **Heights:** 709 px at 1440 × 900 and 691 px at 1280 × 800, so the whole band fits one screen at both. Round 18's band was 658 px, with the points along its foot.
+- **The half-built state:** the two new crops were copied into `site/` a few minutes before the layout changed, and a reload in between showed the new picture under round 18's layout, with the copy and the button on the chrome. Autosync and the uncached local server make every intermediate state a screen Alex may open. The learning is in START-HERE §7.
+- **Before → after:**
+
+| | Round 18 | Now |
+|---|---|---|
+| Picture | softserveinc.com's *Confidence earned* photograph: three people at a laptop by tall windows | softserveinc.com's *Agentic AI* render: parallel chrome ribbons in one wave, mirrored |
+| Where the picture is | the whole band, the copy on it under a scrim | the band's left half, faded out before the copy |
+| Copy | the head on the left, the four points in a row along the foot | one column on the right: the head, then the points two by two |
+| *Talk to us* | under the lead, before the points | after the points |
+| Phone | copy, photograph, points, on black | head, the wave on its own row, points, button, on the render's dark |
+
+- **The checker** now fails a `bespoke()` whose button comes before its points or that draws a scrim, a `.bespoke-copy, .bespoke-body` rule outside the grid's second column, and a `.bespoke-media` rule that covers the band (`inset: 0`) or lacks the half-width box and its mask. Each guard was run on a scratch copy with its part of the fix reverted, and failed (four failures, one per guard).
+- **Checks:** `node --check` on the three changed JS files. `check-grammar` passes every band check; at the time the run failed on three lines outside the band that §54's catalog work had in flight (`productsPage.intro` twice, `site.tagline`). In the browser pane against `tools/serve.py`: the band at 1920 × 1080, 1440 × 900, 1280 × 800, 1024 × 768, 768 × 1024, 375 × 812 and 320 × 640, with no horizontal overflow and the four points of equal height at each; landing on Packaged services from the header, the band's eyebrow and heading in view at 1366 × 650 (122 px of the band) and its eyebrow at 1280 × 620 (74 px); `#/alt` renders the same band; the console clean on `#/` and `#/alt`; the deny-list grep empty.
+- **Published:** pending.
+- **Open for Alex** (START-HERE §9, under §57):
+  1. **The picture repeats softserveinc.com's home banner,** mirrored, as the photograph before it did. Swapping both crops keeps the layout.
+  2. **The render is 900 px tall,** so a 2× screen upscales it about 1.6× at 1440 (the band is 709 px tall). Smooth metal on a gradient holds up; a larger source would come from the brand team.
+  3. **The button stays the site's blue ask,** not §47's white button for a dark photograph: the ask now sits on the plain dark ground, not on a picture.
