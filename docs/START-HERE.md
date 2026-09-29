@@ -122,7 +122,7 @@ These hold unless Alex changes them, and `tools/check-grammar.js` enforces most 
   - H1: two to four words, ≤ ~24 characters a line, two lines at most.
   - H2: five words or fewer, ≤ ~30 characters.
   - Light-band title: ≤ ~28 characters.
-  - Check where the line breaks on a phone: no lone short word on a line.
+  - Check where the line breaks on a phone: no lone short word on a line, and no product name split at its hyphen (the renderer keeps a compound whole; PROVENANCE §43).
 - **Repetition:**
   - No content word three times on one screen.
   - One word for one thing across the whole site.
