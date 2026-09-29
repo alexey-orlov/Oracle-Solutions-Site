@@ -133,31 +133,30 @@
       "</div>";
   }
 
-  /* The whole offer in one picture, in Alex's layout: the packaged services
-     over the products on the left, the bespoke services beside both on the
-     right, Oracle's platforms under all three, the stack read bottom up. Each
-     block says what it is in a name and one short line and shows the rest:
-     the products are the groups' four fills, the packaged services a run of
-     steps (the last dashed: managed services are optional), the bespoke
-     services a team of pods with an open one (it grows). What the pictures
-     stand for is listed on the screens around this one, so the diagram names
-     none of it (Alex: "overloaded with text"). One SoftServe mark over its
-     three blocks, Oracle's mark in its own. Light grounds; nothing in it is a
-     control. It is hidden from assistive technology, and one sentence says
-     the same. */
+  /* The whole offer in one picture, in Alex's layout: two layers, each a box
+     with its company's mark inside it. SoftServe's holds the packaged
+     services over the products on the left and the bespoke services beside
+     both on the right; Oracle's, under it, holds the four platforms. Each
+     SoftServe block says what it is in a name and one short line and shows
+     the rest: the packaged services a run of steps (the last dashed: managed
+     services are optional), the products the six groups as tiles in their
+     own fills and drawings, the bespoke services a square team of pods with
+     an open one (it grows). What the pictures stand for is listed on the
+     screens around this one, so the diagram names none of it (Alex:
+     "overloaded with text"). Light grounds; nothing in it is a control. It is
+     hidden from assistive technology, and one sentence says the same. */
   function diagram(C) {
     var UI = window.UI;
     var copy = (C.overviewAlt || {}).diagram || {};
+    var families = (C.shared && C.shared.tagFamilies) || {};
+    var patternIcons = (families.pattern && families.pattern.icons) || {};
+    var techIcons = (families.tech && families.tech.icons) || {};
     var steps = (C.overview.delivery || {}).steps || [];
     var stageIcons = copy.stageIcons || [];
 
-    /* Each group fill once, in the groups' own order. */
-    var tones = [];
-    (C.facets.categories || []).forEach(function (category) {
-      if (category.tone && tones.indexOf(category.tone) === -1) tones.push(category.tone);
-    });
-    var tiles = '<ul class="amap-tiles">' + tones.map(function (tone) {
-      return '<li class="amap-tile amap-tile--' + UI.esc(tone) + '"></li>';
+    /* The six groups, each in its home tile's fill with its icon. */
+    var tiles = '<ul class="amap-tiles">' + (C.facets.categories || []).map(function (category) {
+      return '<li class="amap-tile amap-tile--' + UI.esc(category.tone) + '">' + UI.icon(patternIcons[category.id]) + "</li>";
     }).join("") + "</ul>";
 
     var flow = '<ol class="amap-flow">' + steps.map(function (step, index) {
@@ -166,7 +165,8 @@
         '<li class="amap-step">' + node(36, last, glyph(stageIcons[index] || "dot")) + "</li>";
     }).join("") + "</ol>";
 
-    var pods = '<ul class="amap-pods">' + [0, 1, 2, 3, 4].map(function () {
+    /* Three by three: eight pods and the open one. */
+    var pods = '<ul class="amap-pods">' + [0, 1, 2, 3, 4, 5, 6, 7].map(function () {
       return '<li class="amap-pod">' + node(48, false, glyph("users")) + "</li>";
     }).join("") + '<li class="amap-pod">' + node(48, true, glyph("plus")) + "</li></ul>";
 
@@ -178,7 +178,7 @@
       return (ia === -1 ? order.length : ia) - (ib === -1 ? order.length : ib);
     });
     var platforms = technology.map(function (facet) {
-      return '<li class="amap-chip">' + UI.esc(facet.label) + "</li>";
+      return '<li class="amap-chip">' + UI.icon(techIcons[facet.id]) + "<span>" + UI.esc(facet.label) + "</span></li>";
     }).join("");
 
     var ssMark = window.brandAsset("ssMark", "assets/img/softserve-wordmark-white.svg");
@@ -186,15 +186,17 @@
 
     return '<p class="sr-only">' + UI.esc(copy.ariaLabel) + "</p>" +
       '<div class="amap" aria-hidden="true">' +
-        '<img class="amap-mark amap-mark--softserve" src="' + UI.esc(ssMark) + '" alt="" width="96" height="16" decoding="async">' +
-        '<div class="amap-grid">' +
-          mapBlock("packaged", copy.packaged || {}, flow) +
-          mapBlock("products", copy.products || {}, tiles) +
-          mapBlock("bespoke", copy.bespoke || {}, pods) +
-          '<div class="amap-block amap-block--oracle">' +
-            '<img class="amap-mark amap-mark--oracle" src="' + UI.esc(oracleMark) + '" alt="" width="84" height="11" decoding="async">' +
-            '<ul class="amap-chips">' + platforms + "</ul>" +
+        '<div class="amap-layer amap-layer--softserve">' +
+          '<img class="amap-mark amap-mark--softserve" src="' + UI.esc(ssMark) + '" alt="" width="96" height="16" decoding="async">' +
+          '<div class="amap-grid">' +
+            mapBlock("packaged", copy.packaged || {}, flow) +
+            mapBlock("products", copy.products || {}, tiles) +
+            mapBlock("bespoke", copy.bespoke || {}, pods) +
           "</div>" +
+        "</div>" +
+        '<div class="amap-layer amap-layer--oracle">' +
+          '<img class="amap-mark amap-mark--oracle" src="' + UI.esc(oracleMark) + '" alt="" width="84" height="11" decoding="async">' +
+          '<ul class="amap-chips">' + platforms + "</ul>" +
         "</div>" +
       "</div>";
   }
