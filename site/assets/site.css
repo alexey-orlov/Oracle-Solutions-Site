@@ -1725,8 +1725,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .product-hero-inner--single { grid-template-columns: minmax(0, 1fr); }
 .product-hero-inner--single .product-hero-copy { max-width: 56rem; }
 
-/* ——— hero video preview ——————————————————————————————— */
+/* ——— hero frame ————————————————————————————————————— */
 
+/* The product's own screen under one round button (Alex, 2026-09-29: "a nice
+   preview screen and play button overlay"), opening the recording or, with
+   none, the walkthrough. A plate with the 8 px cut on the gradient: no border
+   and no shadow, since elevation here is a surface step, never a lift. */
 .hero-media { min-width: 0; }
 
 .video-card {
@@ -1736,33 +1740,30 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   aspect-ratio: 16 / 9;
   padding: 0;
   overflow: hidden;
-  border: 1px solid var(--border-panel);
+  border: 0;
   border-radius: 0;
   background: var(--bg-inset);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
   cursor: pointer;
-  transition: transform var(--t-base) var(--ease), border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
 }
 
-.video-card:hover { border-color: var(--action); }
-.video-card:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+/* The cut would clip a ring drawn outside the box, so it is drawn inside, as
+   on the group tiles. */
+.video-card:focus-visible { outline: 2px solid var(--text); outline-offset: -6px; }
 
 .video-card-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-/* No recording still yet: the frame stands as its own plate rather than
-   borrowing the hero photograph behind it. */
+/* No still: the frame stands as its own plate. */
 .video-card--plate {
   background: linear-gradient(160deg, var(--bg-inset) 0%, var(--bg-raised) 68%);
 }
-.video-card--plate .video-card-veil { background: linear-gradient(to top, rgba(7, 9, 13, .58) 0%, rgba(7, 9, 13, .10) 38%, rgba(7, 9, 13, 0) 66%); }
+.video-card--plate .video-card-veil { background: linear-gradient(to top, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, 0) 45%); }
 
-/* Enough shade under the caption to read it, and no more: the poster is the
-   point of the frame, and a veil heavy enough to guarantee contrast
-   everywhere would grey out the picture it is protecting. */
+/* Shade under the recording's caption and nowhere else: the still is the
+   point of the frame. The walkthrough's frame has no caption, so no veil. */
 .video-card-veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(7, 9, 13, .72) 0%, rgba(7, 9, 13, .30) 26%, rgba(7, 9, 13, .06) 52%, rgba(7, 9, 13, .14) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, .62) 0%, rgba(0, 0, 0, .24) 20%, rgba(0, 0, 0, 0) 40%);
 }
 
 .video-card-play {
@@ -1779,19 +1780,22 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   transition: transform var(--t-base) var(--ease), background-color var(--t-base) var(--ease);
 }
 
+/* The triangle sits a hair right of centre to look centred; the walkthrough's
+   pointer, a line glyph, needs no nudge and a heavier stroke at this size. */
 .video-card-play .icon { width: 1.5rem; height: 1.5rem; margin-left: .1875rem; }
+.video-card--demo .video-card-play .icon { width: 1.75rem; height: 1.75rem; margin-left: 0; stroke-width: 1.75; }
 .video-card:hover .video-card-play { transform: translate(-50%, -50%) scale(1.06); background: var(--action-hover); }
 
 .video-card-caption {
   position: absolute;
   left: 1.25rem;
   bottom: 1.125rem;
-  font-family: var(--font-display);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-weight: 400;
   font-size: var(--fs-xs);
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--text-on-dark);
 }
 
 .crumbs { display: flex; align-items: center; gap: .625rem; font-size: var(--fs-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); }
@@ -2552,12 +2556,6 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .def-grid, .def-grid--3, .def-grid--4 { grid-template-columns: 1fr; }
   .product-hero-inner { grid-template-columns: minmax(0, 1fr); row-gap: 2rem; }
   .product-hero.has-hero-bg, .hero.has-hero-bg { min-height: 0; display: block; }
-  .hero-bg-img { opacity: .62; }
-  .hero-bg-veil,
-  .product-hero--media .hero-bg-veil {
-    background:
-      linear-gradient(to bottom, rgba(255, 255, 255, .62) 0%, rgba(255, 255, 255, .80) 34%, rgba(255, 255, 255, .90) 72%, var(--bg) 100%);
-  }
   .stack-row { grid-template-columns: auto minmax(0, 1fr) auto; min-height: 4.5rem; }
   .stack-summary { grid-column: 1 / -1; grid-row: 2; }
   .split-two { grid-template-columns: 1fr; }
@@ -2721,11 +2719,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .skip-link,
   .tabbar,
   .hero-glow,
-  .hero-bg,
   .social-row,
   .modal-backdrop,
   .rail,
   .form-trap { display: none !important; }
+
+  .product-hero.has-hero-bg { background: none !important; }
 
   .h1, .h2, .h3, .h4, .ptile-title, .gtile-name, .tier-title, .case-descriptor, .plat-name,
   .stat-value, .invest-value, .case-figure-value, .method-stat-value,
