@@ -36,7 +36,12 @@
    than 47 % of its width. A minimum, not a height, so the copy is never
    taller than its ground. */
 .ahero-photo {
-  --scene-w: 50vw;
+  /* The page's column, its left edge, and the scene from 47 % of it to the
+     window's right edge: the accent line ends near 41 % of the column at
+     any width, the longest line near 56 %, over the picture's own sky. */
+  --wrap: min(100vw - 2 * var(--gutter), var(--container-max));
+  --wrap-left: calc((100vw - var(--wrap)) / 2);
+  --scene-w: calc(100vw - var(--wrap-left) - var(--wrap) * .47);
   --scene-h: calc(var(--scene-w) / 1.7751);
   position: relative;
   isolation: isolate;
@@ -79,12 +84,14 @@
   mask-image: linear-gradient(to bottom, #000000 90%, rgba(0, 0, 0, 0) 100%);
 }
 
-/* The veil: white under the copy, gone just inside the scene's left edge,
-   so sky and picture meet without a seam. */
+/* The veil: white past the accent line (43 % of the column), gone at 53 %,
+   just inside the scene, so sky and picture meet without a seam. */
 .ahero-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #ffffff 0%, #ffffff calc(50% - 4vw), rgba(255, 255, 255, 0) calc(50% + 2vw));
+  background: linear-gradient(90deg, #ffffff 0,
+    #ffffff calc(var(--wrap-left) + var(--wrap) * .43),
+    rgba(255, 255, 255, 0) calc(var(--wrap-left) + var(--wrap) * .53));
 }
 
 .ahero-inner { position: relative; z-index: 1; width: 100%; }
