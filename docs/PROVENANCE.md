@@ -6959,3 +6959,34 @@ _A fix between rounds, made in the session that built round 18's home page, whil
 - **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products with the known About-H2 warning; at 1920, 1680, 1536, 1440, 1366, 1300, 1280, 1279, 1200, 1150, 1101, 1100, 1024, 900, 834, 800, 768, 721, 720, 640, 561, 430, 390, 360 and 320, every name two lines, the one-liners and arrows level, no horizontal overflow; the console clean. The browser pane was hidden, so no screenshot was taken: everything above is measured geometry.
 - **No contract bump:** the rule binds the site's own renderer and stylesheet, and the six names pass it as they are.
 - **Not published.** The shared link is version 1790676289-ee3a (§42); this goes out with the next publish, on Alex's word.
+
+## 46. Cross-system ERP Q&A and Business metrics Q&A on two platforms, 2026-09-29
+
+_A change between rounds, made in its own session while the Internal-panel removal (§44), the group names (§45) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: the call is a fact check, and the copy it adds is one sentence and one stack item per product. Touched: `site/data/content.js` (the two products' `facet`, `tags`, `technology.narrative` and Data & platform layer), `site/assets/app.js` (`productFacets()`, `productTile()`), `site/pages/product.js` (`heroChips()`), `site/pages/products.js` (the search haystack and the platform filter), `site/assets/site.css` and `site-legacy.css` (`.ptile-facets`), `tools/check-grammar.js`, SCHEMA, VISUAL-GRAMMAR, CONFIG, HANDOFF, and START-HERE §4 and §9._
+
+- **The ask (Alex):** *"whether Cross-system ERP Q&A and Business metrics Q&A should be kept as AI lakehouse only, or they should go with both AIDP and AIL tags? I think with both, but u check and act accordingly."*
+- **The check: both, for both.**
+  - Oracle describes AI Data Platform as combining OCI, Autonomous AI Database and its generative AI services ([Constellation Research on AI World 2025](https://www.constellationr.com/insights/news/oracle-ai-world-2025-autonomous-ai-lakehouse-ai-data-platform-launched)), and its documentation has the platform's agents query *"structured data sources registered via external catalogs, such as Oracle Autonomous AI Lakehouse"* ([AI Data Platform Workbench, AI Agents](https://docs.oracle.com/en/cloud/paas/ai-data-platform/aidug/ai-agent-flows.html)). Both products are Select AI over an Autonomous AI Database layer, so each runs on the Lakehouse alone or inside AI Data Platform.
+  - Cross-system ERP Q&A's own walkthrough already runs on both, by design: Data Studio on the Lakehouse and Agent Hub on AI Data Platform, because neither product does the job alone (§22.2). Its product page said *AI Lakehouse* only.
+  - Alex's 2026-09-18 1:1 with Bohdan named Cross-system ERP Q&A the AI Data Platform quick-start (the transcript reads "IDP"), the one product admitted without presale because nothing else covers that platform.
+  - Business metrics Q&A is Oracle's own gold-layer pattern, AI Data Platform, Databricks or Spark holding bronze and silver under an Autonomous gold layer (Oracle's AI Lakehouse enablement, 2026-08-05), and the zero-copy multicloud access it sells is AI Data Platform's own pitch.
+  - Against, and weighed: the red-teamed pattern map (2026-09-07) routes conversational analytics to the Lakehouse motion, and Oracle advised on 2026-09-16 not to create AI Data Platform customer packages yet (START-HERE §9). The platform's SQL tool *"is not an NL2SQL tool"*, so plain-English answering stays with Select AI, and the new copy says only that the platform's catalog registers the layer and its agents read it.
+- **Decision: a product runs on more than one platform when its own engine is part of each.** `facet` takes an array, `tags` carries one label per platform, and every renderer reads `UI.productFacets()`. The NVIDIA products that list AI Data Platform as an optional data layer keep one platform: their engine is not part of it, and Oracle asked not to combine those cases with that platform yet.
+- **Before and after:**
+
+| Where | Before | After |
+|---|---|---|
+| Hero chips, both products | Enterprise knowledge & analytics · AI Lakehouse | … · AI Lakehouse · AI Data Platform |
+| Catalog tile band | one plate, *AI Lakehouse* | two plates: side by side at 1440 (25 px clear of the *Interactive demo* badge), on two lines at 375 |
+| Platform rail | AI Lakehouse 2 · AI Data Platform (disabled) · OCI + NVIDIA NeMo 7 | AI Lakehouse 2 · AI Data Platform 2 · OCI + NVIDIA NeMo 7 |
+| Technology narrative, Cross-system ERP Q&A | two sentences | adds *"Where Oracle AI Data Platform is in place, its catalog registers that model without a copy, and the platform’s agents read the same certified views."* |
+| Technology narrative, Business metrics Q&A | two sentences | adds *"Where Oracle AI Data Platform is in place, its catalog registers that gold layer without a copy, and the platform’s agents read the same definitions."* |
+| Data & platform layer, both | the summary names the Lakehouse only | the summary adds *on its own or inside Oracle AI Data Platform*; a new **Optional** item names the catalog registration and the agents' reuse |
+
+- **Kept out:** Agent Hub is not named in either product's copy, because Oracle's documentation did not confirm its availability label and the Jumpstart promises generally available features only. The AI Data Platform item is Optional: the Jumpstart runs without that platform.
+- **Checker:** `facet` is a string, or an array of two or more canonical ids in canonical order with no repeats; `tags` holds one label per platform; a second platform is named by its full name in `technology.narrative` and in a Data & platform item; the `catalog: false` rule reads every platform in the list. Each rule was run against a copy with its part broken, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products; the console clean on the catalog and both product pages; no horizontal overflow at 1440 or 375; the deny-list grep returns nothing. The archive theme stacks the two labels (`site-legacy.css`).
+- **No contract bump:** the plugin writes `facet` as one string with two `tags`, which still pass. Round 20 stays with the product-pages session, as in §43.
+- **Not published:** the shared link shows round 17 until Alex says publish (START-HERE §1).
+- **Parallel sessions:** the product-pages session (round 20, on a branch) was told which regions moved, and its `overview` rewrite leaves the two products' `facet`, `tags` and `technology` alone. §44, §45 and §46 were numbered with the two sessions at work at the same time.
+- **Open for Alex:** START-HERE §9, under §46.
