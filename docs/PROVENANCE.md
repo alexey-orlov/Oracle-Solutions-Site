@@ -6926,4 +6926,4 @@ _A fix between rounds, made in its own session while the product-pages session (
   - At 320 the one-liner under the title breaks *repair- / or-replace*. That is running text meeting the line's end at a hard hyphen: ordinary typesetting, not a heading.
   - The archive theme renders the same span without the rule, so its titles still split at the hyphen. It is frozen and never republished.
   - Measured in Chromium only. The fix rests on `white-space: nowrap`, which every engine honours.
-- **Not published:** the fix is on `main` (autosync `896f80b`, `caa1f84`) and ships with the next publish.
+- **Published** in the 2026-09-29 publish, version 1790676289-ee3a (§42, Publish), with `assets/app.js` and `assets/site.css` in its map; the live files carry `keepCompounds()` and `.compound`. The code is autosync `896f80b` and `caa1f84`.
