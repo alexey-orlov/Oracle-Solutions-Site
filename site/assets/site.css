@@ -1547,13 +1547,115 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 
 /* ——— products marketplace ————————————————————————————— */
 
-.products-head { display: flex; flex-direction: column; gap: 1.25rem; padding-top: clamp(1.5rem, 3vw, 3rem); }
-.products-head .h1 { font-size: var(--fs-hero); }
-.products-intro { max-width: 52rem; text-wrap: pretty; }
-.products-search { max-width: 32rem; margin-top: .75rem; }
+/* The catalog's hero (Alex, 2026-09-29; PROVENANCE §54) is softserveinc.com's
+   About Us hero, measured there at 1440: a dark photograph; the H1 in Azurio
+   at .95 leading, 128 px under the 50 px header; the lead in Replica Light
+   24/1.2 on a 684 px measure, 56 px under the H1 and 124 px over the foot.
+   The brand's crossing is drawn from the H1: a hairline 25 px under the H1's
+   box runs from the left edge into the spark's left tip and out of its right
+   tip to the edge, and a line on the spark's long axis, 25 degrees off
+   vertical, runs from the top edge into its top tip and out of its bottom
+   tip to the foot. Every position follows from the padding, the H1's size
+   and the spark's width, so the H1 holds one line: the page's name. The
+   glyph's tips as fractions of its width (a 135 x 154 box): left (0, .7203),
+   right (.9976, .4197), top (.7646, 0), bottom (.233, 1.1399). */
+.catalog-hero {
+  --ch-pt: 8rem;
+  --ch-pb: 7.75rem;
+  --ch-gap: 3.5rem;
+  --ch-under: 1.5625rem;
+  --ch-fs: var(--fs-hero);
+  --ch-rule: calc(var(--ch-pt) + var(--ch-fs) * .95 + var(--ch-under));
+  --sp-w: 6.5rem;
+  --sp-r: 2.5rem;
+  --sp-x: calc(100% - var(--sp-w) - var(--sp-r));
+  --sp-top: calc(var(--ch-rule) - var(--sp-w) * .7203);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #03070c;
+  color: #ffffff;
+}
+
+.catalog-hero-media { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+/* The oval of light stands at 63-89 % of the frame and the dark wall after it
+   carries the spark. The lead's measure stops short of the oval. */
+.catalog-hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--focal, 100% 46%);
+}
+
+.catalog-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(3, 7, 12, .6) 0%, rgba(3, 7, 12, .42) 36%, rgba(3, 7, 12, .08) 58%, rgba(3, 7, 12, 0) 66%);
+}
+
+.catalog-hero-line { position: absolute; display: block; background: #ffffff; }
+.catalog-hero-line--left { left: 0; top: var(--ch-rule); width: calc(var(--sp-x) + 5px); height: 1px; }
+.catalog-hero-line--right {
+  top: calc(var(--sp-top) + var(--sp-w) * .4197);
+  left: calc(var(--sp-x) + var(--sp-w) * .9976 - 4px);
+  right: 0;
+  height: 1px;
+}
+.catalog-hero-line--up,
+.catalog-hero-line--down { width: 1px; height: 60rem; transform: rotate(25deg); }
+.catalog-hero-line--up {
+  left: calc(var(--sp-x) + var(--sp-w) * .7646);
+  top: calc(var(--sp-top) - 60rem);
+  transform-origin: 50% 100%;
+}
+.catalog-hero-line--down {
+  left: calc(var(--sp-x) + var(--sp-w) * .233);
+  top: calc(var(--sp-top) + var(--sp-w) * 1.1399);
+  transform-origin: 50% 0;
+}
+
+.catalog-hero-spark {
+  position: absolute;
+  left: var(--sp-x);
+  top: var(--sp-top);
+  width: var(--sp-w);
+  height: auto;
+  max-width: none;
+}
+
+.catalog-hero-inner { position: relative; z-index: 1; padding-block: var(--ch-pt) var(--ch-pb); }
+.catalog-hero-title { font-size: var(--ch-fs); line-height: .95; color: #ffffff; }
+.catalog-hero-lead {
+  margin-top: var(--ch-gap);
+  max-width: min(42.75rem, calc(58vw - var(--gutter)));
+  color: #ffffff;
+  text-wrap: pretty;
+}
+
+@media (max-width: 1024px) { .catalog-hero { --sp-w: 5.5rem; --sp-r: 1.5rem; } }
+
+/* Narrower than the photograph, the lead takes the full measure, so the frame
+   is widened past the hero's right edge until the oval is out of view, and the
+   line down from the spark, which would cross the lead, is not drawn. */
+@media (max-width: 768px) {
+  .catalog-hero { --ch-pt: 4.5rem; --ch-pb: 4.5rem; --ch-gap: 3.25rem; --ch-under: 1rem; --sp-w: 3.5rem; --sp-r: 1.25rem; }
+  .catalog-hero-img { width: 160%; object-position: 0 50%; }
+  .catalog-hero-lead { max-width: 36rem; }
+  .catalog-hero-line--down { display: none; }
+}
+
+/* The catalog's search box sits over the results it filters, in the bar that
+   reports what a filter returned. */
+.catalog-body { padding-top: clamp(2rem, 3.5vw, 3.5rem); }
 
 .results-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   padding-bottom: 1.25rem;
@@ -1561,7 +1663,9 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   border-bottom: 1px solid var(--border-subtle);
 }
 
-.results-count { font-size: var(--fs-sm); color: var(--text-dim); letter-spacing: .06em; text-transform: uppercase; }
+.products-search { flex: 1 1 18rem; max-width: 32rem; }
+
+.results-count { margin-left: auto; font-size: var(--fs-sm); color: var(--text-dim); letter-spacing: .06em; text-transform: uppercase; }
 
 .rail-options { display: flex; flex-direction: column; gap: .25rem; }
 
