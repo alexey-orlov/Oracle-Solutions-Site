@@ -94,7 +94,7 @@ var GROUP_TONE_ORDER = ["blue", "orange", "blue-light", "neutral", "blue", "oran
 var GROUP_INK = "#1a1a1a";
 /* Round 4, T3, rewritten in round 9 (Alex): ONE canonical technology set, in
    ONE order, with TWO forms of each name. The SHORT `label` is what the rail,
-   the product chips, the tile band, `tags[1]` and the hero stack render; the
+   the product chips, the tile band, `tags[1…]` and the hero stack render; the
    FULL Oracle product name is `fullLabel`, which the Services cards and the
    page's prose carry. Pairing both here is what stops a product, a glyph or a
    card drifting into a variant of a platform name. */
@@ -114,6 +114,12 @@ var FACET_FULL = {
 /* The one platform no product runs on: it stays in the set for the hero stack
    and the Services cards, and is not offered as a catalog filter. */
 var NON_CATALOG_FACETS = ["oracle-ai-fusion"];
+/* A product's platforms, as the renderers read them (UI.productFacets): `facet`
+   is one id, or an array of ids when the product's own engine is part of more
+   than one Oracle platform (2026-09-29, PROVENANCE §44). */
+function productFacets(p) {
+  return Array.isArray(p.facet) ? p.facet : (p.facet === undefined ? [] : [p.facet]);
+}
 /* The three products with an interactive walkthrough under site/demo/. The
    Demo badge and the Artifacts filter read the walkthrough link (links.json
    `interactiveDemo` since round 12), not the video flag. */
@@ -286,27 +292,58 @@ if (!arr(C.products) || C.products.length !== 9) {
     }
   });
   if (!arr(p.tags) || !p.tags.length) fail(w, "tags missing");
-  /* T3: the platform a product runs on is one of the four canonical facets, and
-     the chip that names it carries that facet's label verbatim. */
-  if (FACET_IDS.indexOf(p.facet) === -1) {
-    fail(w, 'facet "' + p.facet + '" is not one of ' + FACET_IDS.join(" / "));
+  /* T3: every platform a product runs on is one of the four canonical facets,
+     and the chip that names it carries that facet's label verbatim. One
+     platform is written as a string; two or more as an array (2026-09-29), in
+     canonical order with no repeats, so there is one way to write each case. */
+  var pFacets = productFacets(p);
+  if (arr(p.facet) && p.facet.length < 2) {
+    fail(w, "facet is an array of " + p.facet.length + " — one platform is written as a string");
   }
+  if (!pFacets.length) fail(w, "facet missing");
+  pFacets.forEach(function (id, i) {
+    if (FACET_IDS.indexOf(id) === -1) {
+      fail(w, 'facet "' + id + '" is not one of ' + FACET_IDS.join(" / "));
+    } else if (i > 0 && FACET_IDS.indexOf(id) <= FACET_IDS.indexOf(pFacets[i - 1])) {
+      fail(w, "facet lists its platforms out of canonical order or twice — " + FACET_IDS.join(" → "));
+    }
+  });
+  /* A second platform is a claim a seller will repeat, so the Technology tab
+     says how the product runs there: the platform's full name in the
+     narrative and in the Data & platform layer. The Q&A pair's AI Data Platform
+     chip came with exactly that (2026-09-29); a chip without it is a bare
+     assertion. */
+  pFacets.slice(1).forEach(function (id) {
+    var full = FACET_FULL[id];
+    if (!full || !p.technology) return;
+    if (!str(p.technology.narrative) || p.technology.narrative.indexOf(full) === -1) {
+      fail(w, 'runs on "' + full + '" as a second platform, but technology.narrative does not say how');
+    }
+    var dataLayer = (p.technology.stack || []).filter(function (layer) { return layer.key === "data-platform"; })[0];
+    var named = dataLayer && (dataLayer.items || []).some(function (item) { return str(item.name) && item.name.indexOf(full) === 0; });
+    if (!named) {
+      fail(w, 'runs on "' + full + '" as a second platform, but no Data & platform item names it');
+    }
+  });
   /* The hero chip row is built from `category` and `facet` and skips tags[0]
-     and tags[1], so those two have to say what the renderer already says.
-     Anything past them renders as a second technology chip beside the platform
-     one, which is how "AI-Q" and "cuOpt" came to read as part of the platform
-     name — engine detail belongs in the Technology tab, not in the chip row. */
+     and one tag per platform, so those have to say what the renderer already
+     says. Anything past them renders as another technology chip beside the
+     platform ones, which is how "AI-Q" and "cuOpt" came to read as part of the
+     platform name — engine detail belongs in the Technology tab, not in the
+     chip row. */
   if (arr(p.tags)) {
-    if (p.tags.length !== 2) {
-      fail(w, "tags holds " + p.tags.length + " entries — exactly two: the pattern chip and the canonical platform label");
+    if (p.tags.length !== 1 + pFacets.length) {
+      fail(w, "tags holds " + p.tags.length + " entries — exactly " + (1 + pFacets.length) + ": the pattern chip, then one canonical platform label per facet");
     }
     if (str(p.categoryChip) && p.tags[0] !== p.categoryChip) {
       fail(w, 'tags[0] is "' + p.tags[0] + '" but the pattern chip renders "' + p.categoryChip + '"');
     }
-    var wantFacetLabel = FACET_LABELS[p.facet];
-    if (wantFacetLabel && p.tags[1] !== wantFacetLabel) {
-      fail(w, 'tags[1] is "' + p.tags[1] + '" but the technology chip renders "' + wantFacetLabel + '"');
-    }
+    pFacets.forEach(function (id, i) {
+      var wantFacetLabel = FACET_LABELS[id];
+      if (wantFacetLabel && p.tags[1 + i] !== wantFacetLabel) {
+        fail(w, "tags[" + (1 + i) + '] is "' + p.tags[1 + i] + '" but the technology chip renders "' + wantFacetLabel + '"');
+      }
+    });
   }
   if (!p.hero) fail(w, "hero missing"); else checkHeroImage(w, p.hero.image);
   if (!CFG.products[p.slug]) fail(w, "no matching SITE_CONFIG.products entry");
@@ -1019,7 +1056,7 @@ if (!arr(C.products) || C.products.length !== 9) {
       fail("facets.technology[" + id + "]", "must carry catalog: false — no product runs on it, and a filter that can never return anything is not a filter");
     }
     (C.products || []).forEach(function (p) {
-      if (p.facet === id) fail("products[" + p.slug + "]", 'facet "' + id + '" is not a catalog platform — a product cannot run on a platform the rail does not offer');
+      if (productFacets(p).indexOf(id) !== -1) fail("products[" + p.slug + "]", 'facet "' + id + '" is not a catalog platform — a product cannot run on a platform the rail does not offer');
     });
   });
   /* Round 9: two forms of a name is the most a platform gets. A third
