@@ -104,6 +104,7 @@
   --sidebar: 16.25rem;
   --topbar-h: 0rem;
   --nav-h: 3.125rem;             /* 50px, as on softserveinc.com */
+  --tabbar-h: 3.7rem;            /* the product tab bar from 768px: 18px padding twice, a 19.2px line, a 2px underline, two 1px rules */
   --sec-pad: 2.5rem;             /* band top padding; the bottom is 1.333x */
 
   /* ——— type ——— */
@@ -151,8 +152,8 @@
 .bo-band, .bo-tile, .bo-tile-mark, .gtile, .modal-panel, .empty, .segmented, .fact-row,
 .video-card, .stack-tag, .cap-tag, .case-medallion, .step-index,
 .gate-mark, .form-confirm-mark, .media-figure, .case-callout,
-.ps-plate, .hiw-canvas, .hiw-pic, .hiw-zoom, .hiw-zoom img, .hiw-card-shot, .hiw-card-shot img,
-.ind-panel, .contact-plate,
+.ps-plate, .hiw-canvas, .hiw-pic, .hiw-open-mark,
+.ind-panel, .contact-plate, .kpi-widget,
 .light-band-media, .modal-panel--media, .way--photo, .tip::after {
   border-radius: 0;
   clip-path: polygon(
@@ -1795,19 +1796,47 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .panel--flat { gap: 0; }
 
 /* ===== Round 20 · Overview ===== */
-/* One column at the wrap's width and no rail (D-design §2): the problem and
-   what changes, what changes in your numbers (the KPI band), how it works,
-   64px apart. One grey step (the problem plate), one dark plate (what
-   changes) and the band's own gradient. Blue is the selected row and each
-   chart's coloured mark; orange 75 is the fact dash over each figure and
-   nothing else. Every cut shape here is in the grouped clip-path declaration
-   at the top of the file and sets its --cut in this block. A line on a cut
-   shape is either a ring (polygon evenodd) or an inset child with a smaller
-   cut (c - t(2 - √2)), so the diagonal corners carry the line too. */
+/* Round 20 set the parts and round 21 (Alex, 2026-09-29) the page. From
+   1240px the tab is two columns, his option b ("Problem solution and the How
+   it works taking the central space (left; 4/7 to 2/3 of width); and ROI
+   metrics look like widget on the right"): the problem and what changes, then
+   How it works, in a 2fr main column (800px at 1440, two thirds), and the
+   numbers widget in a 1fr column beside them (400px), pinned under the tab
+   bar while all of it fits the window (product.js measures it). Below 1240px
+   the three blocks stack in the markup's order: the plates, the numbers, the
+   screens. One grey step (the problem plate), one dark plate (what changes)
+   and the white widget on a hairline: nothing on the tab is grey on grey.
+   Blue is the selected step and a chart's After bar; orange 75 is the fact
+   dash over each figure and nothing else. Every cut shape here is in the
+   grouped clip-path declaration at the top of the file and sets its --cut in
+   this block. A line on a cut shape is a ring (polygon evenodd) or an inset
+   child with a smaller cut (c - t(2 - √2)), so the corners carry the line. */
 
 .tab-body--overview { gap: 4rem; }
 
-/* — 1 · the problem → what changes: two plates, equal height — */
+/* — the page: two columns from 1240px — */
+@media (min-width: 1240px) {
+  .tab-body--overview:has(> .kpi-widget) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas: "ps kpi" "hiw kpi";
+    align-items: start;
+    gap: 4rem 3rem;
+  }
+  .tab-body--overview:has(> .kpi-widget) > .ps-pair { grid-area: ps; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .tab-body--overview:has(> .kpi-widget) > .hiw { grid-area: hiw; }
+  .tab-body--overview > .kpi-widget {
+    grid-area: kpi;
+    position: sticky;
+    top: calc(var(--nav-h) + var(--tabbar-h) + 1.5rem);
+  }
+  /* Taller than the window: it scrolls with the page, so its foot is never
+     cut off. */
+  .tab-body--overview > .kpi-widget.is-tall { position: relative; top: auto; }
+}
+
+/* — 1 · the problem → what changes: two plates, side by side in one column
+   and one over the other in the main column — */
 .ps-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; align-items: stretch; }
 .ps-plate { --cut: var(--cut-12); display: flex; flex-direction: column; gap: 1rem; min-width: 0; padding: 2.5rem; }
 .ps-plate--problem { background: var(--bg-raised); }
@@ -1815,23 +1844,47 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .ps-plate--solution .ps-eyebrow { color: var(--surface-fact); }
 .ps-headline { font-weight: 400; font-size: 1.75rem; line-height: 1.2; letter-spacing: 0; color: var(--text); text-wrap: balance; }
 .ps-plate--solution .ps-headline { color: #ffffff; }
-.ps-copy { font-weight: 300; font-size: 1.125rem; line-height: 1.3; letter-spacing: .5px; color: var(--text-body); text-wrap: pretty; }
+.ps-copy { max-width: 46rem; font-weight: 300; font-size: 1.125rem; line-height: 1.3; letter-spacing: .5px; color: var(--text-body); text-wrap: pretty; }
 .ps-plate--solution .ps-copy { color: rgba(255, 255, 255, .82); }
 
-/* — 2 · what changes in your numbers: the KPI band — */
-/* Full-bleed without leaving the wrap: the band's ground is a border-image
-   painted 100vw past each side. That is ink overflow, so the page never
-   scrolls sideways, and the tiles keep the wrap's width. The tiles share row
-   tracks (subgrid), so every figure and every chart sits on one line across
-   the band whatever a title wraps to. */
-.kpi-band {
-  padding-block: 4rem;
-  border-image: linear-gradient(to top, #edf1f6, #fafaf8) fill 0 / 0 / 0 100vw;
+/* — 2 · what changes in your numbers: the widget — */
+/* A white card on a 1px #d1dae2 ring, 12px cut. The tiles share row tracks
+   (subgrid), so where they sit side by side (below 1240px) every figure and
+   every chart sits on one line whatever a title wraps to; beside the main
+   column they stack, a hairline between them. --kpi-today is the grey of a
+   Today bar and --kpi-span the lighter blue of a range or a gap: validated
+   against the blue After bar (normal-vision ΔE 17.3 and 21.1, CVD 13.6 and
+   19.7); both sit under 3:1 on white, so every bar carries its printed
+   value. */
+.kpi-widget {
+  --cut: var(--cut-12);
+  --kpi-today: #9aa8b4;
+  --kpi-span: #8ec3e6;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+  padding: 1.75rem 1.75rem 2rem;
+  background: #ffffff;
 }
-.kpi-band .ov-h2 { margin-bottom: 2.5rem; }
+.kpi-widget::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--border-panel);
+  clip-path: polygon(evenodd,
+    12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px),
+    calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px, 12px 0,
+    12.41px 1px, 1px 12.41px, 1px calc(100% - 12.41px), 12.41px calc(100% - 1px),
+    calc(100% - 12.41px) calc(100% - 1px), calc(100% - 1px) calc(100% - 12.41px),
+    calc(100% - 1px) 12.41px, calc(100% - 12.41px) 1px, 12.41px 1px);
+}
+.kpi-widget-title { font-weight: 400; font-size: 1.25rem; line-height: 1.2; letter-spacing: 0; color: var(--text); text-wrap: balance; }
 .kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 3rem; }
 .kpi-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.kpi { display: grid; grid-row: span 7; grid-template-rows: subgrid; row-gap: 0; align-content: start; min-width: 0; }
+.kpi { display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 0; align-content: start; min-width: 0; }
 .kpi + .kpi { border-left: 1px solid var(--border-panel); padding-left: 3rem; }
 @supports not (grid-template-rows: subgrid) {
   .kpi { display: flex; flex-direction: column; grid-row: auto; }
@@ -1867,10 +1920,11 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     calc(100% - 4.41px) calc(100% - 1px), calc(100% - 1px) calc(100% - 4.41px),
     calc(100% - 1px) 4.41px, calc(100% - 4.41px) 1px, 4.41px 1px);
 }
-/* The figure is 56px Light, never Azurio. A long one shrinks to its tile and
-   a short one never does: --fig-em is the figure's width in ems of its own
-   size (pages/product.js figureEm), so 100cqi / --fig-em is the largest size
-   that still fits on one line. */
+/* The figure is 56px Light (48 in the widget beside the column), never
+   Azurio. A long one shrinks to its tile and a short one never does:
+   --fig-em is the figure's width in ems of its own size (pages/product.js
+   figureEm), so 100cqi / --fig-em is the largest size that still fits on one
+   line. */
 .kpi-figure {
   container-type: inline-size;
   display: flex;
@@ -1883,128 +1937,145 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 .kpi-prefix { flex: none; font-weight: 300; font-size: 1.25rem; line-height: 1.05; color: var(--text-muted); }
 .kpi-value { font-weight: 300; font-size: min(3.5rem, calc(100cqi / var(--fig-em, 4))); line-height: 1.05; letter-spacing: -.01em; color: var(--text); }
-.kpi-viz { height: 2.5rem; margin-top: .75rem; }
-.kpi-viz--dumbbell { padding-inline: 7px; }   /* half a dot, so a dot at either end stays inside the tile */
-.kpi-svg { display: block; width: 100%; height: 2.5rem; overflow: visible; }
-.kv-track { fill: var(--border-panel); }
-.kv-before, .kv-fill, .kv-dot--before { fill: var(--border); }
-.kv-after, .kv-band, .kv-dot--after { fill: var(--action); }
-.kv-tick { stroke: var(--surface-dark-raised); stroke-width: 2; }
-.kv-link { stroke: var(--action-hover); stroke-width: 4; }
-.kv-chevron { fill: none; stroke: var(--action); stroke-width: 2; }
-.kpi-labels {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: .25rem 1rem;
-  margin-top: .5rem;
+
+/* The chart (product.js kpiChart): a row per state, its name in a column of
+   its own, then its bar from the one zero line and its value at the bar's
+   end, in the room kept for it; the value the figure names is bold. */
+.kpi-chart { display: grid; grid-template-columns: max-content minmax(0, 1fr); align-items: center; gap: .625rem .75rem; margin-top: 1rem; }
+.kpi-chart:empty { display: block; margin: 0; }
+.kpi-row { display: contents; }
+.kpi-row-name { font-size: .875rem; font-weight: 400; line-height: 1.3; letter-spacing: 0; color: var(--text-muted); }
+.kpi-row-plot { --room: 5.75rem; display: flex; align-items: center; min-width: 0; min-height: 1.25rem; }
+.kpi-bar {
+  flex: none;
+  width: calc((100% - var(--room)) * var(--v));
+  min-width: 3px;
+  height: .625rem;
+  margin-left: calc((100% - var(--room)) * var(--o, 0));
+  background: var(--kpi-today);
+}
+.kpi-bar.is-zero { width: 0; min-width: 0; }
+.kpi-bar--after { background: var(--action); }
+.kpi-bar--span { background: var(--kpi-span); }
+.kpi-bar--after + .kpi-bar--span { margin-left: 2px; }
+.kpi-row-value {
+  flex: none;
+  margin-left: .5rem;
   font-size: .875rem;
   font-weight: 400;
   line-height: 1.3;
   letter-spacing: 0;
+  white-space: nowrap;
   color: var(--text-body);
 }
-/* Each label sits by the mark it names (Q1): a compression's two labels start
-   at the bars' origin, and a range's are set under their own marks. */
-.kpi-viz--compression + .kpi-labels { justify-content: flex-start; column-gap: 1.5rem; }
-.kpi-labels--placed { position: relative; display: block; height: calc(.875rem * 1.3); }
-.kpi-labels--placed .kpi-label { position: absolute; top: 0; white-space: nowrap; }
-.kpi-label--center { transform: translateX(-50%); }
-.kpi-label--end { transform: translateX(-100%); }
-.kpi-label { display: inline-flex; align-items: center; gap: .375rem; min-width: 0; }
-.kpi-swatch { flex: none; width: 10px; height: 10px; }
-.kpi-swatch--before, .kpi-swatch--fill, .kpi-swatch--dot-before { background: var(--border); }
-.kpi-swatch--after, .kpi-swatch--band, .kpi-swatch--dot-after { background: var(--action); }
-.kpi-swatch--tick { width: 2px; background: var(--surface-dark-raised); }
-.kpi-swatch--dot-before, .kpi-swatch--dot-after { border-radius: 50%; }
-.kpi-line { margin-top: .75rem; font-weight: 300; font-size: 1rem; line-height: 1.3; color: var(--text-body); }
-.kpi-owner { margin-top: .75rem; font-size: .875rem; font-weight: 400; line-height: 1.3; letter-spacing: 0; color: var(--text-muted); }
+.kpi-row-value.is-figure { font-weight: 700; color: var(--text); }
+/* A share of a whole: the whole as a track, today's share filled. */
+.kpi-meter { flex: none; display: flex; width: calc(100% - var(--room)); height: .625rem; background: var(--bg-raised); }
+.kpi-meter .kpi-bar { width: calc(100% * var(--v)); min-width: 2px; margin: 0; }
+/* A count in ten: ten dots, today's filled. */
+.kpi-dots { flex: none; display: flex; gap: .375rem; }
+.kpi-dot { width: .625rem; height: .625rem; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--kpi-today); }
+.kpi-dot.is-on { background: var(--kpi-today); box-shadow: none; }
 
-/* — 3 · how it works: the step list beside one frame — */
-/* The budget (D-design §2.3): at 1440 the H2 (58) + 24 + a 872 × 545 frame is
-   627px; at 1280 the frame is 744 × 465 and the block 547px. The list is
-   shorter than the frame, so the frame sets the height. */
+.kpi-line { margin-top: .75rem; font-weight: 300; font-size: 1rem; line-height: 1.3; color: var(--text-body); }
+.kpi-owner { margin-top: .5rem; font-size: .875rem; font-weight: 400; line-height: 1.3; letter-spacing: 0; color: var(--text-muted); }
+
+/* Beside the main column the tiles stack and the figure steps down to 48px. */
+@media (min-width: 1240px) {
+  .kpi-widget .kpi-grid { grid-template-columns: minmax(0, 1fr); }
+  .kpi-widget .kpi + .kpi { margin-top: 1.5rem; padding: 1.5rem 0 0; border-left: 0; border-top: 1px solid var(--border-panel); }
+  .kpi-widget .kpi-value { font-size: min(3rem, calc(100cqi / var(--fig-em, 4))); }
+}
+
+/* — 3 · how it works: a row of step tabs, the open step's text, one frame — */
+/* The budget in the main column at 1440 × 900: the H2 (58) + 24 + the tab row
+   (about 72) + 16 + two lines of text (43) + 16 + the 800 × 500 frame is
+   about 730px, within the 791 under the header and the tab bar; at 1280 ×
+   800 the frame is 693 × 433 and the block about 663, within 691. */
 .hiw { display: flex; flex-direction: column; gap: 1.5rem; }
-.hiw-body { display: grid; grid-template-columns: 20rem minmax(0, 1fr); grid-template-areas: "list frame"; column-gap: 1.5rem; align-items: start; }
-.hiw-list { grid-area: list; display: flex; flex-direction: column; }
-.hiw-step { border-bottom: 1px solid var(--border-panel); transition: box-shadow var(--t-base) var(--ease); }
-.hiw-step.is-active { box-shadow: inset 2px 0 0 var(--action); }
-/* Two sizes and no more: 20 for the row, 16 for its text. */
-.hiw-head {
+.hiw-body { display: flex; flex-direction: column; gap: 1rem; }
+.hiw-tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  column-gap: 1.5rem;
+  box-shadow: inset 0 -1px 0 var(--border-hairline);
+}
+/* Two sizes and no more: 18 for a tab, 16 for the text. A title wraps under
+   itself, clear of its number; the selected step is ink on a 2px blue
+   underline, the site's tab language. */
+.hiw-tab {
   display: flex;
   align-items: baseline;
-  gap: .75rem;
-  width: 100%;
-  padding: 1rem 0 1rem 1.25rem;
+  gap: .5rem;
+  min-width: 0;
+  padding: .75rem 0 1rem;
   border: 0;
   background: none;
   text-align: left;
   cursor: pointer;
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.2;
+  font-size: 1.125rem;
+  line-height: 1.25;
   letter-spacing: 0;
   color: var(--text);
+  box-shadow: inset 0 -2px 0 transparent;
+  transition: box-shadow var(--t-base) var(--ease);
 }
-.hiw-head:focus-visible { outline-offset: -2px; }
-.hiw-step.is-active .hiw-head { padding-bottom: .5rem; cursor: default; }
-.hiw-num { flex: none; width: 1rem; color: var(--text-muted); transition: color var(--t-base) var(--ease); }
-.hiw-step.is-active .hiw-num { color: var(--action); }
+.hiw-tab.is-active { box-shadow: inset 0 -2px 0 var(--action); cursor: default; }
+.hiw-tab:focus-visible { outline: 2px solid var(--action); outline-offset: -2px; }
+.hiw-num { flex: none; color: var(--text-muted); transition: color var(--t-base) var(--ease); }
+.hiw-tab.is-active .hiw-num { color: var(--action); }
 .hiw-title { min-width: 0; transition: color var(--t-base) var(--ease); }
-.hiw-step:not(.is-active) .hiw-head:hover .hiw-title { color: var(--action); }
-.hiw-text { padding: 0 0 1rem 3rem; font-weight: 300; font-size: 1rem; line-height: 1.35; color: var(--text-muted); text-wrap: pretty; }
-.hiw-step:not(.is-active) .hiw-text { display: none; }
+.hiw-tab:not(.is-active):hover .hiw-title { color: var(--action); }
 
-/* The frames stack in one cell. The incoming one fades in on top over 200ms
-   while the outgoing one holds, then drops out: a crossfade with no dip. */
-.hiw-frame { grid-area: frame; display: grid; min-width: 0; }
-.hiw-shot { grid-area: 1 / 1; min-width: 0; margin: 0; opacity: 0; visibility: hidden; transition: opacity 0s linear .2s, visibility 0s linear .2s; }
-.hiw-shot.is-active { z-index: 1; opacity: 1; visibility: visible; transition: opacity .2s var(--ease); }
-/* The frame is the screenshot itself: 12px cut, 1px #bdcbd7 hairline. */
-.hiw-canvas { --cut: var(--cut-12); padding: 1px; background: var(--border); }
-.hiw-pic { --cut: 11.41px; position: relative; aspect-ratio: 16 / 10; background: var(--bg-raised); }
+/* Every step's text and frame share the panels' two row tracks, so the frame
+   sits at one height whatever a text wraps to and never moves. The open
+   step's text shows at once; its frame fades in on top over 200ms while the
+   last one holds, then that one drops out: a crossfade with no dip. */
+.hiw-panels { display: grid; grid-template-rows: auto auto; row-gap: 1rem; }
+.hiw-panel { grid-column: 1; grid-row: 1 / span 2; display: grid; grid-template-rows: subgrid; min-width: 0; visibility: hidden; }
+.hiw-panel.is-active { z-index: 1; visibility: visible; }
+.hiw-text { max-width: 46rem; font-weight: 300; font-size: 1rem; line-height: 1.35; color: var(--text-body); text-wrap: pretty; }
+.hiw-shot { min-width: 0; margin: 0; opacity: 0; visibility: hidden; transition: opacity 0s linear .2s, visibility 0s linear .2s; }
+.hiw-panel.is-active .hiw-shot { opacity: 1; visibility: visible; transition: opacity .2s var(--ease); }
+@supports not (grid-template-rows: subgrid) {
+  .hiw-panel { display: flex; flex-direction: column; gap: 1rem; }
+  .hiw-panel .hiw-text { min-height: calc(2em * 1.35); }
+}
+
+/* The frame is the screen and nothing drawn over it (Alex, 2026-09-29): a
+   12px cut on a 1px #bdcbd7 hairline, and a button that opens the screen full
+   size, its one mark shown on hover or focus only. */
+.hiw-open { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.hiw-open:focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
+.hiw-canvas { --cut: var(--cut-12); display: block; padding: 1px; background: var(--border); }
+.hiw-pic { --cut: 11.41px; display: block; aspect-ratio: 16 / 10; background: var(--bg-raised); }
 .hiw-full { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* The step's region, outlined 2px blue with a 4px cut (a ring). */
-.hiw-region {
+.hiw-open-mark {
+  --cut: var(--cut-4);
   position: absolute;
-  pointer-events: none;
-  background: var(--action);
-  clip-path: polygon(evenodd,
-    4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px),
-    calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px, 4px 0,
-    4.83px 2px, 2px 4.83px, 2px calc(100% - 4.83px), 4.83px calc(100% - 2px),
-    calc(100% - 4.83px) calc(100% - 2px), calc(100% - 2px) calc(100% - 4.83px),
-    calc(100% - 2px) 4.83px, calc(100% - 4.83px) 2px, 4.83px 2px);
+  top: .75rem;
+  right: .75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: #ffffff;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease);
 }
-/* The zoom of that region, in from its anchor corner by 24px at 1440: 2.75%
-   of the frame's width and 4.4% of its height, so the gap scales with the
-   frame and the inset never meets the ring at 1280 (Q1). The zoom image
-   itself is 46% of the frame wide (401px at 1440, the width the images are
-   made for), or narrower where that would take it past half the frame's
-   height. The frame is this picture plus its 1px hairline and 16:10, so 46%
-   of it is 46% + .92px here and half its height 31.25% + 1px; --za is the
-   zoom's own aspect. The 2px blue outline and the 8px cut sit around it. */
-.hiw-zoom {
-  --cut: var(--cut-8);
-  position: absolute;
-  z-index: 1;
-  width: calc(min(46% + .92px, (31.25% + 1px) * var(--za, 1.6)) + 4px);
-  padding: 2px;
-  background: var(--action);
-}
-.hiw-zoom img { --cut: 6.83px; display: block; width: 100%; height: auto; aspect-ratio: var(--za, 1.6); object-fit: cover; background: #ffffff; }
-.hiw-zoom--tl { top: 4.4%; left: 2.75%; }
-.hiw-zoom--tr { top: 4.4%; right: 2.75%; }
-.hiw-zoom--bl { bottom: 4.4%; left: 2.75%; }
-.hiw-zoom--br { bottom: 4.4%; right: 2.75%; }
+.hiw-open-mark .icon { width: 1.125rem; height: 1.125rem; }
+.hiw-open:hover .hiw-open-mark, .hiw-open:focus-visible .hiw-open-mark { opacity: 1; }
+/* Full size: the screen at the modal's width, never taller than the window. */
+.modal-panel--shot { width: min(90rem, 94vw); }
+.modal-shot { display: block; width: 100%; height: auto; max-height: calc(92vh - 8rem); object-fit: contain; background: #ffffff; }
 
-/* The phone's four cards; hidden until 767px. */
+/* The phone's cards; hidden until 767px. */
 .hiw-cards { display: none; }
-
-@media (min-width: 1400px) {
-  .hiw-body { grid-template-columns: 21.5rem minmax(0, 1fr); column-gap: 2rem; }
-}
 
 @media (max-width: 1099px) {
   .ps-plate { padding: 2rem; }
@@ -2017,46 +2088,40 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
     border-left: 0;
     border-top: 1px solid var(--border-panel);
   }
-  /* The frame at the wrap's full width, then the same list under it. */
-  .hiw-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "frame" "list"; row-gap: 1.5rem; }
 }
 
 @media (max-width: 767px) {
   .ps-pair { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .ps-plate { padding: 1.5rem; }
   .tab-body--overview { gap: 2.5rem; }
-  .kpi-band { padding-block: 2.5rem; }
-  .kpi-band .ov-h2 { margin-bottom: 1.5rem; }
+  .kpi-widget { padding: 1.5rem 1.25rem 1.75rem; }
   .kpi-grid { grid-template-columns: minmax(0, 1fr); }
   .kpi + .kpi, .kpi-grid--3 .kpi:nth-child(3) {
     grid-column: auto;
-    margin-top: 2rem;
-    padding: 2rem 0 0;
+    margin-top: 1.75rem;
+    padding: 1.75rem 0 0;
     border-left: 0;
     border-top: 1px solid var(--border-panel);
   }
   .kpi-value { font-size: min(2.75rem, calc(100cqi / var(--fig-em, 4))); }
-  /* No frame on a phone: each step is a card ending on its zoom, which holds
-     the part of the screen that reads at this width. */
+  /* The steps as cards, each ending on its whole screen. */
   .hiw-body { display: none; }
   .hiw-cards { display: flex; flex-direction: column; gap: 2rem; }
   .hiw-card { display: flex; flex-direction: column; gap: .5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-panel); }
   .hiw-card-head { display: flex; align-items: baseline; gap: .75rem; font-weight: 400; font-size: 1.25rem; line-height: 1.2; letter-spacing: 0; color: var(--text); }
   .hiw-card-head .hiw-num { color: var(--action); }
-  .hiw-card .hiw-text { padding: 0; }
-  .hiw-card-shot { --cut: var(--cut-8); margin: .5rem 0 0; padding: 1px; background: var(--border); }
-  .hiw-card-shot img { --cut: 7.41px; display: block; width: 100%; height: auto; background: #ffffff; }
+  .hiw-card-shot { margin: .5rem 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hiw-shot, .hiw-shot.is-active, .hiw-step, .hiw-num, .hiw-title { transition: none; }
+  .hiw-shot, .hiw-panel.is-active .hiw-shot, .hiw-tab, .hiw-num, .hiw-title, .hiw-open-mark { transition: none; }
 }
 
 @media print {
-  .kpi-band { border-image: none; }
+  .tab-body--overview > .kpi-widget { position: static; }
   .ps-plate--solution { background: #ffffff !important; }
   .ps-plate--solution :is(.ps-eyebrow, .ps-headline, .ps-copy) { color: #111111 !important; }
-  .hiw-cards { display: none !important; }
+  .hiw-cards, .hiw-open-mark { display: none !important; }
 }
 /* ===== end Round 20 · Overview ===== */
 
