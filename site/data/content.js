@@ -3147,9 +3147,9 @@ window.SITE_CONTENT = {
     },
     "metrics": [
       {
-        "value": "about £460",
+        "value": "about $250",
         "label": "Saving per needless replacement avoided",
-        "qualifier": "A windscreen replacement about £500 against a £40 repair, UK industry averages",
+        "qualifier": "A windscreen replacement about $350 against a $99 repair, US industry averages",
         "icon": "roi"
       },
       {
@@ -3165,7 +3165,7 @@ window.SITE_CONTENT = {
         "icon": "gauge"
       }
     ],
-    "metricsNote": "Modeled figures: the saving per call and the recalibration cost are published industry averages (vehicle glazing, UK 2013, about $250 in the US; collision repair estimates), and the rate follows industry assumptions. Each is applied to your own volumes, and the proof of value measures each one on your own cases.",
+    "metricsNote": "Modeled figures: the saving per call and the recalibration cost are published industry averages (vehicle glazing in the US; collision repair estimates), and the rate follows industry assumptions. Each is applied to your own volumes, and the proof of value measures each one on your own cases.",
     "roi": {
       "icon": "roi",
       "text": "The saving lands on both sides: the insurer or lessor keeps the price gap every time a repair would have met the rules, and the network makes one visit with the right part instead of two."
@@ -3291,7 +3291,7 @@ window.SITE_CONTENT = {
       { "title": "Needless replacements", "body": "A full replacement is paid for when a repair would have met the rules." },
       { "title": "Repeat visits", "body": "A repair that should have been a replacement fails and comes back." },
       { "title": "Follow-on work found late", "body": "Work a replacement triggers, such as camera recalibration, surfaces after booking and adds days." },
-      { "title": "How the measures are defined", "body": "Saving per needless replacement avoided: the replacement not made, less the repair made instead, for each call corrected from replace to repair where the repair meets the governing limit; UK industry averages put a windscreen replacement at about £500 and a repair at £40, US figures at about $350 and $99. Avoidable recalibrations: camera recalibrations booked only because a replacement was chosen where a repair would have met the limit; about 42 in 100 windscreen replacements also need one, over half of calibrations surface only after the first estimate, and each costs $300–400 and about four more days, on industry figures from collision repair estimates. Wrong calls per 1,000 cases: cases booked as a repair that needed a replacement, or as a replacement a repair would have met, over the same window before and after; the model takes 30 needless replacements and 15 failed repairs per 1,000 today, each reduced by a fifth." },
+      { "title": "How the measures are defined", "body": "Saving per needless replacement avoided: the replacement not made, less the repair made instead, for each call corrected from replace to repair where the repair meets the governing limit; US industry averages put a windscreen replacement at about $350 and a crack repair at $99. Avoidable recalibrations: camera recalibrations booked only because a replacement was chosen where a repair would have met the limit; about 42 in 100 windscreen replacements also need one, over half of calibrations surface only after the first estimate, and each costs $300–400 and about four more days, on industry figures from collision repair estimates. Wrong calls per 1,000 cases: cases booked as a repair that needed a replacement, or as a replacement a repair would have met, over the same window before and after; the model takes 30 needless replacements and 15 failed repairs per 1,000 today, each reduced by a fifth." },
       { "title": "Delivered after the Jumpstart", "body": "Further asset classes, markets and contracts; rules authored by your own team; integrity and tamper checks on submitted media; write-back into your booking, dispatch or claims system; priced scope with the write-off test against a local ceiling." },
       { "title": "On the roadmap", "body": "Follow-on work such as camera recalibration flagged at the moment of decision · rule changes replayed on past cases before release · the post-repair residual predicted where rules require it · corrections fed back into training." }
     ],
