@@ -6928,6 +6928,23 @@ _A fix between rounds, made in its own session while the product-pages session (
   - Measured in Chromium only. The fix rests on `white-space: nowrap`, which every engine honours.
 - **Published** in the 2026-09-29 publish, version 1790676289-ee3a (§42, Publish), with `assets/app.js` and `assets/site.css` in its map; the live files carry `keepCompounds()` and `.compound`. The code is autosync `896f80b` and `caa1f84`.
 
+## 44. The Internal review panel removed, 2026-09-29
+
+_A change between rounds, made in its own session while the group-name fix (§45), the facet tagging (§46) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: it writes no copy, and it carries out the removal START-HERE §8 had prescribed since 2026-09-17. Touched: `site/index.html` and `site/index-legacy.html` (two script tags each), `site/data/review.js` and `site/assets/review.js` (deleted), a comment in `site/data/content-case.js`, `tools/check-grammar.js`, `site.manifest.json` (`publish.fullTree`), README, SS26-THEME §7, and START-HERE §1, §2, §4, §6, §8, §9 and §10. No content key, switch or tab moved._
+
+- **The ask (Alex):** *"remove "Internal" widget from the oracle minisite."* The widget is the *Internal · N to confirm* pill at the bottom right of every page and the checklist drawer it opened (§25), which anyone with the preview link could see.
+- **What went:** the list (`site/data/review.js`, 15 items in five groups), the panel (`site/assets/review.js`, which injected its own styles and kept the ticks in `localStorage`) and the two `<script>` tags that loaded them. The tags went from the archive theme too, so that its page does not request two missing files. `enabled: false` would have hidden the pill and kept both files shipping, and Alex asked for removal.
+- **Nothing lost:** START-HERE §2 was already the brief's record, and the ticks were progress marks in one browser. The list's two *Before launch* items, the site name's trademark check and backing for *Frontier AI*, are in START-HERE §9. Two of its notes had gone stale in round 12 (§32): *Forms open the visitor's mail app for now* and *Nothing sends the kit automatically yet*.
+- **Checker:** the block that validated the list (keys, lengths, ids, customer names) and warned on every run is replaced by a guard. It fails if either file exists under `site/` again, or if either index file loads a `review.js`. Each half was run against a copy with the panel put back, and failed.
+- **Checks:** `node --check` on the changed JS; `check-grammar` OK at 9 products, the panel's warning gone; on the saved files, the home page loads twelve scripts and no `review.js`, and `#/`, `#/products`, a product page and its Contacts tab, `#/sellers` and the archive theme render no `.review-*` element, define no `SITE_REVIEW`, request no `review.js` and log nothing to the console; the deny-list grep returns nothing.
+- **No contract bump:** the plugin never wrote the panel's files, so its listings pass the new guard as they are. Round 20 stays with the product-pages session.
+- **Not published.** The shared link, version 1790676289-ee3a, still shows the pill until the next publish maps `data/review.js` and `assets/review.js` to `null` (START-HERE §6, `site.manifest.json` › `publish.fullTree`).
+- **Seen and left as is:**
+  - `docs/HANDOFF-erp-qa-demo.md` records a past QA run whose "one standing warning is the internal review panel". It is a dated record in a walkthrough's own handoff.
+  - Oracle-Packaging-Skills' `deny-list.example.json` still says the checker matches the deny-list against `review.js` as well as `content.js`. That is one comment line in the plugin repo, where plugin changes are made.
+  - Browsers that ticked items keep the `oracle-ai-solutions:review-ticks` key in `localStorage`; nothing reads it now.
+- The code is autosync `f888b89` and `ab824cc`.
+
 ## 45. The six group names set on two lines, 2026-09-29
 
 _A fix between rounds, made in the session that built round 18's home page, while the Internal-panel removal (§44), the facet tagging (§46) and the product-pages redesign (round 20, on a branch) were at work. Opus alone, with no Fable pass: it renames nothing and writes no copy; the call is where the break falls and how the size fits. Touched: `site/pages/overview.js` (`groupTiles()`), `site/assets/site.css` (`.gtile-body`, `.gtile-name`, the `.gtiles` one-column step), `tools/check-grammar.js`, VISUAL-GRAMMAR §9, START-HERE §4 and, in AO-Personal-OS, `slide-design.md` rule 2. No content key, switch, tab or publish rule moved._
