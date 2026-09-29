@@ -389,6 +389,7 @@
     }).join("");
     var used = MOVES.map(function (m) { return m.line; });
     $("#setup-lines").innerHTML = D.lines.map(function (l) { return '<li class="' + (used.indexOf(l.id) !== -1 && S.ran ? "is-used" : "") + '">' + esc(l.name) + "</li>"; }).join("");
+    $("#lines-helper").textContent = S.ran ? "Every move names one; blue: named this morning" : "Every move names one of these";
     $("#setup-rules").innerHTML = D.rules.map(function (r) { return "<li><span>" + esc(r) + "</span></li>"; }).join("");
     $("#setup-tiers").innerHTML = D.tiers.map(function (t) { return "<li><span>" + esc(t.what) + '</span><span class="t t--' + t.tier + '">' + t.tier + "</span></li>"; }).join("");
   }
