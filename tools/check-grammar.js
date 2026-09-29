@@ -117,7 +117,7 @@ var NON_CATALOG_FACETS = ["oracle-ai-fusion"];
 /* The three products with an interactive walkthrough under site/demo/. The
    Demo badge and the Artifacts filter read the walkthrough link (links.json
    `interactiveDemo` since round 12), not the video flag. */
-var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-system-erp-qa", "fleet-route-optimization"];
+var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-system-erp-qa", "fleet-route-optimization", "repair-or-replace-decisions"];
 /* Round 4, T1: only these two carry the muted "in preparation" status line;
    every other product's state is told by its availability badges. */
 var UNPACKAGED = ["case-evidence-collection", "plan-vs-actual-investigation"];
@@ -229,8 +229,8 @@ function checkHeroImage(where, image) {
    (the Services page, which had one, left in round 18). */
 
 /* ---- products ---- */
-if (!arr(C.products) || C.products.length !== 8) {
-  fail("products", "expected exactly 8 products, got " + (arr(C.products) ? C.products.length : "none"));
+if (!arr(C.products) || C.products.length !== 9) {
+  fail("products", "expected exactly 9 products, got " + (arr(C.products) ? C.products.length : "none"));
 }
 
 (C.products || []).forEach(function (p) {

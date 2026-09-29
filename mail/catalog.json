@@ -48,6 +48,12 @@
       "name": "Fleet route optimization",
       "oneLiner": "Lowers the cost of every field visit: each van’s day planned around booked slots, engineer skills and electric-van charging.",
       "group": "Forecasting & optimization"
+    },
+    {
+      "slug": "repair-or-replace-decisions",
+      "name": "Repair-or-replace decisions",
+      "oneLiner": "A replacement paid for only when the rules require one, and the right job booked first time: repair-or-replace calls on damaged vehicles, containers and equipment, measured from photos.",
+      "group": "Video & image intelligence"
     }
   ],
   "roles": [
