@@ -253,6 +253,7 @@
    has no room for icon · title · body side by side. */
 .awhy-reasons { display: flex; flex-direction: column; min-width: 0; }
 .awhy-reasons .pillars.pillars--list { flex: 1; display: grid; grid-auto-rows: 1fr; }
+.awhy-reasons .pillars.pillars--list .pillar { align-content: center; }
 .awhy-reasons .pillars.pillars--list .pillar { grid-template-columns: 3rem minmax(0, 1fr); column-gap: 1.25rem; padding: 1.5rem 0; }
 .awhy-reasons .pillars.pillars--list .pillar-mark { width: 3rem; height: 3rem; }
 .awhy-reasons .pillars.pillars--list .pillar-mark .icon { width: 3rem; height: 3rem; stroke-width: 1.5; }
