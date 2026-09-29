@@ -6,12 +6,13 @@
   /* The alternative home page, at #/alt (Alex, 2026-09-29), kept beside the
      live one until he picks. It is the live home page with three changes:
 
-     S1, the hero, is one dark screen. A photograph carries the H1 and the two
-     actions, after softserveinc.com/en-us/services, with one line and the
-     spark in the dark gap between the copy and the oval of light. The
-     photograph dissolves into a solid ground of its own darkest tone, and the
-     promise and the three figures sit there. It stops short of the viewport,
-     so S2's heading shows under it.
+     S1, the hero, is one dark photograph carrying the H1, its promise and
+     the two actions, after softserveinc.com/en-us/services, with one line and
+     the spark in the dark gap between the copy and the oval of light. It
+     dissolves into its own darkest tone at its foot. The three figures sit
+     under it on white, in the live page's own proof strip (Alex: "same or
+     similar to how they are placed on the current main"), so the strip
+     shows under the hero on a laptop.
 
      S2 keeps the live page's two ways in, under the umbrella heading, as
      dark tiles after softserveinc.com's Solutions tile: the picture across
@@ -43,7 +44,7 @@
     return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' + GLYPHS[name] + "</svg>";
   }
 
-  /* ————— S1: the claim, its promise and the ask on a photograph, the proof under it ————— */
+  /* ————— S1: the claim, its promise and the ask on a photograph ————— */
 
   function hero(C) {
     var UI = window.UI;
@@ -63,16 +64,6 @@
       ? UI.button({ label: primary.label, href: primary.route, kind: "dark", iconAfter: "arrow", className: "ahero-primary" })
       : "") +
       (secondary ? UI.linkArrow({ label: secondary.label, href: secondary.route, className: "ahero-link" }) : "");
-
-    var stats = (block.stats || []).map(function (stat) {
-      var prefix = stat.prefix
-        ? '<span class="ahero-stat-prefix">' + UI.esc(stat.prefix) + "</span>"
-        : "";
-      return '<li class="ahero-stat">' +
-        '<p class="ahero-stat-value nums">' + prefix + "<span>" + UI.esc(stat.value) + "</span></p>" +
-        '<p class="ahero-stat-label">' + UI.esc(stat.label) + "</p>" +
-        "</li>";
-    }).join("");
 
     var spark = window.brandAsset("ssSparkWhite", "assets/img/softserve-star-white.svg");
 
@@ -112,9 +103,6 @@
           "</div>" +
         "</div>" +
       "</div>" +
-      (stats
-        ? '<div class="ahero-band"><div class="wrap ahero-band-inner"><ul class="ahero-stats">' + stats + "</ul></div></div>"
-        : "") +
       "</section>";
   }
 

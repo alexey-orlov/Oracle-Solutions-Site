@@ -780,7 +780,8 @@ if (!arr(C.products) || C.products.length !== 9) {
     var dlWords = [].concat(dl.scope || [], (dl.rows || []).map(function (row) {
       return [row.area].concat((row.cells || []).map(function (cell) { return (cell || {}).text || ""; })).join(" ");
     })).join(" ");
-    var money = dlWords.match(/[€$£]|\b\d+(\.\d+)?\s?[KkMm]\b|\bpric(e|ed|es|ing)\b|\bfee\b|\bcost of the (proof|package)\b/);
+    /* A package price, not a feature that prices something (Repair-or-replace scales to "priced scope", its repair estimate). */
+    var money = dlWords.match(/[€$£]|\b\d+(\.\d+)?\s?[KkMm]\b|\bfixed[- ]price\b|\bpricing\b|\bfee\b|\bprice[sd]? (at|from)\b/i);
     if (money) fail(w, 'delivery names a price ("' + money[0] + '") — the tab states durations, never prices (Alex, round 22)');
     var clock = dlWords.match(/\b\d+\s?(–|-|to)?\s?\d*\s?(weeks?|months?|days?)\b/i);
     if (clock) fail(w, 'delivery states a duration in a phrase ("' + clock[0] + '") — durations live in the Duration row only');

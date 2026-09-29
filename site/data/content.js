@@ -456,9 +456,11 @@ window.SITE_CONTENT = {
      PROVENANCE §47. */
   overviewAlt: {
     hero: {
-      /* Alex, 2026-09-29: three sentences, one line each. */
+      /* Alex, 2026-09-29: three lines, one each at every width. The first
+         runs on into the second (Enterprise AI agents built on Oracle), so
+         it takes no full stop (Alex, the same evening). */
       headline: {
-        lead: "Enterprise AI agents.",
+        lead: "Enterprise AI agents",
         accent: "Built on Oracle.",
         proof: "ROI proven in weeks."
       },
