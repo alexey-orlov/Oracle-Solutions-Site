@@ -73,6 +73,14 @@
       "interactiveDemo": "demo/fleet-route-optimization/index.html",
       "interactiveDemoArtifact": "",
       "video": ""
+    },
+    "repair-or-replace-decisions": {
+      "onePager": "",
+      "salesDeck": "",
+      "featureList": "",
+      "interactiveDemo": "demo/repair-or-replace-decisions/index.html",
+      "interactiveDemoArtifact": "",
+      "video": ""
     }
   }
 }
