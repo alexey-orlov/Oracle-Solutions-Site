@@ -284,7 +284,9 @@
       "</div>" +
       '<div class="wrap catalog-hero-inner">' +
         '<h1 class="h1 catalog-hero-title">' + UI.esc(page.title) + "</h1>" +
-        '<p class="lead catalog-hero-lead">' + UI.esc(page.intro) + "</p>" +
+        /* "human-AI" and "know-how" stay whole: a line that ends on
+           "human-" reads as a typo. */
+        '<p class="lead catalog-hero-lead">' + UI.keepCompounds(page.intro) + "</p>" +
       "</div>" +
       "</section>";
   }

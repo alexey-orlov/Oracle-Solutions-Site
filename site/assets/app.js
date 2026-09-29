@@ -833,6 +833,7 @@
     linkArrow: linkArrow,
     divider: divider,
     headline: headline,
+    keepCompounds: keepCompounds,
     sectionHead: sectionHead,
     empty: emptyState,
     card: card,
