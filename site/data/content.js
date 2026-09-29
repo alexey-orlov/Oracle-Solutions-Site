@@ -392,8 +392,7 @@ window.SITE_CONTENT = {
       eyebrow: "Case studies",
       title: "Results on customers’ own data",
       body: "What each engagement moves, in numbers the business already tracks.",
-      ndaLine: "Customers stay unnamed under NDA. Reference calls on request.",
-      cta: { label: "Ask for a reference call", route: "#/#request-a-demo" }
+      ndaLine: "Customers stay unnamed under NDA. Reference calls on request."
     },
 
     caseStudies: [

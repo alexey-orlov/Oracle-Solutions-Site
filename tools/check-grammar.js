@@ -1875,7 +1875,7 @@ if (!arr(C.products) || C.products.length !== 9) {
 
   /* --- S5 · the case-study rail (the cards themselves are checked in C2) --- */
   reqStr("overview.caseStudiesIntro", o.caseStudiesIntro, ["eyebrow", "title", "body", "ndaLine"]);
-  reqCta("overview.caseStudiesIntro.cta", (o.caseStudiesIntro || {}).cta);
+  if ((o.caseStudiesIntro || {}).cta !== undefined) fail("overview.caseStudiesIntro.cta", "the rail has no link since 2026-09-29 (PROVENANCE §50)");
 
   /* --- S6 · about SoftServe, one of the page's two dark bands --- */
   var ab = o.about;
@@ -2387,7 +2387,6 @@ if (/request a demo/i.test(raw)) {
     ["site.navCta.route", (site.navCta || {}).route],
     ["site.primaryCta.route", (site.primaryCta || {}).route],
     ["shared.engageLink.route", (shared.engageLink || {}).route],
-    ["overview.caseStudiesIntro.cta.route", (((C.overview || {}).caseStudiesIntro || {}).cta || {}).route],
     ["overview.bespoke.cta.route", (((C.overview || {}).bespoke || {}).cta || {}).route],
     ["productsPage.askTile.cta.route", (((C.productsPage || {}).askTile || {}).cta || {}).route],
     ["salesKit.page.routeLink.route", (((C.salesKit || {}).page || {}).routeLink || {}).route]

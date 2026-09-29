@@ -395,9 +395,9 @@
 
   /* ————— S5: the engagements behind the products ————— */
 
-  /* The rail says what the four cards are; the cards carry the figures. How the
-     figures were arrived at is a question the reader asks after the cards, and
-     the rail's link answers it on the page that owns the method. Measured,
+  /* The rail says what the four cards are; the cards carry the figures. The
+     rail ends on the NDA line: its link ("Ask for a reference call") left on
+     2026-09-29 (PROVENANCE §50). Measured,
      modeled and in preparation are three states of the same card, so no
      engagement has to be left out to keep the grid honest, and no customer is
      named on either side. */
@@ -411,7 +411,6 @@
         '<div class="cases-rail">' +
           head({ eyebrow: intro.eyebrow, title: intro.title, lead: intro.body }) +
           '<p class="small cases-nda">' + UI.esc(intro.ndaLine) + "</p>" +
-          '<p class="cases-link">' + UI.linkArrow({ label: intro.cta.label, href: intro.cta.route }) + "</p>" +
         "</div>" +
         '<div class="case-grid cases-grid">' + cards + "</div>" +
       "</div>" +
