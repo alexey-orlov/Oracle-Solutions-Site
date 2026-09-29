@@ -234,19 +234,24 @@
 
 /* ——— Why SoftServe on Oracle: the diagram and the three reasons ——————— */
 
+/* The diagram and the reasons stand one height (Alex): the row takes the
+   taller of the two, the diagram's SoftServe box grows into any height the
+   reasons add, and the reasons share any the diagram adds row by row, so the
+   reasons' first and last hairlines meet the diagram's top and foot. */
 .awhy-grid {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: clamp(2rem, 4vw, 4rem);
-  align-items: start;
+  align-items: stretch;
 }
 
-.awhy-map { min-width: 0; }
+.awhy-map { display: flex; flex-direction: column; min-width: 0; }
 
 /* The reasons keep their rows between hairlines and their feature icons, in
    the stacked form their own layout takes below 1024 px: a half-width column
    has no room for icon · title · body side by side. */
-.awhy-reasons { min-width: 0; }
+.awhy-reasons { display: flex; flex-direction: column; min-width: 0; }
+.awhy-reasons .pillars.pillars--list { flex: 1; display: grid; grid-auto-rows: 1fr; }
 .awhy-reasons .pillars.pillars--list .pillar { grid-template-columns: 3rem minmax(0, 1fr); column-gap: 1.25rem; padding: 1.5rem 0; }
 .awhy-reasons .pillars.pillars--list .pillar-mark { width: 3rem; height: 3rem; }
 .awhy-reasons .pillars.pillars--list .pillar-mark .icon { width: 3rem; height: 3rem; stroke-width: 1.5; }
