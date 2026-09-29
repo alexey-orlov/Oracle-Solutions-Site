@@ -2670,8 +2670,8 @@ if (/request a demo/i.test(raw)) {
     fail("site/pages/product.js", "renders a pending video frame — the frame exists only when links.json holds the recording (round 18)");
   }
   var media = productSrc.slice(productSrc.indexOf("function heroMedia("), productSrc.indexOf("function demoHref("));
-  if (!/if \(!videoLink\) return "";/.test(media)) {
-    fail("site/pages/product.js heroMedia()", "must return nothing when links.json has no video — no placeholder frame (round 18)");
+  if (!/if \(!videoLink && !walkthrough\) return "";/.test(media)) {
+    fail("site/pages/product.js heroMedia()", "must return nothing when links.json holds neither a video nor a walkthrough — no placeholder frame (round 18, §55)");
   }
   var appSrc18 = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
   var badges = appSrc18.slice(appSrc18.indexOf("function availabilityBadges("), appSrc18.indexOf("function badgeRow("));
