@@ -638,7 +638,7 @@ No stray empty panel anywhere: the one row is the whole section. The **same swit
 
 ---
 
-## 9. The home page — eight screens
+## 9. The home page — nine screens
 
 This file is about the product pages; the home page differs from them **by composition, not by tokens**. One section each, content-sized (no `100vh`, no `min-height`), roughly 80–90 vh at 1440×900, with a hairline rule between consecutive screens and the shared `.home-head` (eyebrow · H2 · optional lead · optional right-aligned link) at the top of each.
 

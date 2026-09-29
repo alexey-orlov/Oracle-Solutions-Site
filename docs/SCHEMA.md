@@ -95,7 +95,7 @@ Flat map of reusable strings: `kpiTile`, `kpiTileTargets`, `packageTable`, `lake
 
 ## `overview`
 
-The home page. **Eight screens, one object each** (S4b, the Bespoke band, joined in round 18) — `VISUAL-GRAMMAR.md` §9 owns what each screen looks like; this table owns what it reads. Round 5 replaced the single-column brochure page (hero photograph → trust strip → products intro → case studies → services teaser) with the model below.
+The home page. **Nine screens** (round 18 added S4b, the Bespoke band, and gave S4's Why list a screen of its own, S4c, read from `delivery.why`) — `VISUAL-GRAMMAR.md` §9 owns what each screen looks like; this table owns what it reads. Round 5 replaced the single-column brochure page (hero photograph → trust strip → products intro → case studies → services teaser) with the model below.
 
 **Removed, and a build failure if any of them returns:** `trustStrip`, `productsIntro`, `servicesTeaser`, `hero.image`, `hero.subhead`, `hero.headline.rest` (round 5), and — round 9, with the screens they belonged to — `hero.stack.patternsLabel`, `hero.stack.softserve`, `hero.stack.platformOrder`, `catalog.patterns` and `products[].shortLine`, and — round 18 — `about.partners`, `about.partnerLine`, `delivery.ctas` and `contact.sub`.
 

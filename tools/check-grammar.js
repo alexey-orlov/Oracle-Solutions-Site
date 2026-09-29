@@ -1617,11 +1617,13 @@ if (!arr(C.products) || C.products.length !== 9) {
     });
     if (bs.cta !== undefined) reqCta("overview.bespoke.cta", bs.cta);
     /* The band is dark, so it is one of the page's two dark screens with S6
-       About; the case studies stand between them, and the renderer order
-       holds it: delivery, bespoke, case studies. */
+       About, and white screens stand between them. It sits directly under the
+       Packaged services track (Alex, round 18: a reader who scrolls to
+       Packaged services must see the band's top, so nothing may come between
+       the two), then the Why list, then the case studies. */
     var order = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8").match(/return hero\(C\)[^;]+;/);
-    if (!order || !/delivery\(C\) \+ bespoke\(C\) \+\s*caseStudies\(C\)/.test(order[0])) {
-      fail("site/pages/overview.js", "overview() must render delivery, then bespoke, then the case studies — Bespoke sits under Packaged services, and a white screen stands between the two dark bands");
+    if (!order || !/delivery\(C\) \+ bespoke\(C\) \+\s*whyScreen\(C\) \+ caseStudies\(C\)/.test(order[0])) {
+      fail("site/pages/overview.js", "overview() must render delivery, bespoke, whyScreen, then the case studies — the Bespoke band sits directly under the Packaged services track, and white screens stand between the two dark bands");
     }
   }
 
@@ -1703,19 +1705,32 @@ if (!arr(C.products) || C.products.length !== 9) {
   });
 
   /* Round 16 (Alex): "Why SoftServe on Oracle" sits below the timeline, not
-     beside it. Round 18: the list closes the screen — the button that followed
-     it led to the Services page, and the services' one ask is now the Bespoke
-     band's, directly below. */
+     beside it. Round 18: S4 is the head and the track and nothing else — its
+     button led to the Services page, and the Why list moved to its own screen
+     after the Bespoke band (Alex: a reader who scrolls to Packaged services
+     must see the Bespoke band's top, and the list pushed it ~340 px below the
+     fold at 1440 x 820). The band's copy is its head, so it does not reveal:
+     a peeking band would hold its eyebrow and heading back until they cleared
+     the observer's bottom margin. */
   var overviewSrc = fs.readFileSync(path.join(root, "site/pages/overview.js"), "utf8");
-  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function bespoke("));
+  var deliverySrc = overviewSrc.slice(overviewSrc.indexOf("function delivery("), overviewSrc.indexOf("function whyScreen("));
   var deliveryHtml = deliverySrc.slice(deliverySrc.lastIndexOf("return '<section"));
-  var atTrack = deliveryHtml.indexOf('class="ladder3');
-  var atWhy = deliveryHtml.indexOf('class="deliver-why"');
-  if (!(atTrack > -1 && atWhy > atTrack)) {
-    fail("site/pages/overview.js", "delivery() must render the track, then the Why SoftServe list — the list sits below the timeline");
+  if (deliveryHtml.indexOf('class="ladder3') === -1) {
+    fail("site/pages/overview.js", "delivery() renders no track — S4 is the five-stage track");
+  }
+  if (/deliver-why|pillars/.test(deliveryHtml)) {
+    fail("site/pages/overview.js", "delivery() renders the Why list — it is its own screen after the Bespoke band, so the band shows under the track (round 18)");
   }
   if (/deliver-cta|UI\.button\(/.test(deliveryHtml)) {
-    fail("site/pages/overview.js", "delivery() renders a button — the screen ends on the Why list; the services' ask is the Bespoke band's (round 18)");
+    fail("site/pages/overview.js", "delivery() renders a button — S4 ends on its track; the services' ask is the Bespoke band's (round 18)");
+  }
+  var whySrc = overviewSrc.slice(overviewSrc.indexOf("function whyScreen("), overviewSrc.indexOf("function bespoke("));
+  if (!/function whyScreen\(/.test(overviewSrc) || whySrc.indexOf("pillars pillars--list") === -1) {
+    fail("site/pages/overview.js", "whyScreen() must render the Why list (round 18: its own screen after the Bespoke band)");
+  }
+  var bespokeCopy = overviewSrc.slice(overviewSrc.indexOf("function bespoke("));
+  if (/class="bespoke-copy reveal/.test(bespokeCopy)) {
+    fail("site/pages/overview.js bespoke()", "the band's copy reveals — it is the band's head and shows at once under the Packaged services track (round 18)");
   }
   if ((o.delivery || {}).ctas !== undefined) {
     fail("overview.delivery.ctas", "retired in round 18 — its button led to the Services page; the services' ask closes the Bespoke band");
@@ -2696,4 +2711,4 @@ if (failures.length) {
   failures.forEach(function (f) { console.error("  ✗ " + f); });
   process.exit(1);
 }
-console.log("check-grammar: OK — " + C.products.length + " products, every grammar slot filled, and the home page's eight screens.");
+console.log("check-grammar: OK — " + C.products.length + " products, every grammar slot filled, and the home page's nine screens.");

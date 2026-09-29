@@ -84,7 +84,7 @@ oracle-solutions-site/
     │   ├── review.js         TEMPORARY: window.SITE_REVIEW — the list the Internal panel shows
     │   └── diagrams.js       window.SITE_DIAGRAMS — the per-product architecture diagrams, drawn as inline SVG
     ├── pages/
-    │   ├── overview.js       window.PAGES.overview   →  #/   (the home page, eight screens)
+    │   ├── overview.js       window.PAGES.overview   →  #/   (the home page, nine screens)
     │   ├── products.js       window.PAGES.products   →  #/products
     │   ├── product.js        window.PAGES.product    →  #/products/<slug>[/<tab>]
     │   └── sellers.js        window.PAGES.sellers    →  #/sellers
