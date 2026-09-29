@@ -70,7 +70,7 @@
 .ahero-title {
   margin-top: 1.5rem;
   max-width: 11em;
-  font-size: clamp(2.375rem, min(1.2rem + 4.2vw, 8.2vh), 6rem);
+  font-size: clamp(2.25rem, min(1.2rem + 4.2vw, 8.2vh), 6rem);
   line-height: 1;
   letter-spacing: .01em;
   color: #ffffff;
@@ -240,13 +240,24 @@
   }
 }
 
+/* On a phone three figures side by side cannot hold "from 30 days" on one
+   line, so each figure takes a row, its label beside it. The spark moves
+   further right, so its line clears the H1's last line ends. At 36 px the
+   H1 holds each short sentence on one line down to 320 px. */
 @media (max-width: 540px) {
   .ahero-title { margin-top: 1.25rem; }
-  .ahero-stats { gap: .75rem; }
-  .ahero-stat { padding-left: .75rem; }
-  .ahero-stat-value { font-size: 1.5rem; }
-  .ahero-stat-label { font-size: .8125rem; }
+  .ahero-cross { left: 88%; }
   .ahero-spark { width: 2rem; }
+  .ahero-stats { grid-template-columns: minmax(0, 1fr); gap: .875rem; }
+  .ahero-stat {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: .75rem;
+    padding-left: .75rem;
+  }
+  .ahero-stat-value { font-size: 1.5rem; }
+  .ahero-stat-label { margin-top: 0; font-size: .8125rem; }
 }
 
 /* ——— S2: the whole offer ——————————————————————————————————————————— */
