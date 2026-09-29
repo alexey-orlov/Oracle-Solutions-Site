@@ -64,7 +64,7 @@
 .ahero-eyebrow { color: rgba(255, 255, 255, .76); }
 
 /* The brand's hero face and weight, as large as four lines allow and still
-   leave the next screen in view: 76 px at 1440 x 900, 90 at 1920 x 1080,
+   leave the next screen in view: 74 px at 1440 x 900, 89 at 1920 x 1080,
    less on a short window. The em cap breaks the first sentence after
    "agents", never after "and"; each sentence opens its own line. */
 .ahero-title {
