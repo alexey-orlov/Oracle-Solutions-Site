@@ -342,7 +342,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
   <main class="main">
     <header class="topbar">
       <div class="crumbs" id="crumbs"></div>
-      <div class="topbar-right"><span class="topbar-note">Data to 31 Aug 2026 · 9 packages</span><span class="chip chip--synth">Synthetic data</span></div>
+      <div class="topbar-right"><span class="topbar-note">Data to 31 Aug 2026 · 9 work packages</span><span class="chip chip--synth">Synthetic data</span></div>
     </header>
     <section class="screen" id="screen"></section>
   </main>
@@ -808,7 +808,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
     dataTo: "31 Aug 2026",
     update: "Monthly update 18",
     planOfRecord: "Current approved baseline (revision 4)",
-    materiality: "3% of the package, or €50k",
+    materiality: "3% of the package budget",
     finishedLabel: "6 finished, 3 running"
   };
 
@@ -840,7 +840,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       file: "CQB_contracts-reports.zip", version: "12 subcontracts (418 scanned pages) + 48 progress reports",
       count: 60, unit: "documents", tone: "teal",
       checks: [
-        { ok: true, text: "Text read from 417 of 418 scanned pages" },
+        { ok: true, text: "Text read from 417 scanned contract pages" },
         { ok: false, text: "3 documents unreadable, sent back for a rescan" }
       ] },
     { id: "chg", name: "Changes and claims", system: "Oracle Primavera Unifier", alt: "or a spreadsheet register",
@@ -1197,19 +1197,19 @@ body.tour-on .band--compact.tour-target { position: sticky; }
   var STAGES = [
     { t: "Read the four exports, keeping each record's file and version", r: "5,234 records" },
     { t: "Match every record to a work package", r: "96% matched · 196 gaps" },
-    { t: "Measure cost and schedule against the plan of record", r: "8 of 9 over plan" },
+    { t: "Measure cost and schedule against the plan of record", r: "8 work packages over plan" },
     { t: "Search contracts, changes and reports for causes", r: "11 candidate causes" },
     { t: "Rank the causes by money at stake", r: "" }
   ];
   var FEED = [
     { at: 0, kind: "read", text: "Read 418 scanned contract pages; text found on 417, one page sent back for a rescan." },
     { at: 1, kind: "gap", text: "171 cost lines carry no package code: listed as gaps with their reason, not guessed." },
-    { at: 1, kind: "read", text: "Matched 1,218 of 1,240 activities and 3,699 of 3,870 cost lines to the nine packages." },
+    { at: 1, kind: "read", text: "Matched 1,218 activities and 3,699 cost lines to their work packages; the rest are listed as gaps." },
     { at: 2, kind: "read", text: "WP-14 Façade: 38% over on cost and nine weeks late, on the critical path, first visible in the cost report in Apr 2025." },
     { at: 3, kind: "find", text: "WP-14 Façade: the schedule shows the slip, but the reason sits in the subcontract: change order CO-22, clause 14.3, extends completion by five weeks." },
-    { at: 3, kind: "find", text: "WP-11 MEP first fix: subcontract terminated on 12 Feb 2025 and re-awarded; the termination notice explains 14 days and €210k." },
+    { at: 3, kind: "find", text: "WP-11 MEP first fix: subcontract terminated on 12 Feb 2025 and re-awarded; the termination notice explains " + D.cause("C6").days + " days and " + k(D.cause("C6").costK) + "." },
     { at: 3, kind: "find", text: "WP-07 Frame: drawings for levels 5–8 came three weeks late (RFI-208), and the concrete rate rose 6% from March." },
-    { at: 3, kind: "gap", text: "WP-16 Lifts: €40k over with no record that explains it, marked unexplained rather than invented." },
+    { at: 3, kind: "gap", text: "WP-16 Lifts: " + k(D.variance(D.pkg("WP-16"))) + " over with no record that explains it, marked unexplained rather than invented." },
     { at: 4, kind: "rank", text: "" }
   ];
   function runHTML() {
@@ -1281,7 +1281,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
           return '<tr class="clickable" data-pkg="' + p.id + '"><td><span class="pk-name"><span class="code">' + p.id + "</span>" + esc(p.name) + '</span></td><td class="num">' + D.causesOf(p.id).length + '</td><td class="num">' + mins + ' min</td><td class="num">' + D.today.handHoursPerPackage + " h</td></tr>";
         }).join("") + "</tbody></table></div></div>";
     }
-    var title = S.drill === "days" ? "Where the " + K.explainedDays + " explained days come from" : "Where the " + m(K.explainedK) + " traced so far comes from";
+    var title = S.drill === "days" ? "Where the " + K.explainedDays + " explained days come from" : "Where the traced " + m(K.explainedK) + " comes from";
     var unexplained = S.drill === "days" ? (K.lateDays - K.explainedDays) + " days still unexplained" : k(K.overrunK - K.explainedK) + " still unexplained, across " +
       D.packages.filter(function (p) { var v = Math.max(0, D.variance(p)); return v - D.explained(p, ap).costK >= 1; }).length + " packages";
     return '<div class="card card--flush" id="drill" style="margin-bottom:16px"><div class="card-head"><span class="card-h">' + title + '</span><span class="card-sub">Each cause with the rule that found it and its effect</span></div>' +
@@ -1370,7 +1370,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
     var head = '<div class="doc-head"><div><div class="strong small">' + esc(c.where) + '</div><div class="small muted">' + esc(s.system) + " · " + esc(s.name.toLowerCase()) + '</div></div><span class="chip chip--outline">' + (c.doc === "contract" || c.doc === "ncr" ? "Text read from the scan" : "As exported") + "</span></div>";
     var body;
     if (c.doc === "contract" || c.doc === "ncr" || c.id === "C2") {
-      body = '<div class="doc-page"><div class="small muted" style="font-family:var(--font);margin-bottom:10px">Subcontract · WP-14 façade · page 31 of 64</div>' +
+      body = '<div class="doc-page"><div class="small muted" style="font-family:var(--font);margin-bottom:10px">Subcontract · WP-14 façade · page 31</div>' +
         CONTRACT.map(function (x) {
           if (x.h) return "<h4>" + esc(x.h) + "</h4>";
           var hl = x.key === c.id;
@@ -1430,7 +1430,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
     });
     var keys = Object.keys(groups).sort(function (a, b) { return groups[b].costK - groups[a].costK; });
     var overN = D.packages.filter(function (p) { return D.variance(p) > 0; }).length;
-    if (!keys.length) h += '<div class="card"><p class="text-2">No cause confirmed yet. Confirmed causes appear here as lessons.</p></div>';
+    if (!keys.length) h += '<div class="card"><p class="text-2">Confirmed causes appear here as lessons.</p></div>';
     h += '<div class="grid g2">' + keys.map(function (t) {
       var g = groups[t], np = Object.keys(g.pk).length, txt = THEME_TEXT[t];
       return '<div class="card lesson"><div class="row" style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>' + esc(txt.t) + "</h3>" +
@@ -1444,7 +1444,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
     h += '<div class="card mt" id="compare"><div class="row" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div class="card-h">Own crews or a subcontract, same trade: fit-out</div><span class="chip chip--outline">A case, not a pattern</span></div>' +
       '<div class="compare mt"><div><div class="small muted">Own crews · levels 1–4</div><b class="' + (D.variance(a) > 0 ? "red" : "green") + '">' + signPct(a) + '</b><div class="small text-2">' + k(a.plan) + " → " + k(a.actual) + ", to date</div></div>" +
       '<div><div class="small muted">Subcontract · levels 5–8</div><b class="red">' + signPct(b) + '</b><div class="small text-2">' + k(b.plan) + " → " + k(b.actual) + ", to date</div></div></div>" +
-      '<p class="small text-2 mt">Same scope and the same plan rate. The subcontract\'s output ran 30% below plan (' + esc(D.cause("C10").where) + "). Sample: two packages, both still running; the comparison grows into a pattern as more projects are compared.</p></div>";
+      '<p class="small text-2 mt">Same scope and the same plan rate. The subcontract\'s output ran 30% below plan (' + esc(D.cause("C10").where) + "). Sample: two work packages, both still running; with more projects compared, a case becomes a pattern.</p></div>";
     var ap = D.causes.filter(function (c) { return S.decisions[c.id] === "confirmed"; });
     h += '<div class="card card--flush mt" id="export"><div class="card-head"><span class="card-h">Evidence pack' + (S.exported ? " · exported" : "") + '</span><span class="card-sub">Every finding with its package, record, passage, confidence and review status</span></div>' +
       '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Package</th><th>Cause</th><th>Record</th><th>Confidence</th><th>Review</th><th class=num>Gaps in package</th></tr></thead><tbody>' +
@@ -1583,7 +1583,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
     { id: "check", major: 1, side: "bottom", title: "Four systems, one project",
       body: "Schedule, cost, contract and change exports arrive as they are, each record keeping its file and version. Check them before anything is compared.",
       target: function () { return $("#btn-check"); }, auto: function () { doCheck(); window.DEMO.tour.after("check"); } },
-    { id: "run", major: 1, side: "bottom", waits: true, title: "Run it on all nine packages",
+    { id: "run", major: 1, side: "bottom", waits: true, title: "Run it across the project",
       body: "Three sources carry gaps; they're listed with their reasons, never guessed. Now line plan up against actual and search the records for causes.",
       target: function () { return $("#btn-run"); }, auto: function () { doRun(); window.DEMO.tour.after("run"); } },
     { id: "band", major: 2, side: "bottom", passive: true, scroll: "start", title: "The overrun, traced to its causes",
@@ -1591,7 +1591,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       target: function () { return $("#band"); }, anchor: function () { return $(".kpi-tile[data-kpi=days]"); },
       auto: function () { window.DEMO.tour.next(); } },
     { id: "drill", major: 3, side: "bottom", title: "Where the margin went",
-      body: "Open the money: every euro traced so far sits behind a cause, with the rule that found it and its effect.",
+      body: "Open the money: every traced euro sits behind a cause, with the rule that found it and its effect.",
       target: function () { return $(".kpi-tile[data-kpi=cost]"); }, auto: function () { openDrill("cost"); window.DEMO.tour.after("drill"); } },
     { id: "cause", major: 3, side: "top", title: "The slip sits in a contract",
       body: "The schedule shows the façade nine weeks late. The reason is a change order on page 31 of the subcontract. Open it.",
@@ -1624,7 +1624,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       body: D.project.short + "'s overrun now traces to causes your experts confirmed. Open any package and overrule any cause. Take the evidence pack into your next bid.",
       doors: [
         { id: "frame", label: "Open the frame package", hint: "own crews, a late drawing and a price rise", go: function () { openPackage("WP-07"); } },
-        { id: "compare", label: "Compare own crews with a subcontract", hint: "fit-out, same trade, two packages", go: function () { go("lessons"); var c = $("#compare"); if (c) c.scrollIntoView({ block: "center" }); } },
+        { id: "compare", label: "Compare own crews with a subcontract", hint: "fit-out, same trade, same plan rate", go: function () { go("lessons"); var c = $("#compare"); if (c) c.scrollIntoView({ block: "center" }); } },
         { id: "rule", label: "Rule on the held cause", hint: "two reviewers disagree on one cause", go: function () { go("reviews"); } }
       ],
       replayLabel: "Replay the walkthrough", exploreLabel: "Keep exploring",
@@ -1660,7 +1660,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
   }
 
   /* The gate's copy is computed from the data, like every other number. */
-  $("#gate-body").textContent = D.project.short + " is running " + Math.round(overPlanPct() * 100) + "% over plan, and nobody can yet say which packages or decisions cost that margin. Trace every overrun to its cause and record, have your experts confirm it, and carry it into the next bid.";
+  $("#gate-body").textContent = D.project.short + " is running " + Math.round(overPlanPct() * 100) + "% over plan, and nobody can say which packages or decisions cost that margin. Trace every overrun to its cause and record, have your experts confirm it, and carry it into the next bid.";
 
   window.DEMO = { state: S, tour: tour, kpis: function () { return D.kpis(applied()); }, flags: function () { return D.flagsFor(applied(), S.decisions); }, prime: prime };
   render();
