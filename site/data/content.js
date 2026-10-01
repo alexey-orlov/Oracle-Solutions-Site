@@ -710,12 +710,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "Sales teams hear about a customer's big move too late",
-            text: "A plant opening, a merger, a new market: the sales manager hears when the work is already scoped by somebody else, and nobody knows which other customers the news reaches."
+            headline: "The sales manager hears the news after the deal is gone",
+            text: "A merger or a plant opening: the sales manager hears once a rival has scoped the work, and nobody works out which other customers it touches. That revenue is lost."
           },
           solution: {
-            headline: "The next move for each account, in hours, with the evidence",
-            text: "One story becomes a scored, cited brief for each account it reaches, suppliers and competitors included: what to sell and what to protect. A seller approves what enters the CRM."
+            headline: "Win the work the news opens, keep the renewal",
+            text: "Each account a news story reaches, suppliers and competitors too, gets a scored, cited brief on what to sell and protect. Sellers call before rivals and win the deal."
           }
         },
         metrics: [
@@ -817,22 +817,22 @@ window.SITE_CONTENT = {
             industry: "logistics",
             label: "Logistics & supply chain",
             image: "assets/img/industries/logistics.jpg",
-            problem: "A shipper announces a plant expansion or a new market, and the account team hears about it once the logistics has already been scoped by somebody else. Disruptions move the same way: a strike, a port closure or a supplier fire hits many accounts at once, and working out which ones is manual.",
-            solution: "One signal is resolved to every in-scope shipper account it touches, and the “so what” is reasoned per account — warehousing, forwarding, an inbound or a mitigation play. Each candidate is mapped to a service line you actually sell, scored, and cited back to the filing or article it came from."
+            problem: "A shipper announces a plant expansion or a new market, and the account team hears once the logistics has been scoped by a rival. Disruptions move the same way: a strike, a port closure or a supplier fire hits many accounts at once, and the ones nobody calls move that volume to another provider.",
+            solution: "One signal is matched to every shipper account it touches, with the move for each: warehousing, forwarding, an inbound lane or a reroute. Each is tied to a service you sell, scored and cited to its filing or article, so the team quotes before a rival does and disrupted volume stays with you."
           },
           {
             industry: "financial-services",
             label: "Financial services",
             image: "assets/img/industries/financial-services.jpg",
-            problem: "Coverage teams read the same few feeds as everyone else. An event at a counterparty or a portfolio company usually matters for several related names as well, and nobody has time to trace the holdings before the opening closes.",
-            solution: "The engine reasons what an issuer or counterparty event means for each in-scope relationship, then follows the cross-holding ripples to the related names — up to two levels, descriptively. Every opportunity is scored for magnitude and confidence and cited, and a reviewer approves before anything reaches the CRM."
+            problem: "Coverage teams read the same feeds as everyone else. An event at a counterparty or a portfolio company also matters for several related names, and nobody traces the holdings in time, so another bank wins the deal and the credit risk goes unseen.",
+            solution: "An issuer or counterparty event is worked out for each relationship it touches and traced through the cross-holdings to related names. Each item is scored for size and confidence, cited and approved by a banker, so the relationship team reaches the deal first and credit sees the exposure in time."
           },
           {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "A signal at a supplier or an OEM customer reshapes supply chains, production sites and trade lanes at the same time. Deciding which accounts are affected, and how, is slow enough that the reallocation conversation happens after the decision has been taken.",
-            solution: "Each in-scope account is reasoned against the signal — supply-chain exposure, reallocation opportunities, second-order effects on sites and lanes — with every item tied to a real service line. The magnitude and confidence scores let the team work the top of the list first."
+            problem: "A signal at a supplier or an OEM customer reshapes supply chains, production sites and trade lanes at once. Working out which accounts are affected is slow enough that the reallocation is decided before the sales team calls, and that volume goes to a competitor.",
+            solution: "Every account on the list is checked against the signal: supply exposure, reallocation openings, knock-on effects on sites and lanes, each tied to a service line you sell. Size and confidence scores rank them, so the team bids before a competitor and the volume stays yours."
           }
         ],
         scope: {
@@ -968,12 +968,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "Most of a complaint's clock goes on finding the file",
-            text: "An investigator rebuilds each case by hand from tickets, emails, billing records and call notes while the statutory deadline runs, and two people build two different versions."
+            headline: "The clock runs out while the evidence is pulled together",
+            text: "An investigator rebuilds each complaint from tickets, emails and billing records while the statutory deadline runs, and two people build two versions. Answers go out late and open to challenge."
           },
           solution: {
-            headline: "A finished, cited file on day one",
-            text: "Each complaint opens with a summary, a dated timeline and a drafted response, every sentence linked to the record it came from. The investigator amends, approves or flags."
+            headline: "Decide from day one, answer on time",
+            text: "A complaint opens with a summary, dated timeline and drafted response, every sentence linked to its record. The investigator amends and approves within the deadline, and the file holds up."
           }
         },
         metrics: [
@@ -1073,29 +1073,29 @@ window.SITE_CONTENT = {
             industry: "financial-services",
             label: "Financial services",
             image: "assets/img/industries/financial-services.jpg",
-            problem: "A flagged transaction or an alert has to be investigated across parties, accounts and linked cases before anything can be filed. The analyst pulls the same records out of the same systems every time, and the filing is drafted from scratch under a deadline.",
-            solution: "The evidence is assembled across those systems into one file with a chronological timeline, and the regulatory response sections arrive drafted for an analyst to amend and approve. Every statement is bound to the record it came from, so a second reviewer can retrace the finding independently."
+            problem: "A flagged transaction or an alert has to be investigated across parties, accounts and linked cases before anything can be filed. The analyst pulls the same records out of the same systems every time and drafts the filing from scratch, so deadlines are missed and the alert backlog grows.",
+            solution: "The evidence is assembled across those systems into one file with a chronological timeline, and the regulatory response sections arrive drafted for an analyst to amend and approve. Every statement is bound to its record, so the filing goes out within the deadline and holds up when the regulator retraces it."
           },
           {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "A customer complaint sends a quality manager back through batch records, supplier history and operational logs kept in systems that were never designed to be read together. The root-cause report varies with whoever writes it.",
-            solution: "Batch records, supplier history and the correspondence around the complaint are assembled into one cited file with a draft root-cause narrative. The quality manager amends and approves; the system assembles and drafts, it does not decide the outcome."
+            problem: "A customer complaint sends a quality manager back through batch records, supplier history and operational logs in systems that were never linked. The root-cause report varies by author and arrives late, while the same defect keeps shipping.",
+            solution: "Batch records, supplier history and the correspondence around the complaint are assembled into one cited file with a draft root-cause narrative. The quality manager amends and approves, so the fix reaches the line before the next batch ships."
           },
           {
             industry: "professional-services",
             label: "Professional services",
             image: "assets/img/industries/professional-services.jpg",
-            problem: "A grievance or employee-relations intake means rebuilding a chronology out of tickets, mail threads and policy references. It is slow, it varies by handler, and the evidence trail is hard to reconstruct later.",
-            solution: "The chronology is built automatically from those sources with timestamps and clickable references, and the response sections are drafted for amendment. The audit log records every review decision, so the handling itself stands up to scrutiny."
+            problem: "An employee-relations handler rebuilds each grievance's chronology from tickets, mail threads and policy references, and no two do it alike. If a claim follows, the firm cannot show its handling and pays to settle.",
+            solution: "The chronology is built automatically from those sources with timestamps and clickable references, and the response sections are drafted for amendment. The audit log records every review decision, so the firm can show its handling and defend the claim."
           },
           {
             industry: "public-sector",
             label: "Public sector",
             image: "assets/img/industries/public-sector.jpg",
-            problem: "Complaint handling runs to a statutory clock, and the evidence sits across case management, correspondence and operational records. Most of that clock goes on gathering the file before anyone can judge it.",
-            solution: "Each case arrives as a summary, a timeline and draft response sections, every claim cited to its source sentence or field. Investigators spend the time on judgement, and the full audit log shows how the file was built."
+            problem: "A complaints officer works to a statutory clock, with the evidence spread across case management, correspondence and operational records. Gathering the file takes most of that clock, so answers go out late.",
+            solution: "Each case arrives as a summary, a timeline and draft response sections, every claim cited to its source sentence. Officers spend the clock on judgement, and the answer goes out within the deadline with its audit log."
           }
         ],
         scope: {
@@ -1488,12 +1488,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "One contract's rates take a specialist three to five days",
-            text: "Operations staff read 60 to 100 pages of supplier terms and type the rate cards into the cost system, line by line. Throughput hangs on the few people who can."
+            headline: "Every new supplier waits for a specialist to type its rates",
+            text: "Operations staff read 60 to 100 pages of supplier terms and key rate cards into the cost system. Few people can, so contracts queue and new partners go live late."
           },
           solution: {
-            headline: "Review the data, not type it: minutes per contract",
-            text: "The values arrive already extracted, each with its page in the agreement beside it. The reviewer checks the flagged ones, approves, and exports to the cost system."
+            headline: "Review instead of typing, and new partners go live sooner",
+            text: "Values arrive extracted, each with its page in the agreement beside it. The reviewer checks the flagged ones and approves; rates reach the cost system before the first invoice arrives."
           }
         },
         metrics: [
@@ -1598,28 +1598,28 @@ window.SITE_CONTENT = {
             label: "Travel & transport",
             image: "assets/img/industries/travel-transport.jpg",
             problem: "Ground-handling agreements run to 60–100 pages, and their rate cards are keyed into the cost system by hand — 3–5 days per contract, about a month to bring a new station online. A rate keyed wrong surfaces late, at invoice matching, and ground handling carries 7–12% of an airline's direct operating cost.",
-            solution: "Rate-card pricing is extracted from the agreement with a confidence score and a page citation on every value, and a reviewer validates it beside the source PDF before export. The same pipeline pulls rates, terms and return conditions from aircraft lease and MRO agreements."
+            solution: "Rate-card pricing is extracted from the agreement with a confidence score and a page citation on every value, and a reviewer validates it beside the source PDF before export; aircraft lease and MRO agreements take the same path. A new station opens on time and invoices match."
           },
           {
             industry: "professional-services",
             label: "Professional services",
             image: "assets/img/industries/professional-services.jpg",
-            problem: "Key terms, obligations, pricing and renewal dates sit inside master agreements and supplier contracts that nobody has time to re-read. Obligations are tracked in a spreadsheet built once, by hand, and drifting ever since.",
-            solution: "The agreed fields are extracted per contract type against business rules, each value cited to the clause it came from, and reviewed before they reach the system that acts on them. Property leases run through the same path for rent schedules, break clauses and escalation terms."
+            problem: "Terms, obligations, pricing and renewal dates sit inside master agreements and supplier contracts nobody has time to re-read. Obligations live in a spreadsheet built once by hand and never updated, so contracts renew on stale terms.",
+            solution: "The agreed fields are extracted per contract type against business rules, each value cited to the clause it came from, and reviewed before they reach the system that acts on them; property leases run the same path for rent schedules, break clauses and escalation terms. Renewals surface in time to renegotiate."
           },
           {
             industry: "insurance",
             label: "Insurance",
             image: "assets/img/industries/insurance.jpg",
-            problem: "Coverage, limits, deductibles and endorsements are re-keyed from policy schedules, and loss details and reserve amounts from claim packs and loss-adjuster reports. Throughput depends on scarce specialists, so backlogs build.",
-            solution: "Policy and claim documents are classified and routed page by page, the target fields extracted against your rules with ranges and tiers expanded into normalized rows. Validators flag the exceptions, and the reviewer validates only those against the cited page."
+            problem: "Coverage, limits, deductibles and endorsements are re-keyed from policy schedules, and loss details and reserve amounts from claim packs and loss-adjuster reports. Throughput depends on scarce specialists, so claims settle late.",
+            solution: "Policy and claim documents are classified and routed page by page, the target fields extracted against your rules with ranges and tiers expanded into normalized rows. Validators flag the exceptions, and the reviewer validates only those against the cited page, so claims settle sooner."
           },
           {
             industry: "financial-services",
             label: "Financial services",
             image: "assets/img/industries/financial-services.jpg",
-            problem: "Financial line items and disclosures are pulled out of annual reports by hand, and covenants, interest terms and repayment schedules out of loan and credit agreements. The work is slow, and an error is found downstream rather than at the source.",
-            solution: "Each document type gets its own field schema and validator set, and every extracted value arrives with a confidence score and a page reference. The human validates by design — unattended extraction is explicitly out of scope."
+            problem: "Financial line items and disclosures are pulled out of annual reports by hand, and covenants, interest terms and repayment schedules out of loan and credit agreements. The work is slow, and an error is found downstream, after a credit decision has been made on it.",
+            solution: "Each document type gets its own field schema and validator set, and every extracted value arrives with a confidence score and a page reference. The human validates by design, so errors are caught before a decision rests on them."
           }
         ],
         scope: {
@@ -1770,12 +1770,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "Two days to plan one region's month, by hand",
-            text: "Dispatchers assign technicians to zones and jobs, juggling skills, absences and travel. Workloads come out uneven and customers wait longer for a visit."
+            headline: "Plans built by hand waste paid technician hours",
+            text: "Dispatchers assign technicians to zones and jobs, juggling skills, absences and travel. Uneven workloads leave customers waiting while the same headcount completes fewer jobs a day."
           },
           solution: {
-            headline: "A solved month to review in half an hour",
-            text: "The month arrives solved against every rule at once. Dispatchers see what changed and why on the map, adjust, approve, and send it to the field-service system."
+            headline: "Review the month in one sitting, fit in more visits a day",
+            text: "The month arrives solved against every rule at once. Dispatchers see what changed and why on the map, adjust and approve, and today's technicians get through more visits a day."
           }
         },
         metrics: [
@@ -1877,29 +1877,29 @@ window.SITE_CONTENT = {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "In-home repair of manufactured goods is planned by hand: work zones and technician allocations, region by region, juggling skills, spare parts, travel and absences. Urgent call-outs and no-shows mean re-planning the day.",
-            solution: "The solver plans the whole region against skills, parts, travel and existing bookings at once, and the dispatcher reviews and approves the result. Rules that differ by market — working time, holidays, service commitments — are configuration, so setting up a new region is a configuration job."
+            problem: "In-home repair of manufactured goods is planned by hand: work zones and technician allocations, region by region, juggling skills, spare parts, travel and absences. Urgent call-outs and no-shows mean re-planning the day, and visits are lost.",
+            solution: "The solver plans the whole region against skills, parts, travel and existing bookings at once; the dispatcher reviews and approves, and the same technicians complete more visits a day. Market rules — working time, holidays, service commitments — are configuration, so a new region launches without a planning project."
           },
           {
             industry: "utilities",
             label: "Utilities",
             image: "assets/img/industries/utilities.jpg",
-            problem: "Water, gas and electric crews are scheduled across service territories against SLAs, crew certifications and outage spikes. Planned and emergency work compete for the same capacity, and the balance is struck manually by a handful of senior dispatchers.",
-            solution: "Territories, certifications and SLA commitments become weighted constraints, and the plan is re-solved as the day's demand changes. Planned and emergency work are balanced against the objectives you weight, and no allocation reaches a crew until a dispatcher approves it."
+            problem: "Water, gas and electric crews are scheduled across service territories against SLAs, crew certifications and outage spikes. Planned and emergency work compete for the same capacity, and the balance a few senior dispatchers strike by hand decides which SLAs are missed.",
+            solution: "Territories, certifications and SLA commitments become weighted constraints, and the plan is re-solved as the day's demand changes. Planned and emergency work are balanced against the objectives you weight, with a dispatcher approving each allocation, so fewer SLAs are missed."
           },
           {
             industry: "telecom",
             label: "Telecom & cable",
             image: "assets/img/industries/telecom.jpg",
-            problem: "Install-and-repair technicians have to be routed to tight appointment windows across regions, matched to line skills. Missed windows cost customer satisfaction directly, and launching a new service zone depends on scarce planning expertise.",
-            solution: "Appointment windows and line skills are modeled as commitment and skill rules, and the solver routes against them while minimizing travel. Launching a new zone comes down to a configuration change."
+            problem: "Install-and-repair technicians have to be routed to tight appointment windows across regions, matched to line skills. Missed windows cost customer satisfaction directly, and a new service zone waits on scarce planners, so its revenue waits too.",
+            solution: "Appointment windows and line skills are written as commitment and skill rules, and the solver routes against them while minimizing travel. A new zone launches on a configuration change, so its revenue starts sooner."
           },
           {
             industry: "healthcare",
             label: "Healthcare",
             image: "assets/img/industries/healthcare.jpg",
-            problem: "Medical-device and equipment service engineers are allocated to contracted assets by skill, SLA and location. Uptime on high-value machines is contractual, and the allocation is worked out by hand against a rising number of installed assets.",
-            solution: "Contracted SLAs, engineer certifications and asset locations become the constraint set the solver works against, with uptime-critical commitments weighted as hard rules. The KPI readout compares the current and the optimized plan on identical definitions."
+            problem: "Medical-device and equipment service engineers are allocated to contracted assets by skill, SLA and location. Uptime on high-value machines is contractual, and an allocation worked out by hand falls behind a growing installed base, so contract penalties follow.",
+            solution: "Contracted SLAs, engineer certifications and asset locations become the constraint set the solver works against, with uptime-critical commitments weighted as hard rules. The KPI readout compares the current and optimized plans, showing uptime kept and penalties avoided."
           }
         ],
         scope: {
@@ -2043,12 +2043,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "The answer sits in three systems and a BI queue",
-            text: "Orders sit in the ERP, customers in the CRM, deliveries with carriers. An operations lead needs the three joined for one decision, files a report request, and decides without it."
+            headline: "The operations lead has to act before the numbers arrive",
+            text: "Orders sit in the ERP, customers in the CRM, deliveries with carriers. An operations lead needs all three, files a report request, and decides blind, risking the best accounts."
           },
           solution: {
             headline: "Ask once, get one ranked answer in minutes",
-            text: "The question is settled over every system it spans, with the money at risk per account and the action to take. Report requests stop."
+            text: "The question is settled over every system it spans: money at risk per customer, and the action to take. The lead acts in time and keeps the best accounts."
           }
         },
         metrics: [
@@ -2150,22 +2150,22 @@ window.SITE_CONTENT = {
             industry: "cross-industry",
             label: "Every industry",
             image: "assets/img/industries/cross-industry.jpg",
-            problem: "The same two pains turn up in every sector, whatever the stack. Every answer is a project — the BI backlog runs in weeks, so the business answers itself in a spreadsheet, and the same KPI comes back as two different numbers from two dashboards. Every acquisition and every new application adds another island nobody has integrated.",
-            solution: "The join is done once, in the data, and every question reads from it: one governed layer under the applications, filled from Oracle applications by pipelines that already exist, with a plain-English answer surface on top. What shapes the work is the system landscape, so the same shape fits wherever the applications sit."
+            problem: "The same two pains turn up in every sector, whatever the stack. Every answer is a project: the BI backlog runs in weeks, so the business answers itself in a spreadsheet, and the same KPI comes back as two different numbers from two dashboards. Every acquisition and new application adds another island, and decisions are made on numbers nobody trusts.",
+            solution: "The join is done once, in the data, and every question reads from it: one governed layer under the applications, filled by feeds that already exist, with plain-English questions on top. What shapes the work is the system landscape, so the same shape fits wherever the applications sit. Answers arrive before the decision, one number per KPI."
           },
           {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "Supplier spend sits in the ERP, supplier performance in a second system and the contracts in a third. A procurement lead asking which suppliers are driving the overrun files a report request and waits, and the answer lands after the negotiation.",
-            solution: "Purchase-order, invoice-status and supplier-spend questions are answered in plain language over ERP data joined with the systems around it. The standing report requests stop, and the certified views the answers run on are the same ones the dashboards use."
+            problem: "Supplier spend sits in the ERP, supplier performance in a second system and contracts in a third. A procurement lead asking which suppliers are driving the overrun files a report request, and the answer lands after the negotiation, with the overrun locked into the new contract.",
+            solution: "The procurement lead asks purchase-order, invoice-status and supplier-spend questions in plain language over ERP data joined with the systems around it, on the certified views the dashboards use. The overrun comes out in the negotiation, before the contract is signed."
           },
           {
             industry: "logistics",
             label: "Logistics & supply chain",
             image: "assets/img/industries/logistics.jpg",
-            problem: "The ERP knows orders and invoices, the CRM knows customers, and carriers, e-commerce and spreadsheets know the rest. A question as ordinary as which delayed orders are hurting the best accounts crosses two systems or more, lands in a queue, and comes back already stale.",
-            solution: "Those sources are joined into one governed layer, and an operations lead slices SLA, backlog and throughput metrics without waiting on a data engineer. Sensitive fields stay masked by role, enforced by the database rather than by the prompt."
+            problem: "The ERP knows orders and invoices, the CRM knows customers, and carriers, e-commerce and spreadsheets know the rest. A question as ordinary as which delayed orders are hurting the best accounts crosses two systems or more, lands in a queue, and comes back after the SLA penalty is already due.",
+            solution: "Those sources are joined into one governed layer, and an operations lead slices SLA, backlog and throughput metrics without waiting on a data engineer, with sensitive fields masked by role. Delayed orders for the best accounts are expedited before the penalty falls due."
           }
         ],
         scope: {
@@ -2285,12 +2285,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "Finance waits on engineering for one group number",
-            text: "Sales sit in one cloud, stock in another, the ledger on premises. A CFO's revenue-by-product-line question becomes an engineering ticket, and each team answers it its own way."
+            headline: "Finance waits for one group number and gets two back",
+            text: "Sales sit in one cloud, stock in another, the ledger on premises. A CFO's revenue-by-product-line question becomes an engineering ticket, each team answers differently, and the board sees two figures."
           },
           solution: {
-            headline: "One question, every cloud answers, no data moved",
-            text: "Finance types it in and gets the number back on the definition the group signed off, from the systems it already runs, under the access rules in force."
+            headline: "One figure from every cloud, and no data moved to get it",
+            text: "Finance types the question and receives the answer on the group's signed-off definition, from the systems it already runs, under their access rules, in time for the board."
           }
         },
         metrics: [
@@ -2391,22 +2391,22 @@ window.SITE_CONTENT = {
             industry: "cross-industry",
             label: "Every industry",
             image: "assets/img/industries/cross-industry.jpg",
-            problem: "Two pains recur whatever the sector. Time: a cross-cloud question takes a data engineer, three extracts and a week, so the business answers itself in a spreadsheet. Trust: AI pilots die in security review, because nobody can prove what the model can see or show, and when auditors ask who saw what through AI there is no answer.",
-            solution: "One governed engine mounts the catalogs already in place and links the databases outside them, then answers under the access rules those systems already enforce. What shapes the work here is the data estate, so the same shape fits wherever the data sits."
+            problem: "Two pains recur whatever the sector. A cross-cloud question takes a data engineer, three extracts and a week, so the business answers itself in a spreadsheet and decides on numbers nobody reconciles. Q&A pilots die in security review, because nobody can prove what they can see or show, or tell an auditor who saw what, so the savings never arrive.",
+            solution: "One governed answer layer mounts the catalogs in place and links the sources outside them, then answers under the access rules those systems enforce. What shapes the work is the data estate, so the same shape fits wherever the data sits. Security signs off and the extracts stop."
           },
           {
             industry: "retail",
             label: "Retail",
             image: "assets/img/industries/retail.jpg",
-            problem: "Sales sit in one platform, stock in another, promotions in a third, and each acquisition adds an island nobody has integrated. Comparing sales by SKU, region and promotion means an extract per system and a wait.",
-            solution: "A merchandiser asks the comparison in plain language and gets it back from the governed gold layer, across every connected source, with no data moved. The definitions behind the numbers are the ones the organization signed off, so two dashboards stop disagreeing."
+            problem: "Sales sit in one platform, stock in another, promotions in a third. A merchandiser comparing sales by SKU, region and promotion waits on an extract per system, so the next promotion runs before the last one's margin is known.",
+            solution: "A merchandiser asks the comparison in plain language and gets it back across every connected source, with no data moved, on the definitions the organization signed off. Two dashboards stop disagreeing, and the next promotion is set knowing the last one's margin."
           },
           {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "Revenue, inventory and churn questions span plants, regions and the systems that came with each acquisition. Each platform has its own catalog, its own security model and its own team, so no single system sees enough of the picture for AI to be useful on it.",
-            solution: "The existing catalogs are mounted and the remaining databases linked, including on-prem, with the answer layer moving to wherever the data already sits. An assistant answers across all of it in plain language, role-scoped and fully audited."
+            problem: "Revenue, inventory and churn questions span plants, regions and the systems that came with each acquisition. Each platform has its own catalog, its own access rules and its own team, so no single figure covers the group, and inventory is set plant by plant on last month's numbers, tying up cash.",
+            solution: "The catalogs are mounted and the remaining sources linked, including on-prem, with the answer layer moving to wherever the data sits. Plant managers ask across all of it in plain language and set inventory on one group figure, freeing cash."
           }
         ],
         scope: {
@@ -2647,13 +2647,13 @@ window.SITE_CONTENT = {
             label: "Construction",
             image: "assets/img/industries/construction.jpg",
             problem: "Technicians covering lifts, heating and fire systems across many sites juggle contract response times with planned maintenance. A missed response time can cost a penalty under the contract.",
-            solution: "Call-outs and planned visits are routed together, weighted by each contract’s response time. Urgent work lands first without breaking the day’s plan."
+            solution: "Call-outs and planned visits are routed together, weighted by each contract’s response time. Urgent work is reached in time, so no penalty is paid."
           },
           {
             industry: "logistics",
             label: "Logistics & supply chain",
             image: "assets/img/industries/logistics.jpg",
-            problem: "Drivers run electric vans against promised delivery windows. A route that misjudges range ends at a charger instead of a doorstep.",
+            problem: "Drivers run electric vans against promised delivery windows. A route that misjudges range ends at a charger; its missed drops are driven twice.",
             solution: "Routes carry the delivery windows and a battery check on every leg. Each van finishes its drops with the reserve intact, and fewer drops roll over to the next day."
           }
         ],
@@ -2774,8 +2774,8 @@ window.SITE_CONTENT = {
         "text": "Call agents, depot surveyors and claims handlers judge from photos whether a windscreen, a container panel or a body panel is repaired or replaced. Guessing costs money both ways."
       },
       "solution": {
-        "headline": "Measured from the picture, checked against the rule",
-        "text": "The inspector sees the measured damage, the rule that applies in that market and the recommended call, then confirms or overrules it. Every decision keeps its reason."
+        "headline": "Fewer parts replaced needlessly, fewer jobs done twice",
+        "text": "The inspector sees the measured damage, the market's rule and the recommended call, then confirms or overrules it. The payer's replacement bill and the operator's repeat visits both fall."
       }
     },
     "metrics": [
@@ -2900,35 +2900,35 @@ window.SITE_CONTENT = {
         "label": "Automotive",
         "image": "assets/img/industries/automotive.jpg",
         "problem": "In vehicle glazing, call agents book a repair or a replacement before anyone sees the vehicle. A chip in the driver's viewing area is repairable under one market's rule and prohibited under another's, and a replaced windscreen can add a camera recalibration and days to the job.",
-        "solution": "The agent confirms a measured call and books the right job, kit and slot the first time. The service network leads here, while the insurer paying for the glass applies the repair-first pressure."
+        "solution": "The agent confirms a measured call and books the right job, kit and slot the first time. The service network leads here; the insurer paying for the glass funds fewer needless windscreens."
       },
       {
         "industry": "logistics",
         "label": "Logistics & supply chain",
         "image": "assets/img/industries/logistics.jpg",
-        "problem": "Container depot surveyors propose repairs that the owner approves line by line. Damage and remedy come in codified pairs: a hole in a panel can only be patched or replaced.",
-        "solution": "The surveyor submits coded damage with only the permissible remedies attached, so each line can be checked against the code. The depot leads, with the container lessor approving each line."
+        "problem": "Container depot surveyors propose repairs that the owner approves line by line. Damage and remedy come in codified pairs, and the owner pays for a panel where a patch would do.",
+        "solution": "The surveyor submits coded damage with only the permissible remedies attached, so each line can be checked against the code. The depot leads; the owner funds fewer panels where a patch would do."
       },
       {
         "industry": "financial-services",
         "label": "Financial services",
         "image": "assets/img/industries/financial-services.jpg",
-        "problem": "At a rental or lease handover, branch staff decide what a returning customer is charged for damage. The charge has to tell a scratch within the fair-wear allowance from one added during the hire, in front of a customer who may dispute it.",
-        "solution": "New damage is separated from pre-existing damage, with the evidence attached to the charge so it stands up to a dispute. The lessor leads here, because the output is a bill."
+        "problem": "At a rental or lease handover, branch staff decide what a returning customer is charged for damage. The charge has to tell a scratch within the fair-wear allowance from one added during the hire, and a charge the customer disputes and wins is written off.",
+        "solution": "New damage is separated from pre-existing damage, with the evidence attached to the charge so it stands up to a dispute. The lessor leads here, because the output is a bill that gets paid."
       },
       {
         "industry": "insurance",
         "label": "Insurance",
         "image": "assets/img/industries/insurance.jpg",
-        "problem": "At first notice of loss, claims handlers decide repair, replace or write-off from photos of the vehicle's body and paint. The write-off test sets repair cost against a share of the vehicle's value, and that share is set locally.",
-        "solution": "The handler reviews a costed scope with the write-off threshold already applied. The insurer leads here, as the payer funding the repair."
+        "problem": "At first notice of loss, claims handlers decide repair, replace or write-off from photos of the vehicle's body and paint. The write-off test sets repair cost against a locally set share of the vehicle's value; a misjudged scope overpays the claim.",
+        "solution": "The handler reviews a costed scope with the write-off threshold already applied. The insurer leads here, as the payer, and overpays fewer claims."
       },
       {
         "industry": "travel-transport",
         "label": "Travel & transport",
         "image": "assets/img/industries/travel-transport.jpg",
-        "problem": "Aircraft engineers disposition skin damage against published structural limits. A dent inside allowable limits can be accepted and logged to the aircraft's damage chart rather than repaired.",
-        "solution": "The engineer gets the limit, the measurement and the record in one place. The airline or maintenance organization leads here, and every accepted dent stays on the aircraft's permanent record."
+        "problem": "Aircraft engineers disposition skin damage against published structural limits. A dent inside allowable limits can be accepted and logged rather than repaired; a needless repair grounds the aircraft.",
+        "solution": "The engineer gets the limit, the measurement and the record in one place. The airline or maintenance organization leads here; every accepted dent stays on record, and the aircraft keeps flying."
       }
     ],
     "scope": {
