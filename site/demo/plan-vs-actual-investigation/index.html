@@ -182,7 +182,8 @@ body.clean .app { min-height: 100vh; }
 .kpi-foot { font-size: 12px; color: var(--muted); line-height: 1.4; }
 .kpi-open { font-size: 12px; color: var(--primary); font-weight: 600; }
 .band-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: -4px 0 16px; flex-wrap: wrap; font-size: 13px; color: var(--text-2); }
-.band--compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.band--compact { grid-template-columns: repeat(3, minmax(0, 1fr)); position: sticky; top: 0; z-index: 6; background: var(--ground); padding: 10px 0; margin-top: -10px; }
+body.tour-on .band--compact.tour-target { position: sticky; }
 .band--compact .kpi-tile { padding: 10px 12px; gap: 6px; }
 .band--compact .kpi-foot, .band--compact .kpi-open { display: none; }
 .band--compact .kpi-row.after .val { font-size: 16px; }
@@ -226,7 +227,7 @@ body.clean .app { min-height: 100vh; }
 .stages li.is-done > i::after { content: ""; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: translateY(-1px) rotate(45deg); }
 .stages li.is-running > i { border: 2px solid #dbe6fb; border-top-color: var(--primary); animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.stages li em { font-style: normal; margin-left: auto; font-size: 12.5px; color: var(--muted); }
+.stages li em { font-style: normal; margin-left: auto; padding-left: 10px; font-size: 12.5px; color: var(--muted); white-space: nowrap; }
 .feed { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; }
 .feed li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 13px; line-height: 1.45; animation: fadein .35s ease; }
 .feed li .dot { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; background: var(--grey-bg); color: var(--text-2); font-size: 11px; font-weight: 700; }
@@ -1214,7 +1215,7 @@ body.clean .app { min-height: 100vh; }
   function runHTML() {
     var K = D.kpis(D.causes.map(function (c) { return c.id; }));
     var rankText = "11 candidate causes, ranked by money: " + m(K.explainedK) + " of the " + m(K.overrunK) + " overrun cited to a record.";
-    return '<div class="card mt"><div class="run"><div><div class="card-h">The analysis</div>' +
+    return '<div class="card mt" id="run-card"><div class="run"><div><div class="card-h">The analysis</div>' +
       '<ul class="stages mt">' + STAGES.map(function (s, i) {
         var st = i < S.stage || S.ran ? "is-done" : i === S.stage ? "is-running" : "";
         return '<li class="' + st + '"><i></i>' + esc(s.t) + (st === "is-done" && (s.r || i === 4) ? "<em>" + esc(i === 4 ? m(K.explainedK) + " traced" : s.r) + "</em>" : "") + "</li>";
@@ -1475,6 +1476,7 @@ body.clean .app { min-height: 100vh; }
   function doRun() {
     if (S.ran || S.busy) return;
     S.busy = true; S.stage = 0; S.feed = []; S.pct = 4; render();
+    var rc = $("#run-card"); if (rc) rc.scrollIntoView({ block: "start", behavior: "smooth" });
     var t = 0, steps = [];
     STAGES.forEach(function (s, i) {
       steps.push({ at: t, fn: function () { S.stage = i; S.pct = Math.round((i + .3) / STAGES.length * 100); } });
@@ -1594,7 +1596,7 @@ body.clean .app { min-height: 100vh; }
     { id: "cause", major: 3, side: "top", title: "The slip sits in a contract",
       body: "The schedule shows the façade nine weeks late. The reason is a change order on page 31 of the subcontract. Open it.",
       target: function () { return $('#drill tr[data-cause="C1"]'); }, auto: function () { openCause("C1"); window.DEMO.tour.after("cause"); } },
-    { id: "reject", major: 4, side: "left", title: "Overrule what the system got wrong",
+    { id: "reject", major: 4, side: "right", title: "Overrule what the system got wrong",
       body: "It counted rework that clause 16.1 puts on the subcontractor's cost. Reject it with the clause as the reason, and watch the numbers above move.",
       before: function () { var el = $("#cause-C3"); if (el) el.scrollIntoView({ block: "center" }); },
       target: function () { return $("#btn-reject-C3"); }, avoid: function () { return $("#band"); },
