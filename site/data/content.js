@@ -92,7 +92,7 @@ window.SITE_CONTENT = {
         "cx": { name: "Oracle Customer Experience (CX)", group: "connected", icon: "oracle-cx" },
         "fusion-erp": { name: "Oracle Fusion Cloud ERP", group: "connected", icon: "platform-oracle-ai-fusion" },
         "oracle-ai-database": { name: "Oracle AI Database", group: "platform", icon: "oracle-database" },
-        "primavera-p6": { name: "Oracle Primavera P6 Enterprise Project Portfolio Management", group: "connected", icon: "calendar" }
+        "primavera-p6": { name: "Oracle Primavera P6 Enterprise Project Portfolio Management", group: "connected", icon: "industry-construction" }
       }
     },
     /* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
@@ -1342,7 +1342,7 @@ window.SITE_CONTENT = {
             label: "Professional services",
             image: "assets/img/industries/professional-services.jpg",
             problem: "A services firm's engagement ends below its planned margin. The project ledger shows the gap, but why (scope creep, the staffing mix, client delays) sits in change requests and email.",
-            solution: "Each closed engagement's overrun is traced to the change requests, staffing and correspondence behind it, so the next bid prices the scope and the staffing mix on evidence."
+            solution: "Each closed engagement's overrun is traced to the change requests, staffing and correspondence behind it. The next bid then prices the scope and the staffing mix on evidence."
           }
         ],
         scope: {
@@ -1369,7 +1369,7 @@ window.SITE_CONTENT = {
           metrics: [
             { value: "Variances traced", label: "each to its schedule, cost or change record, in hours of expert time rather than weeks" }
           ],
-          story: "A first engagement is being prepared on one live project's work packages, from the customer's own schedule, cost and change exports, with packages its own crews delivered compared with subcontracted ones. The hours-rather-than-weeks figure is an estimate, set against the expert time the same analysis takes today.",
+          story: "A first engagement is being prepared on one live project's work packages, from the customer's own schedule, cost and change exports, with packages its own crews delivered compared with subcontracted ones. The hours-rather-than-weeks figure is an estimate, set against the expert time the same analysis takes today; illustrative, not contractual.",
           scope: [
             { label: "Stage", value: "Proof of value in preparation" },
             { label: "Scope", value: "One use case, one project's work packages" },
