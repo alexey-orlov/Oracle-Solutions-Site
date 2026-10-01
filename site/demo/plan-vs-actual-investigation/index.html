@@ -242,7 +242,7 @@ body.clean .app { min-height: 100vh; }
 .srccard { display: grid; gap: 8px; align-content: start; }
 .srccard .count { font-size: 22px; font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .srccard .count small { font-size: 13px; font-weight: 500; color: var(--muted); }
-.srccard .file { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); word-break: break-all; }
+.srccard .file { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); overflow-wrap: anywhere; }
 .later-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); padding-top: 8px; border-top: 1px dashed var(--line); }
 .toggle { width: 28px; height: 16px; border-radius: 999px; background: #e2e8f0; position: relative; flex: none; }
 .toggle::after { content: ""; position: absolute; left: 2px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
@@ -327,7 +327,7 @@ body.clean .app { min-height: 100vh; }
   <span class="pill" id="tour-pill" hidden>Guided walkthrough</span>
   <span class="sp"></span>
   <span class="hide-sm">Synthetic data</span>
-  <button class="demo-btn" id="tour-toggle" type="button">Exit guide</button>
+  <button class="demo-btn" id="tour-toggle" type="button">Restart walkthrough</button>
 </div>
 <div class="app">
   <aside class="side">
@@ -821,7 +821,7 @@ body.clean .app { min-height: 100vh; }
   /* The four sources, loaded as exports. `later` is the next phase's live feed. */
   D.sources = [
     { id: "sched", name: "Schedule", system: "Oracle Primavera P6", alt: "or another scheduling tool",
-      file: "CQB_baseline-r4_to-update-18.xer", version: "Baseline rev 4 + 18 monthly updates",
+      file: "CQB_schedule_r4-u18.xer", version: "Baseline rev 4 + 18 monthly updates",
       count: 1240, unit: "activities", tone: "violet",
       checks: [
         { ok: true, text: "Baseline and all 18 monthly updates present" },
@@ -829,14 +829,14 @@ body.clean .app { min-height: 100vh; }
         { ok: false, text: "22 activities sit outside any work package" }
       ] },
     { id: "cost", name: "Cost reports", system: "Oracle Fusion Cloud ERP", alt: "or another ERP, or spreadsheets",
-      file: "CQB_cost-reports_2025-03_to_2026-08.xlsx", version: "18 monthly cost reports",
+      file: "CQB_cost-reports_u18.xlsx", version: "18 monthly cost reports",
       count: 3870, unit: "cost lines", tone: "azure",
       checks: [
         { ok: true, text: "Budget, committed, actual and forecast columns in every month" },
         { ok: false, text: "171 cost lines carry no package code" }
       ] },
     { id: "docs", name: "Contracts and correspondence", system: "Oracle Aconex", alt: "or another document store",
-      file: "CQB_subcontracts-and-reports.zip", version: "12 subcontracts (418 scanned pages) + 48 progress reports",
+      file: "CQB_contracts-reports.zip", version: "12 subcontracts (418 scanned pages) + 48 progress reports",
       count: 60, unit: "documents", tone: "teal",
       checks: [
         { ok: true, text: "Text read from 417 of 418 scanned pages" },
@@ -1177,7 +1177,7 @@ body.clean .app { min-height: 100vh; }
         '<div class="count">' + n(s.count) + " <small>" + esc(s.unit) + "</small></div>" +
         '<div class="file">' + esc(s.file) + "</div>" +
         '<div class="small muted">' + esc(s.version) + "</div>" +
-        '<div class="later-row"><span class="toggle"></span>Live feed, instead of the file · next phase</div>' +
+        '<div class="later-row"><span class="toggle"></span>Live feed · next phase</div>' +
         "</div>";
     }).join("") + "</div>";
     if (S.checked) {
