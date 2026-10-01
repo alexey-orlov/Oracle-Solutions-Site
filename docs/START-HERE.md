@@ -457,7 +457,7 @@ Exact commands are in HANDOFF §4.
   - **the legend** is *Role* rather than *I am a…*, which read *I am a… An Oracle seller*; *Writing as* is the warmer alternative.
 - **§64 (Plan vs actual from its pack):**
   - **the pack's fifth industry**, *Shipbuilding and defence programmes*, has no site key or picture, so the page shows four; adding the key is a site-wide change;
-  - **not published yet:** the page waits for Alex's word, and its hero stays the gradient until the pack's walkthrough lands (§55's item).
+  - **the hero** stays the gradient until the pack's walkthrough lands (§55's item); the page itself is live since version 33.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;

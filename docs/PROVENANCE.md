@@ -8200,7 +8200,10 @@ _A session opened in AO-Personal-OS, on Opus, running the `oracle-packs` build f
   - the console clean;
   - no horizontal overflow on the four tabs at 1440 or at 375, measured in the pane. Headless Chrome's own 375 capture lays the page out wider than 375, so it is not evidence.
 - **The review (Alex, 2026-10-01):** approved as shown in the screenshots of the four tabs and a phone view.
-- **Not published:** the publish waits for Alex's word (§6 of START-HERE).
+- **Published** on Alex's word (*"publish the listing on the website (update existing one)"*, 2026-10-01) as **version 33** (1790866421-135c).
+  - **Before:** layout re-checked at 1280, 1024 and 768 as well, on every changed route (home, the catalog and the product's five tabs): no overflow at any width; the H1 is two lines at 375 and 320, unclipped; the console is clean. The checker printed OK, and the deny-list sweep and a sweep for the source engagement's own names and figures were empty.
+  - **On the live copy:** version 32's `data/content.js` matched the §63 commit byte for byte, and every hunk between it and the tree's copy was this round's: the three registry items, the home card's area and the product block. A freshly built `data/links.js` matched the live one, and the wrapper matched the live page apart from the service's trailing blank line.
+  - **Mapped:** `data/content.js` and `data/links.js`, on version 32. The read-back of `data/content.js` matches the tree (sha256 386a7b6d…).
 - **Open for Alex:** START-HERE §9, under §64.
 
 ---
