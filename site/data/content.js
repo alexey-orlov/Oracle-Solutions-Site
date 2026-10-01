@@ -1307,7 +1307,7 @@ window.SITE_CONTENT = {
             text: "Planners confirm or reject each cause, and the causes that recur across packages become the lessons for the next bid.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-4.jpg",
-              alt: "Causes confirmed or rejected; the pattern recurs in 7 of 32 packages."
+              alt: "Causes confirmed or rejected, and a pattern that recurs across packages."
             },
             features: [
               "Experts confirm or reject each cause in a review app",
