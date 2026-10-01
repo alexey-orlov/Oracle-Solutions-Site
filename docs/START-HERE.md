@@ -312,7 +312,7 @@ Exact commands are in HANDOFF §4.
 
 - **The brief (§2):** every item stays open until Alex confirms it in a session.
 - **Round 7 (PROVENANCE §23.4):**
-  - delivery sign-off on *Plan vs actual investigation* in 4–8 weeks;
+  - ~~delivery sign-off on *Plan vs actual investigation* in 4–8 weeks~~ — closed on 2026-10-01: its pack brief confirms an 8-week proof of value (§64);
   - clearance for the stronger *Frontier AI* proof points.
 - **Round 8 (§24.4):**
   - whether the mailbox is watched, and whether two working days is the right promise;
@@ -331,7 +331,7 @@ Exact commands are in HANDOFF §4.
   - the product *For sellers* tab is gone, its kit now the second tab of the Contacts
     switch, and `…/sellers` redirects — reversible, since the tab is data.
 - **Round 11 (§30.6):**
-  - the Plan vs actual story still calls *Every variance* "the figure above";
+  - ~~the Plan vs actual story still calls *Every variance* "the figure above"~~ — closed on 2026-10-01: the story names its own figure (§64);
   - the S5 card treatment was not measured against softserveinc.com's resource cards
     (the research did not reach them); it follows the Solutions cards and Alex's words;
   - 320 px, reduced motion, print and non-Chromium browsers were not looked at;
@@ -431,8 +431,8 @@ Exact commands are in HANDOFF §4.
   - **the render's 900 px of height** is upscaled about 1.6× on a 2× screen at 1440;
   - **the button stays the site's blue ask** on the band's plain dark ground, not §47's white button for a dark photograph.
 - **§58 (round 22, Technology and Delivery; PROVENANCE 58.7):**
-  - **four derived packages tables** (Cross-system ERP Q&A, Business metrics Q&A, Plan vs actual, Case evidence) rest on the site's own Jumpstart copy, not a pack, and their destination boxes are people (*Business teams*, *Analysts*, *Planners*, *Investigators*);
-  - **names to confirm:** *Oracle Fusion Cloud ERP* as the ERP Q&A source, *Oracle Autonomous AI Database* on Plan vs actual, *Oracle AI Data Platform* listed plainly on the Q&A pair although it is where-in-place;
+  - **three derived packages tables** (Cross-system ERP Q&A, Business metrics Q&A, Case evidence) rest on the site's own Jumpstart copy, not a pack, and their destination boxes are people (*Business teams*, *Analysts*, *Investigators*); Plan vs actual's came from its pack in §64;
+  - **names to confirm:** *Oracle Fusion Cloud ERP* as the ERP Q&A source, *Oracle AI Data Platform* listed plainly on the Q&A pair although it is where-in-place (Plan vs actual's database is *Oracle AI Database* since §64, the statement of work's name);
   - **the packaging plugin** still writes `technology.narrative`, `stack`, `capabilities` and `jumpstart`, now build failures: its listing skill has to learn `technology.line`, `oracle`, `diagram` and `delivery`, and `diagram_to_site.py` the strip, before its next listing.
 - **§60 (the home hero's robot):**
   - **the picture's rights:** it is the careers site's own (`about-us/focus0.webp`), likely licensed stock; confirm the licence covers this site;
@@ -455,6 +455,9 @@ Exact commands are in HANDOFF §4.
   - **the case-studies lead** dropped the copy pass's *measured in production or modeled on real data*: with the chips gone the home page says a figure's status nowhere, except a forecast's *simulated* in its small line;
   - **the Why H2** is the copy pass's *AI experts who know Oracle.*; *Experts in AI and Oracle.* is Alex's wording, one key away;
   - **the legend** is *Role* rather than *I am a…*, which read *I am a… An Oracle seller*; *Writing as* is the warmer alternative.
+- **§64 (Plan vs actual from its pack):**
+  - **the pack's fifth industry**, *Shipbuilding and defence programmes*, has no site key or picture, so the page shows four; adding the key is a site-wide change;
+  - **not published yet:** the page waits for Alex's word, and its hero stays the gradient until the pack's walkthrough lands (§55's item).
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
