@@ -1212,12 +1212,12 @@ window.SITE_CONTENT = {
       overview: {
         problemSolution: {
           problem: {
-            headline: "One overrun takes weeks of expert time to explain",
-            text: "When a big project overruns, project controllers can't say which work packages caused it or why: schedules, costs and contracts don't link."
+            headline: "Overruns nobody traces are paid for twice",
+            text: "Project controllers can't trace what drove a package over budget: schedules, costs and contracts don't link. So the next estimate repeats the same mistakes and loses the money again."
           },
           solution: {
-            headline: "Confirm the cause, don't hunt for it",
-            text: "Project controllers review each package's plan against actual with its likely causes and the document behind each; their experts confirm, and confirmed causes become the next bid's lessons."
+            headline: "Bid on evidence, keep the margin",
+            text: "Each variance arrives with its likely causes and the record behind each. Experts confirm them instead of rebuilding them, and every new bid prices those risks up front."
           }
         },
         metrics: [
@@ -1321,29 +1321,29 @@ window.SITE_CONTENT = {
             industry: "construction",
             label: "Construction",
             image: "assets/img/industries/construction.jpg",
-            problem: "A contractor picks its own crews or a subcontractor for every work package, but after an overrun nobody can say which packages, under which choice, caused it. Schedule updates, monthly cost reports and the variations log link only by package name.",
-            solution: "Each package's overrun comes back with its likely causes (a variation, a design delay, a contractor change), each cited to the record. Packages built by own crews are compared with subcontracted ones before the next bid is priced."
+            problem: "A contractor picks its own crews or a subcontractor for every work package, but after an overrun nobody can say which choice caused it. Schedule updates, monthly cost reports and the variations log link only by package name, so the next bid repeats the losing choice.",
+            solution: "Each package's overrun comes back with its likely causes (a variation, a design delay, a contractor change), each cited to the record. Own crews are compared with subcontracted ones, so the next bid prices each package on evidence and keeps its margin."
           },
           {
             industry: "utilities",
             label: "Utilities",
             image: "assets/img/industries/utilities.jpg",
-            problem: "A utility's capital programme runs thousands of similar jobs a year (poles, mains, substations), and unit costs drift above estimate. Nobody knows which work types or crews drove it.",
-            solution: "Jobs are compared with their estimates by work type and region, own crews against contractor crews. Each overrun comes back with its cited cause, ready for the regulator's review."
+            problem: "A utility's capital programme runs thousands of similar jobs a year (poles, mains, substations), and unit costs drift above estimate. Nobody knows which work types or crews drove it, so the regulator may not allow the overspend.",
+            solution: "Jobs are compared with their estimates by work type and region, own crews against contractor crews. Each overrun comes back with its cited cause, so justified costs are recovered and the next capital plan prices the rest."
           },
           {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "An equipment maker quotes every custom order, and when orders finish over their quote, the estimate, the job cost and the engineering changes sit in different systems. Nobody can say why.",
-            solution: "Each closed order is compared with its quote, operation by operation. Every overrun comes back with its cause (an engineering change, rework, a late part) and whether outside processing paid off."
+            problem: "An equipment maker quotes every custom order, and when orders finish over their quote, the estimate, the job cost and the engineering changes sit in different systems. Nobody can say why, so the next quote loses the same margin.",
+            solution: "Each closed order is compared with its quote, operation by operation. Every overrun comes back with its cause (an engineering change, rework, a late part) and whether outside processing paid off, so the next quote prices both in."
           },
           {
             industry: "professional-services",
             label: "Professional services",
             image: "assets/img/industries/professional-services.jpg",
-            problem: "A services firm's engagement ends below its planned margin. The project ledger shows the gap, but why (scope creep, the staffing mix, client delays) sits in change requests and email.",
-            solution: "Each closed engagement's overrun is traced to the change requests, staffing and correspondence behind it. The next bid then prices the scope and the staffing mix on evidence."
+            problem: "A services firm's engagement ends below its planned margin. The project ledger shows the gap, but why (scope creep, the staffing mix, client delays) sits in change requests and email, so the next bid repeats it.",
+            solution: "Each closed engagement's overrun is traced to the change requests, staffing and correspondence behind it. The next bid then prices the scope and the staffing mix on evidence and holds its margin."
           }
         ],
         scope: {
