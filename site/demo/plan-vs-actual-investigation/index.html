@@ -190,6 +190,13 @@ body.tour-on .band--compact.tour-target { position: sticky; }
 .is-bump { animation: bump .7s ease; }
 @keyframes bump { 0% { background: #fff; } 30% { background: #fef9c3; } 100% { background: #fff; } }
 
+.drift-bars { display: flex; align-items: flex-end; gap: 10px; margin-top: 8px; overflow-x: auto; }
+.drift-col { display: grid; justify-items: center; gap: 4px; min-width: 52px; }
+.drift-val { font-size: 12px; font-weight: 600; color: var(--red-fg); font-variant-numeric: tabular-nums; }
+.drift-bar { display: flex; align-items: flex-end; width: 22px; height: 54px; background: var(--line-3); border-radius: 5px; overflow: hidden; }
+.drift-bar b { display: block; width: 100%; background: #f87171; border-radius: 5px 5px 0 0; }
+.drift-m { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+
 /* ---------- causes ---------- */
 .cause { border: 1px solid var(--line); border-radius: var(--r); background: #fff; padding: 14px 16px; display: grid; gap: 9px; }
 .cause.is-selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
@@ -826,6 +833,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       count: 1240, unit: "activities", tone: "violet",
       checks: [
         { ok: true, text: "Baseline and all 18 monthly updates present" },
+        { ok: true, text: "Baseline revisions 1–4 reconciled; revision 4 is the plan of record" },
         { ok: false, text: "31 activities have no logic links, so their dates can't drive the critical path" },
         { ok: false, text: "22 activities sit outside any work package" }
       ] },
@@ -834,6 +842,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       count: 3870, unit: "cost lines", tone: "azure",
       checks: [
         { ok: true, text: "Budget, committed, actual and forecast columns in every month" },
+        { ok: true, text: "Provisional sums kept apart from firm scope, so they don't read as overruns" },
         { ok: false, text: "171 cost lines carry no package code" }
       ] },
     { id: "docs", name: "Contracts and correspondence", system: "Oracle Aconex", alt: "or another document store",
@@ -865,6 +874,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       by: "Subcontract", firm: "Clearspan Façades", finished: true,
       plan: 4150, actual: 5727, wPlan: 24, wActual: 33, lateDays: 63, critical: true,
       split: { scope: 1090, timing: 240, quantity: 247, rate: 0 },
+      drift: [["Jan 2025", 0], ["Mar 2025", 4], ["Apr 2025", 21], ["Jun 2025", 31], ["Aug 2025", 36], ["Oct 2025", 38]],
       firstSeen: "Apr 2025", lateNote: "Change order CO-22 was signed in Feb 2025 and first reached the cost report in Apr 2025.",
       gaps: 18 },
     { id: "WP-07", name: "Frame", scope: "Concrete frame, levels 0–8", trade: "Structure",
@@ -986,6 +996,25 @@ body.tour-on .band--compact.tour-target { position: sticky; }
   D.cause = function (id) { return byId(D.causes, id); };
   D.causesOf = function (pkgId) { return D.causes.filter(function (c) { return c.pkg === pkgId; }); };
   D.variance = function (p) { return p.actual - p.plan; };
+
+  /* Forecast against plan, month by month (% of plan). WP-14 carries its own
+     history; the others ramp from the month the gap first showed. */
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  D.driftOf = function (p) {
+    if (p.drift) return p.drift;
+    var v = (p.actual / p.plan - 1) * 100;
+    if (!p.firstSeen || v <= 0) return [];
+    var parts = p.firstSeen.split(" "), mi = MONTHS.indexOf(parts[0]), yr = +parts[1], out = [];
+    function label(m) { var y = yr + Math.floor(m / 12); return MONTHS[((m % 12) + 12) % 12] + " " + y; }
+    if (!p.finished) {
+      /* A running package stops at the data date: no month is forecast. */
+      var end = (2026 - yr) * 12 + 7, start = mi - 1, span = end - start;
+      for (var m = start; m <= end; m++) out.push([label(m), Math.round(v * (m - start) / span * 10) / 10]);
+      return out;
+    }
+    [0, .25, .6, .85, 1].forEach(function (s, i) { out.push([label(mi + (i - 1) * 2), Math.round(v * s * 10) / 10]); });
+    return out;
+  };
 
   /* Per package: cost and days explained by the applied causes, capped at the
      package's own overrun; days shared by two applied causes count once. */
@@ -1258,7 +1287,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
         return '<tr class="clickable" data-pkg="' + p.id + '"><td><div class="pk-name"><span class="code">' + p.id + "</span>" + esc(p.name) + '</div><div class="pk-sub">' + esc(p.scope) + (p.finished ? "" : " · running, to date") + "</div></td>" +
           "<td>" + esc(p.by) + (p.firm ? '<div class="pk-sub">' + esc(p.firm) + "</div>" : "") + "</td>" +
           '<td class="num">' + n(p.plan) + " → " + n(p.actual) + "</td>" +
-          '<td class="num"><span class="' + (v > 0 ? "var-up" : "var-down") + '">' + signPct(p) + "</span></td>" +
+          '<td class="num"><span class="' + (v > 0 ? "var-up" : "var-down") + '">' + signPct(p) + "</span>" + (v / p.plan >= 0.03 ? '<div class="pk-sub">material</div>' : "") + "</td>" +
           '<td class="num">' + (p.critical ? '<span class="cp" title="On the critical path"></span>' : "") + p.wPlan + " → " + p.wActual + "</td>" +
           "<td>" + splitBar(p) + "</td>" +
           '<td class="num">' + D.causesOf(p.id).length + "</td>" +
@@ -1318,6 +1347,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       (p.critical ? '<span class="chip chip--outline"><span class="cp"></span>Critical path</span>' : "") + "</div></div>" +
       '<div class="small text-2">Cost ' + k(p.plan) + " → " + k(p.actual) + " · weeks " + p.wPlan + " → " + p.wActual + (p.firstSeen ? " · gap first visible " + esc(p.firstSeen) : "") + "</div>" +
       '<div class="mt">' + splitBar(p).replace('class="mini"', 'class="mini" style="height:10px"') + '</div><div class="mt">' + legend() + "</div>" +
+      driftHTML(p) +
       (p.lateNote ? '<div class="callout mt">' + esc(p.lateNote) + "</div>" : "") + "</div>";
     var cs = D.causesOf(p.id);
     h += '<div class="split mt"><div class="stack">';
@@ -1345,6 +1375,13 @@ body.tour-on .band--compact.tour-target { position: sticky; }
     if (v > 0 && cs.length && v - e.costK >= 1) h += '<div class="callout">' + k(v - e.costK) + " of this package's overrun has no record that explains it, so it is reported as unexplained.</div>";
     h += '</div><div>' + docHTML() + "</div></div>";
     return h;
+  }
+  function driftHTML(p) {
+    var d = D.driftOf(p); if (!d.length) return "";
+    var max = Math.max.apply(null, d.map(function (x) { return Math.abs(x[1]); })) || 1;
+    return '<div class="drift mt"><div class="eyebrow">Forecast against plan, month by month</div><div class="drift-bars">' +
+      d.map(function (x) { return '<div class="drift-col"><span class="drift-val">' + (x[1] > 0 ? "+" : "") + x[1] + '%</span><span class="drift-bar"><b style="height:' + Math.max(4, Math.abs(x[1]) / max * 100) + '%"></b></span><span class="drift-m">' + esc(x[0]) + "</span></div>"; }).join("") +
+      "</div></div>";
   }
   function disputeHTML(c, inline) {
     var ds = c.dispute;
