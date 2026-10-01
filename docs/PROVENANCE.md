@@ -8241,3 +8241,27 @@ _The same session as §64, on Opus. Two Fable agents (the walkthrough's design a
 - **Open for Alex:** START-HERE §9, under §65.
 
 ---
+
+## 66. The other eight products' problem/solution copy ends on the money, 2026-10-01
+
+_The same session as §64–§65, on Opus. Two Fable copy agents (four products each, one pre-digested input file each, per-product progress logs) wrote the copy; the main session edited it, applied it, checked it and published. Touched: `site/data/content.js` only (77 fields across eight products, plus Workforce optimization's `heroCaption`). No contract change._
+
+- **The ask (Alex, 2026-10-01):** *"apply the so-what rule to the other eight products. They might be already good, or have same issue, you check and decide. And yes, you udpate all materials."*
+- **The method:** every pair judged against START-HERE §4: kept verbatim when its problem already ended on what the pain costs and its solution on how that measure moves; otherwise only the failing side rewritten. Held by script: plate headlines ≤ 60 characters and texts ≤ 30 words, industry lines 2–3 sentences within +10% of their length, no new figure, no platform or packaging word, a time claim in two places at most.
+- **Per product:**
+  - **Account insights:** both plates and the three industry tabs; the case study kept. Problem *The sales manager hears the news after the deal is gone*, solution *Win the work the news opens, keep the renewal*.
+  - **Case evidence collection:** both plates and the four tabs; the problem names the investigator again, and professional services ends on the claims the firm settles. Problem *The clock runs out while the evidence is pulled together*, solution *Decide from day one, answer on time*.
+  - **Cross-system ERP Q&A:** the problem plate, the solution text (it ended on *Report requests stop*) and three tabs; the solution headline kept.
+  - **Business metrics Q&A:** both plates and three tabs; retail names the merchandiser, manufacturing ends on the cash inventory ties up.
+  - **Fleet route optimization:** both plates kept (money spent; the saving); construction's solution and logistics' problem rewritten.
+  - **Repair-or-replace decisions:** the problem plate kept; the solution plate is *Fewer parts replaced needlessly, fewer jobs done twice*, ending on the payer's replacement bill and the operator's repeat visits; nine tab sides rewritten.
+  - **Workforce optimization:** the problem headline is *Plans built by hand waste paid technician hours* (it named the planner's two days); the plates' texts and four tabs; the hero question is *What if the same team finished more jobs a day?*, as on its deck, replacing *What if dispatchers reviewed the plan, not built it?*.
+  - **Large docs:** both plates (their time claims were the 5–15 minute claim's fourth place), the travel solution (*pipeline* out) and three tabs; travel's problem and the case study kept.
+- **Case studies:** all kept: each ends on its measured result and its caveat, and the tiles beside it carry the business figure.
+- **Clearance:** the pack lint (`customer_site`) on the three pack products' entries raised nothing new. Account insights' *scoped* (ART203, in the old copy too) became *a rival is already quoting*. Standing findings: *Account insights* casing (ART104), *Jumpstart* (ART402, the site's rule over the spec), Fleet's walkthrough-band euro figures (ART301/302) and Repair's *Not sure yet* form placeholder.
+- **Checks before the publish:** `node --check`; `sync-links` nothing to change; `check-grammar` OK with its one standing warning; the deny-list sweep empty; on all eight products' overview and use-cases routes, every industry tab clicked: every new line rendered and no page or panel overflow at 1440, 1280, 1024, 768, 375 and 320 (Large docs' unchanged H1 takes three lines at 320); the console clean.
+- **Published** as **version 35** (1790874637-a722), on version 34, which no other session had touched: the live `content.js` differed from the tree by exactly this round's 78 lines, and `links.js` was identical, so only `data/content.js` was mapped. 147 files listed; the read-back of `content.js` matches the tree (sha256 e9b16c0b…).
+- **The documents** (outside this repo): Account insights' deck, executive summary and one-pager edited in place and re-delivered; Fleet and Repair rebuilt from their briefs and delivered; Workforce optimization's one-pager and feature list delivered, its deck and Accelerator Pack docx staged (open in Alex's PowerPoint and Word); Large docs' documents have no editable source and were left. Packaging repo e519341, 63a6fde, 0639dc0, 55dcb8e.
+- **Open for Alex:** START-HERE §9, under §66.
+
+---
