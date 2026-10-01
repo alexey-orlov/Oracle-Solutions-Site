@@ -460,7 +460,11 @@ Exact commands are in HANDOFF §4.
   - **the pack's fifth industry**, *Shipbuilding and defence programmes*, has no site key or picture, so the page shows four; adding the key is a site-wide change;
 - **§65 (Plan vs actual's walkthrough and its copy):**
   - **the walkthrough's own page is private:** on the shared link the *Interactive demo* button opens `links.json` › `plan-vs-actual-investigation.interactiveDemoArtifact`, which only Alex can open until he shares it from its Share menu;
-  - **the other eight products' plates and industry tabs predate the "so what" rule** (START-HERE §4): they were not rewritten, and each gets the rule the next time its listing is touched, or on Alex's word.
+  - ~~the other eight products' plates and industry tabs predate the "so what" rule~~ — closed on 2026-10-01: all eight checked and rewritten where they fell short (§66).
+- **§66 (the other eight products' problem/solution copy):**
+  - **Workforce optimization's sales deck** (the kit's `salesDeck` link) and its Accelerator Pack docx still carry the old copy on OneDrive: both were open in Alex's PowerPoint and Word, so the edited copies wait in the packaging work folder (`_sowhat/edited/workforce-optimization/`) until they are closed; its one-pager and feature-list PDF are delivered;
+  - **Large docs' documents** (the 3-page one-pager PDF and the image-only deck) have no editable source, so they keep the older framing; neither is in the kit (`links.json` has no document links for it). Building Large docs as a pack through the packaging skills is the way to give it documents that follow the rule;
+  - **Business metrics Q&A's hero line** *Answers in seconds, not a week of extracts.* keeps its *not X* turn: it is a value line, not a problem/solution pair, and was left as round 19 wrote it.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
