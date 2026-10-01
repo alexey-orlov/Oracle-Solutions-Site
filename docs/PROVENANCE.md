@@ -8207,3 +8207,37 @@ _A session opened in AO-Personal-OS, on Opus, running the `oracle-packs` build f
 - **Open for Alex:** START-HERE §9, under §64.
 
 ---
+
+## 65. Plan vs actual's walkthrough, its kit links, and problem/solution copy that ends on the money, 2026-10-01
+
+_The same session as §64, on Opus. Two Fable agents (the walkthrough's design and the copy) ran 53 and 34 minutes without writing anything and were stopped; the main session designed, built and wrote both. Touched: `links.json`, `site/data/content.js`, `site/data/config.js` (`videoPoster`), the new `site/demo/plan-vs-actual-investigation/index.html` and `site/assets/img/posters/plan-vs-actual-investigation.jpg`, the four `site/assets/img/steps/plan-vs-actual-investigation-*.jpg`, `tools/check-grammar.js` (`DEMO_SLUGS`), the new `tools/capture-pva-tour.json`, START-HERE §4 and §9, SCHEMA (`problemSolution`). No contract change._
+
+- **The asks (Alex, 2026-10-01, in order):**
+  - *"Store links in config"*: the feature list, sales one-pager and sales deck, three *People in SoftServe* OneDrive links;
+  - *"you didn't create the walkthrough looks like, so create it (single html pls)"*;
+  - correction 1 on the published page: *"problem - solution pair. it's 1 'so what' away from real business value. Make sure problem makes the business problem clear, and solution maps to the change in that business problem and ROI. Write it down as a general rule for any problem solution statement, both in packaging work and on the website"*;
+  - approvals by widget: the walkthrough (*Approve and continue*), the rewritten copy (*Use this copy*) and the publish (*Publish when ready*).
+- **The kit links** went into `links.json` › `plan-vs-actual-investigation` (`onePager`, `salesDeck`, `featureList`); `sync-links` and the checker passed. They never reach `site/`.
+- **The walkthrough** is one self-contained HTML file (Alex's word), with no external request, on the plugin's tour engine and the product screens the listing's mocks drew (shell A). It is six steps on the synthetic *Cedar Quay, Building B*: four sources checked, the run (a schedule slip explained by a contract clause), the value band, the drill-down from the money to the causes and the cited contract page, the override (the system's rework cause, which clause 16.1 puts on the subcontractor, is rejected and the band recomputes), and lessons with the sample stated plus the evidence pack.
+  - **The value band** carries the pack's three business metrics, every number computed from the data: the overrun explained by value goes 17% today → 94% traced → 86% confirmed, the delay explained in days 12% → 91% → 79%, and expert hours per package 24 h → 0.9 h.
+  - **The red-team** against the pack's features widened it with monthly forecast drift, material-variance marks, and baseline and provisional-sum reconciliation checks. Live feeds, write-back and comparison with completed projects show only as *next phase*.
+  - **The export is mocked in the page**, because the claude.ai viewer blocks a download the page starts itself.
+  - **Checks:** `tools/capture-pva-tour.json` through the plugin's capture script printed `LOGS: none` with every assertion passing (the counter moves on every click, the passive step shows Next, the card never covers the band, the recompute to 88% and 86%, the held dispute, the end card's three doors). The demo-channel lint is at 0, and there is no overflow at 1440, 375 or 320.
+  - **Where it lives:** the site copy is `demo/plan-vs-actual-investigation/index.html`; the standalone page is `links.json` › `plan-vs-actual-investigation.interactiveDemoArtifact` (version 2, restamped to the updated brief), private until Alex shares it; the OneDrive file is in the pack's folder.
+- **The handoff:**
+  - `DEMO_SLUGS` gained the product, and `links.json` holds `interactiveDemo` and `interactiveDemoArtifact`.
+  - The poster is the reviewed packages screen: 1440 × 810 CSS px at DPR 2, resampled to 1600 × 900, 231 KB.
+  - The four frames are recaptured from the walkthrough by ASSETS §1.2 (1280 × 800, DPR 2, 1744 × 1090, q82): the checked sources, the packages table with the façade row selected, the façade's change order beside its contract page (scrolled there, the band pinned), and the Reviews screen with the held dispute.
+  - The package table dropped its separate variance column, folded under the cost, so it fits at 1280. Their alt texts were rewritten.
+- **The "so what" rule** is in START-HERE §4 (*A problem and its solution end on the business value*), with a pointer in SCHEMA's `problemSolution`. Its other homes are the packaging plugin's story card (check 6, 0.2.10) and AO-Personal-OS's client-documents rules. **No checker assertion:** a word list would have passed the pair Alex flagged.
+- **The copy, rewritten to the rule and approved as shown:**
+  - the problem plate is *Overruns nobody traces are paid for twice* over *…So the next estimate repeats the same mistakes and loses the money again.*;
+  - the solution plate is *Bid on evidence, keep the margin* over *…every new bid prices those risks up front.*;
+  - each of the four industry tabs now ends on that buyer's measure (margin on the next bid, costs the regulator allows, the next quote's margin, a fixed-fee engagement's margin);
+  - the solution plate states the effort (*confirm instead of rebuild*) rather than repeating *hours, not weeks*, which the tile and the case study already carry (the two-places rule).
+  - The pack brief took the same copy, and its feature list, deck, one-pager and executive summary were rebuilt and re-delivered (packaging repo 8056878, 668fb2f).
+- **Checks before the publish:** `node --check`; `sync-links`; `check-grammar` OK with its one standing warning; the deny-list sweep plus a sweep for the source engagement's names empty; the pack's clearance lint (`customer_site`) at 0 and its consistency check at 0 against the updated brief; no overflow on every changed route at 1440, 1280, 1024, 768, 375 and 320, the H1 two lines at 320; the console clean.
+- **Published** on Alex's word as **version 34** (1790870334-bb2a), on version 33, which no other session had touched. The live `config.js`, `links.js` and `content.js` differed from the tree only by this round's lines. Mapped: `data/content.js`, `data/config.js`, `data/links.js` (rebuilt), the four step frames, the poster and the walkthrough page. The listing shows 147 files, the two new ones live, and nothing unexpected; the read-back of `content.js` matches the tree (sha256 3b4638e9…).
+- **Open for Alex:** START-HERE §9, under §65.
+
+---
