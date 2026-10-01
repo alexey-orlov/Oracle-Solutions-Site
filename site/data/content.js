@@ -92,7 +92,8 @@ window.SITE_CONTENT = {
         "cx": { name: "Oracle Customer Experience (CX)", group: "connected", icon: "oracle-cx" },
         "fusion-erp": { name: "Oracle Fusion Cloud ERP", group: "connected", icon: "platform-oracle-ai-fusion" },
         "oracle-ai-database": { name: "Oracle AI Database", group: "platform", icon: "oracle-database" },
-        "primavera-p6": { name: "Oracle Primavera P6 Enterprise Project Portfolio Management", group: "connected", icon: "industry-construction" }
+        "primavera-p6": { name: "Oracle Primavera P6 Enterprise Project Portfolio Management", group: "connected", icon: "industry-construction" },
+        "aconex": { name: "Oracle Aconex", group: "connected", icon: "pattern-documents" }
       }
     },
     /* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
@@ -1385,7 +1386,8 @@ window.SITE_CONTENT = {
           { id: "oci", role: "GPU compute, storage" },
           { id: "oracle-ai-database", role: "Vector search over evidence" },
           { id: "primavera-p6", role: "Schedules and updates" },
-          { id: "fusion-erp", role: "Project costs" }
+          { id: "fusion-erp", role: "Project costs" },
+          { id: "aconex", role: "Contracts and correspondence" }
         ],
         diagram: {
           source: { name: "Oracle Primavera P6", note: "with cost reports, contracts and changes" },
