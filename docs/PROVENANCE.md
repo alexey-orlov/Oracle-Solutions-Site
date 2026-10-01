@@ -8166,3 +8166,41 @@ _The same session as §62, on Opus. Touched: `site/assets/site.css` (the tile bl
 - **Open for Alex:** none.
 
 ---
+
+## 64. Plan vs actual investigation rewritten from its pack, 2026-10-01
+
+_A session opened in AO-Personal-OS, on Opus, running the `oracle-packs` build for the pack behind this product (`Oracle-Packaging-Skills/packs/plan-vs-actual-investigation/`, brief confirmed at b843401). The plugin's listing cards are written for round 15; wherever they differ from round 25, the site's rules won, and the entry was edited in place. Touched: `site/data/content.js` (the product, its home card's area, three `shared.oracleProducts` items), `mail/catalog.json` (by `sync-links`), START-HERE §9. No contract change._
+
+- **The ask (Alex, 2026-10-01):** build the pack's six artifacts from the source engagement, using this listing as a secondary source where it was not obsolete. The listing is artifact 5 of 6.
+- **From the pack:**
+  - the one-liner, the problem and solution texts, the tile's three outcomes, eight features, the four steps' titles and texts, scope in and out;
+  - Use cases: construction, utilities, manufacturing and professional services. The pack's fifth industry, *Shipbuilding and defence programmes*, has no site key;
+  - the case study: re-pointed from *completed work packages* to *a live project's work packages*, with the comparison of own crews and subcontractors. Its story now names its own figure (*the hours-rather-than-weeks figure*) where round 11's said *the figure above*, and it ends on the estimate caveat. The home card's area follows;
+  - Technology: the strip from the pack's architecture. The source is Primavera P6, with cost reports, contracts and changes; the one destination is the report and evidence pack, not people; the engine is the NVIDIA AI-Q Blueprint; the platform is OCI with GPU compute, Kubernetes, Oracle AI Database and OCI Search with OpenSearch;
+  - Delivery: the pack's three tiers as six rows, with no price and no duration in a cell. The durations stay `shared.delivery`'s; the pack's 8-week proof of value sits inside 4–8 weeks.
+- **Kept from the live page:**
+  - the headline, the status note, the hero picture, the two metric tiles and the four step screens, which still match the steps' words;
+  - step 4's alt text lost its count (*7 of 32*), which the pack's clearance lint reads as an unsourced figure.
+- **Three names added to `shared.oracleProducts`:**
+  - *Oracle AI Database* (`oracle-ai-database`, platform, the database glyph). The source engagement's statement of work names *Oracle AI Database 26ai*, a different offer from *Oracle Autonomous AI Database*, which stays on Large docs;
+  - *Oracle Primavera P6 Enterprise Project Portfolio Management* (`primavera-p6`, connected, the construction glyph);
+  - *Oracle Aconex* (`aconex`, connected, the documents glyph). It was added at the preview: the source engagement reads raw Aconex exports, and the pack's anchor line names it.
+  - The widget now lists OCI, Oracle AI Database, P6, Fusion Cloud ERP and Aconex. The pack's fourth source, *Oracle Primavera Unifier*, stays off: the pack marks it inferred and the source case does not read it. Fusion Cloud ERP is inferred too, but it carries the costs, half of what the page measures.
+- **The metric tiles:** both are Estimated, as before.
+  - The second tile, *Teams that review every closed project* (from 1 in 10, sourced in §41.4), is outside the pack's metric set. It stays because a page needs two tiles with figures, and the pack's three measures have none until the proof of value reports.
+  - It was named in the review and approved as shown.
+- **Closed in START-HERE §9:**
+  - round 7's delivery sign-off: the pack brief confirms an 8-week proof of value;
+  - round 11's *the figure above*;
+  - Plan vs actual's share of §58's two items: its packages table and strip now come from its pack, and its database's name from the statement of work.
+- **Checks:**
+  - `node --check`; `sync-links`, which carries the new one-liner to `mail/catalog.json`; `check-grammar` OK, with its one standing warning;
+  - the deny-list sweep empty;
+  - the pack's clearance lint (`lint_artifact --channel customer_site`) at 0, and its consistency check at 0 across the entry, the feature list, the deck and the one-pager;
+  - the console clean;
+  - no horizontal overflow on the four tabs at 1440 or at 375, measured in the pane. Headless Chrome's own 375 capture lays the page out wider than 375, so it is not evidence.
+- **The review (Alex, 2026-10-01):** approved as shown in the screenshots of the four tabs and a phone view.
+- **Not published:** the publish waits for Alex's word (§6 of START-HERE).
+- **Open for Alex:** START-HERE §9, under §64.
+
+---
