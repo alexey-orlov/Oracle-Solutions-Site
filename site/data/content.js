@@ -1751,7 +1751,7 @@ window.SITE_CONTENT = {
       categoryChip: "Forecasting & optimization",
       facet: "oci-nvidia",
       oneLiner: "The same technicians complete more jobs a day, with less driving and waiting, on a four-week plan balanced across every zone.",
-      heroCaption: "What if dispatchers reviewed the plan, not built it?",
+      heroCaption: "What if the same team finished more jobs a day?",
       tags: ["Forecasting & optimization", "OCI + NVIDIA NeMo"],
       hero: {
         image: {
