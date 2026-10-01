@@ -711,7 +711,7 @@ window.SITE_CONTENT = {
         problemSolution: {
           problem: {
             headline: "The sales manager hears the news after the deal is gone",
-            text: "A merger or a plant opening: the sales manager hears once a rival has scoped the work, and nobody works out which other customers it touches. That revenue is lost."
+            text: "A merger or a plant opening: the sales manager hears once a rival is already quoting, and nobody works out which other customers it touches. That revenue is lost."
           },
           solution: {
             headline: "Win the work the news opens, keep the renewal",
@@ -817,7 +817,7 @@ window.SITE_CONTENT = {
             industry: "logistics",
             label: "Logistics & supply chain",
             image: "assets/img/industries/logistics.jpg",
-            problem: "A shipper announces a plant expansion or a new market, and the account team hears once the logistics has been scoped by a rival. Disruptions move the same way: a strike, a port closure or a supplier fire hits many accounts at once, and the ones nobody calls move that volume to another provider.",
+            problem: "A shipper announces a plant expansion or a new market, and the account team hears once a rival is already quoting the logistics. Disruptions move the same way: a strike, a port closure or a supplier fire hits many accounts at once, and the ones nobody calls move that volume to another provider.",
             solution: "One signal is matched to every shipper account it touches, with the move for each: warehousing, forwarding, an inbound lane or a reroute. Each is tied to a service you sell, scored and cited to its filing or article, so the team quotes before a rival does and disrupted volume stays with you."
           },
           {
