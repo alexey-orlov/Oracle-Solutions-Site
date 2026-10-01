@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="pack-spec" content="pack-spec sha256:2d6e56068b12 commit:b843401">
 <meta name="description" content="Interactive walkthrough on synthetic data: trace a project's overruns to their causes and records, have experts confirm them, and carry the lessons into the next bid.">
-<title>Plan vs actual investigation — interactive walkthrough</title>
+<title>Plan vs actual investigation walkthrough</title>
 <style>
 /* Plan vs actual investigation — walkthrough styles.
    The listing's product screens (shell A): dark sidebar, white top bar, pale
@@ -182,7 +182,7 @@ body.clean .app { min-height: 100vh; }
 .kpi-foot { font-size: 12px; color: var(--muted); line-height: 1.4; }
 .kpi-open { font-size: 12px; color: var(--primary); font-weight: 600; }
 .band-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: -4px 0 16px; flex-wrap: wrap; font-size: 13px; color: var(--text-2); }
-.band--compact { grid-template-columns: repeat(3, minmax(0, 1fr)); position: sticky; top: 0; z-index: 6; background: var(--ground); padding: 10px 0; margin-top: -10px; }
+.band--compact { grid-template-columns: repeat(3, minmax(0, 1fr)); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--ground); padding: 10px 0; margin-top: -10px; }
 body.tour-on .band--compact.tour-target { position: sticky; }
 .band--compact .kpi-tile { padding: 10px 12px; gap: 6px; }
 .band--compact .kpi-foot, .band--compact .kpi-open { display: none; }
@@ -277,7 +277,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
 .compare > div { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
 .compare b { display: block; font-size: 20px; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 
-.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 9px 16px; border-radius: 999px; font-size: 13px; box-shadow: var(--shadow-pop); z-index: 80; max-width: calc(100vw - 32px); text-align: center; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 9px 16px; border-radius: 999px; font-size: 13px; box-shadow: var(--shadow-pop); z-index: 80; max-width: calc(100vw - 32px); text-align: center; }
 
 /* ---------- the tour (engine contract) ---------- */
 .tour { position: fixed; z-index: 60; width: 306px; max-width: calc(100vw - 24px); transition: top .25s ease, left .25s ease; }
@@ -313,7 +313,7 @@ body.tour-on .band--compact.tour-target { position: sticky; }
 }
 @media (max-width: 980px) {
   .app { grid-template-columns: minmax(0, 1fr); }
-  .side { flex-direction: row; align-items: center; gap: 10px; padding: 10px 12px; overflow-x: auto; }
+  .side { flex-direction: row; align-items: center; gap: 10px; padding: 10px 16px; overflow-x: auto; }
   .brand { border: 0; padding: 0 8px 0 0; }
   .brand-text span, .side-foot { display: none; }
   .nav { flex-direction: row; padding: 0; }
@@ -321,8 +321,8 @@ body.tour-on .band--compact.tour-target { position: sticky; }
   .band, .band--compact, .split, .run, .g2 { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
-  .screen { padding: 16px 14px 32px; }
-  .topbar { padding: 10px 14px; }
+  .screen { padding: 16px 16px 32px; }
+  .topbar { padding: 10px 16px; }
   .srcs, .kv, .verdicts, .compare { grid-template-columns: minmax(0, 1fr); }
   .nav-item svg.i { display: none; }
   .demo-bar .hide-sm { display: none; }
@@ -1578,13 +1578,9 @@ body.tour-on .band--compact.tour-target { position: sticky; }
       var p = D.pkg(c.pkg);
       rows.push([c.pkg, p.name, c.title, c.kind, c.where, c.quote, c.conf.toFixed(2), c.risk, c.costK, c.days, S.decisions[c.id] || "to review", p.gaps]);
     });
-    var csv = rows.map(function (r) { return r.map(function (x) { var s = String(x); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(","); }).join("\n");
-    try {
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-      a.download = "building-b_evidence-pack_synthetic.csv";
-      if (!/[?&]tour=off/.test(location.search)) a.click();
-    } catch (e) { /* the preview stays on screen either way */ }
+    /* The export is mocked: the pack is rendered in the page in its real
+       columns, and no file leaves it. */
+    S.exportRows = rows.length - 1;
     S.exported = true; render();
     var x = $("#export"); if (x) x.scrollIntoView({ block: "nearest", behavior: "smooth" });
     toast("Evidence pack exported: " + confirmedCount() + " confirmed findings, each with its record.");
