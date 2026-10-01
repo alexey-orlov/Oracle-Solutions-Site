@@ -136,7 +136,7 @@ function productFacets(p) {
 /* The products with an interactive walkthrough under site/demo/. The
    Demo badge and the Artifacts filter read the walkthrough link (links.json
    `interactiveDemo` since round 12), not the video flag. */
-var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-system-erp-qa", "fleet-route-optimization", "repair-or-replace-decisions", "account-insights"];
+var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-system-erp-qa", "fleet-route-optimization", "repair-or-replace-decisions", "account-insights", "plan-vs-actual-investigation"];
 /* Round 4, T1: only these two carry the muted "in preparation" status line;
    every other product's state is told by its availability badges. */
 var UNPACKAGED = ["case-evidence-collection", "plan-vs-actual-investigation"];

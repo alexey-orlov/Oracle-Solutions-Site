@@ -61,7 +61,7 @@ window.SITE_CONFIG = {
     "plan-vs-actual-investigation": {
       marketplace: false,
       marketplaceUrl: "",
-      videoPoster: "",
+      videoPoster: "assets/img/posters/plan-vs-actual-investigation.jpg",
       successStoryUrl: ""
     },
     "large-document-extraction": {

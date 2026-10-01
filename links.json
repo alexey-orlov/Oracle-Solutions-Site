@@ -38,8 +38,8 @@
       "onePager": "https://softserveinc-my.sharepoint.com/:b:/p/olekorlov/IQCnTBWuVsWdSKx7E4a-qsT6Aa0L2LMY9xujnhIyWQkqWeI?e=NzA5Ki",
       "salesDeck": "https://softserveinc-my.sharepoint.com/:p:/p/olekorlov/IQDyUh8FRGtqS71NLvfM_UtwAeuJ9tUMA15UxM9Widitpdw?e=i82wqR",
       "featureList": "https://softserveinc-my.sharepoint.com/:w:/p/olekorlov/IQDPtjvtGhncS67UFk-3hLUgAbLMlRLrSI6V1GD3-8Yt_68?e=WRmga6",
-      "interactiveDemo": "",
-      "interactiveDemoArtifact": "",
+      "interactiveDemo": "demo/plan-vs-actual-investigation/index.html",
+      "interactiveDemoArtifact": "https://claude.ai/artifact/GFLSz79R3YePG9yiw8LezD",
       "video": ""
     },
     "case-evidence-collection": {

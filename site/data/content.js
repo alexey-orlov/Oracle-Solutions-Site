@@ -1271,7 +1271,7 @@ window.SITE_CONTENT = {
             text: "Schedule, cost, contract and change exports load as they are, with every record's file and version kept, and each source checked for completeness.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-1.jpg",
-              alt: "The imports screen: four sources loaded, 96% resolved, 4% listed as gaps."
+              alt: "The imports screen: four sources loaded and checked for completeness and plan quality."
             },
             features: ["Schedule, cost, contract and change exports loaded with their origin"]
           },
@@ -1281,7 +1281,7 @@ window.SITE_CONTENT = {
             text: "Every record resolves to project, area and work package; cost and dates line up against the plan, and what cannot be resolved is listed with its reason.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-2.jpg",
-              alt: "The packages table: façade package 38% over cost and nine weeks late."
+              alt: "The packages table under the value band: façade package 38% over cost, nine weeks late."
             },
             features: [
               "Records mapped to project, area and work package, gaps listed",
@@ -1295,7 +1295,7 @@ window.SITE_CONTENT = {
             text: "Each material variance comes with its candidate causes (a change order, a design delay, a contractor change), each cited to the document behind it.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-3.jpg",
-              alt: "The façade package's causes: change order CO-22 cited to contract page 31."
+              alt: "The façade's change order CO-22, cited to clause 14.3 on contract page 31."
             },
             features: [
               "Candidate causes cited to the record, with confidence and risk owner",
@@ -1308,7 +1308,7 @@ window.SITE_CONTENT = {
             text: "Planners confirm or reject each cause, and the causes that recur across packages become the lessons for the next bid.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-4.jpg",
-              alt: "Causes confirmed or rejected, and a pattern that recurs across packages."
+              alt: "Expert review: causes confirmed, one rejected, and a disputed cause held for the decision owner."
             },
             features: [
               "Experts confirm or reject each cause in a review app",
