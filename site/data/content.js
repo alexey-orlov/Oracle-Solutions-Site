@@ -90,7 +90,9 @@ window.SITE_CONTENT = {
         "ai-database": { name: "Oracle Autonomous AI Database", group: "platform", icon: "oracle-database" },
         "fusion-field-service": { name: "Oracle Fusion Field Service", group: "connected", icon: "oracle-field-service" },
         "cx": { name: "Oracle Customer Experience (CX)", group: "connected", icon: "oracle-cx" },
-        "fusion-erp": { name: "Oracle Fusion Cloud ERP", group: "connected", icon: "platform-oracle-ai-fusion" }
+        "fusion-erp": { name: "Oracle Fusion Cloud ERP", group: "connected", icon: "platform-oracle-ai-fusion" },
+        "oracle-ai-database": { name: "Oracle AI Database", group: "platform", icon: "oracle-database" },
+        "primavera-p6": { name: "Oracle Primavera P6 Enterprise Project Portfolio Management", group: "connected", icon: "calendar" }
       }
     },
     /* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
@@ -422,7 +424,7 @@ window.SITE_CONTENT = {
       {
         id: "plan-vs-actual-engagement",
         descriptor: "A major construction and engineering contractor",
-        area: "Plan versus actual across completed work packages",
+        area: "Plan versus actual across a live project's work packages",
         industry: "construction",
         status: "in-preparation",
         metric: { value: "Variances traced", label: "every cost and schedule overrun explained, in hours of expert time rather than weeks" },
@@ -1189,7 +1191,7 @@ window.SITE_CONTENT = {
       category: "deep-research",
       categoryChip: "Deep research & investigation",
       facet: "oci-nvidia",
-      oneLiner: "See which finished projects and orders went over budget or ran late, by how much and why, across the whole portfolio.",
+      oneLiner: "Stop the next project repeating the last one's overruns: project controllers see each work package's cost and schedule against plan, with the cause and the record behind every gap.",
       statusNote: "In preparation — scoping conversations are open.",
       tags: ["Deep research & investigation", "OCI + NVIDIA NeMo"],
       hero: {
@@ -1201,20 +1203,20 @@ window.SITE_CONTENT = {
       },
       tile: {
         outcomes: [
-          "Plan-versus-actual at the level of a project, work package, order, engagement or campaign",
-          "Variances and candidate drivers presented as evidence-backed candidates, never as conclusions",
-          "Unresolved records are reported as coverage gaps, each with the reason it could not be resolved"
+          "Each work package's cost and schedule against plan, month by month",
+          "Every overrun's candidate causes, cited to the record behind them",
+          "Own crews compared with subcontractors on the same trade"
         ]
       },
       overview: {
         problemSolution: {
           problem: {
             headline: "One overrun takes weeks of expert time to explain",
-            text: "A project controller holds the schedule tool, the cost reports, the progress reports and the scanned contracts, none of them joined. One closed package takes a week to reconstruct."
+            text: "When a big project overruns, project controllers can't say which work packages caused it or why: schedules, costs and contracts don't link."
           },
           solution: {
-            headline: "Every variance traced to its record, in hours",
-            text: "Each package's plan and actual are set side by side, and every cost or schedule gap comes back with its likely causes and the document behind each. Your experts confirm."
+            headline: "Confirm the cause, don't hunt for it",
+            text: "Project controllers review each package's plan against actual with its likely causes and the document behind each; their experts confirm, and confirmed causes become the next bid's lessons."
           }
         },
         metrics: [
@@ -1251,63 +1253,65 @@ window.SITE_CONTENT = {
           }
         ],
         features: [
-          "Ingest and profile approved static exports, preserving lineage",
-          "Configuration-driven mapping to project, zone and unit level",
-          "Unresolved records reported as coverage gaps, with their reason",
-          "Plan-versus-actual comparison at unit level, on cost and schedule",
-          "Variances, recurring patterns and candidate drivers as evidence-backed candidates",
-          "An evidence layer over documents: extraction, embeddings, entity retrieval",
-          "A purpose-built lightweight review app for findings, citations and gaps"
+          "Schedule, cost, contract and change exports loaded with their origin",
+          "Records mapped to project, area and work package, gaps listed",
+          "Cost and schedule against plan, month by month",
+          "Variances split by scope, rate, quantity and timing",
+          "Candidate causes cited to the record, with confidence and risk owner",
+          "Own crews compared with subcontractors on the same trade",
+          "Experts confirm or reject each cause in a review app",
+          "Recurring patterns, with the sample stated, in an evidence pack"
         ],
-        industriesNote: "Wherever completed units of work — projects, work packages, orders, engagements, campaigns — have to be compared against what was planned for them.",
+        industriesNote: "Wherever finished work (projects, work packages, orders, engagements) has to be explained against the plan it was priced on.",
         steps: [
           {
             n: 1,
             title: "Exports come in",
-            text: "Schedule, cost and progress exports and the scanned contracts are loaded as they are, with every file's origin kept.",
+            text: "Schedule, cost, contract and change exports load as they are, with every record's file and version kept, and each source checked for completeness.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-1.jpg",
               alt: "The imports screen: four sources loaded, 96% resolved, 4% listed as gaps."
             },
-            features: ["Ingest and profile approved static exports, preserving lineage"]
+            features: ["Schedule, cost, contract and change exports loaded with their origin"]
           },
           {
             n: 2,
             title: "Package by package",
-            text: "Every line is resolved to project, zone and unit of work; whatever cannot be resolved is listed as a gap, with the reason.",
+            text: "Every record resolves to project, area and work package; cost and dates line up against the plan, and what cannot be resolved is listed with its reason.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-2.jpg",
               alt: "The packages table: façade package 38% over cost and nine weeks late."
             },
             features: [
-              "Configuration-driven mapping to project, zone and unit level",
-              "Unresolved records reported as coverage gaps, with their reason"
+              "Records mapped to project, area and work package, gaps listed",
+              "Cost and schedule against plan, month by month",
+              "Variances split by scope, rate, quantity and timing"
             ]
           },
           {
             n: 3,
             title: "The record says why",
-            text: "Plan and actual are compared on cost and schedule, and each gap comes with its candidate causes: a change order, weather days, rework, each cited.",
+            text: "Each material variance comes with its candidate causes (a change order, a design delay, a contractor change), each cited to the document behind it.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-3.jpg",
               alt: "The façade package's causes: change order CO-22 cited to contract page 31."
             },
             features: [
-              "Plan-versus-actual comparison at unit level, on cost and schedule",
-              "Variances, recurring patterns and candidate drivers as evidence-backed candidates"
+              "Candidate causes cited to the record, with confidence and risk owner",
+              "Own crews compared with subcontractors on the same trade"
             ]
           },
           {
             n: 4,
             title: "Experts confirm",
-            text: "Your planners confirm or reject each one, and the causes that recur across packages surface as the lesson.",
+            text: "Planners confirm or reject each cause, and the causes that recur across packages become the lessons for the next bid.",
             shot: {
               full: "assets/img/steps/plan-vs-actual-investigation-4.jpg",
               alt: "Causes confirmed or rejected; the pattern recurs in 7 of 32 packages."
             },
             features: [
-              "An evidence layer over documents: extraction, embeddings, entity retrieval",
-              "A purpose-built lightweight review app for findings, citations and gaps"
+              "Experts confirm or reject each cause in a review app",
+              "Recurring patterns, with the sample stated, in an evidence pack"
             ]
           }
         ],
@@ -1316,53 +1320,60 @@ window.SITE_CONTENT = {
             industry: "construction",
             label: "Construction",
             image: "assets/img/industries/construction.jpg",
-            problem: "Historical package performance is spread across a schedule tool, cost reports, progress reports and scanned contracts, at inconsistent granularity. Nobody can say reliably which work packages deviated from plan, by how much, and what the record says about why.",
-            solution: "The records are reconstructed into a consistent package-level view: plan versus actual on cost and schedule, supported variances, recurring patterns and candidate drivers — each material finding tied to source evidence and validated by your own planning experts. Whatever could not be resolved is reported as a coverage gap."
+            problem: "A contractor picks its own crews or a subcontractor for every work package, but after an overrun nobody can say which packages, under which choice, caused it. Schedule updates, monthly cost reports and the variations log link only by package name.",
+            solution: "Each package's overrun comes back with its likely causes (a variation, a design delay, a contractor change), each cited to the record. Packages built by own crews are compared with subcontracted ones before the next bid is priced."
+          },
+          {
+            industry: "utilities",
+            label: "Utilities",
+            image: "assets/img/industries/utilities.jpg",
+            problem: "A utility's capital programme runs thousands of similar jobs a year (poles, mains, substations), and unit costs drift above estimate. Nobody knows which work types or crews drove it.",
+            solution: "Jobs are compared with their estimates by work type and region, own crews against contractor crews. Each overrun comes back with its cited cause, ready for the regulator's review."
           },
           {
             industry: "manufacturing",
             label: "Manufacturing",
             image: "assets/img/industries/manufacturing.jpg",
-            problem: "Completed orders are measured against what was planned for them only in aggregate. The ledger shows the gap; the systems that could explain it — scheduling, cost, progress reporting — are not joined to it.",
-            solution: "Every order in the sample is compared plan against actual at unit level, and the cost and schedule gaps are traced back to the records that explain them. Findings arrive as evidence-backed candidates for a reviewer to confirm, each with its analytical basis and a review status."
+            problem: "An equipment maker quotes every custom order, and when orders finish over their quote, the estimate, the job cost and the engineering changes sit in different systems. Nobody can say why.",
+            solution: "Each closed order is compared with its quote, operation by operation. Every overrun comes back with its cause (an engineering change, rework, a late part) and whether outside processing paid off."
           },
           {
             industry: "professional-services",
             label: "Professional services",
             image: "assets/img/industries/professional-services.jpg",
-            problem: "Closed engagements are reviewed one at a time, usually by the person who ran them. Where effort and schedule diverged from the plan is known anecdotally, and the pattern across a portfolio is never assembled.",
-            solution: "The whole sample is swept at once: plan versus actual per engagement, the recurring patterns across them, and the candidate drivers assembled from the systems that hold the effort, the schedule and the outcome. A subject-matter expert validates before anything is acted on."
+            problem: "A services firm's engagement ends below its planned margin. The project ledger shows the gap, but why (scope creep, the staffing mix, client delays) sits in change requests and email.",
+            solution: "Each closed engagement's overrun is traced to the change requests, staffing and correspondence behind it, so the next bid prices the scope and the staffing mix on evidence."
           }
         ],
         scope: {
           in: [
-            "One anchor portfolio or project, one agreed sample",
-            "Approved static exports ingested and profiled with lineage preserved",
-            "Records resolved to the lowest reliable unit level, with a coverage-gap report",
-            "Plan-versus-actual comparison on cost and schedule, at unit level",
-            "Evidence-backed variances, recurring patterns and candidate drivers, expert-reviewed"
+            "One project's exports and the work packages they cover",
+            "Records resolved to the lowest reliable level, with a gap report",
+            "Plan against actual on cost and schedule, month by month",
+            "Cited candidate causes, with confidence and who carried the risk",
+            "Expert review, and own crews compared with subcontractors"
           ],
           out: [
-            "Ranking suppliers, selecting vendors, or making planning decisions",
-            "Enterprise-wide normalization or master-data remediation",
-            "Cross-project benchmarking beyond the agreed sample",
-            "Live source feeds in place of static exports — after the Jumpstart",
-            "Contracting or packaging decisions taken on the proof’s output"
+            "Ranking or selecting subcontractors, or making the packaging decision",
+            "Live connections to scheduling, cost or document systems",
+            "Rebuilding missing schedule updates",
+            "Claims or entitlement analysis",
+            "Forecasting a live project's outcome"
           ]
         },
         caseStudy: {
           descriptor: "A major construction and engineering contractor",
-          area: "Plan versus actual across completed work packages",
+          area: "Plan versus actual across a live project's work packages",
           industry: "construction",
           status: "in-preparation",
           metrics: [
-            { value: "Variances traced", label: "each to its schedule, cost or contract source, in hours of expert time rather than weeks" }
+            { value: "Variances traced", label: "each to its schedule, cost or change record, in hours of expert time rather than weeks" }
           ],
-          story: "A first engagement is being prepared, scoped to one use case on one completed project sample — the customer’s own schedule, cost and contract exports. It will run on Oracle Cloud Infrastructure, with NVIDIA AI-Q over an evidence layer, reconstructing those records into one package-level view of plan versus actual; the figure above is an estimate for that engagement, set against the expert hours the same analysis takes today; illustrative, not contractual.",
+          story: "A first engagement is being prepared on one live project's work packages, from the customer's own schedule, cost and change exports, with packages its own crews delivered compared with subcontracted ones. The hours-rather-than-weeks figure is an estimate, set against the expert time the same analysis takes today.",
           scope: [
             { label: "Stage", value: "Proof of value in preparation" },
-            { label: "Scope", value: "One use case, one completed project sample" },
-            { label: "Data footprint", value: "Schedule, cost and contract exports" }
+            { label: "Scope", value: "One use case, one project's work packages" },
+            { label: "Data footprint", value: "Schedule, cost, contract and change exports" }
           ],
           ndaLine: "Customer under NDA · results follow at the end of the proof of value",
           downloadLabel: "Download the case summary"
@@ -1371,70 +1382,80 @@ window.SITE_CONTENT = {
       technology: {
         line: "Every finding is tied to the record it came from; anything unresolved is reported as a coverage gap.",
         oracle: [
-          { id: "oci", role: "GPU compute, zoned storage" },
-          { id: "ai-database", role: "Vector search over evidence" }
+          { id: "oci", role: "GPU compute, storage" },
+          { id: "oracle-ai-database", role: "Vector search over evidence" },
+          { id: "primavera-p6", role: "Schedules and updates" },
+          { id: "fusion-erp", role: "Project costs" }
         ],
         diagram: {
-          source: { name: "Approved exports", note: "schedule, cost, progress reports; contracts, layouts" },
+          source: { name: "Oracle Primavera P6", note: "with cost reports, contracts and changes" },
           destinations: [
-            { name: "Planners", note: "confirm or reject each finding" }
+            { name: "Report and evidence pack", note: "for experts to confirm" }
           ],
-          toPlatform: "approved static exports",
-          fromPlatform: "unit-level view: variances, drivers, coverage gaps",
-          platform: { label: "Oracle Cloud Infrastructure", services: "GPU compute, zoned Object Storage, Oracle Autonomous AI Database, OpenSearch" },
-          app: { name: "Plan vs actual investigation by SoftServe", note: "conformed model, comparison, drivers, review app" },
-          engine: { name: "NVIDIA AI-Q", note: "reasoning, embedding and reranking" }
+          toPlatform: "baselines, costs, contracts and changes",
+          fromPlatform: "confirmed causes and coverage gaps",
+          platform: { label: "Oracle Cloud Infrastructure", services: "GPU compute, Kubernetes, Oracle AI Database, OCI Search with OpenSearch" },
+          app: { name: "Plan vs actual investigation by SoftServe", note: "each variance traced to its cause" },
+          engine: { name: "NVIDIA AI-Q Blueprint", note: "cited search and reasoning" }
         }
       },
       delivery: {
         scope: [
-          "One anchor portfolio or project, one agreed sample, approved exports: a unit-level plan-versus-actual view.",
-          "Live source feeds instead of static exports, extension beyond the anchor sample, production hardening.",
-          "More portfolios and unit types, regional variance rules, multi-entity evidence retention."
+          "One project's exports: each work package against plan, causes cited for expert review.",
+          "Live feeds, with lessons written back to planning.",
+          "The whole portfolio, compared against completed history."
         ],
         rows: [
           {
-            area: "Ingest & profile",
+            area: "Records in",
             cells: [
-              { mark: "partial", text: "Approved static exports for one anchor portfolio or project, one agreed sample; ingestion with lineage" },
-              { mark: "included", text: "Live source feeds in place of static exports" },
-              { mark: "advanced", text: "More portfolios" }
+              { mark: "partial", text: "File exports from one project: schedules, cost, contracts, changes" },
+              { mark: "included", text: "Live feeds from the scheduling, cost and document systems" },
+              { mark: "advanced", text: "Every project in the portfolio, refreshed monthly" }
             ]
           },
           {
-            area: "Map & resolve",
+            area: "Plan and actual lined up",
             cells: [
-              { mark: "included", text: "The conformed model and the mapping layer, resolved to the lowest reliable unit" },
-              { mark: "included", text: "Extension beyond the anchor sample" },
-              { mark: "advanced", text: "More unit types" }
+              { mark: "partial", text: "Mapping and conventions for one project's packages" },
+              { mark: "included", text: "Activities matched across re-baselines; unit hierarchy configured" },
+              { mark: "advanced", text: "One mapping across business units and regions" }
             ]
           },
           {
-            area: "Compare & explain",
+            area: "Variances measured",
             cells: [
-              { mark: "included", text: "Plan-versus-actual comparison: variances, patterns and candidate drivers with their evidence" },
-              { mark: "included", text: "The same comparison on live feeds" },
-              { mark: "advanced", text: "Regional variance rules" }
+              { mark: "included", text: "Cost and schedule against plan, drift, split and materiality" },
+              { mark: "included", text: "The same, refreshed with every monthly update" },
+              { mark: "advanced", text: "Thresholds per region and business unit" }
             ]
           },
           {
-            area: "Review & evidence",
+            area: "Causes traced",
             cells: [
-              { mark: "included", text: "The review app and the coverage-gap report; every material finding tied to the record it came from" },
-              { mark: "included", text: "The review app on live findings" },
-              { mark: "advanced", text: "Multi-entity evidence retention" }
+              { mark: "included", text: "Cited candidate causes; own crews against subcontractors" },
+              { mark: "included", text: "The same, refreshed monthly, with the customer's own cause list" },
+              { mark: "advanced", text: "Causes compared across projects and contractors" }
             ]
           },
           {
-            area: "Deployment",
+            area: "Expert review",
             cells: [
-              { mark: "partial", text: "Your own tenancy, with stage gates at framework readiness, analytical review and evidence output" },
-              { mark: "included", text: "Production hardening" },
-              { mark: "advanced", text: "Rolled out across entities" }
+              { mark: "partial", text: "Confirm or reject in the review app" },
+              { mark: "included", text: "Record-level access; review inside the monthly controls routine" },
+              { mark: "advanced", text: "Review across business units, with the decision trail" }
+            ]
+          },
+          {
+            area: "Lessons forward",
+            cells: [
+              { mark: "partial", text: "Insight report and evidence pack" },
+              { mark: "included", text: "Lessons written back to planning and estimating" },
+              { mark: "advanced", text: "Comparison against completed history; groups of small jobs" }
             ]
           }
         ],
-        advanced: "multi-portfolio / advanced"
+        advanced: "portfolio-wide / advanced"
       }
     },
     {
