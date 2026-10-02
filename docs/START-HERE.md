@@ -468,7 +468,7 @@ Exact commands are in HANDOFF §4.
 - **§67 (Large docs from its pack):**
   - **the *Proven* chip's tooltip** reads *Measured end to end during a completed proof of value, on the customer's own data*, while Large docs' tile now says the review comes after. Dropping *end to end* from `shared.metricKinds.proven.tooltip` is one string, and Workforce's *~30 min*, the only other Proven tile, loses nothing by it; or the tile takes another kind;
   - **three clearance-lint findings stand** in lines the round left alone: the *Proven* kind itself (the pack calls a proof-of-value figure *proven* only once delivered and accepted), *Jumpstart* (the site's tier name), and *Production hardening* in the scope-out list;
-  - **the pack's open questions that reach this page:** how long the review takes (untimed in the proof of value), whether agreements over 40 pages hold the 5–15 minutes, and whether the delivered review screen is what Integration ships. The brief lists all eight.
+  - **the pack's open questions that reach this page:** how long the review takes (untimed in the proof of value), whether an agreement of 60 to 100 pages holds the 5–15 minutes (the dry run's ran up to 40), and what field accuracy the proof reached (only the average confidence is on record). The brief lists all eight.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
