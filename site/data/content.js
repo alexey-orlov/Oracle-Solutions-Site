@@ -1664,78 +1664,70 @@ window.SITE_CONTENT = {
           { id: "ai-database", role: "Stores extracted fields" }
         ],
         diagram: {
-          source: { name: "Contract repository", note: "source PDFs" },
+          source: { name: "Contract repository", note: "PDF or Word, native or scanned" },
           destinations: [
             { name: "Cost / ERP systems", note: "rates & terms" }
           ],
-          toPlatform: "source contracts, field rules",
-          fromPlatform: "extracted data, rates & terms (cited)",
-          platform: { label: "Oracle Cloud Infrastructure", services: "Dedicated AI cluster (H100), Oracle Autonomous AI Database" },
-          app: { name: "Large docs processing and review by SoftServe", note: "extraction pipeline and reviewer UI" },
-          engine: { name: "NVIDIA AI-Q", note: "GPU-accelerated extraction, vision-language models, retrieval" }
+          toPlatform: "agreements, leases and policies",
+          fromPlatform: "approved rates and terms, cited",
+          platform: { label: "Oracle Cloud Infrastructure", services: "Dedicated AI Cluster (H100), OKE, Oracle Autonomous AI Database, Object Storage" },
+          app: { name: "Large docs processing and review by SoftServe", note: "extraction pipeline and review screen" },
+          engine: { name: "NVIDIA AI-Q Blueprint", note: "model serving and orchestration" }
         }
       },
       delivery: {
         scope: [
-          "Limited setup with manual upload to prove value.",
-          "Full setup, integration and launch for one document type.",
-          "Scaling across document types, volume and business units."
+          "One document type, manual upload, core fields cited and reviewed.",
+          "Live for one type: repository in, target system out.",
+          "Several document types, volumes and business units."
         ],
         rows: [
           {
-            area: "Document classification & routing",
+            area: "Documents in",
             cells: [
-              { mark: "included", text: "Document-type gate and page routing for one target type" },
-              { mark: "included", text: "Classification and routing embedded in the workflow" },
-              { mark: "advanced", text: "Multi-document-type classification & routing" }
+              { mark: "partial", text: "Manual upload of one document type, native or scanned" },
+              { mark: "included", text: "Picked up from the repository" },
+              { mark: "advanced", text: "Several document types and languages" }
             ]
           },
           {
-            area: "Extraction rules & field schema",
+            area: "Fields extracted",
             cells: [
-              { mark: "partial", text: "Core fields for one document type with the most common rules (header, services, base rates)" },
-              { mark: "included", text: "Full field schema with all business rules (ranges, parent-child rates, formulas, discounts, suspensions)" },
-              { mark: "advanced", text: "Multiple document-type schemas and rule sets" }
+              { mark: "partial", text: "Core fields and the most common rules for one type" },
+              { mark: "included", text: "Full schema: derived charges, formulas, amendments" },
+              { mark: "advanced", text: "A schema per document type" }
             ]
           },
           {
-            area: "Confidence scoring & validation",
+            area: "Exceptions flagged",
             cells: [
-              { mark: "partial", text: "Per-value confidence and core validators with reviewer warnings" },
-              { mark: "included", text: "Full validator suite with coverage audit and deterministic post-processing" },
-              { mark: "advanced", text: "Type-specific validation and tuning per document type" }
+              { mark: "partial", text: "Confidence, coverage and core rule checks" },
+              { mark: "included", text: "Full rule set, reference lists, required fields" },
+              { mark: "advanced", text: "Checks against related documents" }
             ]
           },
           {
-            area: "Human-in-the-loop review UI",
+            area: "Review",
             cells: [
-              { mark: "included", text: "Split-view reviewer (source beside data), source-page links, approve, edit or reject, export gating" },
-              { mark: "included", text: "Reviewer UI with feedback loop and audit trail, integrated in the workflow" },
-              { mark: "advanced", text: "Multiple workflows and roles across business units" }
+              { mark: "included", text: "Source beside the rows; approve, edit, reject; edits logged" },
+              { mark: "included", text: "Roles, queues, search and filters" },
+              { mark: "advanced", text: "Several teams and workflows" }
             ]
           },
           {
-            area: "Accuracy benchmarking & KPIs",
+            area: "Data handed over",
             cells: [
-              { mark: "included", text: "Row and field accuracy against annotated ground truth; effort-savings read" },
-              { mark: "included", text: "Accuracy KPIs with production feedback and custom analytics" },
-              { mark: "advanced", text: "Multiple type-specific KPI sets" }
+              { mark: "partial", text: "Spreadsheet or JSON in the target layout" },
+              { mark: "included", text: "Loaded into the target system" },
+              { mark: "advanced", text: "Several target systems" }
             ]
           },
           {
-            area: "Source / target integration",
+            area: "Accuracy and operations",
             cells: [
-              { mark: "none", text: "Manual upload; export to file (JSON, CSV or XLSX, against a reference template)" },
-              { mark: "included", text: "In: contract repository; out: cost / ERP systems; up to five typical integrations" },
-              { mark: "advanced", text: "Multiple type-specific integration landscapes" }
-            ]
-          },
-          {
-            area: "Deployment",
-            cells: [
-              { mark: "partial", text: "Sandboxed (IP whitelisting and bastion)" },
-              { mark: "included", text: "Enterprise-integrated (dedicated landing zone, IAM, observability)" },
-              { mark: "advanced", text: "Enterprise-integrated, multi-zone" }
+              { mark: "partial", text: "Accuracy against hand-keyed answers; a sandboxed tenancy" },
+              { mark: "included", text: "Corrections loop; production tenancy, single sign-on, recovery" },
+              { mark: "advanced", text: "Telemetry per document type" }
             ]
           }
         ],
