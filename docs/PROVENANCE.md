@@ -8265,3 +8265,33 @@ _The same session as §64–§65, on Opus. Two Fable copy agents (four products 
 - **Open for Alex:** START-HERE §9, under §66.
 
 ---
+
+## 67. Large docs from its pack: the listing says what was measured, and its kit is built and linked, 2026-10-02
+
+_A session opened in AO-Personal-OS, on Opus, running the `oracle-packs` build for the pack behind this product (`Oracle-Packaging-Skills/packs/large-document-extraction/`, brief confirmed at be8befd; plugin 0.2.10, then 0.2.11, which the session released with a deck-builder fix). Fable ran three steps, the editorial passes on the deck, the one-pager and the executive summary; the listing copy is the main session's. Touched: `site/data/content.js` (the product, and its home case card's label), `links.json` (the three kit documents), START-HERE (the current-as-of line, §9). No contract change._
+
+- **The ask (Alex, 2026-10-02):** all of the pack's artifacts, relying on this listing and its walkthrough, with Vlad Butenko's earlier drafts in the pack's OneDrive folder as input (*"They don't fit style, structure and might also have flaws content-wise"*); only very important questions; any listing change confirmed first; the walkthrough as one HTML file, shared in OneDrive.
+- **Why the listing moved:** the delivery's own documents claim less than the page did.
+  - The 9 June dry run measured **5–15 minutes of extraction on agreements of up to 40 pages**. *60–100 pages* was the architecture's estimate, the reviewer's check was never timed, and operators still keyed the checked rates into the cost system, which has no import. The page said *60 to 100 pages, end to end, the reviewer's check included*.
+  - The case ran in a SoftServe-controlled OCI environment, not the customer's tenancy; the reviewer confirms every row, and the flags only guide attention; retrieval was not delivered; confidence is scored per row.
+- **Approved by Alex (widget, 2026-10-02):** the figure restated as measured; the corrected plates; all four Use cases tabs as proposed; and, under *Also apply*, the Delivery tab, the Technology tab, the kit email's links and the publish.
+- **Before → after:**
+
+| Where | Before | After |
+|---|---|---|
+| Overview tile | *Contract to system-ready data*; *minutes per 60 to 100-page agreement*; *60 to 100 pages, end to end, the reviewer's check included.* | *Rates ready for review*; *minutes per agreement of up to 40 pages*; *An agreement of up to 40 pages, extracted and cited; the review comes after.* The figure, the chip and the bars are kept |
+| Catalog tile | *A 60–100-page contract extracted end to end in 5–15 minutes, down from 3–5 days* | *A contract's rates extracted and cited in 5–15 minutes, ready for review* |
+| Hero caption | *100-page contract in minutes.* | *Contract rates ready in minutes.* |
+| Home case card, case study | *60–100 pages into the cost system* and *to extract 60–100 pages end to end*; the story's *customer's own … tenancy* and *Measured end to end* | *a contract's rates extracted and cited for review* and *to extract and cite a contract's rates, ready for review*; the story without the tenancy, *Measured … of up to 40 pages … the review on top* |
+| Plates | *Few people can …*; *…checks the flagged ones and approves; rates reach the cost system before the first invoice arrives.* | *Few can read them …*; *…confirms each, correcting the flagged ones, so the first invoice is checked against the signed rate.* |
+| Features, step 3 | *Per-field confidence scoring …* | *Per-row confidence scoring …* |
+| Use cases | travel's solution in tool words (confidence score, PDF, export); *Professional services* on master agreements; insurance with claim packs; financial services with annual reports | travel's in business words; *Every industry* (`cross-industry`) on leases and supplier contracts, ending on the missed break date and the lease liability the auditors test; insurance on policy schedules and endorsements; financial services on loan agreements and private borrowers' statements |
+| Technology strip | *source PDFs*; *source contracts, field rules*; *extracted data, rates & terms (cited)*; *NVIDIA AI-Q*, *GPU-accelerated extraction, vision-language models, retrieval*; *reviewer UI* | *PDF or Word, native or scanned*; *agreements, leases and policies*; *approved rates and terms, cited*; *NVIDIA AI-Q Blueprint*, *model serving and orchestration*; *review screen*; OKE and Object Storage added to the services |
+| Delivery | seven rows from Vlad's packages slide, in build words | the brief's six rows in buyers' words (*Documents in*, *Fields extracted*, *Exceptions flagged*, *Review*, *Data handed over*, *Accuracy and operations*), the same marks per tier; the three scope lines from the brief |
+
+- **The kit** (outside this repo, in OneDrive `Oracle AI & Data Solutions/Large Document Extraction and review package/`, beside the recording): the feature list (docx), the sales deck, the one-pager (PDF, with its HTML), the executive summary (internal) and the walkthrough as one self-contained HTML file. `links.json` › `large-document-extraction` now holds `onePager`, `salesDeck` and `featureList`, *People in SoftServe* view links; `interactiveDemoArtifact` stays the claude.ai page, and the walkthrough's OneDrive file has its own *People in SoftServe* link, which no key holds. The deck reached the cloud only after it was copied again: the sync client had stopped part-way through its first upload.
+- **Checks:** `node --check`; `sync-links` OK; `check-grammar` OK with its one standing warning; the deny-list sweep empty; the pack's clearance lint (`customer_site`) at three findings, all in lines this round left alone (*Proven*, ART401; *Jumpstart*, ART402, the site's tier name over the spec's; *Production hardening* in scope out, ART204), and its consistency check at the tier name only; the walkthrough makes no time or page-count claim about the product; every changed route at 1440, 1280, 1024, 768, 375 and 320 without overflow; the console clean.
+- **Published** on Alex's word (*Publish when done*) as **version 36** (1790952325-5770), on version 35, which no other session had touched: the live `content.js` matched a08dfe1 byte for byte, and every hunk between it and the tree was this round's (the home card's label and the product block). `links.js` would not change, since the kit links never leave `links.json`; the wrapper matched the live page, and `cross-industry.jpg` was already live. Mapped: `data/content.js` only. The read-back matches the tree (sha256 c851341c…).
+- **Open for Alex:** START-HERE §9, under §67.
+
+---
