@@ -1598,28 +1598,28 @@ window.SITE_CONTENT = {
             label: "Travel & transport",
             image: "assets/img/industries/travel-transport.jpg",
             problem: "Ground-handling agreements run to 60–100 pages, and their rate cards are keyed into the cost system by hand — 3–5 days per contract, about a month to bring a new station online. A rate keyed wrong surfaces late, at invoice matching, and ground handling carries 7–12% of an airline's direct operating cost.",
-            solution: "Rate-card pricing is extracted from the agreement with a confidence score and a page citation on every value, and a reviewer validates it beside the source PDF before export; aircraft lease and MRO agreements take the same path. A new station opens on time and invoices match."
+            solution: "Each agreement's rate card arrives extracted, every rate beside the page it came from, and an operator confirms it rather than reading the agreement page by page; lease and maintenance agreements take the same path. A new station opens on time and invoices match the signed rates."
           },
           {
-            industry: "professional-services",
-            label: "Professional services",
-            image: "assets/img/industries/professional-services.jpg",
-            problem: "Terms, obligations, pricing and renewal dates sit inside master agreements and supplier contracts nobody has time to re-read. Obligations live in a spreadsheet built once by hand and never updated, so contracts renew on stale terms.",
-            solution: "The agreed fields are extracted per contract type against business rules, each value cited to the clause it came from, and reviewed before they reach the system that acts on them; property leases run the same path for rent schedules, break clauses and escalation terms. Renewals surface in time to renegotiate."
+            industry: "cross-industry",
+            label: "Every industry",
+            image: "assets/img/industries/cross-industry.jpg",
+            problem: "Rent schedules, escalations, break options and supplier price terms sit inside long leases and agreements, keyed into the lease or procurement system by hand and rarely re-read. A missed break date keeps rent running that could have stopped, and a wrong schedule misstates the lease liability the auditors test.",
+            solution: "Each lease and agreement's rents, escalations, options and price terms are extracted and cited to their clause, the reviewer confirms them, and the data loads into the lease or procurement system as the contract reads, so payments and options follow the terms signed."
           },
           {
             industry: "insurance",
             label: "Insurance",
             image: "assets/img/industries/insurance.jpg",
-            problem: "Coverage, limits, deductibles and endorsements are re-keyed from policy schedules, and loss details and reserve amounts from claim packs and loss-adjuster reports. Throughput depends on scarce specialists, so claims settle late.",
-            solution: "Policy and claim documents are classified and routed page by page, the target fields extracted against your rules with ranges and tiers expanded into normalized rows. Validators flag the exceptions, and the reviewer validates only those against the cited page, so claims settle sooner."
+            problem: "Underwriting operations re-key coverage, limits, deductibles and endorsements from policy schedules into the policy system by hand. A missed or mis-keyed endorsement surfaces only at claim time, when the insurer pays outside the cover it priced.",
+            solution: "Each schedule's limits, deductibles and endorsements are extracted and cited to their page, the schedule's own list of forms shows nothing is missing, and the reviewer confirms each value, so the policy system holds the cover that was sold."
           },
           {
             industry: "financial-services",
             label: "Financial services",
             image: "assets/img/industries/financial-services.jpg",
-            problem: "Financial line items and disclosures are pulled out of annual reports by hand, and covenants, interest terms and repayment schedules out of loan and credit agreements. The work is slow, and an error is found downstream, after a credit decision has been made on it.",
-            solution: "Each document type gets its own field schema and validator set, and every extracted value arrives with a confidence score and a page reference. The human validates by design, so errors are caught before a decision rests on them."
+            problem: "Credit teams key covenants, margins and repayment schedules from 100-page loan agreements, and spread private borrowers' statements into the bank's template by hand. A covenant keyed wrong is found at the next test date, after lending decisions already rest on it.",
+            solution: "Covenant definitions and thresholds, margin grids and repayment terms are extracted with the clause behind each, the reviewer confirms them, and the lending system tests each loan against what its agreement actually says."
           }
         ],
         scope: {
@@ -1645,9 +1645,9 @@ window.SITE_CONTENT = {
           industry: "travel-transport",
           status: "measured",
           metrics: [
-            { value: "5–15 min a contract", label: "to extract 60–100 pages end to end, down from 3–5 days" }
+            { value: "5–15 min a contract", label: "to extract and cite a contract's rates, ready for review" }
           ],
-          story: "Ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on the customer’s own Oracle Cloud Infrastructure tenancy with NVIDIA AI-Q: reviewers validate AI-extracted rates beside the source PDF, every value cited to its page, and export in minutes. Measured end to end on the customer’s own agreements during the proof of value; figures are illustrative, not contractual.",
+          story: "Ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on Oracle Cloud Infrastructure with NVIDIA AI-Q: reviewers check AI-extracted rates beside the source PDF, every value cited to its page, and export the checked rates. Measured on the customer’s own agreements of up to 40 pages during the proof of value; the review comes on top.",
           scope: [
             { label: "Document footprint", value: "60–100-page agreements" },
             { label: "Onboarding a new station, before", value: "About one month" },
