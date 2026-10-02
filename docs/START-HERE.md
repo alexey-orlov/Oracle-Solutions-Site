@@ -462,7 +462,7 @@ Exact commands are in HANDOFF §4.
   - **the walkthrough's own page is private:** on the shared link the *Interactive demo* button opens `links.json` › `plan-vs-actual-investigation.interactiveDemoArtifact`, which only Alex can open until he shares it from its Share menu;
   - ~~the other eight products' plates and industry tabs predate the "so what" rule~~ — closed on 2026-10-01: all eight checked and rewritten where they fell short (§66).
 - **§66 (the other eight products' problem/solution copy):**
-  - **Workforce optimization's sales deck** (the kit's `salesDeck` link) and its Accelerator Pack docx still carry the old copy on OneDrive: both were open in Alex's PowerPoint and Word, so the edited copies wait in the packaging work folder (`_sowhat/edited/workforce-optimization/`) until they are closed; its one-pager and feature-list PDF are delivered;
+  - ~~Workforce optimization's sales deck and Accelerator Pack docx still carry the old copy~~ — closed on 2026-10-02: both delivered once Alex closed them in PowerPoint and Word;
   - **Large docs' documents** (the 3-page one-pager PDF and the image-only deck) have no editable source, so they keep the older framing; neither is in the kit (`links.json` has no document links for it). Building Large docs as a pack through the packaging skills is the way to give it documents that follow the rule;
   - **Business metrics Q&A's hero line** *Answers in seconds, not a week of extracts.* keeps its *not X* turn: it is a value line, not a problem/solution pair, and was left as round 19 wrote it.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
