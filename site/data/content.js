@@ -1489,7 +1489,7 @@ window.SITE_CONTENT = {
         problemSolution: {
           problem: {
             headline: "Every new supplier waits for a specialist to type its rates",
-            text: "Operations staff read 60 to 100 pages of supplier terms and key rate cards into the cost system. Few can read them, so contracts queue and new partners go live late."
+            text: "Operations staff read 60–100 pages of supplier terms and key rate cards into the cost system. Few can read them, so contracts queue and new partners go live late."
           },
           solution: {
             headline: "Review instead of typing, and new partners go live sooner",
@@ -1605,21 +1605,21 @@ window.SITE_CONTENT = {
             label: "Every industry",
             image: "assets/img/industries/cross-industry.jpg",
             problem: "Rent schedules, escalations, break options and supplier price terms sit inside long leases and agreements, keyed into the lease or procurement system by hand and rarely re-read. A missed break date keeps rent running that could have stopped, and a wrong schedule misstates the lease liability the auditors test.",
-            solution: "Each lease and agreement's rents, escalations, options and price terms are extracted and cited to their clause, the reviewer confirms them, and the data loads into the lease or procurement system as the contract reads, so payments and options follow the terms signed."
+            solution: "Each lease and agreement's rents, escalations, options and price terms are extracted and cited to their clause, and the reviewer confirms them. The data loads into the lease or procurement system as the contract reads, so payments and options follow the terms signed."
           },
           {
             industry: "insurance",
             label: "Insurance",
             image: "assets/img/industries/insurance.jpg",
             problem: "Underwriting operations re-key coverage, limits, deductibles and endorsements from policy schedules into the policy system by hand. A missed or mis-keyed endorsement surfaces only at claim time, when the insurer pays outside the cover it priced.",
-            solution: "Each schedule's limits, deductibles and endorsements are extracted and cited to their page, the schedule's own list of forms shows nothing is missing, and the reviewer confirms each value, so the policy system holds the cover that was sold."
+            solution: "Each schedule's limits, deductibles and endorsements are extracted and cited to their page, and the schedule's own list of forms shows nothing is missing. The reviewer confirms each value, so the policy system holds the cover that was sold."
           },
           {
             industry: "financial-services",
             label: "Financial services",
             image: "assets/img/industries/financial-services.jpg",
             problem: "Credit teams key covenants, margins and repayment schedules from 100-page loan agreements, and spread private borrowers' statements into the bank's template by hand. A covenant keyed wrong is found at the next test date, after lending decisions already rest on it.",
-            solution: "Covenant definitions and thresholds, margin grids and repayment terms are extracted with the clause behind each, the reviewer confirms them, and the lending system tests each loan against what its agreement actually says."
+            solution: "Covenant definitions and thresholds, margin grids and repayment terms are extracted with the clause behind each, and the reviewer confirms them. The lending system then tests each loan against what its agreement actually says."
           }
         ],
         scope: {
@@ -1647,7 +1647,7 @@ window.SITE_CONTENT = {
           metrics: [
             { value: "5–15 min a contract", label: "to extract and cite a contract's rates, ready for review" }
           ],
-          story: "Ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on Oracle Cloud Infrastructure with NVIDIA AI-Q: reviewers check AI-extracted rates beside the source PDF, every value cited to its page, and export the checked rates. Measured on the customer’s own agreements of up to 40 pages during the proof of value; the review comes on top.",
+          story: "Ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on Oracle Cloud Infrastructure with NVIDIA AI-Q: reviewers check AI-extracted rates beside the source PDF, every value cited to its page, and export the checked rates. Measured on the customer’s own agreements of up to 40 pages during the proof of value, the review on top; figures are illustrative, not contractual.",
           scope: [
             { label: "Document footprint", value: "60–100-page agreements" },
             { label: "Onboarding a new station, before", value: "About one month" },
