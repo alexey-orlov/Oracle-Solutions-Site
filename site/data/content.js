@@ -408,7 +408,7 @@ window.SITE_CONTENT = {
         area: "Ground-handling contract management",
         industry: "travel-transport",
         status: "measured",
-        metric: { value: "5–15 min a contract", label: "60–100 pages into the cost system, down from 3–5 days of keying by hand" },
+        metric: { value: "5–15 min a contract", label: "a contract's rates extracted and cited for review, against 3–5 days of keying by hand" },
         line: "Rates were keyed in page by page, and a wrong one surfaced only at invoice matching; now reviewers catch it before it reaches the system.",
         product: { slug: "large-document-extraction", name: "Large docs processing and review" }
       },
@@ -1469,7 +1469,7 @@ window.SITE_CONTENT = {
       categoryChip: "Document processing",
       facet: "oci-nvidia",
       oneLiner: "Contracts reach your systems without days of keying by hand, and a wrong rate is caught at review, not on the invoice.",
-      heroCaption: "100-page contract in minutes.",
+      heroCaption: "Contract rates ready in minutes.",
       tags: ["Document processing", "OCI + NVIDIA NeMo"],
       hero: {
         image: {
@@ -1480,7 +1480,7 @@ window.SITE_CONTENT = {
       },
       tile: {
         outcomes: [
-          "A 60–100-page contract extracted end to end in 5–15 minutes, down from 3–5 days",
+          "A contract's rates extracted and cited in 5–15 minutes, ready for review",
           "Every extracted value carries a confidence score and a citation to its source page",
           "Reviewers validate in a split-view UI and export — they review the data, they don’t type it"
         ]
@@ -1489,29 +1489,29 @@ window.SITE_CONTENT = {
         problemSolution: {
           problem: {
             headline: "Every new supplier waits for a specialist to type its rates",
-            text: "Operations staff read 60 to 100 pages of supplier terms and key rate cards into the cost system. Few people can, so contracts queue and new partners go live late."
+            text: "Operations staff read 60 to 100 pages of supplier terms and key rate cards into the cost system. Few can read them, so contracts queue and new partners go live late."
           },
           solution: {
             headline: "Review instead of typing, and new partners go live sooner",
-            text: "Values arrive extracted, each with its page in the agreement beside it. The reviewer checks the flagged ones and approves; rates reach the cost system before the first invoice arrives."
+            text: "Values arrive extracted, each beside its page in the agreement. The reviewer confirms each, correcting the flagged ones, so the first invoice is checked against the signed rate."
           }
         },
         metrics: [
           {
             key: "cycle-time",
-            title: "Contract to system-ready data",
+            title: "Rates ready for review",
             kind: "proven",
             owner: "Head of contract management",
             figure: { text: "5–15 min" },
             visual: {
               form: "compression",
-              unit: "minutes per 60 to 100-page agreement",
+              unit: "minutes per agreement of up to 40 pages",
               direction: "down",
               scale: { min: 0, max: 5760 },
               before: { value: 5760, label: "3–5 days" },
               after: { value: 10, label: "5–15 min" }
             },
-            line: "60 to 100 pages, end to end, the reviewer's check included."
+            line: "An agreement of up to 40 pages, extracted and cited; the review comes after."
           },
           {
             key: "onboarding",
@@ -1532,7 +1532,7 @@ window.SITE_CONTENT = {
         features: [
           "Document-type gate, then page-level routing to the right extractor",
           "Field schema and business rules defined per document type",
-          "Per-field confidence scoring with tuned thresholds and fallback logic",
+          "Per-row confidence scoring with tuned thresholds and fallback logic",
           "Source-page citation on every extracted value",
           "Structured data model: ranges and tiers expanded, relationships preserved",
           "Business-rule validators that flag what a human must look at",
@@ -1573,7 +1573,7 @@ window.SITE_CONTENT = {
               alt: "A flagged tier: the validator's finding, suggested fix 22, source page 9."
             },
             features: [
-              "Per-field confidence scoring with tuned thresholds and fallback logic",
+              "Per-row confidence scoring with tuned thresholds and fallback logic",
               "Source-page citation on every extracted value",
               "Business-rule validators that flag what a human must look at"
             ]
