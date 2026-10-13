@@ -765,8 +765,9 @@
      tab."): the one-pager's service-packages table without its price rows.
      The three tiers with their scope line, a duration row, one row per
      capability area with a mark and a phrase in every cell, the legend and
-     the one footnote. The tiers, the durations and the footnote are the
-     site's (`shared.delivery`); the scope lines and the rows are the
+     the one footnote. The tiers, Integration's and Scaling's durations and
+     the footnote are the site's (`shared.delivery`); the proof of value's
+     length (Alex, 2026-10-13), the scope lines and the rows are the
      product's. From 900px it is one table; below, one block per tier, since
      four columns do not fit a phone. Both are rendered and CSS shows one. */
   var MARKS = ["partial", "included", "advanced", "none"];
@@ -800,6 +801,17 @@
       (scope ? '<p class="pk-scope">' + UI.esc(scope) + "</p>" : "");
   }
 
+  /* The proof of value's length is each product's own (Alex, 2026-10-13:
+     `delivery.povDuration`, "<n> weeks"); a product without one shows the
+     site's span, the first tier's standing duration. The Delivery tab's
+     Duration row and the kit confirmation both read it. */
+  function povDuration(product) {
+    var own = ((product || {}).delivery || {}).povDuration;
+    if (own) return own;
+    var tier = ((C().shared.delivery || {}).tiers || []).filter(function (t) { return t.id === "pov"; })[0];
+    return tier ? tier.duration : "";
+  }
+
   function deliveryTab(product) {
     var UI = window.UI;
     var shared = C().shared.delivery || {};
@@ -808,8 +820,8 @@
     var scope = d.scope || [];
     var rows = d.rows || [];
     var star = '<span class="pk-star" aria-hidden="true">*</span>';
-    /* The standing durations are the site's; a product overrides them only where its own evidence differs. */
-    var durations = (d.durations && d.durations.length === tiers.length) ? d.durations : tiers.map(function (tier) { return tier.duration; });
+    /* The proof of value's length is the product's own; Integration and Scaling are the site's. */
+    var durations = tiers.map(function (tier) { return tier.id === "pov" ? povDuration(product) : tier.duration; });
 
     var head = '<tr><td class="pk-corner"></td>' + tiers.map(function (tier, i) {
       return '<th scope="col" class="pk-tier pk-tier--' + UI.esc(tier.id) + '">' + tierHead(tier, scope[i], "span") + "</th>";
@@ -882,7 +894,7 @@
       product: product.slug,
       routeLink: { label: tab.routeLabel, href: talkHref(product.slug) },
       next: [
-        { text: tab.nextDemo, link: { label: tab.nextDemoLink, href: talkHref(product.slug) } }
+        { text: (tab.nextDemo || "").replace("{povDuration}", povDuration(product)), link: { label: tab.nextDemoLink, href: talkHref(product.slug) } }
       ]
     };
   }

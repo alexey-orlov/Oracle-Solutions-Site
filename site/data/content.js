@@ -97,14 +97,18 @@ window.SITE_CONTENT = {
       }
     },
     /* Round 22 (Alex, 2026-09-29): the Delivery tab is the pack one-pager's
-       service-packages table with no price rows. The tiers and their standing
-       durations are the site's, the same on every product (4–8 weeks is the
-       proof of value's one duration, round 7); the scope lines and the rows
-       are each product's `delivery`. */
+       service-packages table with no price rows. The tiers, and Integration's
+       and Scaling's durations, are the site's, the same on every product.
+       Since 2026-10-13 (Alex) the proof of value has no site-wide length:
+       each product states its own in `delivery.povDuration` ("<n> weeks",
+       its first engagement's PoC length × 0.8), and the first tier's
+       duration here is the span of those lengths, shown only on a product
+       without its own. The scope lines and the rows are each product's
+       `delivery`. */
     delivery: {
       caption: "Service packages",
       tiers: [
-        { id: "pov", name: "Jumpstart proof of value", size: "S", duration: "4–8 weeks" },
+        { id: "pov", name: "Jumpstart proof of value", size: "S", duration: "4–12 weeks" },
         { id: "integration", name: "Integration", size: "M", duration: "3–5 months" },
         { id: "scaling", name: "Scaling", size: "L", duration: "3–12 months" }
       ],
@@ -890,6 +894,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "10 weeks",
         scope: [
           "One signal set, one segment, files in and out: prove the reviewer agrees.",
           "Wired into the team's day: licensed feeds in, system of record out.",
