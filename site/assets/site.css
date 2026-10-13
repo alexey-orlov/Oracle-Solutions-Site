@@ -815,7 +815,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 }
 
 /* Round 9: an optional small word before the figure, on the figure's own
-   baseline — "from 30 days" is one fact, read in one line. */
+   baseline — "from 4 weeks" is one fact, read in one line. */
 .stat-prefix {
   font-family: var(--font-body);
   font-weight: 400;

@@ -144,7 +144,7 @@
   function statBand(C) {
     var UI = window.UI;
     var stats = (C.overview.hero.stats || []).map(function (stat) {
-      /* The optional prefix is set small beside the figure — "from 30 days" is
+      /* The optional prefix is set small beside the figure — "from 4 weeks" is
          one fact, so it is one line, not a figure with a caption above it. */
       var prefix = stat.prefix
         ? '<span class="stat-prefix">' + UI.esc(stat.prefix) + "</span>"
