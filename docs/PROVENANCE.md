@@ -8295,3 +8295,42 @@ _A session opened in AO-Personal-OS, on Opus, running the `oracle-packs` build f
 - **Open for Alex:** START-HERE §9, under §67.
 
 ---
+
+## 68. Each product's own proof of value on its Delivery tab, 2026-10-13
+
+_A subagent on Opus, launched from a session in AO-Personal-OS; no Fable step. Touched: `site/data/content.js` (`delivery.povDuration` on all nine products, `shared.delivery` and its comment, the hero tile, S2's first bullet, `salesKit.page.povBody`, `salesKit.tab.nextDemo`), `site/pages/product.js` (the Duration row and the kit confirmation), `tools/check-grammar.js`, comment-only lines in `site/pages/overview.js` and `site/assets/site.css`, START-HERE (§1, §2, §3, §9), SCHEMA, VISUAL-GRAMMAR, README and `site.manifest.json` (round 26). Not published in this step._
+
+- **The decision (Alex, 2026-10-13):** the proof of value is no longer one site-wide *4–8 weeks*. Each product's Delivery tab shows that product's own length: its first engagement's PoC length × 0.8, Alex's rule for upcoming projects. Prices stay off the site (the 2026-09-29 rule holds). Integration (*3–5 months*) and Scaling (*3–12 months*) are unchanged. The 2026-09-18 rule, *a PoV is 4–8 weeks, 10 weeks hard cap*, is dropped.
+- **The lengths:**
+
+| Product | Proof of value |
+|---|---|
+| Cross-system ERP Q&A · Business metrics Q&A | 4 weeks |
+| Large docs processing and review · Workforce optimization | 8 weeks |
+| Account insights · Repair-or-replace decisions | 10 weeks |
+| Plan vs actual investigation · Fleet route optimization | 11 weeks |
+| Case evidence collection | 12 weeks |
+
+- **The key:** `products[].delivery.povDuration`, `"<n> weeks"`, the first key of each product's `delivery`. One fact, one home: Integration's and Scaling's durations stay in `shared.delivery.tiers`, the same on every product. The unused `delivery.durations` (three strings, whose first had to be the old range) is retired and fails the build, so the first cell has one source.
+- **The renderer:** `pages/product.js` `povDuration(product)` returns the product's own length, else the first tier's standing duration. The Duration row (the table and the phone blocks alike) and the kit confirmation read it.
+- **Before → after:**
+
+| Where | Before | After |
+|---|---|---|
+| Delivery tab, Duration row (all nine) | *4–8 weeks · 3–5 months · 3–12 months* | the product's own length (above) · *3–5 months · 3–12 months* |
+| `shared.delivery.tiers[0].duration`, shown only on a product without its own (none today) | *4–8 weeks* | *4–12 weeks*, the span of the products' lengths |
+| Home proof strip, first tile | *from* **30 days** | *from* **4 weeks** |
+| Home S2, the practice panel's first bullet | *A proof of value from 30 days, on your own data* | *A proof of value from 4 weeks, on your own data* |
+| `salesKit.page.povBody` (no page renders it since §61) | *… — 4–8 weeks, ending in measurable KPIs.* | *… — 4–12 weeks, ending in measurable KPIs.* |
+| `salesKit.tab.nextDemo`, the kit confirmation on a product's Contacts tab | *… runs 4–8 weeks and ends in measurable KPIs.* | *… runs {povDuration} and ends in measurable KPIs.*, printing the product's own (*runs 11 weeks*) |
+| Home track, the Jumpstart stage | *From 4 weeks* | unchanged, still true |
+
+- **The sweep:** `site/`, `mail/`, `tools/`, `docs/` and `README.md` for *4–8 weeks*, *30 days*, *30–45 days*, *10 weeks* and *6–8 weeks*. Changed beyond the table: the doc lines that stated the old truth (START-HERE, SCHEMA, VISUAL-GRAMMAR, README) and the comments in `pages/overview.js`, `assets/site.css` and the checker that quote *from 30 days* as the prefix's example (no rendered change). Left alone: the walkthroughs' *30 days* (payment terms, a credit-hold rule, a dashboard's window), `mail/` (it states no length), and the dated history in earlier PROVENANCE sections and START-HERE §7.
+- **The checker** (`tools/check-grammar.js`):
+  - per product, `delivery.povDuration` must be `"<n> weeks"` (one whole number, no range, no price), a missing one warns, and `delivery.durations` fails as retired;
+  - round 7's block (*one proof-of-value duration*) is replaced. The floor (the shortest length) and the span (shortest to longest) are derived from the products: the hero tile must be `{ prefix: "from", value: <floor> }`, the Jumpstart stage *From <floor>* and any S2 bullet naming a proof of value *from <floor>*; `shared.delivery.tiers[0]` must be the span and `povBody` must state it; `nextDemo` must carry `{povDuration}` and `pages/product.js` must fill it; a hero tile may not state a range of weeks. *4–8 weeks* and *from 30 days* join the retired phrasings, and *12 weeks* leaves them;
+  - the price rules are unchanged: a currency sign, a *K* figure or a price word fails in a scope line or a cell, and a currency sign in a tier's duration.
+- **Checks:** `node --check` on the four edited JS files; `node tools/check-grammar.js` prints *check-grammar: OK — 9 products, every grammar slot filled, and the home page's nine screens.*, with its one standing warning (`overview.about.title`). Eleven regressions seeded in a scratch copy of the repo (a range, a price, the retired array, a missing length, the old hero tile, bullet, seller line, default and kit line, a Jumpstart floor of 5 weeks, the fill taken out of `product.js`): the missing length warned, and the other ten failed, each with its own message. A headless render of `deliveryTab()` and `kitOptions()` from the tree printed each product's own length in the table, the phone blocks and the kit line, and *4–12 weeks* for a product without one. The deny-list sweep is empty. No browser preview in this step: the main session previews at every width.
+- **Open for Alex:** START-HERE §9, under §68.
+
+---
