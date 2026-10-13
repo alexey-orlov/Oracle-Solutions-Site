@@ -272,7 +272,7 @@ window.SITE_CONTENT = {
         platformsLabel: "Oracle platforms"
       },
       stats: [
-        { prefix: "from", value: "30 days", label: "to a fixed-price proof of value on your own data" },
+        { prefix: "from", value: "4 weeks", label: "to a fixed-price proof of value on your own data" },
         { value: "1,000+", label: "experts in AI, data and R&D across SoftServe" },
         { value: "30", label: "Fortune 500 clients in the data and analytics practice" }
       ]
@@ -305,7 +305,7 @@ window.SITE_CONTENT = {
           title: "Expert services, from proof to scale",
           body: "With a large, dedicated practice of experts in both AI and Oracle, and a delivery method honed with Fortune 500 customers, we take your first use case into production in your tenancy, then across the business.",
           bullets: [
-            "A proof of value from 30 days, on your own data",
+            "A proof of value from 4 weeks, on your own data",
             "Measurable ROI in focus from day one",
             "One team, all the way to your own AI factory"
           ],
@@ -1139,6 +1139,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "12 weeks",
         scope: [
           "One case category, one historical sample, read-only exports: the case file assembled and cited.",
           "Live sources, the production approval workflow and its audit trail, for one case category.",
@@ -1407,6 +1408,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "11 weeks",
         scope: [
           "One project's exports: each work package against plan, causes cited for expert review.",
           "Live feeds, with lessons written back to planning.",
@@ -1681,6 +1683,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "8 weeks",
         scope: [
           "One document type, manual upload, core fields cited and reviewed.",
           "Live for one type: repository in, target system out.",
@@ -1950,6 +1953,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "8 weeks",
         scope: [
           "Limited setup and optimized schedules with manual data import to prove value.",
           "Full setup, data integration and launch at one location.",
@@ -2203,6 +2207,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "4 weeks",
         scope: [
           "One use case, up to three sources; the decision domain answered in plain language.",
           "Live integration, more sources and decision domains, production SLAs.",
@@ -2443,6 +2448,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "4 weeks",
         scope: [
           "One use case, up to three sources: an assistant answering an agreed 30-question set.",
           "Live integration, more catalogs, databases and decision domains, production SLAs.",
@@ -2688,6 +2694,7 @@ window.SITE_CONTENT = {
         }
       },
       delivery: {
+        povDuration: "11 weeks",
         scope: [
           "One region, a handful of real days, files in and out: prove the re-plan beats the real day.",
           "Wired into dispatch: Oracle Fusion Field Service in, recommended routes back for dispatcher approval.",
@@ -2985,6 +2992,7 @@ window.SITE_CONTENT = {
     }
   },
   "delivery": {
+    "povDuration": "10 weeks",
     "scope": [
       "One asset class, one market, files in and out: measured calls on your photos.",
       "Write-back to your system of record; more asset classes, markets and your own rules.",
@@ -3145,14 +3153,14 @@ window.SITE_CONTENT = {
       again: "Request another kit",
       routeLink: { label: "Talk to us", route: "#/#talk" },
       povTitle: "See the fit in an account?",
-      povBody: "Let’s discuss a Proof of Value on the customer’s own data — 4–8 weeks, ending in measurable KPIs.",
+      povBody: "Let’s discuss a Proof of Value on the customer’s own data — 4–12 weeks, ending in measurable KPIs.",
       povLink: "Talk to us"
     },
     tab: {
       title: "Get the sales kit",
       body: "Enter your SoftServe or Oracle work email and we’ll email you the {product} sales kit — what an account team needs to position it and open the first customer conversation.",
       routeLabel: "Talk to us",
-      nextDemo: "Have an account in mind? {link} — after a workshop, a Jumpstart proof of value on the customer’s own data runs 4–8 weeks and ends in measurable KPIs.",
+      nextDemo: "Have an account in mind? {link} — after a workshop, a Jumpstart proof of value on the customer’s own data runs {povDuration} and ends in measurable KPIs.",
       nextDemoLink: "Talk to us"
     },
     form: {
