@@ -313,7 +313,7 @@ Exact commands are in HANDOFF §4.
 
 - **The brief (§2):** every item stays open until Alex confirms it in a session.
 - **Round 7 (PROVENANCE §23.4):**
-  - ~~delivery sign-off on *Plan vs actual investigation* in 4–8 weeks~~ — closed on 2026-10-01: its pack brief confirms an 8-week proof of value (§64);
+  - ~~delivery sign-off on *Plan vs actual investigation* in 4–8 weeks~~ — closed on 2026-10-01 (§64); since 2026-10-13 its proof of value is 11 weeks by Alex's rule (§68), where its pack brief says 8;
   - clearance for the stronger *Frontier AI* proof points.
 - **Round 8 (§24.4):**
   - whether the mailbox is watched, and whether two working days is the right promise;
@@ -322,7 +322,7 @@ Exact commands are in HANDOFF §4.
 - **Round 9 (§28.6):**
   - the H1's third line — *"Proven in weeks."*, against the two-word *"Proven fast."* / *"Proof first."*;
   - *"Document processing"* singular, against Alex's *"Documents processing"*;
-  - the clock said two ways — *from 30 days* in the hero, *4–8 weeks* in every scope surface;
+  - ~~the clock said two ways~~ — closed on 2026-10-13: the hero says *from 4 weeks*, the shortest product's proof of value, and each Delivery tab its product's own (§68);
   - the platform short labels dropping the "Oracle" prefix on the rail, the chips and the stack;
   - *Oracle AI for Fusion Applications* on the stack and Services but not as a catalog filter;
   - the Services platform cards re-ordered to the canonical order;
@@ -356,8 +356,8 @@ Exact commands are in HANDOFF §4.
   - **opened from `file://` or a plain static server**, the site runs without its *Interactive demo* and video buttons, because `site/` stores no copy of the links; `tools/serve.py` and a publish are the two ways it gets them.
 - **Round 16 (§36.6):**
   - **products or solutions:** since round 18 the S3 H2 says *Ready-to-use solutions* in Alex's words, while its eyebrow (*Products*), its link (*See all products*), the nav and the catalog still say *products*; a rename is site-wide;
-  - **one floor, two ways on the home page:** *from 30 days* (the hero tile, the S2 bullet) beside *From 4 weeks* (the Jumpstart stage);
-  - **ranges elsewhere:** every product's Delivery tab states 4–8 weeks, 3–5 months and 3–12 months. They agree with the floors, and the floor wording can go site-wide on Alex's word;
+  - ~~one floor, two ways on the home page~~ — closed on 2026-10-13: the hero tile, the S2 bullet and the Jumpstart stage all say *from 4 weeks* (§68);
+  - **ranges elsewhere:** every product's Delivery tab states its own proof of value (4 to 12 weeks since §68), then 3–5 months and 3–12 months. They agree with the floors, and the floor wording can go site-wide on Alex's word;
   - **the hero stack** shows four service tiles while the track has five stages: add a Workshop tile, or leave the stack to the paid tiers;
   - **S2's H2** is *A head start that scales.* rather than Alex's noun list (the literal polish: *Agents, apps and services*);
   - **two figure words:**
@@ -469,6 +469,10 @@ Exact commands are in HANDOFF §4.
   - **the *Proven* chip's tooltip** reads *Measured end to end during a completed proof of value, on the customer's own data*, while Large docs' tile now says the review comes after. Dropping *end to end* from `shared.metricKinds.proven.tooltip` is one string, and Workforce's *~30 min*, the only other Proven tile, loses nothing by it; or the tile takes another kind;
   - **three clearance-lint findings stand** in lines the round left alone: the *Proven* kind itself (the pack calls a proof-of-value figure *proven* only once delivered and accepted), *Jumpstart* (the site's tier name), and *Production hardening* in the scope-out list;
   - **the pack's open questions that reach this page:** how long the review takes (untimed in the proof of value), whether an agreement of 60 to 100 pages holds the 5–15 minutes (the dry run's ran up to 40), and what field accuracy the proof reached (only the average confidence is on record). The brief lists all eight.
+- **§68 (each product's own proof of value):**
+  - **the packs and their documents:** the lengths are on the site only. The pack briefs, one-pagers, decks and feature lists (Oracle-Packaging-Skills, OneDrive) were not checked and may still state the old durations; Plan vs actual's brief says an 8-week proof of value (§64), the site now 11. The packaging plugin does not write `delivery.povDuration` yet, and the checker warns on a listing without it;
+  - **the floor in three places on the home page:** *from 4 weeks* is the hero tile, S2's first bullet and the Jumpstart stage, where the repetition rule allows two. Before, the tile and the bullet said *from 30 days* and only the stage *From 4 weeks*. The bullet is the one to drop if two is the limit;
+  - **`salesKit.page.povBody`** says *4–12 weeks*, but no page renders it since `#/sellers` left (§61); the checker still requires the key.
 - **Inputs Alex supplies (HANDOFF §7):** demo videos and posters, Marketplace URLs, success stories, kit document links (in `links.json`), hosting subdomain, customer-name approvals, image rights.
 - **At launch:**
   - the site name checked against Oracle's trademark guidelines;
