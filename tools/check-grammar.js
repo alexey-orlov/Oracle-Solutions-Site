@@ -1935,7 +1935,7 @@ if (!arr(C.products) || C.products.length !== 9) {
     else if (st.value.length > 20) fail(sw, 'value "' + st.value + '" is too long to set large');
     if (!str((st || {}).label)) fail(sw, "label missing");
     /* Round 9: an optional small word set before the figure on its own
-       baseline ("from 30 days"). It is a qualifier, not a caption. */
+       baseline ("from 4 weeks"). It is a qualifier, not a caption. */
     if ((st || {}).prefix !== undefined) {
       if (!str(st.prefix)) fail(sw, "prefix must be a non-empty string where present");
       else if (st.prefix.length > 6) fail(sw, 'prefix "' + st.prefix + '" is too long — it sets at .45em beside the figure (max 6 characters)');
@@ -2881,35 +2881,57 @@ if (/request a demo/i.test(raw)) {
   });
 })();
 
-/* ---- round 7 · one proof-of-value duration (Alex, 2026-09-17) ----
-   "Make sure that we always mention 4–8 weeks PoV, consistently across the
-   site": every Jumpstart states it in its promise, its short form (which the
-   seller CTA interpolates) and its investment figure, and no other
-   proof-of-value duration survives anywhere in the data (PROVENANCE §23; the
-   Services page that also carried it left in round 18). Since round 16 the home track states floors instead
-   ("From 4 weeks"), and the hero tile has said "from 30 days" since round 9. */
+/* ---- 2026-10-13 · each product's own proof of value (Alex) ----
+   Round 7's one site-wide proof-of-value range and its 2026-09-18 cap are
+   dropped: each product's Delivery tab states its own length,
+   delivery.povDuration ("<n> weeks", checked per product above), and the
+   kit confirmation names it through {povDuration}. Every line that speaks
+   for all products derives from those lengths, so a product that changes
+   its own cannot leave a generic line untrue: the floor, the shortest, is
+   the hero tile's "from <n> weeks", the S2 bullet's and the home track's
+   Jumpstart stage; the span, shortest to longest, is the seller line's and
+   the first tier's standing duration, which only a product without its own
+   shows. The retired phrasings fail by name. */
 (function () {
-  var POV = "4–8 weeks";
-  /* Round 22: the Delivery tab states it, the first tier's standing duration,
-     and a product's override may not change it. */
-  var dlShared = (C.shared || {}).delivery || {};
-  var dlTiers = dlShared.tiers || [];
-  if (!dlTiers[0] || dlTiers[0].duration !== POV) {
-    fail("shared.delivery.tiers[0].duration", 'must be "' + POV + '" — the proof of value is "' + POV + '" everywhere');
+  var lens = (C.products || []).map(function (p) { return (p.delivery || {}).povDuration; })
+    .filter(function (v) { return str(v) && /^[1-9]\d* weeks$/.test(v); })
+    .map(function (v) { return parseInt(v, 10); });
+  if (!lens.length) {
+    fail("products[].delivery.povDuration", "no product states its proof of value — each Delivery tab gives its own (Alex, 2026-10-13)");
+    return;
   }
-  (C.products || []).forEach(function (p) {
-    var ds = (p.delivery || {}).durations;
-    if (arr(ds) && ds[0] !== POV) fail("products[" + p.slug + "].delivery.durations[0]", '"' + ds[0] + '" — the proof of value is "' + POV + '" everywhere');
-  });
+  var lo = Math.min.apply(null, lens);
+  var hi = Math.max.apply(null, lens);
+  var FLOOR = lo + " weeks";
+  var SPAN = lo === hi ? FLOOR : lo + "–" + hi + " weeks";
+
+  var dlTiers = ((C.shared || {}).delivery || {}).tiers || [];
+  if (!dlTiers[0] || dlTiers[0].duration !== SPAN) {
+    fail("shared.delivery.tiers[0].duration", '"' + (dlTiers[0] || {}).duration + '" must be "' + SPAN +
+      '" — a product without its own proof of value shows the span of the products\' lengths');
+  }
+  var kit = C.salesKit || {};
+  var povBody = (kit.page || {}).povBody;
+  if (str(povBody) && povBody.indexOf(SPAN) === -1) {
+    fail("salesKit.page.povBody", 'must state "' + SPAN + '" — the span of the products\' proofs of value');
+  }
+  var nextDemo = (kit.tab || {}).nextDemo;
+  if (str(nextDemo) && nextDemo.indexOf("{povDuration}") === -1) {
+    fail("salesKit.tab.nextDemo", "must carry {povDuration} — the kit confirmation names the product's own proof of value");
+  }
+  if (fs.readFileSync(path.join(root, "site/pages/product.js"), "utf8").indexOf('replace("{povDuration}"') === -1) {
+    fail("site/pages/product.js", "does not fill {povDuration} — the kit confirmation would print the token");
+  }
+
   var o = C.overview || {};
   /* Round 16 (Alex: "4-8 weeks, 3-5 months, 3-12 months -> say 'from 4
      weeks', from 3 months"): the home track states each stage's floor. The
-     Jumpstart is its second stage now, after the Workshop. Scope copy on the
-     product pages keeps the ranges; that question is open. */
+     Jumpstart is its second stage, after the Workshop, and its floor is the
+     shortest product's proof of value. */
   var homeTrack = (o.delivery || {}).steps || [];
   var jump = homeTrack[1];
-  if (!jump || jump.fact !== "From 4 weeks") {
-    fail("overview.delivery.steps[1].fact", 'must be "From 4 weeks" — the home track states the floor');
+  if (!jump || jump.fact !== "From " + FLOOR) {
+    fail("overview.delivery.steps[1].fact", 'must be "From ' + FLOOR + '" — the home track states the floor, the shortest product\'s proof of value');
   }
   [2, 3].forEach(function (i) {
     var s = homeTrack[i];
@@ -2918,20 +2940,28 @@ if (/request a demo/i.test(raw)) {
   if (homeTrack.some(function (s) { return /\d\s*[–-]\s*\d/.test((s || {}).fact || ""); })) {
     fail("overview.delivery.steps", "a stage states a range — the home track says each stage's floor, never a range");
   }
-  /* Round 9 (Alex): the hero figure is the shortest honest clock — "from 30
-     days", the qualifier set small. Scope copy keeps 4–8 weeks everywhere else,
-     which is what the rest of this block asserts; the two are not alternatives,
-     they are a headline and a scope, and the tile leads the strip. */
-  var povStatTile = ((o.hero || {}).stats || [])[0] || {};
-  if (povStatTile.prefix !== "from" || povStatTile.value !== "30 days") {
-    fail("overview.hero.stats[0]", 'must be the proof-of-value tile { prefix: "from", value: "30 days" } — got { prefix: "' +
+  /* Round 9 (Alex): the hero figure is the shortest honest clock, the
+     qualifier "from" set small. Since 2026-10-13 it is the floor; a range is
+     scope copy and never a hero figure. */
+  var stats = (o.hero || {}).stats || [];
+  var povStatTile = stats[0] || {};
+  if (povStatTile.prefix !== "from" || povStatTile.value !== FLOOR) {
+    fail("overview.hero.stats[0]", 'must be the proof-of-value tile { prefix: "from", value: "' + FLOOR + '" } — got { prefix: "' +
       povStatTile.prefix + '", value: "' + povStatTile.value + '" }');
   }
-  if (((o.hero || {}).stats || []).some(function (s) { return s.value === POV; })) {
-    fail("overview.hero.stats", 'states "' + POV + '" as a figure — the hero tile is "from 30 days"; 4–8 weeks is scope copy');
+  if (stats.some(function (s) { return /\d\s*[–-]\s*\d+\s*weeks/.test((s || {}).value || ""); })) {
+    fail("overview.hero.stats", "states a range of weeks as a figure — the hero tile is the floor, from " + FLOOR);
   }
-  var other = raw.match(/30[–-]45 days|about two months|in 2 months|Two months from kickoff|\b12 weeks\b|two-week acceptance|duration is set at scoping/);
-  if (other) fail("content.js", 'carries another proof-of-value duration ("' + other[0] + '") — it is "' + POV + '" across the site');
+  /* S2's practice panel names the proof of value at the same floor. */
+  ((o.twoWays || {}).panels || []).forEach(function (pn, i) {
+    (pn.bullets || []).forEach(function (b, j) {
+      if (str(b) && /proof of value/i.test(b) && b.indexOf("from " + FLOOR) === -1) {
+        fail("overview.twoWays.panels[" + i + "].bullets[" + j + "]", '"' + b + '" — a proof of value on the home page starts "from ' + FLOOR + '", the shortest product\'s');
+      }
+    });
+  });
+  var other = raw.match(/30[–-]45 days|about two months|in 2 months|Two months from kickoff|two-week acceptance|duration is set at scoping|\bfrom 30 days\b|\b4[–-]8 weeks\b/);
+  if (other) fail("content.js", 'carries a retired proof-of-value duration ("' + other[0] + '") — each product states its own, and the generic lines derive from them');
 })();
 
 /* ---- round 8 · the sales kit (Alex, 2026-09-17) ----
