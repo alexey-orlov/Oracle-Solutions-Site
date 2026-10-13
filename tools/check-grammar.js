@@ -757,8 +757,18 @@ if (!arr(C.products) || C.products.length !== 9) {
       if (!str(line)) fail(w, "delivery.scope[" + i + "] missing");
       else if (words(line) > 18) fail(w, "delivery.scope[" + i + "] is " + words(line) + " words (max 18) — one line under the tier's name");
     });
-    if (dl.durations !== undefined && (!arr(dl.durations) || dl.durations.length !== tierCount || !dl.durations.every(str))) {
-      fail(w, "delivery.durations, where present, overrides the standing durations with one string per tier");
+    /* 2026-10-13 (Alex): each product states its own proof of value, a whole
+       number of weeks (its first engagement's PoC length × 0.8), never a range
+       and never a price. Integration and Scaling are the site's on every
+       product, so the three-string override that pinned the first tier to the
+       old site-wide range has nothing left to override. */
+    if (dl.durations !== undefined) {
+      fail(w, "delivery.durations is retired (2026-10-13) — the proof of value is delivery.povDuration; Integration and Scaling are the site's (shared.delivery.tiers)");
+    }
+    if (dl.povDuration === undefined) {
+      warn(w, "delivery.povDuration missing — the Delivery tab shows the site's span for the proof of value, not this product's own");
+    } else if (!str(dl.povDuration) || !/^[1-9]\d* weeks$/.test(dl.povDuration)) {
+      fail(w, 'delivery.povDuration "' + dl.povDuration + '" must be "<n> weeks" — the product\'s own proof of value, one whole number, no range, no price (Alex, 2026-10-13)');
     }
     if (!arr(dl.rows) || dl.rows.length < 4 || dl.rows.length > 8) {
       fail(w, "delivery.rows must hold 4–8 capability areas, got " + (arr(dl.rows) ? dl.rows.length : "none"));
