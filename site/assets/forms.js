@@ -413,10 +413,6 @@
     });
   }
 
-  function storedKitEmail() {
-    try { return window.localStorage.getItem(gateConfig().kitEmailKey) || ""; } catch (error) { return ""; }
-  }
-
   function productName(slug) {
     var found = (content().products || []).filter(function (item) { return item.slug === slug; })[0];
     return found ? found.name : "";
@@ -431,8 +427,11 @@
 
   /* options: { product: slug to fix the kit, or none for the select;
      routeLink: { label, href } for customers and partners; next: [{ text, link }]
-     lines for the confirmation; again: offer "Request another kit" } */
-  function renderKit(options) {
+     lines for the confirmation; again: offer "Request another kit" }.
+     email: the address of the kit just sent, refilled for "Request another
+     kit" in the same visit. Nothing is kept in the browser (2026-10-27): the
+     next visit opens on an empty field. */
+  function renderKit(options, email) {
     var UI = window.UI;
     var copy = kitCopy();
     var opts = options || {};
@@ -460,7 +459,7 @@
         '<div class="field kit-field">' +
           '<label class="field-label" for="' + uid + '-email">' + UI.esc(copy.emailLabel) + "</label>" +
           '<input class="input" type="email" id="' + uid + '-email" name="email" autocomplete="email" placeholder="' +
-            UI.esc(copy.emailPlaceholder) + '" value="' + UI.esc(storedKitEmail()) + '" required>' +
+            UI.esc(copy.emailPlaceholder) + '" value="' + UI.esc(email || "") + '" required>' +
           '<p class="field-error" data-error-for="' + uid + '-email" role="alert" hidden></p>' +
         "</div>" +
         /* Consent before the button, as on every other form here: the button is
@@ -484,7 +483,7 @@
       "</div>";
   }
 
-  function kitConfirmation(block, outcome, vars, options) {
+  function kitConfirmation(block, outcome, vars, options, email) {
     var UI = window.UI;
     var copy = kitCopy().confirmations[outcome];
     var next = (options.next || []).map(function (line) {
@@ -513,7 +512,7 @@
       again.addEventListener("click", function () {
         var host = block.parentNode;
         var holder = document.createElement("div");
-        holder.innerHTML = renderKit(options);
+        holder.innerHTML = renderKit(options, email);
         var fresh = holder.firstChild;
         host.replaceChild(fresh, block);
         settle(fresh, false);
@@ -533,9 +532,10 @@
     if (!form || form.getAttribute("data-bound") === "1") return;
     form.setAttribute("data-bound", "1");
 
-    /* The retired gate kept an "unlocked" flag; nothing reads it any more. */
+    /* The site keeps nothing in the visitor's browser (2026-10-27). Earlier
+       versions left a few keys there; clear them. */
     try {
-      if (gateConfig().legacyStorageKey) window.localStorage.removeItem(gateConfig().legacyStorageKey);
+      (gateConfig().retiredStorageKeys || []).forEach(function (key) { window.localStorage.removeItem(key); });
     } catch (error) { /* nothing stored */ }
 
     form.addEventListener("submit", function (event) {
@@ -567,10 +567,6 @@
 
       var kitName = copy.kitName.replace("{product}", productName(slug));
       var vars = { kitName: UI.esc(kitName), email: UI.esc(email), mailbox: mailboxLink() };
-      var remember = function () {
-        try { if (gateConfig().kitEmailKey) window.localStorage.setItem(gateConfig().kitEmailKey, email); }
-        catch (error) { /* not remembered */ }
-      };
       var status = form.querySelector(".form-status");
       endpointReady.then(function () {
         var target = endpoint();
@@ -586,8 +582,7 @@
           body: JSON.stringify({ form: "kit", email: email, product: slug, consent: true, page: window.location.href })
         }).then(function (response) {
           if (!response.ok) throw new Error(response.status === 429 ? "limited" : "rejected");
-          remember();
-          kitConfirmation(block, gateConfig().kitAutoSend ? "sent" : "queued", vars, opts);
+          kitConfirmation(block, gateConfig().kitAutoSend ? "sent" : "queued", vars, opts, email);
         }).catch(function (error) {
           busy(form, false);
           var line = error && error.message === "limited" ? copy.errors.limited : copy.errors.send;

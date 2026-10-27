@@ -4,8 +4,13 @@ window.SITE_CONFIG = {
   sellerGate: {
     allowedDomains: ["softserveinc.com", "oracle.com"],
     kitAutoSend: true,
-    kitEmailKey: "oracle-ai-solutions:kit-email",
-    legacyStorageKey: "oracle-ai-solutions:seller-unlocked"
+    /* The site keeps nothing in the visitor's browser (2026-10-27); it only
+       clears the keys earlier versions left (assets/forms.js mountKit). */
+    retiredStorageKeys: [
+      "oracle-ai-solutions:kit-email",
+      "oracle-ai-solutions:seller-unlocked",
+      "oracle-ai-solutions:review-ticks"
+    ]
   },
   /* Talk to us reads the work email's domain (Alex, 2026-09-29): "I am a…"
      stays unpicked until the email has one. A domain below, or a subdomain of

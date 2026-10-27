@@ -3060,6 +3060,31 @@ if (/request a demo/i.test(raw)) {
     fail("site/assets/forms.js", "both form kinds must answer a 429 with their errors.limited line, not the generic one");
   }
 
+  /* Nothing a visitor types stays in their browser (Alex, 2026-10-27, before
+     SoftServe compliance reviews the site: the kit form remembered the
+     requester's email in localStorage, which reads as device storage that
+     needs consent). No storage, cookie or IndexedDB write anywhere under
+     site/; the only call allowed is removeItem, to clear the keys earlier
+     versions left, and those are listed in config, never written. */
+  var gateCfg = CFG.sellerGate || {};
+  ["kitEmailKey", "legacyStorageKey"].forEach(function (k) {
+    if (gateCfg[k] !== undefined) fail("config.sellerGate." + k, "is retired: the site stores nothing in the browser (2026-10-27); list the key in retiredStorageKeys to clear it");
+  });
+  if ((gateCfg.retiredStorageKeys || []).indexOf("oracle-ai-solutions:kit-email") < 0) {
+    fail("config.sellerGate.retiredStorageKeys", "must clear oracle-ai-solutions:kit-email, the email earlier versions remembered");
+  }
+  (function walk(dir) {
+    fs.readdirSync(path.join(root, dir), { withFileTypes: true }).forEach(function (e) {
+      var rel = dir + "/" + e.name;
+      if (e.isDirectory()) return walk(rel);
+      if (!/\.(js|html)$/i.test(e.name)) return;
+      var code = fs.readFileSync(path.join(root, rel), "utf8");
+      if (/\b(local|session)Storage\s*(\.\s*(?!removeItem\b)\w|\[)|document\.cookie\s*=|\bindexedDB\s*\.\s*open\b/.test(code)) {
+        fail(rel, "keeps something in the visitor's browser: the site stores nothing there and may only removeItem the keys earlier versions left (2026-10-27)");
+      }
+    });
+  }("site"));
+
   /* 2026-09-29 (Alex, on the home contact's confirmation: "make sure this
      looks good from UI standpoint (now a bit ugly). Also, name 'SoftServe's
      Oracle dedicated practice' to disambiguate"). A confirmation takes its
