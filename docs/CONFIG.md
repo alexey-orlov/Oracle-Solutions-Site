@@ -23,8 +23,7 @@ window.SITE_CONFIG = {
   sellerGate: {
     allowedDomains: ["softserveinc.com", "oracle.com"],
     kitAutoSend: true,
-    kitEmailKey: "oracle-ai-solutions:kit-email",
-    legacyStorageKey: "oracle-ai-solutions:seller-unlocked"
+    retiredStorageKeys: ["oracle-ai-solutions:kit-email", "oracle-ai-solutions:seller-unlocked", "oracle-ai-solutions:review-ticks"]
   },
   productOrder: ["<slug>", "<slug>", ...],
   products: {
@@ -146,13 +145,9 @@ allowedDomains: ["softserveinc.com", "oracle.com"],
 
 The endpoint receives `{ form: "kit", email, product: "all" | <slug>, consent, page }`, and checks the domain again against `mail/settings.json` `kit.allowedDomains`, which the checker holds equal to `allowedDomains` here.
 
-#### `kitEmailKey`
+#### `retiredStorageKeys`
 
-The `localStorage` key the last successful kit email is remembered under, to prefill the form on the next visit. Nothing else is stored.
-
-#### `legacyStorageKey`
-
-The retired gate's "unlocked" flag. The kit form removes it on load; delete this key once no browser can still hold the old flag.
+**The site keeps nothing in the visitor's browser** (Alex, 2026-10-27, before SoftServe compliance reviews the site; PROVENANCE §69). These are the `localStorage` keys earlier versions wrote, and the kit form removes each one on load: the kit email the form used to remember and prefill (`…:kit-email`, until 2026-10-27), the retired gate's "unlocked" flag (`…:seller-unlocked`) and the *Internal* panel's ticks (`…:review-ticks`, until 2026-09-29). Add a key here only to clear it, never to write it; `kitEmailKey` and `legacyStorageKey` are retired and fail the build. A kit form refills the address it just sent to only within the same visit, for *Request another kit*. The checker fails any storage, cookie or IndexedDB write under `site/`.
 
 ### `formDomains` — *Role* and *Company* from the work email (§62)
 
