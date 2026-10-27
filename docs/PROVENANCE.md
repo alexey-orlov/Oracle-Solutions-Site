@@ -8336,3 +8336,25 @@ _A subagent on Opus, launched from a session in AO-Personal-OS; no Fable step. T
 - **Open for Alex:** START-HERE §9, under §68.
 
 ---
+
+## 69. The kit form keeps nothing in the visitor's browser, 2026-10-27
+
+_The main session in AO-Personal-OS, on Opus; no Fable step (no copy changed). Touched: `site/assets/forms.js`, `site/data/config.js`, `tools/check-grammar.js`, CONFIG, START-HERE (the top line, §4, §9) and `site.manifest.json` (round 27). Published as version 38._
+
+- **The ask (Alex, 2026-10-27):** *"remove the kit form's saved email (localStorage in site/assets/forms.js) from the mini-site"*. The finding came from filling SoftServe compliance's one-page business case for publishing the site on SoftServe's domain. After a successful send, the kit form wrote the requester's email to `localStorage` and prefilled it on the next visit. A compliance reviewer may read that as storing data on the visitor's device without consent. The business case says the site sets no analytics or tracking cookies and holds personal data only as typed into the forms; the site now matches it.
+- **Before → after:**
+
+| Where | Before | After |
+|---|---|---|
+| Kit form, on load | the email field prefilled from `localStorage` (`oracle-ai-solutions:kit-email`) | empty; the browser's own autofill (`autocomplete="email"`) still offers addresses |
+| Kit form, after a send | the address written to `localStorage` | nothing written |
+| *Request another kit* (no surface passes `again` since §61) | the new form prefilled from storage | refilled from the address just sent, in memory, for that visit only |
+| Any page with a kit form, on load | the retired gate's flag removed | every key earlier versions left removed: `…:kit-email`, `…:seller-unlocked`, `…:review-ticks` (the *Internal* panel's, §44) |
+| `config.js` `sellerGate` | `kitEmailKey`, `legacyStorageKey` | `retiredStorageKeys`, the keys to clear |
+
+- **The checker:** a storage, cookie or IndexedDB write anywhere under `site/` fails (`localStorage` or `sessionStorage` access other than `removeItem`, `document.cookie =`, `indexedDB.open`); `sellerGate.kitEmailKey` and `sellerGate.legacyStorageKey` fail as retired; `retiredStorageKeys` must list `oracle-ai-solutions:kit-email`. Run against the old `forms.js` (a54dc48), the rule catches its `getItem` and its `setItem`.
+- **Checks:** `node --check` on the three JS files; `node tools/check-grammar.js` prints *check-grammar: OK*, with its standing warning (`overview.about.title`); the deny-list grep returns nothing. On the local server, on Large docs' Contacts tab (*Get the sales kit*), with the three old keys seeded: after a reload the field was empty and all three keys were gone. A kit request through a stub that answered the POST inside the page (nothing sent) showed *Check your inbox* and left storage empty. A scratch mount with `again: true` refilled the address in the same visit and stored nothing. The console was clean on `#/`, `#/products` and two product tabs.
+- **Published** as **version 38** (1793109045-1b3b), on version 37, which no other session had touched: the live `forms.js` and `config.js` matched a54dc48 byte for byte, and the wrapper matched the live page. Two files passed (`assets/forms.js`, `data/config.js`); the file list after the publish shows 147 files, the same count as before.
+- **Open for Alex:** START-HERE §9, under §69.
+
+---
