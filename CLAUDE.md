@@ -2,7 +2,7 @@
 
 SoftServe's Oracle AI & Data practice site, owned by Alex Orlov. **Start every session at [docs/START-HERE.md](docs/START-HERE.md)**. It holds the brief, the standing rules, how a round runs, the learnings and the map of the other docs.
 
-This repository is private and stays private: `docs/` holds customer names and logos that must never ship.
+This repository is private and stays private: `docs/` holds customer names and logos that must never ship. The one exception ships on purpose: a customer cleared to be named (Riyadh Air since 2026-10-29), whose logo lives in `site/assets/img/customers/`.
 
 ## Layout
 
@@ -21,7 +21,7 @@ This repository is private and stays private: `docs/` holds customer names and l
 
 A session here does not load AO-Personal-OS's `CLAUDE.md`, so the rules this site depends on are restated:
 
-- GigaCloud never appears anywhere. No customer names or logos in anything shipped.
+- GigaCloud never appears anywhere. No customer names or logos in anything shipped, except a customer Alex has cleared: Riyadh Air since 2026-10-29, named by its own logo on Large docs' case study and its home card only (the checker's `CLEARED_CUSTOMERS`).
 - Docs are rewritten to current truth; never append a dated "UPDATE". A subagent that finds a doc wrong reports it, and the main session rewrites it.
 - Subagents run on Opus, with the model spelled out in every call. Fable is kept for the judgement steps: the messaging, UX and design pass, and the final synthesis. The report says which steps used it.
 - Subagents read with Read/Grep and edit with Edit/Write. They use Bash only for allow-listed commands, each as its own call, never a `cd … && …` chain: an unattended agent that hits a permission prompt hangs.
