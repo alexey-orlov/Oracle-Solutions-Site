@@ -102,7 +102,7 @@
       "cleared": [
         "Riyadh Air"
       ],
-      "$clearedComment": "Round 28 (PROVENANCE §70): customers cleared to be named, each on its own case study and home card only, by its own logo under site/assets/img/customers/. The practice deny-list still carries them for the packs, so a sweep of this site subtracts this list; the misspellings stay banned. tools/check-grammar.js CLEARED_CUSTOMERS is the authoritative list and must match."
+      "$clearedComment": "Round 28 (PROVENANCE §70): customers cleared to be named, each on its own case study and home card only, by its own logo under site/assets/img/customers/. The practice deny-list still carries them for the packs, so a sweep of this site (oracle-packs sweep_site.py) lets them through in paths.content only; the misspellings stay banned. tools/check-grammar.js CLEARED_CUSTOMERS is the authoritative list and must match."
     }
   }
 }
