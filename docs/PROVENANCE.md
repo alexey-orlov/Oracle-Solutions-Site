@@ -8358,3 +8358,32 @@ _The main session in AO-Personal-OS, on Opus; no Fable step (no copy changed). T
 - **Open for Alex:** START-HERE §9, under §69.
 
 ---
+
+## 70. Riyadh Air named on Large docs' case study, with its logo, above the industry tabs, 2026-10-29
+
+_A session opened in AO-Personal-OS, on Opus; no Fable step (three strings of copy, decided in the session). Touched: `site/data/content.js`, `site/assets/app.js`, `site/pages/product.js`, `site/assets/site.css`, `site/assets/site-legacy.css` (the archive's guard), the new `site/assets/img/customers/riyadh-air.svg`, `tools/check-grammar.js`, SCHEMA, VISUAL-GRAMMAR, ASSETS §4 (the two Riyadh Air candidates removed from `docs/asset-candidates/logos/`), HANDOFF, README, CLAUDE.md, START-HERE (the top line, §2, §3, §4, §6, §7, §9) and `site.manifest.json` (round 28). Not published._
+
+- **The ask (Alex, 2026-10-29):** *"on the page for Large docs processing, we have case study under use cases (maybe on other pages as well). We can name now that that customer is RiyahdAir - use their real image logo so that it nicely loooks and fits + name them there. Also, let's have case study, as long as it has real logo, to sit above the industry use cases (general rules)."* The airline's own spelling is *Riyadh Air*; the checker keeps *RiyadhAir* and *Riyahd* banned.
+- **Where the case appears:** Large docs' Use cases tab (`overview.caseStudy`) and its home card (`overview.caseStudies`, `extraction-proof`). Nothing else on the site names the airline: the kit email carries no case, and the walkthrough and the step frames are synthetic.
+- **The logo:** Riyadh Air's own vector from SoftServe's PoC deck, the candidate kept in `docs/asset-candidates/logos/` since round 4 (the roundel with the Latin and Arabic wordmark), white, cleaned to 11.3 KB with a `<title>` (ASSETS §4). Both grounds it sits on are dark (the case study's `#1a1a1a` plate, the home card's veiled photograph), so it is the white reversal, as the SoftServe and Oracle marks are on dark grounds. Its capitals are 28% of its height, so it is set at 64 px on the case study (56 under 541 px) and 48 px on the card, where its letters match the descriptor type it replaces.
+- **Decisions:**
+  - **The logo is the heading and the name its alt text** (`UI.caseName`, one helper for both surfaces). The mark already spells *RIYADH AIR*, so the name set again in type beside it would name the company twice in one head (the one-mark rule, START-HERE §4). The name is in the text too: the story opens *At Riyadh Air, …*.
+  - **The NDA line keeps only its offer:** *Reference call available on request*. *Customer under NDA* had become false.
+  - **The story's** *the customer’s own agreements* became *the airline’s own agreements*, so the name is said once in it.
+  - **The home card's line is unchanged:** the logo over it names the customer.
+  - **A case study with its customer's logo comes first on the Use cases tab** (`useCasesTab()` reads `caseStudy.logo`); an unnamed one still follows the industry tabs. The home grid's order is unchanged.
+- **Before → after:**
+
+| Where | Before | After |
+|---|---|---|
+| Large docs › Use cases, order | the industry tabs, then the case study | the case study, then the industry tabs |
+| The case study's head | the industry medallion beside *An international airline* | Riyadh Air's white logo, 187 × 64, *Ground-handling contract management* under it |
+| The story's first sentence | *Ground-handling contract rates were keyed …* | *At Riyadh Air, ground-handling contract rates were keyed …* |
+| The NDA line | *Customer under NDA · reference call available on request* | *Reference call available on request* |
+| The home card's band | *An international airline* over the area | the white logo, 140 × 48, over the area |
+| `content.js`, both surfaces | `descriptor: "An international airline"` | `descriptor: "Riyadh Air"`, `logo: "assets/img/customers/riyadh-air.svg"` |
+
+- **The checker:** `CLEARED_CUSTOMERS` (name, logo, product) replaces *Riyadh Air* on the deny-list. A case may carry a `logo` only when its descriptor is a cleared name, and a cleared name requires its logo, on disk, on its own product; the home card's `logo` must equal its product's; the name may appear nowhere else in the data; `site/assets/img/customers/` may hold only cleared logos; `useCasesTab()` must render both orders; and both surfaces must set their heading through `UI.caseName`, the logo carrying the name as its alt text. Five deliberate breakages in a scratch copy (the name in an industry tab, the logo dropped, the misspelling, a stray file in `customers/`, the old order) each failed with its own message.
+- **Checks:** `node --check` on the four changed JS files; *check-grammar: OK* with its standing warning (`overview.about.title`); the console clean on 47 routes (the home page, the catalog and every product's five tabs) with no broken image; the deny sweep (`bosch|riyadhair|riyahd|dhl|sbg|logos/`) empty and the cleared name in `site/data/content.js` alone. Looked at: the Use cases tab at 1440 and 375 and the home card at 1440, 900 and 375; measured at 1280, 1024, 768 and 320, with no horizontal overflow anywhere. The archive theme, in a hidden frame, draws the logo at 44 and 56 px through its new guard.
+- **Built in a scratch copy** and moved into the tree in one step, then committed (c5ad903), so the local server never served a half-built state.
+- **Open for Alex:** START-HERE §9, under §70.

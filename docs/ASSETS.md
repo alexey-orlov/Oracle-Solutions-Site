@@ -436,9 +436,22 @@ card falls back to initials.
 
 ---
 
-## 4. Customer logos — `docs/asset-candidates/logos/`
+## 4. Customer logos — cleared in `site/assets/img/customers/`, the rest in `docs/asset-candidates/logos/`
 
-> ⛔ **2026-09-17: the folder moved out of the deployable root.** Until then it sat
+| Folder | Holds | Ships |
+|---|---|---|
+| `site/assets/img/customers/` | the logos of customers cleared to be named: Riyadh Air's since 2026-10-29 | yes, and nothing else may sit there (the checker fails any other file) |
+| `docs/asset-candidates/logos/` | the uncleared marks: Bosch's | never: outside `site/`, so no publish or deploy can carry it |
+
+> **Riyadh Air, cleared on 2026-10-29.** Alex, in a session: *"We can name now that that
+> customer is RiyahdAir - use their real image logo so that it nicely loooks and fits +
+> name them there."* The clearance is his word; no written permission from the airline
+> or its account team is recorded here. The checker's `CLEARED_CUSTOMERS` (name, logo
+> file, product) is the one list of cleared customers, and it confines the name to
+> Large docs' case study and its home card (`PROVENANCE.md` §70).
+>
+
+> ⛔ **2026-09-17: the candidates folder moved out of the deployable root.** Until then it sat
 > at `site/assets/img/logos/`. Nothing referenced it, but whole-tree publishes had
 > carried the three files onto the link-shared preview artifact, where anyone could
 > download them by path. Version 36 removed them from the artifact (`PROVENANCE.md`
@@ -446,37 +459,35 @@ card falls back to initials.
 > in the repo for the reasons below. `check-grammar.js` fails if
 > `site/assets/img/logos/` exists again.
 >
-> ⛔ **Round 4, 2026-09-16 — nothing in this folder is referenced any more, and
-> no customer is named anywhere on the site.** Alex withdrew the 2026-09-14
-> clearance that named two customers: there are now no customer names, no logos,
-> no names in alt text, captions, data files or shipped docs. Every case study
-> identifies its customer by an **anonymized descriptor** (industry and scale)
-> and an **industry medallion** — a circle carrying the industry line icon —
-> where the logo used to sit (`VISUAL-GRAMMAR.md` §2a.2).
+> ⛔ **Round 4, 2026-09-16 — nothing in the candidates folder is referenced, and
+> no uncleared customer is named anywhere on the site.** Alex withdrew the 2026-09-14
+> clearance that named two customers: no uncleared name, logo, alt text, caption,
+> data file or shipped doc. Every unnamed case study identifies its customer by an
+> **anonymized descriptor** (industry and scale) and an **industry medallion** — a
+> circle carrying the industry line icon — where a logo would sit
+> (`VISUAL-GRAMMAR.md` §2a.2).
 >
-> **The files stay on disk, unreferenced, pending customer approval.** They are
-> not deleted, because the approval that would bring them back is a conversation
-> with two account teams, not a re-derivation: the recolouring recipes below are
-> the part that would be expensive to redo. `check-grammar.js` fails the build
-> if any path under `assets/img/logos/` reappears in `data/content.js`, and it
-> fails on each customer name as a string, so the files cannot come back by
-> accident — only by removing that guard deliberately, which is the record that
-> a permission arrived.
+> **Bosch's file stays on disk, unreferenced, pending customer approval.** It is
+> not deleted, because the approval that would bring it back is a conversation
+> with an account team, not a re-derivation: the recolouring recipe below is the
+> part that would be expensive to redo. `check-grammar.js` fails the build if any
+> path under `assets/img/logos/` reappears in `data/content.js`, and it fails on
+> each uncleared customer name as a string, so a mark cannot come back by
+> accident — only through a `CLEARED_CUSTOMERS` entry, which is the record that a
+> permission arrived.
 
-The section below describes the two files as they were prepared on 2026-09-14,
-and the licensing position that applied while they shipped. It is history, not
-current state.
+The files, with their sources and treatment:
 
 | File | Size | What it is | Source |
 |---|---|---|---|
 | `bosch.png` | 720 × 161, 21 KB | Bosch supergraphic + wordmark, **all-white**, transparent | `WF_draft.pptx` (Monthly AI product overviews / AI Solutions review – Sep), `ppt/media/image7.png` — 960 × 216 transparent PNG of the official brand lockup |
-| `riyadh-air.svg` | 14.8 KB | Riyadh Air roundel + Latin/Arabic wordmark, **all-white**, vector | `NEW_09.06 Riyadh Air – Oracle – SoftServe PoC Demo.pptx` (Projects/Oracle/Customers/RiyahdAir), `ppt/media/image15.svg` — the deck's own vector logo, single-fill `#250852` |
-| `riyadh-air.png` | 720 × 247, 25 KB | raster fallback of the same, transparent | rendered from `riyadh-air.svg` |
+| `site/assets/img/customers/riyadh-air.svg` | 11.3 KB, 1134 × 389 | Riyadh Air roundel + Latin/Arabic wordmark, **all-white**, vector, with `<title>Riyadh Air</title>` | the candidate `riyadh-air.svg` (14.8 KB), from `NEW_09.06 Riyadh Air – Oracle – SoftServe PoC Demo.pptx` (Projects/Oracle/Customers/RiyahdAir), `ppt/media/image15.svg` — the deck's own vector logo, single-fill `#250852`, the airline's purple. Cleaned on 2026-10-29: the `<style>` block, the class, stroke and opacity attributes dropped, one `fill="#ffffff"` on the root, `width`/`height` set so an `<img>` keeps its proportions; geometry untouched. The candidate and its 720 × 247 raster fallback left `docs/asset-candidates/logos/` that day, so this is the one copy |
 
-**Treatment.** Both are reduced to a **single white ink** so they sit on the dark
-surface the same way the shipped `softserve-logo-white.svg` and
-`oracle-wordmark-white.svg` do, and so no brand colour competes with the site's
-teal accent.
+**Treatment.** Both are reduced to a **single white ink** so they sit on dark
+surfaces the way the SoftServe and Oracle marks do, and so no brand colour competes
+with the site's accents. Riyadh Air's sits on two dark grounds, the case study's
+`#1a1a1a` plate and the home card's veiled photograph; a white ground would need
+the brand's purple, `#250852`, as its one fill.
 
 - Bosch: `-trim` → alpha preserved, RGB set to 100 % (white) → Lanczos to 720 px
   wide → PNG32. The source's red wordmark and black supergraphic both become
@@ -493,20 +504,20 @@ customer decks, so nothing was fetched from the open web and there is no externa
 source URL to record.
 
 **Licensing position.** These are third-party registered trademarks reproduced to
-identify the customer in a reference story. They ship on Alex's statement that
-both customers are referenceable; the permission lives with the account teams, not
-in this repo. Recolouring to a single white ink is the standard reversed-logo
+identify the customer in a reference story. Riyadh Air's ships on Alex's clearance
+of 2026-10-29; Bosch's would ship only on its own. The permission lives with the
+account teams, not in this repo. Recolouring to a single white ink is the standard reversed-logo
 treatment both brands publish for dark grounds, but it is still a modification —
 if either account team supplies an official reversed asset, replace the file
 rather than re-deriving it.
 
-**This is what happened on 2026-09-16**, in the other direction: the names came
-out of `data/content.js` in the same change that unreferenced the logos, because
-the logo was never the only place the customer was identified — the descriptor,
-the industry string and the story all named them too. Bringing either back is a
-three-part change (the file reference, the descriptor, the deny-list entry in
-`check-grammar.js`) and it needs the account team's written permission recorded
-here, with a date.
+**Naming a customer is a four-part change**, as Riyadh Air's was on 2026-10-29: its
+`CLEARED_CUSTOMERS` entry in `check-grammar.js`, its logo in
+`site/assets/img/customers/`, the `descriptor` and `logo` on its case study and
+home card, and the clearance recorded here with a date. On 2026-09-16 the same
+parts moved the other way: the names came out of `data/content.js` with the logos,
+because the logo was never the only place the customer was identified — the
+descriptor, the industry string and the story all named them too.
 
 ---
 
