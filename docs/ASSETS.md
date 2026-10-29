@@ -445,8 +445,11 @@ card falls back to initials.
 
 > **Riyadh Air, cleared on 2026-10-29.** Alex, in a session: *"We can name now that that
 > customer is RiyahdAir - use their real image logo so that it nicely loooks and fits +
-> name them there."* The clearance is his word; no written permission from the airline
-> or its account team is recorded here. The checker's `CLEARED_CUSTOMERS` (name, logo
+> name them there."* Its basis is in AO-Personal-OS's call notes: the 2026-09-29
+> launch call kept the site free of customer names *except Riyadh Air*, and on the
+> 2026-10-29 call with Oracle's Construction & Engineering team Karsten said Riyadh
+> Air had given the green light for a public case study. No written permission from
+> the airline is filed in this repo. The checker's `CLEARED_CUSTOMERS` (name, logo
 > file, product) is the one list of cleared customers, and it confines the name to
 > Large docs' case study and its home card (`PROVENANCE.md` §70).
 >

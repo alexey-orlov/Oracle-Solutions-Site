@@ -479,7 +479,8 @@ Exact commands are in HANDOFF §4.
   - **why it was done:** the kit form's remembered email was the one finding against the SoftServe compliance business case filled the same day (hosting in SoftServe's Firebase project at oracle.softserveinc.com, sign-in for SoftServe and Oracle employees in week 6). That plan lives in AO-Personal-OS's wiki (`context/areas/softserve/oracle-packs.md`), not here.
 - **§70 (Riyadh Air named):**
   - **not on the shared link yet:** committed, not published; the publish maps `data/content.js`, `assets/app.js`, `pages/product.js`, `assets/site.css` and the new `assets/img/customers/riyadh-air.svg`;
-  - **the clearance's record** is Alex's word in a session; no written permission from the airline or its account team is in this repo (`ASSETS.md` §4);
+  - **the clearance's record:** Alex's word in this session, on the green light Karsten reported from Riyadh Air for a public case study (2026-10-29; the 2026-09-29 launch call already allowed the name). No written permission is filed in this repo (`ASSETS.md` §4);
+  - **the public case study Karsten is preparing:** once it exists, its URL in `links.json` renders the case study's *Download the case summary* link (`downloadLabel`, which renders only with a URL);
   - **the packaging plugin's Gate 3** sweeps `site/` with the practice deny-list, which still lists Riyadh Air, so its next listing run reports the name in `content.js` until the listing skill subtracts the manifest's `neverShip.sweep.cleared` (a change in Oracle-Packaging-Skills);
   - **the reference-call offer stays** on the named case (*Reference call available on request*), the NDA gone; dropping it is one string;
   - **the home grid keeps its order:** Workforce optimization's card leads and Riyadh Air's is second; leading with the named card, by the Use cases tab's logic, is one array move;
