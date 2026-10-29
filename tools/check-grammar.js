@@ -3644,6 +3644,11 @@ CLEARED_CUSTOMERS.forEach(function (cleared) {
     return c.product && c.product.slug === cleared.product;
   })[0];
   var own = [product && product.overview && product.overview.caseStudy, card].filter(Boolean);
+  /* …and the cleared case keeps its name: a listing rebuilt from the pack, which
+     never names a customer, would quietly anonymize it again. */
+  if (!own[0] || own[0].descriptor !== cleared.name) {
+    fail("CLEARED_CUSTOMERS " + cleared.name, cleared.product + "'s case study does not name it — restore its descriptor and logo, or remove the entry if the clearance was withdrawn");
+  }
   (function walk(value, at) {
     if (own.indexOf(value) !== -1) return;
     if (typeof value === "string") {
