@@ -408,7 +408,10 @@ window.SITE_CONTENT = {
       },
       {
         id: "extraction-proof",
-        descriptor: "An international airline",
+        /* The one customer cleared to be named (2026-10-29): its logo is the
+           card's heading and the name is the logo's alt text (PROVENANCE §70). */
+        descriptor: "Riyadh Air",
+        logo: "assets/img/customers/riyadh-air.svg",
         area: "Ground-handling contract management",
         industry: "travel-transport",
         status: "measured",
@@ -1647,20 +1650,22 @@ window.SITE_CONTENT = {
           ]
         },
         caseStudy: {
-          descriptor: "An international airline",
+          descriptor: "Riyadh Air",
+          logo: "assets/img/customers/riyadh-air.svg",
           area: "Ground-handling contract management",
           industry: "travel-transport",
           status: "measured",
           metrics: [
             { value: "5–15 min a contract", label: "to extract and cite a contract's rates, ready for review" }
           ],
-          story: "Ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on Oracle Cloud Infrastructure with NVIDIA AI-Q: reviewers check AI-extracted rates beside the source PDF, every value cited to its page, and export the checked rates. Measured on the customer’s own agreements of up to 40 pages during the proof of value, the review on top; figures are illustrative, not contractual.",
+          story: "At Riyadh Air, ground-handling contract rates were keyed into a cost-management system by hand — 60–100-page agreements read page by page. The extraction app runs on Oracle Cloud Infrastructure with NVIDIA AI-Q: reviewers check AI-extracted rates beside the source PDF, every value cited to its page, and export the checked rates. Measured on the airline’s own agreements of up to 40 pages during the proof of value, the review on top; figures are illustrative, not contractual.",
           scope: [
             { label: "Document footprint", value: "60–100-page agreements" },
             { label: "Onboarding a new station, before", value: "About one month" },
             { label: "Human gate", value: "A reviewer approves every extracted value" }
           ],
-          ndaLine: "Customer under NDA · reference call available on request",
+          /* Named, so no NDA: the line keeps only its reference-call offer. */
+          ndaLine: "Reference call available on request",
           downloadLabel: "Download the case summary"
         }
       },

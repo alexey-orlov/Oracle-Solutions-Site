@@ -555,12 +555,12 @@
 
   /* No case, no block: `caseStudy: null` renders nothing at all — a section
      whose only content is "nothing published yet" is worse than its absence on
-     a page a seller demos live. No customer is named and no logo is rendered;
-     the industry medallion sits where the mark used to, and the card opens on
-     it rather than on a photograph the industry tabs already show further up
-     the same page. The figure caveat is the last sentence of `story`, because
-     the panel has no footnote row; the download link renders only where a URL
-     exists. */
+     a page a seller demos live. A customer cleared to be named heads the card
+     with its own logo (UI.caseName); every other case is unnamed, and the
+     industry medallion sits where the mark would, so the card opens on it
+     rather than on a photograph the industry tabs already show on the same
+     page. The figure caveat is the last sentence of `story`, because the panel
+     has no footnote row; the download link renders only where a URL exists. */
   /* Round 10 — the callout now sits in the full content column of the Use cases
      tab rather than in the narrow Overview main, so it is built as two
      containers: the narrative on the left, the evidence on the right behind a
@@ -588,10 +588,10 @@
         '<div class="case-body">' +
           '<div class="case-main">' +
             '<p class="eyebrow eyebrow--accent">' + UI.esc(label("caseStudy")) + "</p>" +
-            '<div class="case-head">' +
-              UI.caseMedallion(item.industry) +
+            '<div class="case-head' + (item.logo ? " case-head--logo" : "") + '">' +
+              (item.logo ? "" : UI.caseMedallion(item.industry)) +
               '<div class="case-head-copy">' +
-                '<h3 class="case-descriptor">' + UI.esc(item.descriptor) + "</h3>" +
+                UI.caseName(item) +
                 '<p class="case-area">' + UI.esc(item.area) + "</p>" +
               "</div>" +
             "</div>" +
@@ -637,10 +637,17 @@
   /* ————— tab: use cases ————— */
 
   /* One column at the full content width, no rail: the industry tabs, then the
-     case study where one ships. Four products carry `caseStudy: null` and the
-     tab is the industries block alone — no empty state (VISUAL-GRAMMAR). */
+     case study where one ships. A case study that names its customer with the
+     customer's logo comes first instead, above the industry tabs (Alex,
+     2026-10-29: the case study, "as long as it has real logo", sits "above the
+     industry use cases"): one named customer outweighs the general cases.
+     Five products carry `caseStudy: null` and the tab is the industries block
+     alone — no empty state (VISUAL-GRAMMAR). */
   function useCasesTab(product) {
-    return industryCases(product) + caseStudy(product);
+    var named = product.overview.caseStudy && product.overview.caseStudy.logo;
+    return named
+      ? caseStudy(product) + industryCases(product)
+      : industryCases(product) + caseStudy(product);
   }
 
   /* ————— tab: technology ————— */

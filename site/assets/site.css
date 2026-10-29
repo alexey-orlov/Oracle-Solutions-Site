@@ -1073,6 +1073,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .case-card .case-descriptor { font-weight: 400; font-size: 1.25rem; line-height: 1.2; color: #ffffff; }
 .case-card .case-area { color: rgba(255, 255, 255, .82); }
 
+/* A cleared customer's logo stands where the descriptor would (UI.caseName),
+   white on the veil like the type it replaces. The mark's capitals are 28% of
+   its height, so 48px sets them at the 20px descriptor's own 13–14px. */
+.case-logo { display: block; width: auto; max-width: 100%; }
+.case-card .case-logo { height: 3rem; }
+
 .case-card-body {
   display: flex;
   flex: 1 1 auto;
@@ -3756,6 +3762,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .case-card-title { position: static; padding-bottom: 0; }
   .case-card .case-descriptor { color: #111111 !important; }
   .case-card .case-area { color: #333333 !important; }
+  .case-card .case-logo { filter: brightness(0) !important; }
 }
 
 @media (max-width: 1100px) {
@@ -4024,6 +4031,12 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
 .case-callout .case-descriptor { font-family: var(--font-sans); font-size: 1.75rem; font-weight: 400; line-height: 1.2; letter-spacing: 0; color: #ffffff; text-wrap: wrap; }
 .case-callout .case-area { font-size: 1rem; line-height: 1.4; color: var(--surface-fact); }
 
+/* A cleared customer's logo heads the callout where the medallion and the
+   descriptor stood: 64px, so its capitals stand at 18px beside the 28px
+   descriptor's 20px, with the area under it as a caption. */
+.case-callout .case-logo { height: 4rem; }
+.case-callout .case-head--logo .case-head-copy { gap: .875rem; }
+
 /* The medallion and the status chip are white line on the plate: a 1px ring
    cut at 4px (polygon evenodd), so the diagonal corners carry the line too. */
 .case-callout .case-medallion {
@@ -4118,6 +4131,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .ind-case { padding: 1.5rem; }
   .case-callout .case-body { padding: 1.5rem; }
   .case-callout .case-descriptor { font-size: 1.5rem; }
+  .case-callout .case-logo { height: 3.5rem; }
 }
 
 /* At 320 a 40px "productivity" fills the column to the pixel; one step down
@@ -4133,6 +4147,7 @@ hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 0; }
   .case-callout :is(.eyebrow, .case-area, .case-text, .case-nda, .case-figure-label, .case-scope dt) { color: #333333 !important; }
   .case-callout .case-status-dot { background: #111111 !important; }
   .case-callout .case-medallion::before, .case-callout .case-status::after { background: #bbbbbb !important; }
+  .case-callout .case-logo { filter: brightness(0) !important; }
 }
 /* ===== end Round 20 · Use cases ===== */
 

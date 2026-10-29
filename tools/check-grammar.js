@@ -141,7 +141,41 @@ var DEMO_SLUGS = ["large-document-extraction", "workforce-optimization", "cross-
    every other product's state is told by its availability badges. */
 var UNPACKAGED = ["case-evidence-collection", "plan-vs-actual-investigation"];
 var RETIRED_TAGS = ["Available now", "Fixed-price offer", "In preparation"];
-var CUSTOMER_NAMES = ["Bosch", "Riyadh Air", "RiyadhAir", "Riyahd", "DHL", "SBG", "BSH", "Binladin", "Belron", "Channel 4", "KPN", "NHS", "OMV"];
+var CUSTOMER_NAMES = ["Bosch", "RiyadhAir", "Riyahd", "DHL", "SBG", "BSH", "Binladin", "Belron", "Channel 4", "KPN", "NHS", "OMV"];
+/* The customers cleared to be named (Alex, 2026-10-29: "We can name now that
+   that customer is RiyahdAir"; PROVENANCE §70). Each is named on one product's
+   case study and that case's home card only, as its descriptor and by its own
+   logo under site/assets/img/customers/. Adding an entry is the record that a
+   permission arrived. The misspellings stay on CUSTOMER_NAMES, so the brand's
+   own spelling is the only one that passes. */
+var CLEARED_CUSTOMERS = [
+  { name: "Riyadh Air", logo: "assets/img/customers/riyadh-air.svg", product: "large-document-extraction" }
+];
+function clearedCustomer(name) {
+  return CLEARED_CUSTOMERS.filter(function (c) { return c.name === name; })[0] || null;
+}
+/* A case names its customer only through CLEARED_CUSTOMERS: the descriptor is
+   the cleared name, the logo is that customer's file and on disk, and the case
+   is on the customer's product. Every other case is unnamed and carries no
+   logo: it opens on the industry medallion (product page) or its industry
+   photograph (home card). */
+function checkCaseCustomer(where, item, slug) {
+  var cleared = clearedCustomer(item.descriptor);
+  if (!cleared) {
+    if (item.logo !== undefined) {
+      fail(where, 'carries a logo, but "' + item.descriptor + '" is not a cleared customer — an unnamed case carries no mark');
+    }
+    return;
+  }
+  if (slug !== cleared.product) {
+    fail(where, "names " + cleared.name + ", who is cleared on " + cleared.product + "'s case study only");
+  }
+  if (item.logo !== cleared.logo) {
+    fail(where, "names " + cleared.name + ' without its logo "' + cleared.logo + '" — a named case is headed by the customer\'s own mark');
+  } else if (!fs.existsSync(path.join(root, "site", item.logo))) {
+    fail(where, cleared.name + "'s logo is not on disk: site/" + item.logo);
+  }
+}
 /* E: a one-liner says what the buyer's business gets, for whom. It is not the
    place for the packaging story — that is what the Jumpstart tab is. */
 var PACKAGING_PHRASES = [
@@ -563,7 +597,8 @@ if (!arr(C.products) || C.products.length !== 9) {
     if (o.scope.out.length < 4) fail(w, "overview.scope.out needs ≥4 items");
   }
 
-  /* 2.8 case study — round 4, C1. An anonymized customer callout, or null.
+  /* 2.8 case study — round 4, C1. A customer callout, unnamed unless the
+     customer is cleared (CLEARED_CUSTOMERS), or null.
      There is no empty state: a block whose only content is "nothing published
      yet" is worse than its absence on a page sellers demo live. */
   if (o.caseStudy === undefined) fail(w, "overview.caseStudy missing — it is null where no case study ships");
@@ -576,10 +611,9 @@ if (!arr(C.products) || C.products.length !== 9) {
     ["descriptor", "area", "industry", "status", "story", "ndaLine", "downloadLabel"].forEach(function (k) {
       if (!str(cs[k])) fail(w, "overview.caseStudy." + k + " missing");
     });
-    if (cs.customer !== undefined) fail(w, "overview.caseStudy.customer is banned — no customer is named on this site");
-    if (cs.logo !== undefined || cs.logoStacked !== undefined) {
-      fail(w, "overview.caseStudy carries a logo — the industry medallion replaced it and no customer mark ships");
-    }
+    if (cs.customer !== undefined) fail(w, "overview.caseStudy.customer is retired — a cleared customer is its descriptor and its logo");
+    if (cs.logoStacked !== undefined) fail(w, "overview.caseStudy.logoStacked is retired — a cleared customer has one logo file");
+    checkCaseCustomer(w + " overview.caseStudy", cs, p.slug);
     /* The header band was removed: it repeated the industry photograph the
        industry tabs render a few hundred pixels higher on the same page. */
     if (cs.image !== undefined) {
@@ -958,6 +992,24 @@ if (!arr(C.products) || C.products.length !== 9) {
   if (!industryFn) warn("pages/product.js", "industryCases() not found — the no-heading check is reading nothing");
   else if (/blockHead\(|class="h[1-6]|<h[1-6] class="block-title/.test(industryFn)) {
     fail("pages/product.js", "industryCases() prints a heading — the Use cases tab opens on the industry tabs, with no title over them (round 13)");
+  }
+  /* Alex, 2026-10-29: the case study, "as long as it has real logo", sits
+     "above the industry use cases"; an unnamed one still follows them. */
+  var useCasesFn = (productSrc.split("function useCasesTab(")[1] || "").split("\n  function ")[0];
+  if (!useCasesFn) warn("pages/product.js", "useCasesTab() not found — the case-study order check is reading nothing");
+  else if (!/\.logo[\s\S]*\?\s*caseStudy\(product\)\s*\+\s*industryCases\(product\)\s*:\s*industryCases\(product\)\s*\+\s*caseStudy\(product\)/.test(useCasesFn)) {
+    fail("pages/product.js useCasesTab()", "must render a case study that carries its customer's logo above the industry tabs, and an unnamed one after them (Alex, 2026-10-29)");
+  }
+  /* The logo is the heading and its alt text the name, so the name is said
+     once, never set again in type beside the mark that spells it. */
+  var appSrc = fs.readFileSync(path.join(root, "site/assets/app.js"), "utf8");
+  var nameFn = (appSrc.split("function caseName(")[1] || "").split("\n  function ")[0];
+  if (!/<h3 class="case-descriptor case-descriptor--logo">/.test(nameFn) || !/alt="' \+ esc\(item\.descriptor\)/.test(nameFn)) {
+    fail("site/assets/app.js caseName()", "a cleared customer's logo is the case's h3, with the customer's name as its alt text");
+  }
+  if (!/caseName\(item\)/.test((appSrc.split("function caseCard(")[1] || "").split("\n  function ")[0]) ||
+      !/UI\.caseName\(item\)/.test((productSrc.split("function caseStudy(")[1] || "").split("\n  function ")[0])) {
+    fail("site case heads", "the home card and the product case study both set their heading through UI.caseName, so a logo renders the same on both");
   }
 })();
 
@@ -1645,10 +1697,12 @@ if (!arr(C.products) || C.products.length !== 9) {
     });
     /* Round 11: the card opens on a photograph again, but it is the industry's
        own picture, derived from `industry` by the renderer — so no image or
-       band key comes back into the data, and no logo ever does. */
-    ["customer", "logo", "logoStacked", "band", "label", "image"].forEach(function (k) {
-      if (c[k] !== undefined) fail(cw, k + " is superseded — the card is anonymized: no logo, and its photograph is derived from `industry`, not stored");
+       band key comes back into the data. The one stored image is a cleared
+       customer's logo (2026-10-29), which its product's case study carries too. */
+    ["customer", "logoStacked", "band", "label", "image"].forEach(function (k) {
+      if (c[k] !== undefined) fail(cw, k + " is superseded — the card's photograph is derived from `industry`, not stored, and a cleared customer is its descriptor and its logo");
     });
+    checkCaseCustomer(cw, c, c.product && c.product.slug);
     if (CASE_STATUSES.indexOf(c.status) === -1) fail(cw, 'status "' + c.status + '" is not ' + CASE_STATUSES.join(" / "));
     if (INDUSTRIES.indexOf(c.industry) === -1) fail(cw, 'industry "' + c.industry + '" is not in the fixed set of 16');
     else checkAsset(cw, "industry photograph", "assets/img/industries/" + c.industry + ".jpg");
@@ -1697,7 +1751,7 @@ if (!arr(C.products) || C.products.length !== 9) {
       }
       if (target && target.overview && target.overview.caseStudy) {
         var full = target.overview.caseStudy;
-        ["descriptor", "area", "industry", "status"].forEach(function (k) {
+        ["descriptor", "logo", "area", "industry", "status"].forEach(function (k) {
           if (full[k] !== c[k]) fail(cw, k + ' disagrees with products[' + c.product.slug + '].overview.caseStudy.' + k);
         });
         /* Round 11: the card's figure is the callout's headline figure. The two
@@ -3568,18 +3622,53 @@ if (/request a demo/i.test(raw)) {
 
 /* Round 4 (Alex, 2026-09-16): NO customer may be named anywhere in the shipped
    data — not in copy, not in alt text, not in a caption — and no customer logo
-   may be referenced. The logo files stay in the repo, unreferenced, pending
-   customer approval — since 2026-09-17 in docs/asset-candidates/logos/, outside
-   the deployable root, because whole-tree publishes had carried them onto the
-   link-shared preview (PROVENANCE §25). */
+   may be referenced, unless the customer has cleared it (CLEARED_CUSTOMERS,
+   since 2026-10-29). The uncleared logo files stay in the repo, unreferenced,
+   pending customer approval — since 2026-09-17 in docs/asset-candidates/logos/,
+   outside the deployable root, because whole-tree publishes had carried them
+   onto the link-shared preview (PROVENANCE §25). */
 if (fs.existsSync(path.join(root, "site/assets/img/logos"))) {
   fail("site/assets/img/logos/", "exists again — customer marks live in docs/asset-candidates/logos/, outside site/, so no publish or deploy can carry them");
 }
 CUSTOMER_NAMES.forEach(function (name) {
   if (new RegExp("\\b" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b").test(raw)) {
-    fail("content.js", 'names the customer "' + name + '" — the site describes every customer by industry and scale only');
+    fail("content.js", 'names the customer "' + name + '" — the site describes every uncleared customer by industry and scale only');
   }
 });
+/* A cleared customer's name lives on its own case study and that case's home
+   card, and nowhere else in the data: the clearance is for that case. */
+CLEARED_CUSTOMERS.forEach(function (cleared) {
+  var re = new RegExp("\\b" + cleared.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b");
+  var product = (C.products || []).filter(function (p) { return p.slug === cleared.product; })[0];
+  var card = ((C.overview || {}).caseStudies || []).filter(function (c) {
+    return c.product && c.product.slug === cleared.product;
+  })[0];
+  var own = [product && product.overview && product.overview.caseStudy, card].filter(Boolean);
+  (function walk(value, at) {
+    if (own.indexOf(value) !== -1) return;
+    if (typeof value === "string") {
+      if (re.test(value)) {
+        fail("content.js " + at, "names " + cleared.name + " — the clearance covers " + cleared.product + "'s case study and its home card, nowhere else");
+      }
+      return;
+    }
+    if (value && typeof value === "object") Object.keys(value).forEach(function (k) {
+      walk(value[k], at + (Array.isArray(value) ? "[" + k + "]" : "." + k));
+    });
+  })(C, "SITE_CONTENT");
+});
+/* Unreferenced is not unshipped (START-HERE §7): the customers folder ships
+   whole, so it holds the cleared customers' logos and nothing else. */
+(function () {
+  var dir = path.join(root, "site/assets/img/customers");
+  if (!fs.existsSync(dir)) return;
+  fs.readdirSync(dir).forEach(function (f) {
+    var rel = "assets/img/customers/" + f;
+    if (!CLEARED_CUSTOMERS.some(function (c) { return c.logo === rel; })) {
+      fail("site/" + rel, "is not a cleared customer's logo — an uncleared mark stays in docs/asset-candidates/logos/, outside site/");
+    }
+  });
+})();
 if (/assets\/img\/logos\//.test(raw)) {
   fail("content.js", "references assets/img/logos/ — customer marks stay on disk, unreferenced, pending customer approval");
 }

@@ -647,9 +647,10 @@
   }
 
   /* ————— case studies —————
-     No customer is named and no logo is rendered: a logo is the one element of
-     a case study that cannot be anonymized, so the card is built around what
-     can — the industry. The medallion sits where the mark used to, at the same
+     A case study names its customer only once the customer has cleared it,
+     and then by the customer's own logo (one customer since 2026-10-29). Every
+     other case is built around what can be said without a name — the industry:
+     its descriptor, and the medallion where the mark would sit, at the same
      optical weight. */
 
   function caseStatus(key) {
@@ -661,6 +662,16 @@
     return '<span class="case-medallion" aria-hidden="true">' + icon("industry-" + industry) + "</span>";
   }
 
+  /* The case's heading: the customer's logo where the case carries one, its
+     alt text the name, so the name is said once and not set again beside the
+     mark that already spells it; otherwise the descriptor in type. */
+  function caseName(item) {
+    if (!item.logo) return '<h3 class="case-descriptor">' + esc(item.descriptor) + "</h3>";
+    return '<h3 class="case-descriptor case-descriptor--logo">' +
+      '<img class="case-logo" src="' + esc(item.logo) + '" alt="' + esc(item.descriptor) + '" decoding="async">' +
+      "</h3>";
+  }
+
   function caseStatusChip(key) {
     var status = caseStatus(key);
     if (!status) return "";
@@ -670,7 +681,8 @@
   }
 
   /* The home-page card (round 11): the industry photograph across the top with
-     the customer's descriptor and area set on it in white, then a white body —
+     the customer's descriptor (or its white logo) and area set on it in white,
+     then a white body —
      the status chip, one headline figure, the line and the link. No footnote
      (round 19, Alex: no reviewer justifications, no unnecessary disclaimers):
      the chip is the card's one status word.
@@ -686,7 +698,7 @@
         '<img class="case-card-img" src="assets/img/industries/' + esc(item.industry) + '.jpg" alt="" loading="lazy" decoding="async">' +
         '<span class="case-card-veil" aria-hidden="true"></span>' +
         '<div class="case-card-title">' +
-          '<h3 class="case-descriptor">' + esc(item.descriptor) + "</h3>" +
+          caseName(item) +
           '<p class="case-area">' + esc(item.area) + "</p>" +
         "</div>" +
       "</div>" +
@@ -795,6 +807,7 @@
     badgeRow: badgeRow,
     caseStatusChip: caseStatusChip,
     caseMedallion: caseMedallion,
+    caseName: caseName,
     caseCard: caseCard,
     caseStudyById: caseStudyById,
     button: button,
